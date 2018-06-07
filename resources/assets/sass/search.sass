@@ -1,0 +1,47 @@
+.dr-btn
+    position: relative
+    width: 6.3em
+    text-align: center
+    border-radius: 6px
+    margin: 3px
+    padding: 8px 0 4px
+    color: white
+    background-color: cornflowerblue
+    &:hover
+        color: whitesmoke
+        background-color: royalblue
+    &[disabled]
+        background-color: darkgray
+        cursor: not-allowed
+        &,*
+            cursor: not-allowed
+.badge-offset
+    position: absolute
+    top: 4px
+    right: 4px
+    color: royalblue
+    background-color: white
+.naos
+    font-size: 3em
+    color: cornflowerblue
+    text-shadow:  0 0 8px rgba(82, 168, 236, .6)
+.vflip
+    position: absolute
+    transform: scale(1, -1)
+    left: 1.2em
+.search-list
+    transition: all 0.25s
+    position: absolute
+    z-index: 4
+    transform-origin: top
+    background-color: white
+    border: 1px solid lightgray 
+    &[show-st="0"]
+        opacity: 0
+        transform: scale(0, 0)
+    &[show-st="1"]
+        opacity: 1
+        transform: scale(1, 1)
+        width: 100%
+.search-itm:hover
+    background-color: whitesmoke

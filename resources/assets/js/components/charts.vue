@@ -1,0 +1,101 @@
+<template>
+    <div class="container-fluid" style="padding:0">
+        <div class="panel panel-primary" style="margin:15px 0 0">
+            <div class="panel-heading" style="padding:6px 15px">
+                <i class="fa fa-bar-chart"  aria-hidden="true"></i>
+                <span>{{lng.hist_graph}}&nbsp;</span>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button id="graph_btn1" type="button" class="btn btn-default btn-sm" @click="show_hist(1)">{{lng.price_hist}}</button>
+                    <button id="graph_btn2" type="button" class="btn btn-default btn-sm" @click="show_hist(2)">{{lng.sales_hist}}</button>
+                </div> 
+            </div>
+            <div class="panel-body" style="padding:4px">
+                <canvas height="70" id="graph"></canvas>
+            </div>  
+        </div>  
+     </div>
+</template>
+<script>
+var chart_data = {
+    datasets: [{
+        lineTension: 0,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+    }]
+};
+var options1 = {
+    legend: { display: false },
+    tooltips: {
+        displayColors: false,
+    },
+    scales: {
+        xAxes: [{
+            type: 'time',
+            time: {
+                tooltipFormat: 'DD.MM.YY',
+                unitStepSize: 1,
+                unit: 'day',
+                displayFormats: {
+                    hour: 'MM.YY', // Sept 4, 5PM
+                    day: 'DD.MM.YY', // Sep 4 2015
+                    week: 'll', // Week 46, or maybe "[W]WW - YYYY" ?
+                    month: 'DD.MM.YYYY', // Sept 2015
+                }
+            }
+        }]
+
+    }
+};
+var data={
+    lng:{},
+    ready:false
+};
+var chart_self,self;
+export default {
+    props: ['id'],
+    data: function () {return data;},
+    mounted(){
+        self = this;
+        this.$data.lng = window.lng;
+        chart_self = new Chart(document.getElementById('graph'), {
+            type: 'line',
+            data: chart_data,
+            options: options1
+        });
+        this.show_hist(1);
+    },
+    methods:{
+        show_hist(t) {
+            var prod_id = this.$parent.$props.id;
+            // console.log(chart_data.datasets[0].data);
+            axios.get('/prod_history', { params: { id: prod_id , currency:  window.Laravel.currency.name} }) 
+                .then(function(response) {
+                    var i = 0,l=response.data.length,l2=chart_data.datasets[0].data.length;
+                    if(l2>0&&l2>l) chart_data.datasets[0].data.splice(0,l2);
+                    if(t==1){
+                        // document.getElementById('graph_btn1')
+                        for (; i < l; i++) {   
+                            chart_data.datasets[0].data[i] = { x: response.data[i].date, 
+                                y: response.data[i].price * response.data[i].currency.rate
+                            };
+                            chart_data.datasets[0].label = 'Price';
+                            // console.log(response.data[i].price);
+                        }
+                    }
+                    else if(t==2) {
+                        for (; i < l; i++) {
+                            chart_data.datasets[0].data[i] = { x: response.data[i].date, 
+                                y: response.data[i].sales 
+                            };
+                            chart_data.datasets[0].label = 'Sold';
+                        }
+                    }
+                   chart_self.update();
+                }).catch(function(error) { 
+                    self.$root.retry(self.show_hist, error.response.status);
+                });
+            }
+        }
+    }
+</script>
+

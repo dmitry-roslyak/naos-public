@@ -1,0 +1,41 @@
+{
+  "name": "NAOS",
+  "short_name": "NAOS",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#fff",
+  "background_color": "#fff",
+  "description": "Online store",
+  "icons": [
+    {
+      "src": "images/touch/ic_launcher48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "images/touch/ic_launcher72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "images/touch/ic_launcher96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "images/touch/ic_launcher144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "images/touch/ic_launcher168.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "images/touch/ic_launcher192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

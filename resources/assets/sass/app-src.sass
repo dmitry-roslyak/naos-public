@@ -1,0 +1,240 @@
+$item-card-bkgr-color: white
+$right-note-color: cornflowerblue
+$compare-state-check1-color: orange
+$heart-state-check1-color: crimson
+$compare-heart-state-check0-color: whitesmoke
+$right-note-font-size: 1.4rem
+$right-note-icon-size: 1.6rem
+$item-note-font-size: 1.4rem
+$item-spec-font-size: 1.5rem
+body
+    padding-bottom: 225px
+hr
+    border-color:  cornflowerblue
+a:hover
+    text-decoration: none
+.thumbnail
+    background-color: inherit
+.font1
+    font-size: 1.5em
+.myinput1
+    height: 2em
+.item-note
+    position: absolute
+    top: 6px
+    font-size: $item-note-font-size
+    font-weight: 800
+    z-index: 1
+    color: white
+    text-align: center
+    padding: 4px 6px
+    border-bottom-right-radius: 0.8em
+    &.soon
+        box-shadow: 0.05em 0.05em 0.6em #8f00b3
+        background-color: #b800e6
+    &.hot
+        box-shadow: 0.1em 0.1em 1em darkorange
+        background-color: darkorange
+    &.offer
+        box-shadow: 0.1em 0.1em 1em red
+        background-color: tomato
+    &.new
+        box-shadow: 0.1em 0.1em 1em lightgreen
+        background-color: limegreen
+// .halots
+//     position: relative
+//     padding-bottom: 7px
+//     &:hover .fa-share-alt
+//         color: chartreuse
+//     &:hover .share
+//         padding: 2px 4px
+//         margin: 2px 0
+//         font-size: $right-note-font-size
+.action-frm
+    position: absolute
+    right: 0
+    z-index: 1
+    border-bottom-left-radius: 0.8em
+    padding: 5px 5px 2px 6px 
+    text-align: right
+    background-color: $right-note-color
+    & *
+        color: white
+.action-item
+    transition: all 0.25s
+    font-size: 0
+    &:hover
+        font-size: $right-note-font-size
+.compare-state[data-check='1']
+    animation: bounce1 0.35s
+    font-size: $right-note-icon-size
+    color: $compare-state-check1-color
+.heart-state[data-check='1']
+    animation: bounce1 0.35s
+    font-size: $right-note-icon-size
+    color: $heart-state-check1-color
+.compare-state,.heart-state[data-check='0']
+    animation: bounce0 0.35s
+    font-size: $right-note-icon-size
+.fake-link:hover
+    cursor: pointer
+    text-decoration: none
+.ajax-error
+    transition: all 0.35s
+    position: fixed
+    right: 0
+    bottom: 30px
+    z-index: 300
+    box-shadow: 2px 2px 15px gray
+    background-color: white
+    border: 1px solid lightgray
+    border-radius: 6px
+    padding: 0.5em
+    opacity: 0
+    z-index: -1
+    &[data-err='1']
+        z-index: 1
+        opacity: 1
+        transform: translateX(-30px)
+.divider-or
+    margin: 18px auto 8px
+    position: relative
+    text-align: center
+    &::after
+        right: 0
+    &::before
+        left: 0
+    &::before, &::after
+        position: absolute
+        display: inline-block
+        width: 43%
+        top: .5em
+        border-top: 1px solid #333
+        text-align: initial
+        content: " "
+.overlay-background
+    position: fixed 
+    height: 100% 
+    width: 100% 
+    top: 0
+    left: 0
+    background-color: white
+    z-index: 1000
+    & h4    
+        position: relative
+        text-align: center
+        top: 50%
+#site_loading
+    text-align: center
+.overlay-view
+    position: fixed
+    left: 50%
+    top: 50%
+    margin: -29px 0 0 -29px
+    z-index: 1001
+.overlay-view::after
+    content: ""
+    position: fixed
+    left: 0
+    top: 0
+    height: 100%
+    width: 100%
+    background-color: #fff
+    z-index: -1
+.ajax-error .fa-warning
+    color: red 
+    font-size: 1.2em
+.err-close
+    background-color: tomato
+    color: white
+    border-radius: 4px
+    padding: 2px 4px
+    font-size: 1.5rem
+.copyright
+    position: absolute
+    width: 100%
+    bottom: 0
+    left: 0
+    color: white
+.footer
+    position: absolute
+    bottom: 0
+    min-height: 180px
+    width: 100%
+    padding: 10px
+    background-color: cornflowerblue 
+    text-align: center
+    color: white
+    & a 
+        margin: 3px auto
+        width: 140px
+        padding: 8px 
+        color: white
+        text-decoration: none
+        & > img
+            display: inline
+    & a:hover
+        color: white
+        border-color: #fff
+        text-decoration: none
+.ctg-btn
+    /*text-align: center;*/
+    color: white
+    background-color: cornflowerblue
+    width: 100%
+    padding: 10px 10px 6px
+    &:hover
+        background-color: royalblue
+.ctg-frm
+    width: 100%
+    box-shadow: 0
+    padding: 0
+    display: none
+.ctg-itm
+    transition: all 0.25s
+    padding: 3px 10%
+    color: cornflowerblue
+    background-color: white
+    border: 1px solid cornflowerblue
+    border-width: 0 1px 1px
+    &:hover
+        color: white
+        background-color: royalblue
+        border-color: white
+.redirect-enter-active, .redirect-leave-active
+    transition: all 0.4s
+.redirect-enter, .redirect-leave
+    opacity: 0
+    transform: translateY(-320px)
+.fa-angle-up,.fa-angle-down[style='']
+    animation: rotate0 0.35s
+.fa-angle-up,.fa-angle-down[style='display:none']
+    animation: rotate90 0.35s
+@keyframes rotate90
+    0% 
+        transform: rotateZ(180deg)
+    100% 
+        transform: rotateZ(0deg)
+@keyframes rotate0
+    0% 
+        transform: rotateZ(180deg)
+    100% 
+        transform: rotateZ(0)
+@keyframes bounce0
+    0% 
+        transform: scale(1)
+    33% 
+        transform: scale(0.8)
+    66% 
+        transform: scale(1.3)
+    100% 
+        transform: scale(1)
+@keyframes bounce1
+    0% 
+        transform: scale(1)
+    33% 
+        transform: scale(0.8)
+    66% 
+        transform: scale(1.3)
+    100% 
+        transform: scale(1)
