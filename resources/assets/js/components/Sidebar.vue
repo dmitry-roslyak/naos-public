@@ -1,45 +1,42 @@
 <template>
     <div class="container-fluid">
-        <div style="padding:0 4px 0"> 
-            <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @click="catalog_btn_toggle(1)"  type="button" id="dropdownMenu1" aria-haspopup="true">
-                <i class="fa fa-list" style="font-size:1.2em"></i>
-                {{lng.catalog}}
-            </div>
-            <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
-                <div class="ctg-itm fake-link" v-for="item in catalog" @click="get_filters(item.id)">
-                    {{lng[item.name]?lng[item.name]:item.name}}
-                </div>
-            </ul>
+        <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @click="catalog_btn_toggle(1)"  type="button" id="dropdownMenu1" aria-haspopup="true">
+            <i class="fa fa-list" style="font-size:1.2em"></i>
+            {{lng.catalog}}
         </div>
-        <div style="padding:4px">
-            <button class="form-control" v-show="show_clear" @click="flt_reset">{{lng.flt_reset}}</button>
-            <div class="thumbnail flt-grp" v-if="filters.length" >
-                <div class="flt-btn fake-link" @click="price_show?price_show=false:price_show=true;expand($event.currentTarget)">
-                    {{lng.price}}
-                    <i v-show="price_show" class="fa fa-angle-up font1 pull-right" aria-hidden="true"></i>
-                    <i v-show="!price_show" class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
-                </div>
-                <div class="flip" style="margin-top:6px;margin-bottom:6px">
-                    {{lng.from}}<input type="number" v-model="pricef" class="form-control myinput1">
-                    {{lng.to}}<input type="number" v-model="pricel" class="form-control myinput1">
-                </div>
+        <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
+            <div class="ctg-itm fake-link" v-for="item in catalog" @click="get_filters(item.id)" :key="item.id">
+                {{lng[item.name]?lng[item.name]:item.name}}
             </div>
-            <div class="thumbnail flt-grp" v-for="(filter,i1) in filters">
-                <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
-                    <span :title="filter.desc"><i class="fa fa-info-circle"></i></span>
-                    {{lng[filter.name]?lng[filter.name]:filter.name}}
-                    <i class="fa fa-angle-down font1 pull-right" style="display:none" aria-hidden="true"></i>
-                    <i class="fa fa-angle-up font1 pull-right" aria-hidden="true"></i>
-                </div>
-                <div class="flip">
-                    <div class="row" v-for="(value,i2) in filter.values" >
-                        <div class="col-xs-2"></div>
-                        <div class="col-xs-10">
-                            <div class="checkbox" style="margin-top:2px;margin-bottom:2px">
-                                <label><input style="height:1em" :data-id="value.id" type="checkbox" @click="toFilter()">
-                                    {{value.value+' ('+value.count+')'}}
-                                </label>
-                            </div>
+        </ul>
+        <button class="form-control" v-show="show_clear" @click="flt_reset">{{lng.flt_reset}}</button>
+        <div class="thumbnail flt-grp" v-if="filters.length" >
+            <div class="flt-btn fake-link" @click="price_show?price_show=false:price_show=true;expand($event.currentTarget)">
+                {{lng.price}}
+                <i v-show="price_show" class="fa fa-angle-up font1 pull-right" aria-hidden="true"></i>
+                <i v-show="!price_show" class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
+            </div>
+            <div class="flip" style="margin: 6px 0px;">
+                {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[0]"><span class="input-group-addon">₽</span></div>
+                {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[1]"><span class="input-group-addon">₽</span></div> 
+                <range v-model="price" @change="priceRangeChange"></range>
+            </div>
+        </div>
+        <div class="thumbnail flt-grp" v-for="(filter,i1) in filters" :key="filter.id">
+            <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
+                <span :title="filter.desc"><i class="fa fa-info-circle"></i></span>
+                {{lng[filter.name]?lng[filter.name]:filter.name}}
+                <i class="fa fa-angle-down font1 pull-right" style="display:none" aria-hidden="true"></i>
+                <i class="fa fa-angle-up font1 pull-right" aria-hidden="true"></i>
+            </div>
+            <div class="flip">
+                <div class="row" v-for="(value,i2) in filter.values" :key="value.id">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-10">
+                        <div class="checkbox" style="margin-top:2px;margin-bottom:2px">
+                            <label><input style="height:1em" :data-id="value.id" :data-i1="i1" :data-i2="i2" type="checkbox" @click="toFilter()">
+                                {{value.value+' ('+value.count+')'}}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -52,11 +49,10 @@
         lng: {},
         catalog:[],
         filters:[],
-        fltOrigin: null,
-        flts: [],
+        // fltOrigin: null,
+        // flts: [],
+        price: {},
         price_show:true,
-        pricef:1,
-        pricel:1000000,
         show_clear:0
     };
     var self, selfData;
@@ -67,9 +63,17 @@
             selfData = this.$data;
             selfData.catalog = window.Laravel.catalog;
             selfData.lng = window.lng;
+            this.price = this.$parent.price,
             this.get_filters(this.$store.state.ctg_id);
         },
         methods: {
+            // priceRange: function(t, e) {
+            //     r.price.range[e] = (t.currentTarget.value / this.currency).toFixed(2),
+            //     this.$root.throttle(this.$parent.getSelectedProd, 750)
+            // },
+            priceRangeChange() {
+                _.throttle(this.$parent.getSelectedProd, 750)
+            },
             expand(el){
                 $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();
                 $(el.getElementsByClassName('fa-angle-up')[0]).toggle();
@@ -89,93 +93,73 @@
             get_filters(id) {
                 axios.get('/get_filters?id='+id).then(function (response) {
                     selfData.filters = response.data;
-                    for (var i = 0; i < selfData.filters.length; i++) {
-                        for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                            selfData.filters[i].values[j].count = selfData.filters[i].values[j].prod_ids.length;
-                        }
-                    }
                     self.$store.commit('set_ctg_id', id);
                     self.flt_reset();
                 }).catch(function (error) {
                     self.$root.retry(self.get_filters, error.response.status);
                 });                  
             },
-            toFilter() {
-                var flt_ids=[],checkList = document.getElementsByClassName('checkbox');
-                selfData.show_clear = 0;
-
-                for (var i = 0; i < checkList.length; i++) {
-                    if(checkList[i].firstChild.firstChild.checked){
-                        selfData.show_clear++;
-                        flt_ids.push(checkList[i].firstChild.firstChild.dataset.id);
-                    }
+            i: function (t) {
+                if (Array.isArray(t)) {
+                    for (var e = 0, i = Array(t.length); e < t.length; e++)
+                        i[e] = t[e];
+                    return i
                 }
-                if(flt_ids.length > 0 && flt_ids.length < 2){
-                    for (var i = 0; i < selfData.filters.length; i++) {
-                        for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                            if(selfData.filters[i].values[j].id == flt_ids[0]){
-                                selfData.fltOrigin = {
-                                    id: selfData.filters[i].id,
-                                    prod_ids: selfData.filters[i].values[j].prod_ids
-                                };
+                return Array.from(t)
+            },
+            intersect2: function(t, e) {
+                for (var n = [], r = 0, a = 0; r < e.length; r++)
+                    if (t != e[r].filterID)
+                        for (var s = [], l = r; l < e.length; l++) {
+                            if (e[r].filterID != e[l].filterID) {
+                                r = l - 1,
+                                n.push(s);
+                                break
                             }
+                            s.push.apply(s, self.i(e[l].itemIDS)),
+                            e.length == l + 1 && (r = l, n.push(s))
                         }
-                    }
+                    else
+                        a++;
+                if (a == e.length || !n.length)
+                    return [];
+                for (var o = [], c = 0, a = 0; c < n[0].length; c++) {
+                    for (var r = 1; r < n.length; r++)
+                        for (var l = 0; l < n[r].length; l++)
+                            if (n[0][c].product_id == n[r][l].product_id) {
+                                a++;
+                                break
+                            }
+                    n.length - 1 == a && o.push(n[0][c].product_id)
                 }
-                selfData.flts.length = 0;
-                if(selfData.fltOrigin){
-                    for (var i = 0; i < selfData.filters.length; i++) {
-                        for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                            
-                            if(selfData.filters[i].id == selfData.fltOrigin.id){
-                                for (var z = 0; z < flt_ids.length; z++) {
-                                    
-                                    if(flt_ids[z] == selfData.filters[i].values[j].id){
-                                        selfData.flts.push({
-                                            id: selfData.filters[i].id,
-                                            prod_ids: selfData.filters[i].values[j].prod_ids
-                                        });
-                                    }
-                                }
-                            }
-                        }
+                return o
+            },
+            toFilter: function() {
+                for (var t = [], e = [], i = document.getElementsByClassName("checkbox"), a = 0; a < i.length; a++)
+                    if (i[a].firstChild.firstChild.checked) {
+                        var s = i[a].firstChild.firstChild.dataset.i1
+                            , l = i[a].firstChild.firstChild.dataset.i2;
+                        e.push(self.filters[s].values[l].id),
+                        t.push({
+                            filterID: self.filters[s].id,
+                            itemIDS: self.filters[s].values[l].prod_ids
+                        })
                     }
-                    
-                    for (var i = 0; i < selfData.filters.length; i++) {
-                        for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                            if(selfData.fltOrigin.id == selfData.filters[i].id){
-                                selfData.filters[i].values[j].count = selfData.filters[i].values[j].prod_ids.length;
-                            }
-                            else{
-                                var count = 0;
-                                for (var h = 0; h < selfData.flts.length; h++) {
-                                    for (var k = 0; k < selfData.filters[i].values[j].prod_ids.length; k++) {
-                                        for (var z = 0; z < selfData.flts[h].prod_ids.length; z++) {
-                                            if(selfData.filters[i].values[j].prod_ids[k].product_id == selfData.flts[h].prod_ids[z].product_id){
-                                                count++;
-                                            }
-                                        }
-                                    }
-                                }
-                                selfData.filters[i].values[j].count = count;
-                            }
-                        }
+                self.show_clear = e.length;
+                for (var a = 0; a < self.filters.length; a++)
+                    for (var o = 0; o < self.filters[a].values.length; o++) {
+                        var c = 0
+                            , f = this.intersect2(self.filters[a].id, t);
+                        if (f.length) {
+                            for (var u = 0; u < self.filters[a].values[o].prod_ids.length; u++)
+                                for (var d = 0; d < f.length; d++)
+                                    f[d] == self.filters[a].values[o].prod_ids[u].product_id && c++;
+                            self.filters[a].values[o].count = c
+                        } else
+                            self.filters[a].values[o].count = self.filters[a].values[o].prod_ids.length
                     }
-                }
-                if(flt_ids.length < 1 ){
-                    for (var i = 0; i < selfData.filters.length; i++) {
-                        for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                            selfData.filters[i].values[j].count = selfData.filters[i].values[j].prod_ids.length;
-                        }
-                    }
-                    selfData.flts.length = 0;
-                }
-                self.$store.commit('set_filter_params',{
-                    flt_ids:flt_ids,
-                    pricef:selfData.pricef,
-                    pricel:selfData.pricel
-                });
-                this.$parent.getSelectedProd();
+                self.$store.commit('set_filter_params', { flt_ids: e });
+                window._.throttle(this.$parent.getSelectedProd, 750)
             }
         }
     }

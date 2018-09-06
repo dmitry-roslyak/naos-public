@@ -19,10 +19,10 @@
                 </div>
             </div>
         </div>
-        <div v-for="(comment,i) in comments" class="panel panel-default">
+        <div v-for="(comment,i) in comments" :key="comment.id" class="panel panel-default">
             <div class="panel-body" style="position:relative">
                 <span class="text-primary col-xs-12 col-sm-4">{{comment.user.name}}</span>
-                <star-rating class="col-xs-12 col-sm-3" v-if="comment.rating" :rating="comment.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                <star-rating class="col-xs-12 col-sm-3" v-if="comment.rating" :rating="+comment.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
                 <span class="pull-right" style="margin-right:15px">{{comment.created_at}}</span>
                 <div class="col-xs-12" style="margin:10px 0 30px">{{comment.message}}</div>
                 <!-- <a @click="reply=comment.id" v-if="comment.reply_id==0" class="fake-link">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <pagination ref="commentsPagination"></pagination>      
+        <pagination ref="commentsPagination" class="col-xs-12"></pagination>      
     </div>
 </template>
 <script>
@@ -68,21 +68,19 @@
             this.$store.commit('set_gotoPage', this.show_comments);
             this.$store.commit('set_totalItems', 0);
             this.$store.commit('set_skipItems', 0);
-            this.show_comments();     
-            window.socket.onopen = function(){
-                window.socket.send(JSON.stringify({
+            this.show_comments();
+            window.socket.send(JSON.stringify({
                 "event": "pusher:subscribe",
                 "data": {
                     "channel": 'chat-product'+pid
-                }}));
-                window.socket.onmessage = function (event) {
-                    var res = JSON.parse(event.data);
-                    if(res.event=='new-message'){
-                        selfData.msgTotal++;
-                        var comment = JSON.parse(res.data);
-                        comment.created_at = formatter.format(new Date(comment.created_at+'Z'));
-                        selfData.comments.unshift(comment);
-                    }
+            }}));
+            window.socket.onmessage = function (event) {
+                var res = JSON.parse(event.data);
+                if(res.event=='new-message'){
+                    selfData.msgTotal++;
+                    var comment = JSON.parse(res.data);
+                    comment.created_at = formatter.format(new Date(comment.created_at+'Z'));
+                    selfData.comments.unshift(comment);
                 }
             }
         },
@@ -108,9 +106,9 @@
             },
             show_comments() {
                 axios.get('/all_comments?id='+pid+'&skip='+self.$refs.commentsPagination.skipItems).then(function(response) {
-                    selfData.comments = response.data[0];
-                    selfData.msgTotal = response.data[1];
-                    self.$store.commit('set_totalItems', response.data[1]);
+                    selfData.msgTotal = response.data[0];
+                    selfData.comments = response.data[1];
+                    self.$store.commit('set_totalItems', response.data[0]);
                     for (var i = 0; i < selfData.comments.length; i++){
                         selfData.comments[i].created_at = formatter.format(new Date(selfData.comments[i].created_at+'Z'));
                     }

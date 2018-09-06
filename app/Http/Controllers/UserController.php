@@ -79,7 +79,7 @@ class UserController extends Controller
             
             if(!$user)
             {
-                if(isset($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
+                if(!empty($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
                 else $array = explode(',', str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
                 for ($index = 0; $index < count($array); $index++) {
                     if($array[$index] == 'ru' || $array[$index] == 'ru-RU') { $lang = 'ru'; $currency = 'RUB'; break; }

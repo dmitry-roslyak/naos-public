@@ -3,7 +3,7 @@
         <search></search>
         <hr>
         <div style="margin:0 15px 15px">
-            <div class="product-labels" v-for="(prod,i) in list">
+            <div class="product-labels" v-for="(prod,i) in list" :key="i">
                 <router-link :to="{ name: 'detail', params: { id: prod.id }}">{{prod.name}}</router-link>
                 <!-- <span @click="removeProd(i)">X</span> -->
             </div>
@@ -12,7 +12,7 @@
             <div style="text-align:center">Price</div>
             <canvas id="graph-1"></canvas>
         </div>
-        <div v-once v-for="(spec,i) in list[0].specs" v-if="list.length" class="col-sm-3 col-xs-6">
+        <div v-once v-for="(spec,i) in list[0].specs" :key="i" v-if="list.length" class="col-sm-3 col-xs-6">
             <div v-if="spec.isComparable">
                 <div style="text-align:center">{{spec.name}}</div>
                 <canvas :id="'graph'+i"></canvas>
@@ -36,7 +36,7 @@ export default {
     methods: {
         removeProd(i){
             selfData.list.splice(i,1);    
-            // selfChart[0].update();
+            //selfChart[0].update();
         },
         initGraphs() {
             for (var i = -1; i < selfData.list[0].specs.length; i++) {

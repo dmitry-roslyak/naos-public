@@ -3,7 +3,6 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 require('./bootstrap');
 
 var firebase = require("firebase/app");
@@ -24,6 +23,17 @@ import VueRouter from 'vue-router';
 Vue.use( VueRouter );
 import Vuex from 'vuex'
 Vue.use(Vuex);
+
+
+window._ = {};
+
+window._.throttle = function (func, timeout) {
+    if(this.throttle.id) clearTimeout(this.throttle.id);
+
+    this.throttle.id = setTimeout(function () {
+        func();
+    }, timeout);
+}
 // Enable pusher logging - don't include this in production
 // Pusher.logToConsole = true;
 
@@ -36,7 +46,7 @@ Vue.use(Vuex);
 // channel.bind('my-event', function(data) {
 //   alert(data.message);
 // });
-// window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
+window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -44,9 +54,11 @@ Vue.use(Vuex);
  */
 const home = Vue.component('home', require('./components/Home.vue'));
 Vue.component('search', require('./components/Search.vue'));
-Vue.component('star-rating', require('vue-star-rating'));
+// Vue.component('star-rating', require('vue-star-rating'));
+Vue.component('star-rating', require('C:/Users/xiaomi/Desktop/downloads/naos/node_modules/vue-star-rating/src/star-rating.vue'));
 Vue.component('buy-modal', require('./components/buy-modal.vue'));
 Vue.component('pagination', require('./components/Pagination.vue'));
+Vue.component('range', require('./components/Range.vue'));
 
 Vue.component('charts', function (resolve) {
     require(['./components/charts.vue'], resolve)
@@ -101,21 +113,64 @@ const store = new Vuex.Store({
         ctg_id: 0,
         ctg_ids: [],
         flt_ids: [0],
-        pricef: 1,
-        pricel: 1000000,
         currency:0,
         totalItems: 0,
         skipItems: 0,
         gotoPage: null
     },
+    // mutations: {
+    //     cart: function(t, e) {
+    //         if (e.length) {
+    //             for (var n = 0, r = 0; n < e.length; n++)
+    //                 r += e[n].count;
+    //             t.cartLength = r,
+    //             t.cart = e
+    //         } else {
+    //             for (var n = t.cart.length - 1; n >= 0; n--)
+    //                 if (t.cart[n].id == e.id) {
+    //                     e.count ? (t.cart[n].count += e.count,
+    //                     t.cartLength += e.count) : (t.cartLength -= t.cart[n].count,
+    //                     t.cart.splice(n, 1)),
+    //                     n = 1;
+    //                     break
+    //                 }
+    //             n < 1 && (t.cart.push({
+    //                 id: e.id,
+    //                 count: e.count
+    //             }),
+    //             t.cartLength += e.count),
+    //             localStorage.cart = t.cart.length ? JSON.stringify(t.cart) : ""
+    //         }
+    //     },
+    //     currency: function(t, e) {
+    //         t.currency = e
+    //     },
+    //     filterIds: function(t, e) {
+    //         t.flt_ids = e
+    //     },
+    //     set_ctg_id: function(t, e) {
+    //         t.ctg_id = e,
+    //         t.compare_list.length = 0,
+    //         t.flt_ids.length = 0
+    //     },
+    //     cartClear: function(t) {
+    //         t.cartLength = 0,
+    //         t.cart.length = 0
+    //     },
+    //     set_compare: function(t, e) {
+    //         if (e.checked)
+    //             t.compare_list.push(e.id);
+    //         else
+    //             for (var n = 0; n < t.compare_list.length; n++)
+    //                 t.compare_list[n] == e.id && t.compare_list.splice(n, 1)
+    //     }
+    // }
     mutations: {
         set_currency(state,value){
             state.currency = value;
         },
         set_filter_params(state, obj) {
             state.flt_ids = obj.flt_ids;
-            state.pricef = obj.pricef;
-            state.pricel = obj.pricel;
         },
         set_ctg_id(state, id) { 
             state.ctg_id = id; 
@@ -243,7 +298,7 @@ const app = new Vue({
             firebase.auth().signInWithPopup(provider).then(function (result) {
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 var token = result.credential.accessToken;
-                app.logIn2(result.user.ie);
+                app.logIn2(result.user.qa);
             }).catch(function (error) {
                 //different api error
                 var errorCode = error.code;

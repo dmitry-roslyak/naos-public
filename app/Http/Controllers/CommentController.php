@@ -115,11 +115,10 @@ class CommentController extends Controller
             $prod->vote_count = $prod->vote_count+1;
             $prod->save(); 
 
-            try
-            {
+            try { 
                 event(new \App\Events\SomeEvent($data->pid,$res));
-            }
-            catch(Exception $e){
+            } catch(Exception $e){
+
             }
             // $pusher =  new \Pusher\Pusher("69e878ea5991b6099fb6",
             // "ad8e7edc94006620fe83","373368",array(
@@ -127,6 +126,6 @@ class CommentController extends Controller
             //     'encrypted' => true
             // ));
             // $pusher->trigger('public-chat-product'.$data->pid, 'new-message',$comment);
-        }else return response(null,400);
+        } else return response(null,400);
     }
 }

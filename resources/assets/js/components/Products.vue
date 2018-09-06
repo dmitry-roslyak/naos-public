@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid" style="padding:0 30px">
         <search></search>
-        <sidebar class="col-sm-3 col-md-2" style="padding:0"></sidebar>
+        <sidebar class="col-sm-3 col-md-2" style="padding: 0px 4px 0px 0px;"></sidebar>
         <div class="col-sm-9 col-md-10" style="padding:0">
             <div class="row itmc">
                 {{lng.showed_items}}
@@ -22,7 +22,7 @@
                     </select>
                 </div>
             </div> 
-            <div v-for="(item,i) in items" class="col-sm-6 col-md-4 col-lg-3 item-card">
+            <div v-for="(item,i) in items" class="col-sm-6 col-md-4 col-lg-3 item-card" :key="item.id">
                 <div class="item-note soon" v-if="item.isArriveSoon">{{lng.soon}}</div>
                 <div class="item-note new" v-else-if="item.isNew">{{lng.new}}</div>
                 <div class="item-note offer" v-else-if="item.discount">{{lng.offer}}</div>
@@ -38,20 +38,11 @@
                     </a>
                 </div>
                 <div class="thumbnail ic-s">
-                    <div id="circularG">
-                        <div id="circularG_1" class="circularG"></div>
-                        <div id="circularG_2" class="circularG"></div>
-                        <div id="circularG_3" class="circularG"></div>
-                        <div id="circularG_4" class="circularG"></div>
-                        <div id="circularG_5" class="circularG"></div>
-                        <div id="circularG_6" class="circularG"></div>
-                        <div id="circularG_7" class="circularG"></div>
-                        <div id="circularG_8" class="circularG"></div>
-                    </div> 
+                    <i class="fa fa-cog fa-spin" style="font-size:10rem"></i>  
                     <img class="item-card-img" style="display: none" :src="'file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
                     <div class="caption" style="padding: 2px 6px">
                         <router-link class="item-card-name" :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
-                        <star-rating :rating="item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                        <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
                         <!-- <router-link  to="coms">{{item.vote_count>0?lng.comments+': '+item.vote_count:lng.leave_comment}}</router-link> -->
                         <div class="row" style="padding:10px">
                             <div class="product-state">
@@ -65,7 +56,7 @@
                         </div>                    
                         <table class="item-spec">
                             <tbody >
-                                <tr v-for="specs in item.specs">
+                                <tr v-for="(specs,i) in item.specs" :key="i">
                                     <td>{{lng[specs.name]?lng[specs.name]:specs.name}}</td>
                                     <td style="padding-left:10px;width:55%">{{specs.value}}&nbsp;{{specs.val_type}}</td>
                                 </tr>
@@ -76,7 +67,7 @@
             </div>
         </div>
         <buy-modal ref="buyModal"></buy-modal>
-        <pagination ref="productsPagination"></pagination>      
+        <pagination ref="productsPagination" class="col-xs-12"></pagination>      
     </div>
 </template>
 <script>
@@ -85,7 +76,12 @@
         showItems: 30,
         ordby:'bydef',
         items:[],
-        cng1:true
+        cng1:true,
+        price: {
+            array: null,
+            range: [0, 0],
+            visible: !0
+        }
     };
     var selfData,self;
     export default {
@@ -114,14 +110,15 @@
                 e.style.display = 'inherit';
             },
             getSelectedProd() {
+                var price = [];
+                price.push(this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency);
                 axios.get('prod_filter', {
                     params: {
                         ctg_id: this.$store.state.ctg_id,
-                        skip: this.$store.state.skipItems,//this.$store.state.skipItems,
+                        skip: this.$store.state.skipItems,
                         take: selfData.showItems,//this.$store.state.countItems,!!!
                         f: this.$store.state.flt_ids,
-                        pricef: this.$store.state.pricef,
-                        pricel: this.$store.state.pricel,
+                        price: price,
                         ordby: selfData.ordby
                     }
                 }).then(function (response) {
@@ -132,7 +129,13 @@
                         items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                         items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                     }
-                    selfData.items  = items; 
+                    selfData.items = items; 
+                    for (var n = [], i = 0; i < response.data[2].length; i++) {
+                        n.push(self.$store.state.currency * response.data[2][i].price);
+                    }
+                    self.price.array = n.sort(function(t, e) {
+                        return t - e
+                    })
                     self.$store.commit('set_totalItems', response.data[0]);
                 }).catch(function (error) {
                     self.$root.retry(self.getSelectedProd, error.response.status);
@@ -142,13 +145,13 @@
                 if(item.available) this.$refs.buyModal.$data.item = item;
             },
             to_compare(i){
-                if(selfData.items[i].is_compare){
+                if(selfData.items[i].is_compare) {
                     this.$store.commit('rm_compare',selfData.items[i].id);
-                    selfData.items[i].is_compare=0;
+                    selfData.items[i].is_compare = 0;
                 }
-                else{
+                else {
                     this.$store.commit('add_compare',selfData.items[i].id);
-                    selfData.items[i].is_compare=1;
+                    selfData.items[i].is_compare = 1 ;
                 }
             },
             // anm_scale($event.target) //need remove?

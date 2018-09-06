@@ -51,19 +51,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 var _data = {
     lng: {},
     catalog: [],
     filters: [],
-    fltOrigin: null,
-    flts: [],
+    // fltOrigin: null,
+    // flts: [],
+    price: {},
     price_show: true,
-    pricef: 1,
-    pricel: 1000000,
     show_clear: 0
 };
 var self, selfData;
@@ -76,10 +72,17 @@ var self, selfData;
         selfData = this.$data;
         selfData.catalog = window.Laravel.catalog;
         selfData.lng = window.lng;
-        this.get_filters(this.$store.state.ctg_id);
+        this.price = this.$parent.price, this.get_filters(this.$store.state.ctg_id);
     },
 
     methods: {
+        // priceRange: function(t, e) {
+        //     r.price.range[e] = (t.currentTarget.value / this.currency).toFixed(2),
+        //     this.$root.throttle(this.$parent.getSelectedProd, 750)
+        // },
+        priceRangeChange: function priceRangeChange() {
+            _.throttle(this.$parent.getSelectedProd, 750);
+        },
         expand: function expand(el) {
             $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();
             $(el.getElementsByClassName('fa-angle-up')[0]).toggle();
@@ -99,93 +102,68 @@ var self, selfData;
         get_filters: function get_filters(id) {
             axios.get('/get_filters?id=' + id).then(function (response) {
                 selfData.filters = response.data;
-                for (var i = 0; i < selfData.filters.length; i++) {
-                    for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                        selfData.filters[i].values[j].count = selfData.filters[i].values[j].prod_ids.length;
-                    }
-                }
                 self.$store.commit('set_ctg_id', id);
                 self.flt_reset();
             }).catch(function (error) {
                 self.$root.retry(self.get_filters, error.response.status);
             });
         },
+
+        i: function i(t) {
+            if (Array.isArray(t)) {
+                for (var e = 0, i = Array(t.length); e < t.length; e++) {
+                    i[e] = t[e];
+                }return i;
+            }
+            return Array.from(t);
+        },
+        intersect2: function intersect2(t, e) {
+            for (var n = [], r = 0, a = 0; r < e.length; r++) {
+                if (t != e[r].filterID) for (var s = [], l = r; l < e.length; l++) {
+                    if (e[r].filterID != e[l].filterID) {
+                        r = l - 1, n.push(s);
+                        break;
+                    }
+                    s.push.apply(s, self.i(e[l].itemIDS)), e.length == l + 1 && (r = l, n.push(s));
+                } else a++;
+            }if (a == e.length || !n.length) return [];
+            for (var o = [], c = 0, a = 0; c < n[0].length; c++) {
+                for (var r = 1; r < n.length; r++) {
+                    for (var l = 0; l < n[r].length; l++) {
+                        if (n[0][c].product_id == n[r][l].product_id) {
+                            a++;
+                            break;
+                        }
+                    }
+                }n.length - 1 == a && o.push(n[0][c].product_id);
+            }
+            return o;
+        },
         toFilter: function toFilter() {
-            var flt_ids = [],
-                checkList = document.getElementsByClassName('checkbox');
-            selfData.show_clear = 0;
-
-            for (var i = 0; i < checkList.length; i++) {
-                if (checkList[i].firstChild.firstChild.checked) {
-                    selfData.show_clear++;
-                    flt_ids.push(checkList[i].firstChild.firstChild.dataset.id);
+            for (var t = [], e = [], i = document.getElementsByClassName("checkbox"), a = 0; a < i.length; a++) {
+                if (i[a].firstChild.firstChild.checked) {
+                    var s = i[a].firstChild.firstChild.dataset.i1,
+                        l = i[a].firstChild.firstChild.dataset.i2;
+                    e.push(self.filters[s].values[l].id), t.push({
+                        filterID: self.filters[s].id,
+                        itemIDS: self.filters[s].values[l].prod_ids
+                    });
                 }
-            }
-            if (flt_ids.length > 0 && flt_ids.length < 2) {
-                for (var i = 0; i < selfData.filters.length; i++) {
-                    for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                        if (selfData.filters[i].values[j].id == flt_ids[0]) {
-                            selfData.fltOrigin = {
-                                id: selfData.filters[i].id,
-                                prod_ids: selfData.filters[i].values[j].prod_ids
-                            };
-                        }
-                    }
-                }
-            }
-            selfData.flts.length = 0;
-            if (selfData.fltOrigin) {
-                for (var i = 0; i < selfData.filters.length; i++) {
-                    for (var j = 0; j < selfData.filters[i].values.length; j++) {
-
-                        if (selfData.filters[i].id == selfData.fltOrigin.id) {
-                            for (var z = 0; z < flt_ids.length; z++) {
-
-                                if (flt_ids[z] == selfData.filters[i].values[j].id) {
-                                    selfData.flts.push({
-                                        id: selfData.filters[i].id,
-                                        prod_ids: selfData.filters[i].values[j].prod_ids
-                                    });
-                                }
+            }self.show_clear = e.length;
+            for (var a = 0; a < self.filters.length; a++) {
+                for (var o = 0; o < self.filters[a].values.length; o++) {
+                    var c = 0,
+                        f = this.intersect2(self.filters[a].id, t);
+                    if (f.length) {
+                        for (var u = 0; u < self.filters[a].values[o].prod_ids.length; u++) {
+                            for (var d = 0; d < f.length; d++) {
+                                f[d] == self.filters[a].values[o].prod_ids[u].product_id && c++;
                             }
-                        }
-                    }
+                        }self.filters[a].values[o].count = c;
+                    } else self.filters[a].values[o].count = self.filters[a].values[o].prod_ids.length;
                 }
-
-                for (var i = 0; i < selfData.filters.length; i++) {
-                    for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                        if (selfData.fltOrigin.id == selfData.filters[i].id) {
-                            selfData.filters[i].values[j].count = selfData.filters[i].values[j].prod_ids.length;
-                        } else {
-                            var count = 0;
-                            for (var h = 0; h < selfData.flts.length; h++) {
-                                for (var k = 0; k < selfData.filters[i].values[j].prod_ids.length; k++) {
-                                    for (var z = 0; z < selfData.flts[h].prod_ids.length; z++) {
-                                        if (selfData.filters[i].values[j].prod_ids[k].product_id == selfData.flts[h].prod_ids[z].product_id) {
-                                            count++;
-                                        }
-                                    }
-                                }
-                            }
-                            selfData.filters[i].values[j].count = count;
-                        }
-                    }
-                }
-            }
-            if (flt_ids.length < 1) {
-                for (var i = 0; i < selfData.filters.length; i++) {
-                    for (var j = 0; j < selfData.filters[i].values.length; j++) {
-                        selfData.filters[i].values[j].count = selfData.filters[i].values[j].prod_ids.length;
-                    }
-                }
-                selfData.flts.length = 0;
-            }
-            self.$store.commit('set_filter_params', {
-                flt_ids: flt_ids,
-                pricef: selfData.pricef,
-                pricel: selfData.pricel
-            });
-            this.$parent.getSelectedProd();
+            }self.$store.commit('set_filter_params', { flt_ids: e });
+            window._.throttle(this.$parent.getSelectedProd, 750);
         }
     }
 });
@@ -214,8 +192,10 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid" }, [
-    _c("div", { staticStyle: { padding: "0 4px 0" } }, [
+  return _c(
+    "div",
+    { staticClass: "container-fluid" },
+    [
       _c(
         "div",
         {
@@ -240,7 +220,7 @@ var render = function() {
             staticClass: "fa fa-list",
             staticStyle: { "font-size": "1.2em" }
           }),
-          _vm._v("\n            " + _vm._s(_vm.lng.catalog) + "\n        ")
+          _vm._v("\n        " + _vm._s(_vm.lng.catalog) + "\n    ")
         ]
       ),
       _vm._v(" "),
@@ -254,6 +234,7 @@ var render = function() {
           return _c(
             "div",
             {
+              key: item.id,
               staticClass: "ctg-itm fake-link",
               on: {
                 click: function($event) {
@@ -263,173 +244,74 @@ var render = function() {
             },
             [
               _vm._v(
-                "\n                " +
+                "\n            " +
                   _vm._s(_vm.lng[item.name] ? _vm.lng[item.name] : item.name) +
-                  "\n            "
+                  "\n        "
               )
             ]
           )
         })
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticStyle: { padding: "4px" } },
-      [
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.show_clear,
-                expression: "show_clear"
-              }
-            ],
-            staticClass: "form-control",
-            on: { click: _vm.flt_reset }
-          },
-          [_vm._v(_vm._s(_vm.lng.flt_reset))]
-        ),
-        _vm._v(" "),
-        _vm.filters.length
-          ? _c("div", { staticClass: "thumbnail flt-grp" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "flt-btn fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.price_show
-                        ? (_vm.price_show = false)
-                        : (_vm.price_show = true)
-                      _vm.expand($event.currentTarget)
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.lng.price) +
-                      "\n                "
-                  ),
-                  _c("i", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.price_show,
-                        expression: "price_show"
-                      }
-                    ],
-                    staticClass: "fa fa-angle-up font1 pull-right",
-                    attrs: { "aria-hidden": "true" }
-                  }),
-                  _vm._v(" "),
-                  _c("i", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: !_vm.price_show,
-                        expression: "!price_show"
-                      }
-                    ],
-                    staticClass: "fa fa-angle-down font1 pull-right",
-                    attrs: { "aria-hidden": "true" }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "flip",
-                  staticStyle: { "margin-top": "6px", "margin-bottom": "6px" }
-                },
-                [
-                  _vm._v("\n                " + _vm._s(_vm.lng.from)),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.pricef,
-                        expression: "pricef"
-                      }
-                    ],
-                    staticClass: "form-control myinput1",
-                    attrs: { type: "number" },
-                    domProps: { value: _vm.pricef },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.pricef = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v("\n                " + _vm._s(_vm.lng.to)),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.pricel,
-                        expression: "pricel"
-                      }
-                    ],
-                    staticClass: "form-control myinput1",
-                    attrs: { type: "number" },
-                    domProps: { value: _vm.pricel },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.pricel = $event.target.value
-                      }
-                    }
-                  })
-                ]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm._l(_vm.filters, function(filter, i1) {
-          return _c("div", { staticClass: "thumbnail flt-grp" }, [
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.show_clear,
+              expression: "show_clear"
+            }
+          ],
+          staticClass: "form-control",
+          on: { click: _vm.flt_reset }
+        },
+        [_vm._v(_vm._s(_vm.lng.flt_reset))]
+      ),
+      _vm._v(" "),
+      _vm.filters.length
+        ? _c("div", { staticClass: "thumbnail flt-grp" }, [
             _c(
               "div",
               {
                 staticClass: "flt-btn fake-link",
                 on: {
                   click: function($event) {
+                    _vm.price_show
+                      ? (_vm.price_show = false)
+                      : (_vm.price_show = true)
                     _vm.expand($event.currentTarget)
                   }
                 }
               },
               [
-                _c("span", { attrs: { title: filter.desc } }, [
-                  _c("i", { staticClass: "fa fa-info-circle" })
-                ]),
                 _vm._v(
-                  "\n                " +
-                    _vm._s(
-                      _vm.lng[filter.name] ? _vm.lng[filter.name] : filter.name
-                    ) +
-                    "\n                "
+                  "\n            " + _vm._s(_vm.lng.price) + "\n            "
                 ),
                 _c("i", {
-                  staticClass: "fa fa-angle-down font1 pull-right",
-                  staticStyle: { display: "none" },
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.price_show,
+                      expression: "price_show"
+                    }
+                  ],
+                  staticClass: "fa fa-angle-up font1 pull-right",
                   attrs: { "aria-hidden": "true" }
                 }),
                 _vm._v(" "),
                 _c("i", {
-                  staticClass: "fa fa-angle-up font1 pull-right",
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: !_vm.price_show,
+                      expression: "!price_show"
+                    }
+                  ],
+                  staticClass: "fa fa-angle-down font1 pull-right",
                   attrs: { "aria-hidden": "true" }
                 })
               ]
@@ -437,50 +319,165 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "flip" },
-              _vm._l(filter.values, function(value, i2) {
-                return _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-xs-2" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-xs-10" }, [
-                    _c(
-                      "div",
+              { staticClass: "flip", staticStyle: { margin: "6px 0px" } },
+              [
+                _vm._v("\n            " + _vm._s(_vm.lng.from)),
+                _c("div", { staticClass: "input-group" }, [
+                  _c("input", {
+                    directives: [
                       {
-                        staticClass: "checkbox",
-                        staticStyle: {
-                          "margin-top": "2px",
-                          "margin-bottom": "2px"
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.price.range[0],
+                        expression: "price.range[0]"
+                      }
+                    ],
+                    staticClass: "form-control myinput1",
+                    attrs: { type: "number" },
+                    domProps: { value: _vm.price.range[0] },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      },
-                      [
-                        _c("label", [
-                          _c("input", {
-                            staticStyle: { height: "1em" },
-                            attrs: { "data-id": value.id, type: "checkbox" },
-                            on: {
-                              click: function($event) {
-                                _vm.toFilter()
-                              }
-                            }
-                          }),
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(value.value + " (" + value.count + ")") +
-                              "\n                            "
-                          )
-                        ])
-                      ]
-                    )
+                        _vm.$set(_vm.price.range, 0, $event.target.value)
+                      }
+                    }
+                  }),
+                  _c("span", { staticClass: "input-group-addon" }, [
+                    _vm._v("₽")
                   ])
-                ])
-              })
+                ]),
+                _vm._v("\n            " + _vm._s(_vm.lng.to)),
+                _c("div", { staticClass: "input-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.price.range[1],
+                        expression: "price.range[1]"
+                      }
+                    ],
+                    staticClass: "form-control myinput1",
+                    attrs: { type: "number" },
+                    domProps: { value: _vm.price.range[1] },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.price.range, 1, $event.target.value)
+                      }
+                    }
+                  }),
+                  _c("span", { staticClass: "input-group-addon" }, [
+                    _vm._v("₽")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("range", {
+                  on: { change: _vm.priceRangeChange },
+                  model: {
+                    value: _vm.price,
+                    callback: function($$v) {
+                      _vm.price = $$v
+                    },
+                    expression: "price"
+                  }
+                })
+              ],
+              1
             )
           ])
-        })
-      ],
-      2
-    )
-  ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.filters, function(filter, i1) {
+        return _c("div", { key: filter.id, staticClass: "thumbnail flt-grp" }, [
+          _c(
+            "div",
+            {
+              staticClass: "flt-btn fake-link",
+              on: {
+                click: function($event) {
+                  _vm.expand($event.currentTarget)
+                }
+              }
+            },
+            [
+              _c("span", { attrs: { title: filter.desc } }, [
+                _c("i", { staticClass: "fa fa-info-circle" })
+              ]),
+              _vm._v(
+                "\n            " +
+                  _vm._s(
+                    _vm.lng[filter.name] ? _vm.lng[filter.name] : filter.name
+                  ) +
+                  "\n            "
+              ),
+              _c("i", {
+                staticClass: "fa fa-angle-down font1 pull-right",
+                staticStyle: { display: "none" },
+                attrs: { "aria-hidden": "true" }
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "fa fa-angle-up font1 pull-right",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "flip" },
+            _vm._l(filter.values, function(value, i2) {
+              return _c("div", { key: value.id, staticClass: "row" }, [
+                _c("div", { staticClass: "col-xs-2" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-10" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "checkbox",
+                      staticStyle: {
+                        "margin-top": "2px",
+                        "margin-bottom": "2px"
+                      }
+                    },
+                    [
+                      _c("label", [
+                        _c("input", {
+                          staticStyle: { height: "1em" },
+                          attrs: {
+                            "data-id": value.id,
+                            "data-i1": i1,
+                            "data-i2": i2,
+                            type: "checkbox"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.toFilter()
+                            }
+                          }
+                        }),
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(value.value + " (" + value.count + ")") +
+                            "\n                        "
+                        )
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            })
+          )
+        ])
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -52,7 +52,7 @@ var self,
     methods: {
         removeProd: function removeProd(i) {
             selfData.list.splice(i, 1);
-            // selfChart[0].update();
+            //selfChart[0].update();
         },
         initGraphs: function initGraphs() {
             for (var i = -1; i < selfData.list[0].specs.length; i++) {
@@ -125,7 +125,7 @@ var render = function() {
         _vm._l(_vm.list, function(prod, i) {
           return _c(
             "div",
-            { staticClass: "product-labels" },
+            { key: i, staticClass: "product-labels" },
             [
               _c(
                 "router-link",
@@ -161,7 +161,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _vm._l(_vm.list[0].specs, function(spec, i) {
-      return _c("div", { staticClass: "col-sm-3 col-xs-6" }, [
+      return _c("div", { key: i, staticClass: "col-sm-3 col-xs-6" }, [
         spec.isComparable
           ? _c("div", [
               _c("div", { staticStyle: { "text-align": "center" } }, [

@@ -76,21 +76,19 @@ var formatter = new Intl.DateTimeFormat([], {
         this.$store.commit('set_totalItems', 0);
         this.$store.commit('set_skipItems', 0);
         this.show_comments();
-        window.socket.onopen = function () {
-            window.socket.send(JSON.stringify({
-                "event": "pusher:subscribe",
-                "data": {
-                    "channel": 'chat-product' + pid
-                } }));
-            window.socket.onmessage = function (event) {
-                var res = JSON.parse(event.data);
-                if (res.event == 'new-message') {
-                    selfData.msgTotal++;
-                    var comment = JSON.parse(res.data);
-                    comment.created_at = formatter.format(new Date(comment.created_at + 'Z'));
-                    selfData.comments.unshift(comment);
-                }
-            };
+        window.socket.send(JSON.stringify({
+            "event": "pusher:subscribe",
+            "data": {
+                "channel": 'chat-product' + pid
+            } }));
+        window.socket.onmessage = function (event) {
+            var res = JSON.parse(event.data);
+            if (res.event == 'new-message') {
+                selfData.msgTotal++;
+                var comment = JSON.parse(res.data);
+                comment.created_at = formatter.format(new Date(comment.created_at + 'Z'));
+                selfData.comments.unshift(comment);
+            }
         };
     },
 
@@ -118,9 +116,9 @@ var formatter = new Intl.DateTimeFormat([], {
         },
         show_comments: function show_comments() {
             axios.get('/all_comments?id=' + pid + '&skip=' + self.$refs.commentsPagination.skipItems).then(function (response) {
-                selfData.comments = response.data[0];
-                selfData.msgTotal = response.data[1];
-                self.$store.commit('set_totalItems', response.data[1]);
+                selfData.msgTotal = response.data[0];
+                selfData.comments = response.data[1];
+                self.$store.commit('set_totalItems', response.data[0]);
                 for (var i = 0; i < selfData.comments.length; i++) {
                     selfData.comments[i].created_at = formatter.format(new Date(selfData.comments[i].created_at + 'Z'));
                 }
@@ -277,95 +275,99 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm._l(_vm.comments, function(comment, i) {
-        return _c("div", { staticClass: "panel panel-default" }, [
-          _c(
-            "div",
-            {
-              staticClass: "panel-body",
-              staticStyle: { position: "relative" }
-            },
-            [
-              _c("span", { staticClass: "text-primary col-xs-12 col-sm-4" }, [
-                _vm._v(_vm._s(comment.user.name))
-              ]),
-              _vm._v(" "),
-              comment.rating
-                ? _c("star-rating", {
-                    staticClass: "col-xs-12 col-sm-3",
-                    attrs: {
-                      rating: comment.rating,
-                      "star-size": 16,
-                      "show-rating": false,
-                      "read-only": true
+        return _c(
+          "div",
+          { key: comment.id, staticClass: "panel panel-default" },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "panel-body",
+                staticStyle: { position: "relative" }
+              },
+              [
+                _c("span", { staticClass: "text-primary col-xs-12 col-sm-4" }, [
+                  _vm._v(_vm._s(comment.user.name))
+                ]),
+                _vm._v(" "),
+                comment.rating
+                  ? _c("star-rating", {
+                      staticClass: "col-xs-12 col-sm-3",
+                      attrs: {
+                        rating: +comment.rating,
+                        "star-size": 16,
+                        "show-rating": false,
+                        "read-only": true
+                      }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    staticClass: "pull-right",
+                    staticStyle: { "margin-right": "15px" }
+                  },
+                  [_vm._v(_vm._s(comment.created_at))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-xs-12",
+                    staticStyle: { margin: "10px 0 30px" }
+                  },
+                  [_vm._v(_vm._s(comment.message))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "like-tab",
+                    on: {
+                      click: function($event) {
+                        _vm.comment_like(i, $event.target)
+                      }
                     }
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "span",
-                {
-                  staticClass: "pull-right",
-                  staticStyle: { "margin-right": "15px" }
-                },
-                [_vm._v(_vm._s(comment.created_at))]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-xs-12",
-                  staticStyle: { margin: "10px 0 30px" }
-                },
-                [_vm._v(_vm._s(comment.message))]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "like-tab",
-                  on: {
-                    click: function($event) {
-                      _vm.comment_like(i, $event.target)
-                    }
-                  }
-                },
-                [
-                  (comment.vote
-                  ? comment.vote.is_liked > 0
-                  : false)
-                    ? _c("i", {
-                        staticClass: "fa fa-thumbs-up like",
-                        attrs: { "data-check": "1" }
-                      })
-                    : _c("i", {
-                        staticClass: "fa fa-thumbs-o-up like",
-                        attrs: { "data-check": "0" }
-                      }),
-                  _vm._v(" "),
-                  _c("i", [_vm._v(_vm._s(comment.like))]),
-                  _vm._v(" \n                "),
-                  (comment.vote
-                  ? comment.vote.is_liked < 0
-                  : false)
-                    ? _c("i", {
-                        staticClass: "fa fa-thumbs-down dislike",
-                        attrs: { "data-check": "1" }
-                      })
-                    : _c("i", {
-                        staticClass: "fa fa-thumbs-o-down dislike",
-                        attrs: { "data-check": "0" }
-                      }),
-                  _vm._v(" "),
-                  _c("i", [_vm._v(_vm._s(comment.dislike))])
-                ]
-              )
-            ],
-            1
-          )
-        ])
+                  },
+                  [
+                    (comment.vote
+                    ? comment.vote.is_liked > 0
+                    : false)
+                      ? _c("i", {
+                          staticClass: "fa fa-thumbs-up like",
+                          attrs: { "data-check": "1" }
+                        })
+                      : _c("i", {
+                          staticClass: "fa fa-thumbs-o-up like",
+                          attrs: { "data-check": "0" }
+                        }),
+                    _vm._v(" "),
+                    _c("i", [_vm._v(_vm._s(comment.like))]),
+                    _vm._v(" \n                "),
+                    (comment.vote
+                    ? comment.vote.is_liked < 0
+                    : false)
+                      ? _c("i", {
+                          staticClass: "fa fa-thumbs-down dislike",
+                          attrs: { "data-check": "1" }
+                        })
+                      : _c("i", {
+                          staticClass: "fa fa-thumbs-o-down dislike",
+                          attrs: { "data-check": "0" }
+                        }),
+                    _vm._v(" "),
+                    _c("i", [_vm._v(_vm._s(comment.dislike))])
+                  ]
+                )
+              ],
+              1
+            )
+          ]
+        )
       }),
       _vm._v(" "),
-      _c("pagination", { ref: "commentsPagination" })
+      _c("pagination", { ref: "commentsPagination", staticClass: "col-xs-12" })
     ],
     2
   )

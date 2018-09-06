@@ -370,7 +370,7 @@ var render = function() {
                   [
                     _c("star-rating", {
                       attrs: {
-                        rating: _vm.item.rating,
+                        rating: +_vm.item.rating,
                         "star-size": 16,
                         "show-rating": false,
                         "read-only": true
@@ -547,7 +547,7 @@ var render = function() {
                           "tbody",
                           { staticStyle: { "text-align": "center" } },
                           _vm._l(_vm.item.specs, function(specs, i) {
-                            return _c("tr", [
+                            return _c("tr", { key: i }, [
                               _c("td", [
                                 _vm._v(
                                   _vm._s(

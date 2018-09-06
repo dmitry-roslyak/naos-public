@@ -32,7 +32,7 @@
                     <img v-bind:src="'file/'+item.img_src" style="max-height:28rem">
                 </div>
                 <div class="col-xs-4" style="padding:2.5em 0 0 0">
-                    <star-rating :rating="item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                    <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
                     <div class="tb-offer" v-if="offerTime>0">
                         <div class="offer-caption">{{lng.discount +' -'+item.discount.discount+'%'}}</div>
                         <div class="hidden-exs">
@@ -64,7 +64,7 @@
                 </ul>
                 <table v-if="show_specs&&item"  class="table border1">
                     <tbody style="text-align:center">
-                        <tr v-for="(specs,i) in item.specs">
+                        <tr v-for="(specs,i) in item.specs" :key="i">
                             <td>{{lng[specs.name]?lng[specs.name]:specs.name}}</td>
                             <td>{{specs.value}}&nbsp;{{specs.val_type}}</td>
                         </tr>

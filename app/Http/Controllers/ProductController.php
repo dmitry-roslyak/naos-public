@@ -54,7 +54,7 @@ class ProductController extends Controller
 
             if($data->ctg_id>0) $query->where('category_id',$data->ctg_id);
 
-            if(count($data->f)){
+            if(!empty($data->f)){
                 $filters = Filter::with('values')->whereHas('values', function ($q) use($data) {
                     $q->whereIn('id', $data->f);
                 })->get()->load(['values' => function ($query) use($data) {

@@ -77,22 +77,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var _data = {
     lng: {},
     showItems: 30,
     ordby: 'bydef',
     items: [],
-    cng1: true
+    cng1: true,
+    price: {
+        array: null,
+        range: [0, 0],
+        visible: !0
+    }
 };
 var selfData, self;
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -128,14 +124,15 @@ var selfData, self;
             e.style.display = 'inherit';
         },
         getSelectedProd: function getSelectedProd() {
+            var price = [];
+            price.push(this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency);
             axios.get('prod_filter', {
                 params: {
                     ctg_id: this.$store.state.ctg_id,
-                    skip: this.$store.state.skipItems, //this.$store.state.skipItems,
+                    skip: this.$store.state.skipItems,
                     take: selfData.showItems, //this.$store.state.countItems,!!!
                     f: this.$store.state.flt_ids,
-                    pricef: this.$store.state.pricef,
-                    pricel: this.$store.state.pricel,
+                    price: price,
                     ordby: selfData.ordby
                 }
             }).then(function (response) {
@@ -147,6 +144,12 @@ var selfData, self;
                     items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                 }
                 selfData.items = items;
+                for (var n = [], i = 0; i < response.data[2].length; i++) {
+                    n.push(self.$store.state.currency * response.data[2][i].price);
+                }
+                self.price.array = n.sort(function (t, e) {
+                    return t - e;
+                });
                 self.$store.commit('set_totalItems', response.data[0]);
             }).catch(function (error) {
                 self.$root.retry(self.getSelectedProd, error.response.status);
@@ -217,7 +220,7 @@ var render = function() {
       _vm._v(" "),
       _c("sidebar", {
         staticClass: "col-sm-3 col-md-2",
-        staticStyle: { padding: "0" }
+        staticStyle: { padding: "0px 4px 0px 0px" }
       }),
       _vm._v(" "),
       _c(
@@ -371,7 +374,10 @@ var render = function() {
           _vm._l(_vm.items, function(item, i) {
             return _c(
               "div",
-              { staticClass: "col-sm-6 col-md-4 col-lg-3 item-card" },
+              {
+                key: item.id,
+                staticClass: "col-sm-6 col-md-4 col-lg-3 item-card"
+              },
               [
                 item.isArriveSoon
                   ? _c("div", { staticClass: "item-note soon" }, [
@@ -448,7 +454,10 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "thumbnail ic-s" }, [
-                  _vm._m(0, true),
+                  _c("i", {
+                    staticClass: "fa fa-cog fa-spin",
+                    staticStyle: { "font-size": "10rem" }
+                  }),
                   _vm._v(" "),
                   _c("img", {
                     staticClass: "item-card-img",
@@ -484,7 +493,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("star-rating", {
                         attrs: {
-                          rating: item.rating,
+                          rating: +item.rating,
                           "star-size": 16,
                           "show-rating": false,
                           "read-only": true
@@ -559,8 +568,8 @@ var render = function() {
                       _c("table", { staticClass: "item-spec" }, [
                         _c(
                           "tbody",
-                          _vm._l(item.specs, function(specs) {
-                            return _c("tr", [
+                          _vm._l(item.specs, function(specs, i) {
+                            return _c("tr", { key: i }, [
                               _c("td", [
                                 _vm._v(
                                   _vm._s(
@@ -604,35 +613,12 @@ var render = function() {
       _vm._v(" "),
       _c("buy-modal", { ref: "buyModal" }),
       _vm._v(" "),
-      _c("pagination", { ref: "productsPagination" })
+      _c("pagination", { ref: "productsPagination", staticClass: "col-xs-12" })
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "circularG" } }, [
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_1" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_2" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_3" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_4" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_5" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_6" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_7" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "circularG", attrs: { id: "circularG_8" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

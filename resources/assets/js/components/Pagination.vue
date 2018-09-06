@@ -1,20 +1,18 @@
 <template>
-    <div class="container-fluid">
-        <div class="col-xs-12">
-            <ul class="pagination fake-link" style="position:relative;left:50%;z-index:1">
-                <li><a @click="mv_pg(-1)">&laquo;</a></li>
-                <li v-show="currentPage!=1"><a @click="mv_pg(0)">1</a></li>
-                <li><a @click="mv_pg(-2)" v-show="currentPage>2&&currentPage-2!=1&&currentPage<4">{{currentPage-2}}</a><a v-show="currentPage>3">...</a></li>
-                <li v-show="currentPage>1&&currentPage-1!=1"><a @click="mv_pg(-1)">{{currentPage-1}}</a></li>
-                <li class="active"><a>{{currentPage}}</a></li>
-                <li v-show="currentPage+1<lastPage"><a @click="mv_pg(1)">{{currentPage+1}}</a></li>
-                <!--<li v-show="currentPage+2<lastPage"><a>{{currentPage+2}}</a></li>-->
-                <li><a a @click="mv_pg(2)" v-show="currentPage+2<lastPage">{{currentPage+2}}</a>
-                    <a v-show="currentPage<lastPage-3">...</a></li>
-                <li v-show="currentPage!=lastPage"><a @click="mv_pg(lastPage-1)">{{lastPage}}</a></li>
-                <li><a @click="mv_pg(1)">&raquo;</a></li>
-            </ul>
-        </div>
+    <div>
+        <ul class="pagination fake-link" style="position:relative;left:50%;z-index:1;transform: translateX(-50%);">
+            <li><a @click="mv_pg(-1)">&laquo;</a></li>
+            <li v-show="currentPage!=1"><a @click="mv_pg(0)">1</a></li>
+            <li><a @click="mv_pg(-2)" v-show="currentPage>2&&currentPage-2!=1&&currentPage<4">{{currentPage-2}}</a><a v-show="currentPage>3">...</a></li>
+            <li v-show="currentPage>1&&currentPage-1!=1"><a @click="mv_pg(-1)">{{currentPage-1}}</a></li>
+            <li class="active"><a>{{currentPage}}</a></li>
+            <li v-show="currentPage+1<lastPage"><a @click="mv_pg(1)">{{currentPage+1}}</a></li>
+            <!--<li v-show="currentPage+2<lastPage"><a>{{currentPage+2}}</a></li>-->
+            <li><a a @click="mv_pg(2)" v-show="currentPage+2<lastPage">{{currentPage+2}}</a>
+                <a v-show="currentPage<lastPage-3">...</a></li>
+            <li v-show="currentPage!=lastPage"><a @click="mv_pg(lastPage-1)">{{lastPage}}</a></li>
+            <li><a @click="mv_pg(1)">&raquo;</a></li>
+        </ul>
     </div>
 </template>
 <script>
