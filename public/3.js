@@ -80,7 +80,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var _data = {
     lng: {},
-    showItems: 30,
     ordby: 'bydef',
     items: [],
     cng1: true,
@@ -88,6 +87,12 @@ var _data = {
         array: null,
         range: [0, 0],
         visible: !0
+    },
+    paginator: {
+        total: 0,
+        take: 30,
+        skip: 0,
+        func: null
     }
 };
 var selfData, self;
@@ -98,15 +103,12 @@ var selfData, self;
     computed: {
         currency: function currency() {
             return this.$store.state.currency;
-        },
-        prodsTotal: function prodsTotal() {
-            return this.$store.state.totalItems;
         }
     },
     mounted: function mounted() {
         self = this;selfData = this.$data;
         selfData.lng = window.lng;
-        this.$store.commit('set_gotoPage', this.getSelectedProd);
+        this.paginator.func = this.getSelectedProd;
         this.getSelectedProd();
         // window.onhashchange= function(){
         //     if (location.hash != temp) data_self.anmRunning=0;
@@ -129,8 +131,8 @@ var selfData, self;
             axios.get('prod_filter', {
                 params: {
                     ctg_id: this.$store.state.ctg_id,
-                    skip: this.$store.state.skipItems,
-                    take: selfData.showItems, //this.$store.state.countItems,!!!
+                    skip: this.paginator.skip,
+                    take: this.paginator.take,
                     f: this.$store.state.flt_ids,
                     price: price,
                     ordby: selfData.ordby
@@ -150,7 +152,7 @@ var selfData, self;
                 self.price.array = n.sort(function (t, e) {
                     return t - e;
                 });
-                self.$store.commit('set_totalItems', response.data[0]);
+                self.paginator.total = response.data[0];
             }).catch(function (error) {
                 self.$root.retry(self.getSelectedProd, error.response.status);
             });
@@ -265,8 +267,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model.number",
-                    value: _vm.showItems,
-                    expression: "showItems",
+                    value: _vm.paginator.take,
+                    expression: "paginator.take",
                     modifiers: { number: true }
                   }
                 ],
@@ -283,9 +285,13 @@ var render = function() {
                           var val = "_value" in o ? o._value : o.value
                           return _vm._n(val)
                         })
-                      _vm.showItems = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
+                      _vm.$set(
+                        _vm.paginator,
+                        "take",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
                     },
                     function($event) {
                       _vm.getSelectedProd()
@@ -305,7 +311,7 @@ var render = function() {
                 _c("option", { attrs: { value: "40" } }, [_vm._v("40")])
               ]
             ),
-            _vm._v("(" + _vm._s(_vm.prodsTotal) + ")\n            "),
+            _vm._v("(" + _vm._s(_vm.paginator.total) + ")\n            "),
             _c("div", { staticClass: "pull-right" }, [
               _vm._v(
                 "\n                " +
@@ -613,7 +619,16 @@ var render = function() {
       _vm._v(" "),
       _c("buy-modal", { ref: "buyModal" }),
       _vm._v(" "),
-      _c("pagination", { ref: "productsPagination", staticClass: "col-xs-12" })
+      _c("pagination", {
+        staticClass: "col-xs-12",
+        model: {
+          value: _vm.paginator,
+          callback: function($$v) {
+            _vm.paginator = $$v
+          },
+          expression: "paginator"
+        }
+      })
     ],
     1
   )

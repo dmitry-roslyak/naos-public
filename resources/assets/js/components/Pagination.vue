@@ -1,68 +1,53 @@
 <template>
     <div>
         <ul class="pagination fake-link" style="position:relative;left:50%;z-index:1;transform: translateX(-50%);">
-            <li><a @click="mv_pg(-1)">&laquo;</a></li>
-            <li v-show="currentPage!=1"><a @click="mv_pg(0)">1</a></li>
-            <li><a @click="mv_pg(-2)" v-show="currentPage>2&&currentPage-2!=1&&currentPage<4">{{currentPage-2}}</a><a v-show="currentPage>3">...</a></li>
-            <li v-show="currentPage>1&&currentPage-1!=1"><a @click="mv_pg(-1)">{{currentPage-1}}</a></li>
+            <li :class="{'disabled': currentPage == 1}"><a @click="currentPage>1?page(currentPage-1):null">&laquo;</a></li>
+            <li v-show="currentPage!=1"><a @click="page(1)">1</a></li>
+            <li>
+                <a v-show="currentPage>2&&currentPage-2!=1&&currentPage<4" @click="page(currentPage-2)">{{currentPage-2}}</a>
+                <a v-show="currentPage>3">...</a>
+            </li>
+            <li v-show="currentPage>1&&currentPage-1!=1"><a @click="page(currentPage-1)">{{currentPage-1}}</a></li>
             <li class="active"><a>{{currentPage}}</a></li>
-            <li v-show="currentPage+1<lastPage"><a @click="mv_pg(1)">{{currentPage+1}}</a></li>
-            <!--<li v-show="currentPage+2<lastPage"><a>{{currentPage+2}}</a></li>-->
-            <li><a a @click="mv_pg(2)" v-show="currentPage+2<lastPage">{{currentPage+2}}</a>
-                <a v-show="currentPage<lastPage-3">...</a></li>
-            <li v-show="currentPage!=lastPage"><a @click="mv_pg(lastPage-1)">{{lastPage}}</a></li>
-            <li><a @click="mv_pg(1)">&raquo;</a></li>
+            <li v-show="currentPage+1<pageCount"><a @click="page(currentPage+1)">{{currentPage+1}}</a></li>
+            <!--<li v-show="currentPage+2<pageCount"><a>{{currentPage+2}}</a></li>-->
+            <li>
+                <a a @click="page(currentPage+2)" v-show="currentPage+2<pageCount">{{currentPage+2}}</a>
+                <a v-show="currentPage<pageCount-3">...</a>
+            </li>
+            <li v-show="currentPage!=pageCount"><a @click="page(pageCount)">{{pageCount}}</a></li>
+            <li :class="{'disabled': currentPage == pageCount}"><a @click="currentPage<pageCount?page(currentPage+1):null">&raquo;</a></li>
         </ul>
     </div>
 </template>
 <script>
-    var data = {
-        showItems: 30
-    };
     export default {
-        data: function () {return data;},
+        data: function () {
+            return {
+                currentPage: 1
+            };
+        },
+        props: { 
+            value: Object
+        },
         computed: {
-            skipItems: function () { 
-                return this.$store.state.skipItems
-            },
-            currentPage: function () {
-                return this.skipItems/this.$data.showItems+1;
-            },
-            gotoPage: function () {
-                return this.$store.state.gotoPage;
-            },
-            totalItems: function () {
-                return this.$store.state.totalItems;
-            },
-            lastPage: function () {
-                return Math.floor(this.totalItems/this.$data.showItems)+1;
+            pageCount: function () { 
+                var res = Math.ceil(this.value.total/this.value.take)
+                if(!res) res = 1;
+                return res; 
             }
         },
         methods: {
-            mv_pg(mov) {
-                var skipItems = this.skipItems;
-                if(mov == 0) skipItems = 0;
-                else if(mov == this.lastPage) skipItems = this.itemsTotal - this.$data.showItems;
-                else skipItems += mov * this.$data.showItems
-
-                if(skipItems == this.skipItems || skipItems < 0 || skipItems >= this.itemsTotal) return;
-                this.$store.commit('set_skipItems', skipItems);    
-                window.scrollY=0;//window.scrollTo(0,0)
-                this.gotoPage();  
-            }
-            // window.onscroll = function(){self.autoload()}; 
-            // autoload(){
-            //     //scrollTop
-            //     if(window.scrollY+document.documentElement.clientHeight>=document.documentElement.offsetHeight-300){
-            //         console.log('its srooll down');
-            //         var skipItems = this.$store.state.skipItems;
-            //         selfData.countItems*=2;
-            //         if(skipItems>-1&&skipItems<=selfData.prodsTotal){
-            //             this.$store.commit('set_scItems',{skip:skipItems,count:selfData.countItems});    
-            //             this.getSelectedProd();
-            //         }
-            //     }
-            // },
+            skip(){
+                this.value.skip = (this.currentPage-1)*this.value.take;
+                this.value.func();
+                window.scrollTo(0,0)
+                // window.scrollY = 0;
+            },
+            page(i){
+                this.currentPage = i;
+                this.skip()
+            },
         }
     }
 </script>

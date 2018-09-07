@@ -6,11 +6,11 @@
             <div class="row itmc">
                 {{lng.showed_items}}
                 <a v-show="cng1" style="text-decoration:none" @click="cng1=false">&nbsp;{{items.length}}&nbsp;</a>
-                <select v-show="!cng1" v-model.number="showItems" class="form-control input-sm" id="items-on-page" @change="getSelectedProd();cng1=true" @mouseleave="cng1=true">       
+                <select v-show="!cng1" v-model.number="paginator.take" class="form-control input-sm" id="items-on-page" @change="getSelectedProd();cng1=true" @mouseleave="cng1=true">       
                     <option value="20">20</option>
                     <option value="30">30</option>
                     <option value="40">40</option>
-                </select>({{prodsTotal}})
+                </select>({{paginator.total}})
                 <div class="pull-right">
                     {{lng.sortby}}
                     <select v-model="ordby" class="form-control input-sm" id="sortby" @change="getSelectedProd()"> 
@@ -67,13 +67,12 @@
             </div>
         </div>
         <buy-modal ref="buyModal"></buy-modal>
-        <pagination ref="productsPagination" class="col-xs-12"></pagination>      
+        <pagination v-model="paginator" class="col-xs-12"></pagination>      
     </div>
 </template>
 <script>
     var data={
         lng:{},
-        showItems: 30,
         ordby:'bydef',
         items:[],
         cng1:true,
@@ -81,19 +80,24 @@
             array: null,
             range: [0, 0],
             visible: !0
-        }
+        },
+        paginator: {
+            total: 0,
+            take: 30,
+            skip: 0,
+            func: null
+        },
     };
     var selfData,self;
     export default {
         data: function () {return data;},
         computed: {
             currency: function () { return this.$store.state.currency },
-            prodsTotal: function () { return this.$store.state.totalItems }
         },
         mounted() {
             self = this; selfData = this.$data;
             selfData.lng = window.lng;
-            this.$store.commit('set_gotoPage', this.getSelectedProd);
+            this.paginator.func = this.getSelectedProd;
             this.getSelectedProd();
             // window.onhashchange= function(){
             //     if (location.hash != temp) data_self.anmRunning=0;
@@ -115,8 +119,8 @@
                 axios.get('prod_filter', {
                     params: {
                         ctg_id: this.$store.state.ctg_id,
-                        skip: this.$store.state.skipItems,
-                        take: selfData.showItems,//this.$store.state.countItems,!!!
+                        skip: this.paginator.skip,
+                        take: this.paginator.take,
                         f: this.$store.state.flt_ids,
                         price: price,
                         ordby: selfData.ordby
@@ -136,7 +140,7 @@
                     self.price.array = n.sort(function(t, e) {
                         return t - e
                     })
-                    self.$store.commit('set_totalItems', response.data[0]);
+                    self.paginator.total = response.data[0]
                 }).catch(function (error) {
                     self.$root.retry(self.getSelectedProd, error.response.status);
                 });

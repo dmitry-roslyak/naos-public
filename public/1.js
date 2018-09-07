@@ -56,7 +56,12 @@ var _data = {
     rating: 0,
     message: '',
     lng: {},
-    msgTotal: 0
+    paginator: {
+        total: 0,
+        take: 30,
+        skip: 0,
+        func: null
+    }
 };
 var selfData, self, pid;
 var formatter = new Intl.DateTimeFormat([], {
@@ -72,9 +77,7 @@ var formatter = new Intl.DateTimeFormat([], {
         selfData = this.$data;
         pid = this.$parent.$props.id;
         selfData.lng = window.lng;
-        this.$store.commit('set_gotoPage', this.show_comments);
-        this.$store.commit('set_totalItems', 0);
-        this.$store.commit('set_skipItems', 0);
+        this.paginator.func = this.show_comments;
         this.show_comments();
         window.socket.send(JSON.stringify({
             "event": "pusher:subscribe",
@@ -84,7 +87,7 @@ var formatter = new Intl.DateTimeFormat([], {
         window.socket.onmessage = function (event) {
             var res = JSON.parse(event.data);
             if (res.event == 'new-message') {
-                selfData.msgTotal++;
+                self.paginator.total++;
                 var comment = JSON.parse(res.data);
                 comment.created_at = formatter.format(new Date(comment.created_at + 'Z'));
                 selfData.comments.unshift(comment);
@@ -115,10 +118,9 @@ var formatter = new Intl.DateTimeFormat([], {
             }
         },
         show_comments: function show_comments() {
-            axios.get('/all_comments?id=' + pid + '&skip=' + self.$refs.commentsPagination.skipItems).then(function (response) {
-                selfData.msgTotal = response.data[0];
+            axios.get('/all_comments?id=' + pid + '&skip=' + self.paginator.skip).then(function (response) {
+                self.paginator.total = response.data[0];
                 selfData.comments = response.data[1];
-                self.$store.commit('set_totalItems', response.data[0]);
                 for (var i = 0; i < selfData.comments.length; i++) {
                     selfData.comments[i].created_at = formatter.format(new Date(selfData.comments[i].created_at + 'Z'));
                 }
@@ -168,7 +170,7 @@ var render = function() {
     { staticClass: "container-fluid" },
     [
       _c("h4", { staticStyle: { "padding-left": "8px" } }, [
-        _vm._v(_vm._s(_vm.lng.comments + " " + _vm.msgTotal))
+        _vm._v(_vm._s(_vm.lng.comments + " " + _vm.paginator.total))
       ]),
       _vm._v(" "),
       _c(
@@ -367,7 +369,16 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c("pagination", { ref: "commentsPagination", staticClass: "col-xs-12" })
+      _c("pagination", {
+        staticClass: "col-xs-12",
+        model: {
+          value: _vm.paginator,
+          callback: function($$v) {
+            _vm.paginator = $$v
+          },
+          expression: "paginator"
+        }
+      })
     ],
     2
   )

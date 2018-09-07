@@ -114,9 +114,6 @@ const store = new Vuex.Store({
         ctg_ids: [],
         flt_ids: [0],
         currency:0,
-        totalItems: 0,
-        skipItems: 0,
-        gotoPage: null
     },
     // mutations: {
     //     cart: function(t, e) {
@@ -176,17 +173,6 @@ const store = new Vuex.Store({
             state.ctg_id = id; 
             state.compare_list.length = 0;
             state.flt_ids.length = 0;
-            state.totalItems = 0;
-            state.skipItems = 0;
-        },
-        set_skipItems(state, count) { 
-            state.skipItems = count;
-        },
-        set_totalItems(state, count) { 
-            state.totalItems = count;
-        },
-        set_gotoPage(state, func) { 
-            state.gotoPage = func;
         },
         setCartLength(state, count) {
             state.cartLength = count;

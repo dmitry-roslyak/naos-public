@@ -6244,55 +6244,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
-var _data = {
-    showItems: 30
-};
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return _data;
+        return {
+            currentPage: 1
+        };
+    },
+    props: {
+        value: Object
     },
     computed: {
-        skipItems: function skipItems() {
-            return this.$store.state.skipItems;
-        },
-        currentPage: function currentPage() {
-            return this.skipItems / this.$data.showItems + 1;
-        },
-        gotoPage: function gotoPage() {
-            return this.$store.state.gotoPage;
-        },
-        totalItems: function totalItems() {
-            return this.$store.state.totalItems;
-        },
-        lastPage: function lastPage() {
-            return Math.floor(this.totalItems / this.$data.showItems) + 1;
+        pageCount: function pageCount() {
+            var res = Math.ceil(this.value.total / this.value.take);
+            if (!res) res = 1;
+            return res;
         }
     },
     methods: {
-        mv_pg: function mv_pg(mov) {
-            var skipItems = this.skipItems;
-            if (mov == 0) skipItems = 0;else if (mov == this.lastPage) skipItems = this.itemsTotal - this.$data.showItems;else skipItems += mov * this.$data.showItems;
-
-            if (skipItems == this.skipItems || skipItems < 0 || skipItems >= this.itemsTotal) return;
-            this.$store.commit('set_skipItems', skipItems);
-            window.scrollY = 0; //window.scrollTo(0,0)
-            this.gotoPage();
+        skip: function skip() {
+            this.value.skip = (this.currentPage - 1) * this.value.take;
+            this.value.func();
+            window.scrollTo(0, 0);
+            // window.scrollY = 0;
+        },
+        page: function page(i) {
+            this.currentPage = i;
+            this.skip();
         }
-        // window.onscroll = function(){self.autoload()}; 
-        // autoload(){
-        //     //scrollTop
-        //     if(window.scrollY+document.documentElement.clientHeight>=document.documentElement.offsetHeight-300){
-        //         console.log('its srooll down');
-        //         var skipItems = this.$store.state.skipItems;
-        //         selfData.countItems*=2;
-        //         if(skipItems>-1&&skipItems<=selfData.prodsTotal){
-        //             this.$store.commit('set_scItems',{skip:skipItems,count:selfData.countItems});    
-        //             this.getSelectedProd();
-        //         }
-        //     }
-        // },
-
     }
 });
 
@@ -52589,13 +52573,13 @@ var render = function() {
         }
       },
       [
-        _c("li", [
+        _c("li", { class: { disabled: _vm.currentPage == 1 } }, [
           _c(
             "a",
             {
               on: {
                 click: function($event) {
-                  _vm.mv_pg(-1)
+                  _vm.currentPage > 1 ? _vm.page(_vm.currentPage - 1) : null
                 }
               }
             },
@@ -52621,7 +52605,7 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.mv_pg(0)
+                    _vm.page(1)
                   }
                 }
               },
@@ -52647,12 +52631,13 @@ var render = function() {
               ],
               on: {
                 click: function($event) {
-                  _vm.mv_pg(-2)
+                  _vm.page(_vm.currentPage - 2)
                 }
               }
             },
             [_vm._v(_vm._s(_vm.currentPage - 2))]
           ),
+          _vm._v(" "),
           _c(
             "a",
             {
@@ -52687,7 +52672,7 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.mv_pg(-1)
+                    _vm.page(_vm.currentPage - 1)
                   }
                 }
               },
@@ -52707,8 +52692,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.currentPage + 1 < _vm.lastPage,
-                expression: "currentPage+1<lastPage"
+                value: _vm.currentPage + 1 < _vm.pageCount,
+                expression: "currentPage+1<pageCount"
               }
             ]
           },
@@ -52718,7 +52703,7 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.mv_pg(1)
+                    _vm.page(_vm.currentPage + 1)
                   }
                 }
               },
@@ -52735,14 +52720,14 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.currentPage + 2 < _vm.lastPage,
-                  expression: "currentPage+2<lastPage"
+                  value: _vm.currentPage + 2 < _vm.pageCount,
+                  expression: "currentPage+2<pageCount"
                 }
               ],
               attrs: { a: "" },
               on: {
                 click: function($event) {
-                  _vm.mv_pg(2)
+                  _vm.page(_vm.currentPage + 2)
                 }
               }
             },
@@ -52756,8 +52741,8 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.currentPage < _vm.lastPage - 3,
-                  expression: "currentPage<lastPage-3"
+                  value: _vm.currentPage < _vm.pageCount - 3,
+                  expression: "currentPage<pageCount-3"
                 }
               ]
             },
@@ -52772,8 +52757,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.currentPage != _vm.lastPage,
-                expression: "currentPage!=lastPage"
+                value: _vm.currentPage != _vm.pageCount,
+                expression: "currentPage!=pageCount"
               }
             ]
           },
@@ -52783,22 +52768,24 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.mv_pg(_vm.lastPage - 1)
+                    _vm.page(_vm.pageCount)
                   }
                 }
               },
-              [_vm._v(_vm._s(_vm.lastPage))]
+              [_vm._v(_vm._s(_vm.pageCount))]
             )
           ]
         ),
         _vm._v(" "),
-        _c("li", [
+        _c("li", { class: { disabled: _vm.currentPage == _vm.pageCount } }, [
           _c(
             "a",
             {
               on: {
                 click: function($event) {
-                  _vm.mv_pg(1)
+                  _vm.currentPage < _vm.pageCount
+                    ? _vm.page(_vm.currentPage + 1)
+                    : null
                 }
               }
             },
@@ -68513,10 +68500,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         ctg_id: 0,
         ctg_ids: [],
         flt_ids: [0],
-        currency: 0,
-        totalItems: 0,
-        skipItems: 0,
-        gotoPage: null
+        currency: 0
     },
     // mutations: {
     //     cart: function(t, e) {
@@ -68576,17 +68560,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
             state.ctg_id = id;
             state.compare_list.length = 0;
             state.flt_ids.length = 0;
-            state.totalItems = 0;
-            state.skipItems = 0;
-        },
-        set_skipItems: function set_skipItems(state, count) {
-            state.skipItems = count;
-        },
-        set_totalItems: function set_totalItems(state, count) {
-            state.totalItems = count;
-        },
-        set_gotoPage: function set_gotoPage(state, func) {
-            state.gotoPage = func;
         },
         setCartLength: function setCartLength(state, count) {
             state.cartLength = count;
