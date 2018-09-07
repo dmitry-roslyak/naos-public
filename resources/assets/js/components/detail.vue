@@ -33,16 +33,16 @@
                 </div>
                 <div class="col-xs-4" style="padding:2.5em 0 0 0">
                     <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                    <div class="tb-offer" v-if="offerTime>0">
+                    <div class="tb-offer" v-if="+offerTime > 0">
                         <div class="offer-caption">{{lng.discount +' -'+item.discount.discount+'%'}}</div>
                         <div class="hidden-exs">
                             <h5 style="margin-left:1em">{{lng.offer_end_at}}</h5>
                             <table class="table" style="margin-bottom: 0">
                                 <tr>
-                                    <th style="text-align: center;border-width:0">{{totalTime_d}}</th>
-                                    <th style="text-align: center;border-width:0">{{totalTime_h}}</th>
-                                    <th style="text-align: center;border-width:0">{{totalTime_m}}</th> 
-                                    <th style="text-align: center;border-width:0">{{totalTime_s}}</th>
+                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getDate())}}</th>
+                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getHours())}}</th>
+                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getMinutes())}}</th> 
+                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getSeconds())}}</th>
                                 </tr>
                                 <tr style="text-align: center">
                                     <td style="border-width:0">{{lng.offer_d}}</td>
@@ -81,14 +81,9 @@
     var self, timerId, data = {
         show_specs: true,
         item: null,
-        // img_list:[{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'},{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'},{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'}],
         img_list: [],
         lng: {},
-        offerTime: 0,
-        totalTime_d: -1,
-        totalTime_h: -1,
-        totalTime_m: -1,
-        totalTime_s: -1,
+        offerTime: null,
         showGraph: true
     };
     export default {
@@ -197,21 +192,19 @@
                 });    
             },
             set_total_time(){
+                this.offerTime = null;
                 if(this.item && this.item.discount){
-                    this.offerTime=+new Date(this.item.discount.end_at) - +new Date();
-                    if(this.offerTime > 0) this.tick();
-                }else this.offerTime = 0;
+                    this.offerTime = new Date(this.item.discount.end_at) - new Date();
+                    this.tick();
+                }
             },
-            tick(){//Мб что-нибудь проще этого кошмара?
-                if(this.offerTime < 1) return;
-                var date = new Date(this.offerTime-=1000);
-                this.totalTime_d = date.getDate();
-                this.totalTime_h = date.getHours();
-                this.totalTime_m = date.getMinutes();
-                this.totalTime_s = date.getSeconds();
-                if(this.totalTime_s<10) this.totalTime_s="0"+this.totalTime_s;
-                if(this.totalTime_m<10) this.totalTime_m="0"+this.totalTime_m;
-                if(this.totalTime_h<10) this.totalTime_h="0"+this.totalTime_h;
+            zero(value){
+                if(value < 10) value = '0' + value
+                return value
+            },
+            tick(){
+                if(+this.offerTime < 1) return;
+                this.offerTime = new Date(this.offerTime - 1000)
                 timerId = setTimeout(function(){ self.tick()  },1000);
             }
         }

@@ -90,14 +90,9 @@ var self,
     _data = {
     show_specs: true,
     item: null,
-    // img_list:[{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'},{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'},{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'}],
     img_list: [],
     lng: {},
-    offerTime: 0,
-    totalTime_d: -1,
-    totalTime_h: -1,
-    totalTime_m: -1,
-    totalTime_s: -1,
+    offerTime: null,
     showGraph: true
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -216,22 +211,19 @@ var self,
             });
         },
         set_total_time: function set_total_time() {
+            this.offerTime = null;
             if (this.item && this.item.discount) {
-                this.offerTime = +new Date(this.item.discount.end_at) - +new Date();
-                if (this.offerTime > 0) this.tick();
-            } else this.offerTime = 0;
+                this.offerTime = new Date(this.item.discount.end_at) - new Date();
+                this.tick();
+            }
+        },
+        zero: function zero(value) {
+            if (value < 10) value = '0' + value;
+            return value;
         },
         tick: function tick() {
-            //Мб что-нибудь проще этого кошмара?
-            if (this.offerTime < 1) return;
-            var date = new Date(this.offerTime -= 1000);
-            this.totalTime_d = date.getDate();
-            this.totalTime_h = date.getHours();
-            this.totalTime_m = date.getMinutes();
-            this.totalTime_s = date.getSeconds();
-            if (this.totalTime_s < 10) this.totalTime_s = "0" + this.totalTime_s;
-            if (this.totalTime_m < 10) this.totalTime_m = "0" + this.totalTime_m;
-            if (this.totalTime_h < 10) this.totalTime_h = "0" + this.totalTime_h;
+            if (+this.offerTime < 1) return;
+            this.offerTime = new Date(this.offerTime - 1000);
             timerId = setTimeout(function () {
                 self.tick();
             }, 1000);
@@ -378,7 +370,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _vm.offerTime > 0
+                    +_vm.offerTime > 0
                       ? _c("div", { staticClass: "tb-offer" }, [
                           _c("div", { staticClass: "offer-caption" }, [
                             _vm._v(
@@ -414,7 +406,13 @@ var render = function() {
                                         "border-width": "0"
                                       }
                                     },
-                                    [_vm._v(_vm._s(_vm.totalTime_d))]
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.zero(_vm.offerTime.getDate())
+                                        )
+                                      )
+                                    ]
                                   ),
                                   _vm._v(" "),
                                   _c(
@@ -425,7 +423,13 @@ var render = function() {
                                         "border-width": "0"
                                       }
                                     },
-                                    [_vm._v(_vm._s(_vm.totalTime_h))]
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.zero(_vm.offerTime.getHours())
+                                        )
+                                      )
+                                    ]
                                   ),
                                   _vm._v(" "),
                                   _c(
@@ -436,7 +440,13 @@ var render = function() {
                                         "border-width": "0"
                                       }
                                     },
-                                    [_vm._v(_vm._s(_vm.totalTime_m))]
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.zero(_vm.offerTime.getMinutes())
+                                        )
+                                      )
+                                    ]
                                   ),
                                   _vm._v(" "),
                                   _c(
@@ -447,7 +457,13 @@ var render = function() {
                                         "border-width": "0"
                                       }
                                     },
-                                    [_vm._v(_vm._s(_vm.totalTime_s))]
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.zero(_vm.offerTime.getSeconds())
+                                        )
+                                      )
+                                    ]
                                   )
                                 ]),
                                 _vm._v(" "),
