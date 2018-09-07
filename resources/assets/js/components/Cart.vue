@@ -11,7 +11,7 @@
                     {{(total).toFixed(1)+' '+ lng.currency}}</div>
                 </div>
             </div>
-            <div class="col-sm-6 col-xs-12" style="padding:0 0 15px 15px" v-for="(item,i1) in result">
+            <div class="col-sm-6 col-xs-12" style="padding:0 0 15px 15px" v-for="(item,i1) in result" :key="item.id">
                 <div class="action-frm">
                     <a class="action-item fake-link" @click="rmFromCart(i1)">
                         <span class="hidden-xs">{{lng.remove}}</span>
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-    var data = {
+    var self, data = {
         lng: {},
         products: [],
         result: [],
@@ -111,7 +111,6 @@
         cardValidate: { number: false , expire: { month: false, year: false },  cvv2: false },
         card: { number: '' , expire: { month: '', year: '' },  cvv2: '' }
     };
-    var self, selfData, selfProps;
     export default {
         data: function () { return data },
         props: ['ids1'],
@@ -119,30 +118,30 @@
             currency: function () { return this.$store.state.currency },
             total: function () {
                 var res = 0;
-                for (var i = 0; i < selfData.result.length; i++) {
-                    res += selfData.result[i].price * this.$store.state.currency * selfData.result[i].count;
+                for (var i = 0; i < this.result.length; i++) {
+                    res += this.result[i].price * this.$store.state.currency * this.result[i].count;
                 }
                 return res;
             }
         },
         created() {
-            self = this, selfData = this.$data;
-            selfData.lng = window.lng;
-            var tempIds = JSON.parse(this.$props.ids1);
+            self = this
+            this.lng = window.lng;
+            var tempIds = JSON.parse(this.ids1);
             if(tempIds.length){
                 for (var i = 0; i < tempIds.length; i++) {
-                    selfData.products.push({id: tempIds[i], count: 1});
+                    this.products.push({id: tempIds[i], count: 1});
                 }
                 this.$store.commit('setCartLength', tempIds.length);
-                localStorage.cart = JSON.stringify(selfData.products);
+                localStorage.cart = JSON.stringify(this.products);
                 this.get_prodsby_ids(tempIds);
             }
             else
             {
                 if (localStorage.cart && localStorage.cart.length > 1) {
-                    selfData.products = JSON.parse(localStorage.cart);
-                    for (var i = 0; i < selfData.products.length; i++) {
-                        tempIds.push(selfData.products[i].id);
+                    this.products = JSON.parse(localStorage.cart);
+                    for (var i = 0; i < this.products.length; i++) {
+                        tempIds.push(this.products[i].id);
                     }
                     this.get_prodsby_ids(tempIds);
                 }
@@ -150,15 +149,15 @@
         },
         methods: {
             rmFromCart(i) {
-                for (var j = 0; j < selfData.products.length; j++) {
-                    if(selfData.products[j].id == selfData.result[i].id) {
-                        var count = this.$store.state.cartLength - selfData.result[i].count;
+                for (var j = 0; j < this.products.length; j++) {
+                    if(this.products[j].id == this.result[i].id) {
+                        var count = this.$store.state.cartLength - this.result[i].count;
                         this.$store.commit('setCartLength', count);
-                        selfData.products.splice(j,1); 
+                        this.products.splice(j,1); 
                     }
                 }
-                selfData.result.splice(i,1);
-                localStorage.cart = JSON.stringify(selfData.products);
+                this.result.splice(i,1);
+                localStorage.cart = JSON.stringify(this.products);
             },
             cartClear() {
                 this.$store.commit('setCartLength', 0);
@@ -168,39 +167,39 @@
                 if(ids.length){
                     axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
                         var res = response.data;
-                        for (var i = 0; i < selfData.products.length; i++) {
+                        for (var i = 0; i < self.products.length; i++) {
                             for (var j = 0; j < res.length; j++) {
-                                if(selfData.products[i].id == res[j].id) {
-                                    res[j].count = selfData.products[i].count;
+                                if(self.products[i].id == res[j].id) {
+                                    res[j].count = self.products[i].count;
                                 }
                             }
                         }
-                        selfData.result = res;
+                        self.result = res;
                     }).catch(function (error) {
                         self.$root.retry(self.get_prodsby_ids, error.response.status);
                     });
                 }
             },
             chk_input(i) {
-                selfData.cardValidate.number = /^(\d{13,19})$/.test(selfData.card.number)
-                if((selfData.cardValidate.expire.month = /^([0][1-9]|[1][0-2])$/.test(selfData.card.expire.month)) && i==2) this.next_input(3);
-                if((selfData.cardValidate.expire.year = /^(\d{2})$/.test(selfData.card.expire.year)) && i==3) this.next_input(4);
-                selfData.cardValidate.cvv2 = /^(\d{3,4})$/.test(selfData.card.cvv2);                        
+                this.cardValidate.number = /^(\d{13,19})$/.test(this.card.number)
+                if((this.cardValidate.expire.month = /^([0][1-9]|[1][0-2])$/.test(this.card.expire.month)) && i==2) this.next_input(3);
+                if((this.cardValidate.expire.year = /^(\d{2})$/.test(this.card.expire.year)) && i==3) this.next_input(4);
+                this.cardValidate.cvv2 = /^(\d{3,4})$/.test(this.card.cvv2);                        
             },
             next_input(i) {
-                if (i == 2) selfData.card.number = 4005520000011126;
+                if (i == 2) this.card.number = 4005520000011126;
                 document.getElementById('input' + i).focus();
             },
             to_order() {
                 axios.post('/order', {
-                    products: selfData.products,
-                    card: selfData.card,
-                    // n: selfData.card.number,
-                    // e: selfData.card.expire.month + '-' + selfData.card.expire.year,
-                    // c: selfData.card.cvv2,
+                    products: this.products,
+                    card: this.card,
+                    // n: this.card.number,
+                    // e: this.card.expire.month + '-' + this.card.expire.year,
+                    // c: this.card.cvv2,
                     user_info: self.$refs.userInfo.userInfo,
-                    payment: selfData.payment,
-                    delivery: selfData.delivery,
+                    payment: this.payment,
+                    delivery: this.delivery,
                     delivery_adr: 'data_self.delivery adr',
                 }).then(function (response) {
                     localStorage.cart = '';

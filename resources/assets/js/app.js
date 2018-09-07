@@ -196,20 +196,18 @@ var data = {
     ajaxError: 0,
     user: null
 };
-var self, selfData;
 const app = new Vue({
     router,
     el: '#app',
     store,
     data: function () { return data; },
     created() {
-        selfData = this.$data;
-        selfData.langs = $.map(window.Laravel.langsAvailable, function (value) {
+        this.langs = $.map(window.Laravel.langsAvailable, function (value) {
             return {img: value[0].text, name: value[1].text, ISO: value[2].text};
         });
-        selfData.lng = window.lng;
+        this.lng = window.lng;
         this.$store.commit('set_currency', window.Laravel.currency.rate);
-        if (window.Laravel.user) selfData.user = window.Laravel.user.name;
+        if (window.Laravel.user) this.user = window.Laravel.user.name;
         if (localStorage.cart) {
             var count = 0, array = JSON.parse(localStorage.cart);
             for (var index = 0; index < array.length; index++) {
@@ -248,7 +246,7 @@ const app = new Vue({
         * @param {Number} HTTP response code 
         */
         retry(f,e) {
-            if(e) selfData.ajaxError = e;
+            if(e) app.ajaxError = e;
             else {
                 setTimeout(function () {
                     if(!app.n) app.n = 0;
@@ -257,7 +255,7 @@ const app = new Vue({
                         f();
                     }
                     else{
-                        selfData.ajaxError = 5;
+                        app.ajaxError = 5;
                         app.n = 0;
                     }
                 },700);
@@ -273,7 +271,7 @@ const app = new Vue({
             axios.post('/auth', {
                 input: ie
             }).then(function (response) {
-                // selfData.user = response.data;
+                // app.user = response.data;
                 // this.$router.push('/');
                 location.replace('/');
             }).catch(function (error) {
@@ -295,7 +293,7 @@ const app = new Vue({
             });
         },
         logout() {
-            axios.post('/logout').then(function (response) { selfData.user = null; });
+            axios.post('/logout').then(function (response) { app.user = null; });
             firebase.auth().signOut().then(function () {
                 // Sign-out successful.
             }).catch(function (error) {

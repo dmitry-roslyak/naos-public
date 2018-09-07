@@ -43,12 +43,12 @@
     </div>
 </template>
 <script>
-    var data = {
-        reply:null,
+    var self, pid, data = {
+        reply: null,
         comments: [],
         rating: 0,
         message: '',
-        lng:{},
+        lng: {},
         paginator: {
             total: 0,
             take: 30,
@@ -56,7 +56,6 @@
             func: null
         },
     };
-    var selfData,self,pid;
     var formatter = new Intl.DateTimeFormat([] , {
         year: "numeric",
         month: "long",
@@ -67,15 +66,14 @@
     export default {
         mounted() {
             self = this;
-            selfData = this.$data;
             pid = this.$parent.$props.id;
-            selfData.lng = window.lng;
+            this.lng = window.lng;
             this.paginator.func = this.show_comments
             this.show_comments();
             window.socket.send(JSON.stringify({
                 "event": "pusher:subscribe",
                 "data": {
-                    "channel": 'chat-product'+pid
+                    "channel": 'chat-product' + pid
             }}));
             window.socket.onmessage = function (event) {
                 var res = JSON.parse(event.data);
@@ -83,7 +81,7 @@
                     self.paginator.total++;
                     var comment = JSON.parse(res.data);
                     comment.created_at = formatter.format(new Date(comment.created_at+'Z'));
-                    selfData.comments.unshift(comment);
+                    self.comments.unshift(comment);
                 }
             }
         },
@@ -98,9 +96,9 @@
                 var like = el.classList.contains('like');
                 if(like||el.classList.contains('dislike')){
                     el.getAttribute('data-check')>0 ? el.setAttribute('data-check','0') : el.setAttribute('data-check','1');
-                    axios.get('/comment_like?id='+selfData.comments[i].id+'&x='+ (like ? 1 : -1)).then(function(response) {
-                        selfData.comments[i] = response.data;
-                        selfData.comments[i].created_at = formatter.format(new Date(selfData.comments[i].created_at+'Z'));
+                    axios.get('/comment_like?id='+self.comments[i].id+'&x='+ (like ? 1 : -1)).then(function(response) {
+                        self.comments[i] = response.data;
+                        self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
                         self.$forceUpdate();
                     }).catch(function(error) {
                         self.$root.retry(self.comment_like, error.response.status);
@@ -110,9 +108,9 @@
             show_comments() {
                 axios.get('/all_comments?id='+pid+'&skip=' + self.paginator.skip).then(function(response) {
                     self.paginator.total = response.data[0];
-                    selfData.comments = response.data[1];
-                    for (var i = 0; i < selfData.comments.length; i++){
-                        selfData.comments[i].created_at = formatter.format(new Date(selfData.comments[i].created_at+'Z'));
+                    self.comments = response.data[1];
+                    for (var i = 0; i < self.comments.length; i++){
+                        self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
                     }
                 }).catch(function(error) {
                    self.$root.retry(self.show_comments, error.response.status);
@@ -120,8 +118,8 @@
             },
             leave_comment() {
                 axios.post('leave_comment', {
-                    rating: selfData.rating,
-                    message: selfData.message,
+                    rating: self.rating,
+                    message: self.message,
                     pid: pid,
                     cid: 0
                 }).catch(function(error) {

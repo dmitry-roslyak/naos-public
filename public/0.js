@@ -85,7 +85,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var _data = {
+var self,
+    timerId,
+    _data = {
     show_specs: true,
     item: null,
     // img_list:[{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'},{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'},{img:'1.png'},{img:'1.jpg'},{img:'i5-6600.jpg'},{img:'ryzen1700.jpg'}],
@@ -98,7 +100,6 @@ var _data = {
     totalTime_s: -1,
     showGraph: true
 };
-var self, props_self, selfData, timerId;
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['id'],
     data: function data() {
@@ -112,8 +113,8 @@ var self, props_self, selfData, timerId;
     mounted: function mounted() {
         var _this = this;
 
-        self = this, props_self = this.$props, selfData = this.$data;
-        selfData.lng = window.lng;
+        self = this;
+        this.lng = window.lng;
         this.itemById();
         this.clientWidth();
         window.onresize = function () {
@@ -169,7 +170,7 @@ var self, props_self, selfData, timerId;
         //     document.getElementsByTagName('head')[0].appendChild(prodSchema);
         // },
         clientWidth: function clientWidth() {
-            if (document.documentElement.clientWidth < 620) this.$data.showGraph = false;else this.$data.showGraph = true;
+            if (document.documentElement.clientWidth < 620) this.showGraph = false;else this.showGraph = true;
         },
 
         // fbshare(){
@@ -185,29 +186,29 @@ var self, props_self, selfData, timerId;
         },
         to_compare: function to_compare() {
             if (selfData.item.is_compare) {
-                this.$store.commit('rm_compare', selfData.item.id);
-                selfData.item.is_compare = 0;
+                this.$store.commit('rm_compare', this.item.id);
+                this.item.is_compare = 0;
             } else {
-                this.$store.commit('add_compare', selfData.item.id);
-                selfData.item.is_compare = 1;
+                this.$store.commit('add_compare', this.item.id);
+                this.item.is_compare = 1;
             }
             this.$forceUpdate();
         },
         to_wish: function to_wish() {
             axios.post('/to_wish', {
-                id: selfData.item.id
+                id: self.item.id
             }).then(function (response) {
-                selfData.item.isWish = response.data ? 1 : 0;
+                self.item.isWish = response.data ? 1 : 0;
                 self.$forceUpdate();
             }).catch(function (error) {
                 self.$root.retry(self.to_wish, error.response.status);
             });
         },
         itemById: function itemById() {
-            axios.get('prod_by_id?id=' + props_self.id).then(function (response) {
-                selfData.item = response.data;
-                selfData.item.isWish = response.data.is_wish ? 1 : 0;
-                selfData.item.is_compare = self.$root.compareHas(selfData.item.id);
+            axios.get('prod_by_id?id=' + self.id).then(function (response) {
+                self.item = response.data;
+                self.item.isWish = response.data.is_wish ? 1 : 0;
+                self.item.is_compare = self.$root.compareHas(self.item.id);
                 self.set_total_time();
                 // self.newSchema();
             }).catch(function (error) {
@@ -215,22 +216,22 @@ var self, props_self, selfData, timerId;
             });
         },
         set_total_time: function set_total_time() {
-            if (selfData.item && selfData.item.discount) {
-                selfData.offerTime = +new Date(selfData.item.discount.end_at) - +new Date();
-                if (selfData.offerTime > 0) this.tick();
-            } else selfData.offerTime = 0;
+            if (this.item && this.item.discount) {
+                this.offerTime = +new Date(this.item.discount.end_at) - +new Date();
+                if (this.offerTime > 0) this.tick();
+            } else this.offerTime = 0;
         },
         tick: function tick() {
             //Мб что-нибудь проще этого кошмара?
-            if (selfData.offerTime < 1) return;
-            var date = new Date(selfData.offerTime -= 1000);
-            selfData.totalTime_d = date.getDate();
-            selfData.totalTime_h = date.getHours();
-            selfData.totalTime_m = date.getMinutes();
-            selfData.totalTime_s = date.getSeconds();
-            if (selfData.totalTime_s < 10) selfData.totalTime_s = "0" + selfData.totalTime_s;
-            if (selfData.totalTime_m < 10) selfData.totalTime_m = "0" + selfData.totalTime_m;
-            if (selfData.totalTime_h < 10) selfData.totalTime_h = "0" + selfData.totalTime_h;
+            if (this.offerTime < 1) return;
+            var date = new Date(this.offerTime -= 1000);
+            this.totalTime_d = date.getDate();
+            this.totalTime_h = date.getHours();
+            this.totalTime_m = date.getMinutes();
+            this.totalTime_s = date.getSeconds();
+            if (this.totalTime_s < 10) this.totalTime_s = "0" + this.totalTime_s;
+            if (this.totalTime_m < 10) this.totalTime_m = "0" + this.totalTime_m;
+            if (this.totalTime_h < 10) this.totalTime_h = "0" + this.totalTime_h;
             timerId = setTimeout(function () {
                 self.tick();
             }, 1000);

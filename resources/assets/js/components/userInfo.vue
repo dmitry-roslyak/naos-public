@@ -29,40 +29,39 @@
 </template>
 
 <script>
-    var data = {
+    var self, data = {
         lng: {},
         edit: true,
         userInfo: {},
         guest: false
     };
-    var self, selfData;
     export default {
         data: function () { return data; },
         created() {
-            self = this; selfData = this.$data;
-            selfData.lng = window.lng;
+            self = this; 
+            this.lng = window.lng;
             if (window.Laravel.user) {
                 this.usr_info();
             }
             else {
-                selfData.guest = true;
-                selfData.edit = true;
+                this.guest = true;
+                this.edit = true;
             }
         },
         methods: {
             usr_info() {
                 axios.get('/user_info').then(function (response) {
-                    selfData.userInfo = response.data;
-                    if (selfData.userInfo.fname) selfData.edit = false;
+                    self.userInfo = response.data;
+                    if (self.userInfo.fname) self.edit = false;
                 }).catch(function (error) {
                     self.$root.retry(self.usr_info, error.response.status);
                 });
             },
             upd_usr_info() {
-                if (!selfData.edit) selfData.edit = true;
+                if (!self.edit) self.edit = true;
                 else {
-                    selfData.edit = false;
-                    axios.post('/update_user_info', { user: selfData.userInfo, }).catch(function (error) {
+                    self.edit = false;
+                    axios.post('/update_user_info', { user: self.userInfo, }).catch(function (error) {
                         self.$root.retry(self.usr_info, error.response.status);
                     });
                 }

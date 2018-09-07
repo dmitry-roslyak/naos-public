@@ -36,41 +36,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var _data = {
+var self,
+    _data = {
     lng: {},
     edit: true,
     userInfo: {},
     guest: false
 };
-var self, selfData;
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
     },
     created: function created() {
-        self = this;selfData = this.$data;
-        selfData.lng = window.lng;
+        self = this;
+        this.lng = window.lng;
         if (window.Laravel.user) {
             this.usr_info();
         } else {
-            selfData.guest = true;
-            selfData.edit = true;
+            this.guest = true;
+            this.edit = true;
         }
     },
 
     methods: {
         usr_info: function usr_info() {
             axios.get('/user_info').then(function (response) {
-                selfData.userInfo = response.data;
-                if (selfData.userInfo.fname) selfData.edit = false;
+                self.userInfo = response.data;
+                if (self.userInfo.fname) self.edit = false;
             }).catch(function (error) {
                 self.$root.retry(self.usr_info, error.response.status);
             });
         },
         upd_usr_info: function upd_usr_info() {
-            if (!selfData.edit) selfData.edit = true;else {
-                selfData.edit = false;
-                axios.post('/update_user_info', { user: selfData.userInfo }).catch(function (error) {
+            if (!self.edit) self.edit = true;else {
+                self.edit = false;
+                axios.post('/update_user_info', { user: self.userInfo }).catch(function (error) {
                     self.$root.retry(self.usr_info, error.response.status);
                 });
             }

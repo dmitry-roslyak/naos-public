@@ -24,11 +24,11 @@
             <a @click="pass_reset?pass_reset=false:pass_reset=true">{{pass_reset?"Отмена":"Изменить пароль"}}</a>
             <div v-if="pass_reset">
                 <span>Старый пароль</span>
-                <input v-model="old_pswd" class="form-control myinput1">
+                <input v-model="pswd" class="form-control myinput1">
                 <span>Новый пароль</span>
-                <input v-model="new_pswd" class="form-control myinput1">
+                <input v-model="pswd" class="form-control myinput1">
                 <span>Подтвердить новый пароль</span>
-                <input v-model="new_pswdc" class="form-control myinput1">
+                <input v-model="pswd" class="form-control myinput1">
                 <button class="btn btn-primary" style="margin-top:10px">Изменить</button>   
             </div>
         </div> -->
@@ -73,30 +73,26 @@
 </template>
 
 <script>
-    var data={
-        lng:{},
-        langs:null,
-        edit:false,
-        paycard:true,
-        old_pswd:'',
-        new_pswd:'',
-        new_pswdc:'',
-        pass_reset:false
+    var self, data = {
+        lng: {},
+        langs: null,
+        edit: false,
+        paycard: true,
+        pass_reset: false
     };
-    var self;
     export default {
         data: function () {return data;},
         mounted() {
             self = this;
-            this.$data.langs = $.map(window.langs, function (value) {
+            this.langs = $.map(window.langs, function (value) {
                 return {img: value[0].text, name: value[1].text, ISO: value[2].text};
             });
-            this.$data.lng = window.lng;//lng.currency undefined
+            this.lng = window.lng;//lng.currency undefined
         },
         methods: {
             get_currency(val){
                 axios.get('/set_currency?val='+val).then(function (response) {
-                    self.$data.lng.currency = self.$data.lng[response.data.name];
+                    self.lng.currency = self.lng[response.data.name];
                     self.$store.commit('set_currency', response.data.rate);
                 }).catch(function (error) {
                     self.$root.retry(self.get_currency, error.response.status);

@@ -45,24 +45,20 @@
     </div>
 </template>
 <script>
-    var data={
+    var self, data = {
         lng: {},
-        catalog:[],
-        filters:[],
-        // fltOrigin: null,
-        // flts: [],
+        catalog: [],
+        filters: [],
         price: {},
-        price_show:true,
-        show_clear:0
+        price_show: true,
+        show_clear: 0
     };
-    var self, selfData;
     export default {
         data: function () {return data;},
         mounted() {
             self = this;
-            selfData = this.$data;
-            selfData.catalog = window.Laravel.catalog;
-            selfData.lng = window.lng;
+            this.catalog = window.Laravel.catalog;
+            this.lng = window.lng;
             this.price = this.$parent.price,
             this.get_filters(this.$store.state.ctg_id);
         },
@@ -86,13 +82,13 @@
                 var checkList = document.getElementsByClassName('checkbox');
                 for (var i = 0; i < checkList.length; i++) {
                     checkList[i].firstChild.firstChild.checked = false;
-                    selfData.show_clear = 0;
+                    this.show_clear = 0;
                 }
                 this.toFilter();
             },
             get_filters(id) {
                 axios.get('/get_filters?id='+id).then(function (response) {
-                    selfData.filters = response.data;
+                    self.filters = response.data;
                     self.$store.commit('set_ctg_id', id);
                     self.flt_reset();
                 }).catch(function (error) {

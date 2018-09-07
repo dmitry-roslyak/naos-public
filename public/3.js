@@ -78,7 +78,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var _data = {
+var self,
+    _data = {
     lng: {},
     ordby: 'bydef',
     items: [],
@@ -95,7 +96,6 @@ var _data = {
         func: null
     }
 };
-var selfData, self;
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
@@ -106,8 +106,8 @@ var selfData, self;
         }
     },
     mounted: function mounted() {
-        self = this;selfData = this.$data;
-        selfData.lng = window.lng;
+        self = this;
+        this.lng = window.lng;
         this.paginator.func = this.getSelectedProd;
         this.getSelectedProd();
         // window.onhashchange= function(){
@@ -135,7 +135,7 @@ var selfData, self;
                     take: this.paginator.take,
                     f: this.$store.state.flt_ids,
                     price: price,
-                    ordby: selfData.ordby
+                    ordby: this.ordby
                 }
             }).then(function (response) {
                 var items = response.data[1];
@@ -145,7 +145,7 @@ var selfData, self;
                     items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                     items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                 }
-                selfData.items = items;
+                self.items = items;
                 for (var n = [], i = 0; i < response.data[2].length; i++) {
                     n.push(self.$store.state.currency * response.data[2][i].price);
                 }
@@ -161,12 +161,12 @@ var selfData, self;
             if (item.available) this.$refs.buyModal.$data.item = item;
         },
         to_compare: function to_compare(i) {
-            if (selfData.items[i].is_compare) {
-                this.$store.commit('rm_compare', selfData.items[i].id);
-                selfData.items[i].is_compare = 0;
+            if (this.items[i].is_compare) {
+                this.$store.commit('rm_compare', self.items[i].id);
+                self.items[i].is_compare = 0;
             } else {
-                this.$store.commit('add_compare', selfData.items[i].id);
-                selfData.items[i].is_compare = 1;
+                this.$store.commit('add_compare', self.items[i].id);
+                self.items[i].is_compare = 1;
             }
         },
 
@@ -180,9 +180,9 @@ var selfData, self;
         // },
         to_wish: function to_wish(i) {
             axios.post('/to_wish', {
-                id: selfData.items[i].id
+                id: self.items[i].id
             }).then(function (response) {
-                selfData.items[i].isWish = response.data ? 1 : 0;
+                self.items[i].isWish = response.data ? 1 : 0;
             }).catch(function (error) {
                 self.$root.retry(self.to_wish, error.response.status);
             });

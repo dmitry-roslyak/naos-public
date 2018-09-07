@@ -6183,12 +6183,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var _data = {
+var self,
+    _data = {
     lng: {},
     catalog: [],
     items: []
 };
-var selfData, self;
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
@@ -6199,10 +6199,10 @@ var selfData, self;
         }
     },
     mounted: function mounted() {
-        self = this;selfData = this.$data;
+        self = this;
         this.get_random_products();
-        selfData.lng = window.lng;
-        selfData.catalog = window.Laravel.catalog;
+        this.lng = window.lng;
+        this.catalog = window.Laravel.catalog;
     },
 
     methods: {
@@ -6212,9 +6212,9 @@ var selfData, self;
         },
         get_random_products: function get_random_products() {
             axios.get('/prod_rnd').then(function (response) {
-                selfData.items = response.data;
+                self.items = response.data;
             }).catch(function (error) {
-                self.$root.retry(self.prod_rnd, error.response.status);
+                self.$root.retry(self.get_random_products, error.response.status);
             });
         }
     }
@@ -6407,14 +6407,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var _data = {
+var self,
+    _data = {
     lng: {},
     search_result: null,
     search_show: false,
     search_text: '',
     timerId: 0
 };
-var selfData, self;
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
@@ -6425,9 +6425,8 @@ var selfData, self;
         }
     },
     mounted: function mounted() {
-        selfData = this.$data;
         self = this;
-        selfData.lng = window.lng;
+        this.lng = window.lng;
     },
 
     methods: {
@@ -6435,38 +6434,38 @@ var selfData, self;
             if (this.$store.state.compare_list.length > 1) this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
         },
         searchTimeout: function searchTimeout() {
-            if (selfData.timerId) {
-                clearTimeout(selfData.timerId);
-                selfData.timerId = setTimeout(function () {
+            if (this.timerId) {
+                clearTimeout(this.timerId);
+                this.timerId = setTimeout(function () {
                     self.toSearch();
                 }, 500);
-            } else selfData.timerId = setTimeout(function () {
+            } else this.timerId = setTimeout(function () {
                 self.toSearch();
             }, 500);
         },
         toSearch: function toSearch() {
-            if (selfData.search_text > '') {
+            if (this.search_text > '') {
                 axios.post('/search', {
-                    search: selfData.search_text
+                    search: self.search_text
                 }).then(function (response) {
-                    selfData.search_result = response.data;
+                    self.search_result = response.data;
                     var temp = null;
-                    for (var i = 0; i < selfData.search_result.length; i++) {
-                        if (selfData.search_result[i].category_id == temp) {
-                            selfData.search_result[i].show = 0;
+                    for (var i = 0; i < self.search_result.length; i++) {
+                        if (self.search_result[i].category_id == temp) {
+                            self.search_result[i].show = 0;
                         } else {
-                            selfData.search_result[i].show = 1;
-                            temp = selfData.search_result[i].category_id;
+                            self.search_result[i].show = 1;
+                            temp = self.search_result[i].category_id;
                         }
                     }
-                    if (selfData.search_result.length < 1) {
-                        selfData.search_show = 0;
-                        selfData.search_result = 0;
-                    } else selfData.search_show = 1;
+                    if (self.search_result.length < 1) {
+                        self.search_show = 0;
+                        self.search_result = 0;
+                    } else self.search_show = 1;
                 }).catch(function (error) {
                     self.$root.retry(self.toSearch, error.response.status);
                 });
-            } else selfData.search_show = 0;
+            } else self.search_show = 0;
         }
     }
 });
@@ -6504,27 +6503,25 @@ var _data = {
     item: null,
     count: 1
 };
-var selfData;
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
     },
     mounted: function mounted() {
-        selfData = this.$data;
-        selfData.lng = window.lng;
+        this.lng = window.lng;
     },
 
     methods: {
         buy: function buy(order) {
-            if (selfData.item) {
+            if (this.item) {
                 var count = 0,
                     cart = [];
                 if (!localStorage.cart || localStorage.cart.length < 2) {
-                    cart.push({ id: selfData.item.id, count: selfData.count });
-                    count = selfData.count;
+                    cart.push({ id: this.item.id, count: this.count });
+                    count = this.count;
                 } else {
                     var array = JSON.parse(localStorage.cart);
-                    array.push({ id: selfData.item.id, count: selfData.count });
+                    array.push({ id: this.item.id, count: this.count });
                     for (var index = 0; index < array.length; index++) {
                         if (!array[index]) continue;
                         var b = 0,
@@ -6539,8 +6536,8 @@ var selfData;
                 }
                 localStorage.cart = JSON.stringify(cart);
                 this.$store.commit('setCartLength', count);
-                selfData.count = 1;
-                selfData.item = null;
+                this.count = 1;
+                this.item = null;
                 if (order == 1) this.$router.push("/cart/[]");
             }
         }
@@ -52205,65 +52202,72 @@ var render = function() {
                 "table",
                 { staticStyle: { "margin-bottom": "0", width: "100%" } },
                 _vm._l(_vm.search_result, function(item) {
-                  return _c("tbody", { staticStyle: { "border-width": "0" } }, [
-                    _c("tr", { staticClass: "search-itm" }, [
-                      _c(
-                        "td",
-                        {
-                          staticStyle: {
-                            "border-width": "0",
-                            width: "0",
-                            padding: "4px",
-                            "text-align": "center"
-                          }
-                        },
-                        [
-                          _c("img", {
-                            staticStyle: { height: "5rem" },
-                            attrs: { src: "file/" + item.img_src }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        {
-                          staticStyle: { "border-width": "0", padding: "4px" }
-                        },
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: { name: "detail", params: { id: item.id } }
-                              }
-                            },
-                            [_vm._v(_vm._s(item.name))]
-                          ),
-                          _vm._v(" "),
-                          _c("star-rating", {
-                            attrs: {
-                              rating: item.rating,
-                              "star-size": 16,
-                              "show-rating": false,
-                              "read-only": true
+                  return _c(
+                    "tbody",
+                    { key: item.id, staticStyle: { "border-width": "0" } },
+                    [
+                      _c("tr", { staticClass: "search-itm" }, [
+                        _c(
+                          "td",
+                          {
+                            staticStyle: {
+                              "border-width": "0",
+                              width: "0",
+                              padding: "4px",
+                              "text-align": "center"
                             }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("td", { staticStyle: { "border-width": "0" } }, [
-                        _vm._v(
-                          _vm._s(
-                            (_vm.currency * item.price).toFixed(1) +
-                              " " +
-                              _vm.lng.currency
+                          },
+                          [
+                            _c("img", {
+                              staticStyle: { height: "5rem" },
+                              attrs: { src: "file/" + item.img_src }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticStyle: { "border-width": "0", padding: "4px" }
+                          },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: {
+                                    name: "detail",
+                                    params: { id: item.id }
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(item.name))]
+                            ),
+                            _vm._v(" "),
+                            _c("star-rating", {
+                              attrs: {
+                                rating: +item.rating,
+                                "star-size": 16,
+                                "show-rating": false,
+                                "read-only": true
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("td", { staticStyle: { "border-width": "0" } }, [
+                          _vm._v(
+                            _vm._s(
+                              (_vm.currency * item.price).toFixed(1) +
+                                " " +
+                                _vm.lng.currency
+                            )
                           )
-                        )
+                        ])
                       ])
-                    ])
-                  ])
+                    ]
+                  )
                 })
               )
             ]
@@ -52383,6 +52387,7 @@ var render = function() {
               return _c(
                 "div",
                 {
+                  key: item.id,
                   staticClass: "ctg-itm fake-link",
                   on: {
                     click: function($event) {
@@ -52423,50 +52428,54 @@ var render = function() {
                     attrs: { role: "listbox" }
                   },
                   _vm._l(_vm.items, function(item, i) {
-                    return _c("div", { class: "item " + (i ? "" : "active") }, [
-                      _c("img", {
-                        staticClass: "carousel-img",
-                        attrs: { src: "file/" + item.img_src, alt: "..." }
-                      }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "carousel-caption" }, [
-                        _c(
-                          "h3",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass: "carousel-content",
-                                attrs: {
-                                  to: {
-                                    name: "detail",
-                                    params: { id: item.id }
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(item.name) +
-                                    "\n                            "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
+                    return _c(
+                      "div",
+                      { key: item.id, class: "item " + (i ? "" : "active") },
+                      [
+                        _c("img", {
+                          staticClass: "carousel-img",
+                          attrs: { src: "file/" + item.img_src, alt: "..." }
+                        }),
                         _vm._v(" "),
-                        _c("span", { staticClass: "carousel-content" }, [
-                          _vm._v(
-                            _vm._s(
-                              (_vm.currency * item.price).toFixed(1) +
-                                " " +
-                                _vm.lng.currency
+                        _c("div", { staticClass: "carousel-caption" }, [
+                          _c(
+                            "h3",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "carousel-content",
+                                  attrs: {
+                                    to: {
+                                      name: "detail",
+                                      params: { id: item.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(item.name) +
+                                      "\n                            "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "carousel-content" }, [
+                            _vm._v(
+                              _vm._s(
+                                (_vm.currency * item.price).toFixed(1) +
+                                  " " +
+                                  _vm.lng.currency
+                              )
                             )
-                          )
+                          ])
                         ])
-                      ])
-                    ])
+                      ]
+                    )
                   })
                 ),
                 _vm._v(" "),
@@ -68584,7 +68593,6 @@ var _data = {
     ajaxError: 0,
     user: null
 };
-var self, selfData;
 var app = new Vue({
     router: router,
     el: '#app',
@@ -68593,13 +68601,12 @@ var app = new Vue({
         return _data;
     },
     created: function created() {
-        selfData = this.$data;
-        selfData.langs = $.map(window.Laravel.langsAvailable, function (value) {
+        this.langs = $.map(window.Laravel.langsAvailable, function (value) {
             return { img: value[0].text, name: value[1].text, ISO: value[2].text };
         });
-        selfData.lng = window.lng;
+        this.lng = window.lng;
         this.$store.commit('set_currency', window.Laravel.currency.rate);
-        if (window.Laravel.user) selfData.user = window.Laravel.user.name;
+        if (window.Laravel.user) this.user = window.Laravel.user.name;
         if (localStorage.cart) {
             var count = 0,
                 array = JSON.parse(localStorage.cart);
@@ -68644,14 +68651,14 @@ var app = new Vue({
         * @param {Number} HTTP response code 
         */
         retry: function retry(f, e) {
-            if (e) selfData.ajaxError = e;else {
+            if (e) app.ajaxError = e;else {
                 setTimeout(function () {
                     if (!app.n) app.n = 0;
                     if (app.n < 6) {
                         app.n++;
                         f();
                     } else {
-                        selfData.ajaxError = 5;
+                        app.ajaxError = 5;
                         app.n = 0;
                     }
                 }, 700);
@@ -68667,7 +68674,7 @@ var app = new Vue({
             axios.post('/auth', {
                 input: ie
             }).then(function (response) {
-                // selfData.user = response.data;
+                // app.user = response.data;
                 // this.$router.push('/');
                 location.replace('/');
             }).catch(function (error) {
@@ -68690,7 +68697,7 @@ var app = new Vue({
         },
         logout: function logout() {
             axios.post('/logout').then(function (response) {
-                selfData.user = null;
+                app.user = null;
             });
             firebase.auth().signOut().then(function () {
                 // Sign-out successful.

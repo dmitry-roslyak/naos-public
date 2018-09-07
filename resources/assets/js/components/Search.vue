@@ -12,7 +12,7 @@
             </div>
             <div class="search-list" :show-st="search_show">
                 <table style="margin-bottom: 0;width:100%">
-                    <tbody style="border-width:0" v-for="item in search_result">
+                    <tbody style="border-width:0" v-for="item in search_result" :key="item.id">
                         <!--<div style="height:1.5em;" v-if="item.show">
                         <span style="position:absolute;width:99%;background:cornflowerblue;color:white">{{lng[item.ctg.name]?lng[item.ctg.name]:item.ctg.name}}</span>
                         </div>-->
@@ -22,7 +22,7 @@
                             </td>
                             <td style="border-width:0;padding:4px">
                                 <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
-                                <star-rating :rating="item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                                <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
                             </td>
                             <td style="border-width:0">{{(currency * item.price).toFixed(1) +' '+ lng.currency}}</td>
                         </tr>
@@ -45,23 +45,21 @@
     </div>
 </template>
 <script>
-    var data={
+    var self, data = {
         lng: {},
-        search_result:null,
-        search_show:false,
-        search_text:'',
-        timerId:0
+        search_result: null,
+        search_show: false,
+        search_text: '',
+        timerId: 0
     };
-    var selfData,self;
     export default {
         data: function () {return data;},
         computed: {
             currency: function () { return this.$store.state.currency }
         },
         mounted() {
-            selfData = this.$data;
             self = this;
-            selfData.lng = window.lng;
+            this.lng = window.lng;
         },
         methods: {
             compare(){
@@ -69,35 +67,35 @@
                     this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
             },
             searchTimeout(){
-                if(selfData.timerId){
-                    clearTimeout(selfData.timerId);
-                    selfData.timerId = setTimeout(function(){ self.toSearch()},500);
+                if(this.timerId){
+                    clearTimeout(this.timerId);
+                    this.timerId = setTimeout(function(){ self.toSearch()},500);
                 }
-                else selfData.timerId = setTimeout(function(){ self.toSearch()},500);
+                else this.timerId = setTimeout(function(){ self.toSearch()},500);
             },
             toSearch() {
-                if (selfData.search_text > '') {
+                if (this.search_text > '') {
                     axios.post('/search', {
-                        search: selfData.search_text
+                        search: self.search_text
                     }).then(function (response) {
-                        selfData.search_result = response.data;
+                        self.search_result = response.data;
                         var temp = null;
-                        for (var i = 0; i < selfData.search_result.length; i++) {
-                            if(selfData.search_result[i].category_id==temp){
-                                selfData.search_result[i].show = 0;
+                        for (var i = 0; i < self.search_result.length; i++) {
+                            if(self.search_result[i].category_id == temp){
+                                self.search_result[i].show = 0;
                             }else {
-                                selfData.search_result[i].show = 1;
-                                temp=selfData.search_result[i].category_id;
+                                self.search_result[i].show = 1;
+                                temp=self.search_result[i].category_id;
                             }   
                         }
-                        if(selfData.search_result.length<1){
-                            selfData.search_show = 0;
-                            selfData.search_result = 0;
-                        }else selfData.search_show = 1;
+                        if(self.search_result.length<1){
+                            self.search_show = 0;
+                            self.search_result = 0;
+                        }else self.search_show = 1;
                     }).catch(function (error) {
                         self.$root.retry(self.toSearch, error.response.status);
                     });
-                } else selfData.search_show= 0;
+                } else self.search_show = 0;
             }
         }
     }

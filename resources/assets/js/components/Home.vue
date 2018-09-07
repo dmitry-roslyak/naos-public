@@ -7,7 +7,7 @@
                 {{lng.catalog}}
             </div>
             <ul class="ctg-frm" style="display: inherit">
-                <div class="ctg-itm fake-link" v-for="item in catalog" @click="category(item.id)">
+                <div class="ctg-itm fake-link" v-for="item in catalog" @click="category(item.id)" :key="item.id">
                     {{lng[item.name]?lng[item.name]:item.name}}
                 </div>
             </ul>
@@ -24,7 +24,7 @@
                 </ol>
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner carousel-inner-bcolor" role="listbox">
-                    <div v-for="(item,i) in items" :class="'item '+(i?'':'active')">
+                    <div v-for="(item,i) in items" :class="'item '+(i?'':'active')" :key="item.id">
                         <img class="carousel-img" :src="'file/'+item.img_src" alt="...">
                         <div class="carousel-caption">
                             <h3>
@@ -49,22 +49,21 @@
     </div>
 </template>
 <script>
-    var data = {
+    var self, data = {
         lng: {},
         catalog: [],
         items: [],
     };
-    var selfData, self;
     export default {
         data: function () { return data; },
         computed: {
             currency: function () { return this.$store.state.currency }
         },
         mounted() {
-            self = this; selfData = this.$data;
+            self = this;
             this.get_random_products();
-            selfData.lng = window.lng;
-            selfData.catalog = window.Laravel.catalog;
+            this.lng = window.lng;
+            this.catalog = window.Laravel.catalog;
         },
         methods: {
             category(id) {
@@ -73,9 +72,9 @@
             },
             get_random_products() {
                 axios.get('/prod_rnd').then(function (response) {
-                    selfData.items = response.data;
+                    self.items = response.data;
                 }).catch(function (error) {
-                    self.$root.retry(self.prod_rnd, error.response.status);
+                    self.$root.retry(self.get_random_products, error.response.status);
                 });
             }
         }

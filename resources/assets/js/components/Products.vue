@@ -71,11 +71,11 @@
     </div>
 </template>
 <script>
-    var data={
-        lng:{},
-        ordby:'bydef',
-        items:[],
-        cng1:true,
+    var self, data = {
+        lng: {},
+        ordby: 'bydef',
+        items: [],
+        cng1: true,
         price: {
             array: null,
             range: [0, 0],
@@ -88,15 +88,14 @@
             func: null
         },
     };
-    var selfData,self;
     export default {
         data: function () {return data;},
         computed: {
             currency: function () { return this.$store.state.currency },
         },
         mounted() {
-            self = this; selfData = this.$data;
-            selfData.lng = window.lng;
+            self = this; 
+            this.lng = window.lng;
             this.paginator.func = this.getSelectedProd;
             this.getSelectedProd();
             // window.onhashchange= function(){
@@ -123,7 +122,7 @@
                         take: this.paginator.take,
                         f: this.$store.state.flt_ids,
                         price: price,
-                        ordby: selfData.ordby
+                        ordby: this.ordby
                     }
                 }).then(function (response) {
                     var items = response.data[1];
@@ -133,7 +132,7 @@
                         items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                         items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                     }
-                    selfData.items = items; 
+                    self.items = items; 
                     for (var n = [], i = 0; i < response.data[2].length; i++) {
                         n.push(self.$store.state.currency * response.data[2][i].price);
                     }
@@ -149,13 +148,13 @@
                 if(item.available) this.$refs.buyModal.$data.item = item;
             },
             to_compare(i){
-                if(selfData.items[i].is_compare) {
-                    this.$store.commit('rm_compare',selfData.items[i].id);
-                    selfData.items[i].is_compare = 0;
+                if(this.items[i].is_compare) {
+                    this.$store.commit('rm_compare',self.items[i].id);
+                    self.items[i].is_compare = 0;
                 }
                 else {
-                    this.$store.commit('add_compare',selfData.items[i].id);
-                    selfData.items[i].is_compare = 1 ;
+                    this.$store.commit('add_compare',self.items[i].id);
+                    self.items[i].is_compare = 1 ;
                 }
             },
             // anm_scale($event.target) //need remove?
@@ -168,9 +167,9 @@
             // },
             to_wish(i){
                 axios.post('/to_wish',{
-                    id:selfData.items[i].id
+                    id: self.items[i].id
                 }).then(function (response) {
-                    selfData.items[i].isWish = response.data?1:0;
+                    self.items[i].isWish = response.data ? 1:0;
                 }).catch(function (error) {
                     self.$root.retry(self.to_wish, error.response.status);
                 });

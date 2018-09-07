@@ -46,17 +46,16 @@ var options1 = {
 
     }
 };
-var data={
-    lng:{},
-    ready:false
+var chart_self, self, data = {
+    lng: {},
+    ready: false
 };
-var chart_self,self;
 export default {
     props: ['id'],
     data: function () {return data;},
     mounted(){
         self = this;
-        this.$data.lng = window.lng;
+        this.lng = window.lng;
         chart_self = new Chart(document.getElementById('graph'), {
             type: 'line',
             data: chart_data,

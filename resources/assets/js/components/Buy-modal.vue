@@ -19,29 +19,27 @@
     </div>
 </template>
 <script>
-    var data={
-        lng:{},
-        item:null,
-        count:1
+    var data = {
+        lng: {},
+        item: null,
+        count: 1
     };
-    var selfData;
     export default {
         data: function () {return data;},
         mounted() {
-            selfData = this.$data;
-            selfData.lng = window.lng;
+            this.lng = window.lng;
         },
         methods: {
             buy(order) {
-                if(selfData.item){
+                if(this.item){
                     var count = 0, cart = [];
                     if(!localStorage.cart||localStorage.cart.length<2) {
-                        cart.push({id: selfData.item.id, count: selfData.count});
-                        count = selfData.count;
+                        cart.push({id: this.item.id, count: this.count});
+                        count = this.count;
                     }
                     else{
                         var array = JSON.parse(localStorage.cart);
-                        array.push({id: selfData.item.id, count: selfData.count});
+                        array.push({id: this.item.id, count: this.count});
                         for (var index = 0; index < array.length; index++) {
                             if (!array[index]) continue;
                             var b = 0, temp = array[index].id;
@@ -55,8 +53,8 @@
                     }
                     localStorage.cart = JSON.stringify(cart);
                     this.$store.commit('setCartLength', count);
-                    selfData.count = 1;
-                    selfData.item = null;
+                    this.count = 1;
+                    this.item = null;
                     if(order==1) this.$router.push("/cart/[]");
                 }
             }
