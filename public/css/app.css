@@ -11628,14 +11628,14 @@ a:hover {
   font-size: 1.4rem;
 }
 
-.compare-state[data-check='1'] {
+.compare-state[data-check] {
   -webkit-animation: bounce1 0.35s;
           animation: bounce1 0.35s;
   font-size: 1.6rem;
   color: orange;
 }
 
-.heart-state[data-check='1'] {
+.heart-state[data-check] {
   -webkit-animation: bounce1 0.35s;
           animation: bounce1 0.35s;
   font-size: 1.6rem;
@@ -11643,7 +11643,7 @@ a:hover {
 }
 
 .compare-state,
-.heart-state[data-check='0'] {
+.heart-state {
   -webkit-animation: bounce0 0.35s;
           animation: bounce0 0.35s;
   font-size: 1.6rem;

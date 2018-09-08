@@ -127,8 +127,8 @@
                 }).then(function (response) {
                     var items = response.data[1];
                     for (var i = 0; i < items.length; i++) {
-                        items[i].isWish = items[i].wish?1:0;
-                        items[i].is_compare = self.$root.compareHas(items[i].id);
+                        items[i].isWish = items[i].wish ? true : false;
+                        items[i].is_compare = self.$root.compareHas(items[i].id) > -1;
                         items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                         items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                     }
@@ -148,14 +148,8 @@
                 if(item.available) this.$refs.buyModal.$data.item = item;
             },
             to_compare(i){
-                if(this.items[i].is_compare) {
-                    this.$store.commit('rm_compare',self.items[i].id);
-                    self.items[i].is_compare = 0;
-                }
-                else {
-                    this.$store.commit('add_compare',self.items[i].id);
-                    self.items[i].is_compare = 1 ;
-                }
+                this.items[i].is_compare = this.items[i].is_compare ? false : true
+                this.$store.commit('compare', this.items[i]);
             },
             // anm_scale($event.target) //need remove?
             // anm_scale(e){
@@ -169,7 +163,7 @@
                 axios.post('/to_wish',{
                     id: self.items[i].id
                 }).then(function (response) {
-                    self.items[i].isWish = response.data ? 1:0;
+                    self.items[i].isWish = response.data ? true : false;
                 }).catch(function (error) {
                     self.$root.retry(self.to_wish, error.response.status);
                 });

@@ -68535,27 +68535,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
     //             localStorage.cart = t.cart.length ? JSON.stringify(t.cart) : ""
     //         }
     //     },
-    //     currency: function(t, e) {
-    //         t.currency = e
-    //     },
-    //     filterIds: function(t, e) {
-    //         t.flt_ids = e
-    //     },
-    //     set_ctg_id: function(t, e) {
-    //         t.ctg_id = e,
-    //         t.compare_list.length = 0,
-    //         t.flt_ids.length = 0
-    //     },
     //     cartClear: function(t) {
     //         t.cartLength = 0,
     //         t.cart.length = 0
-    //     },
-    //     set_compare: function(t, e) {
-    //         if (e.checked)
-    //             t.compare_list.push(e.id);
-    //         else
-    //             for (var n = 0; n < t.compare_list.length; n++)
-    //                 t.compare_list[n] == e.id && t.compare_list.splice(n, 1)
     //     }
     // }
     mutations: {
@@ -68573,16 +68555,13 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         setCartLength: function setCartLength(state, count) {
             state.cartLength = count;
         },
-        add_compare: function add_compare(state, id) {
-            state.compare_list.push(id);
-        },
-        rm_compare: function rm_compare(state, id) {
-            var i = 0,
-                l = state.compare_list.length;
-            for (; i < l; i++) {
-                if (state.compare_list[i] == id) {
-                    state.compare_list.splice(i, 1);
-                }
+
+        compare: function compare(state, item) {
+            if (item.is_compare) {
+                state.compare_list.push(item.id);
+            } else {
+                var i = app.compareHas(item.id);
+                if (i > -1) state.compare_list.splice(i, 1);
             }
         }
     }
@@ -68639,9 +68618,9 @@ var app = new Vue({
         },
         compareHas: function compareHas(id) {
             for (var i = 0; i < app.$store.state.compare_list.length; i++) {
-                if (app.$store.state.compare_list[i] == id) return 1;
+                if (app.$store.state.compare_list[i] == id) return i;
             }
-            return 0;
+            return -1;
         },
 
         /** 
