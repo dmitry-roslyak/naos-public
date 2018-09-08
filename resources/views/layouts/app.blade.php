@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="manifest" href="manifest.json">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="markup.js"></script>
     <script>
         window.Laravel = {!! 
             (function(){

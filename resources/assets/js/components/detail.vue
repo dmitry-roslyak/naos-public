@@ -9,11 +9,11 @@
                     <span class="hidden-xs">{{lng.to_wishlist}}</span>
                     <i class="fa fa-heart heart-state" :data-check="item.isWish" aria-hidden="true"></i>
                 </a>
-                <!-- <a class="halots fake-link">&nbsp;
+                <a class="action-item fake-link">&nbsp;
                     <i class="fa fa-share-alt heart-state" data-check="0" aria-hidden="true"></i>
-                    <div @click="fbshare" class="fake-link share fbshare">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></div>
-                    <div @click="gshare" class="fake-link share gshare">{{lng.share}}&nbsp;<i class="fa fa-google-plus"></i></div>
-                </a> -->
+                    <div @click="fbshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></div>
+                    <div @click="gshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-google-plus"></i></div>
+                </a>
             </div>
             <div class="prod-container">
                 <div class="btn-buy fake-link" v-if="item.available > 0" @click="buyItem(item)">
@@ -110,57 +110,22 @@
         },
         destroyed(){ if(timerId) clearInterval(timerId);},
         methods:{
-            // newSchema(){
-            //     var prodSchema = document.createElement('script');
-            //     prodSchema.setAttribute('type','application/ld+json');
-            //     var obj = {
-            //         "@context": "http://schema.org/",
-            //         "@type": "Product",
-            //         name: selfData.item.name,
-            //         image: window.location.hostname+'/file/'+selfData.item.img_src,
-            //         description: selfData.item.description,
-            //         brand: {
-            //             "@type": "Thing",
-            //             name: "ACME"
-            //         },
-            //         aggregateRating: {
-            //             "@type": "AggregateRating",
-            //             ratingValue: selfData.item.rating,
-            //             reviewCount: selfData.item.vote_count
-            //         },
-            //         offers: {
-            //             "@type": "Offer",
-            //             priceCurrency: window.lng.currency,
-            //             price: selfData.item.price,
-            //             priceValidUntil: new Date(),
-            //             itemCondition: "http://schema.org/UsedCondition",
-            //             availability: selfData.item.available>1?"InStock":"OutOfStock",
-            //             seller: {
-            //                 "@type": "Organization",
-            //                 name: "NAOS"
-            //             }
-            //         }
-            //     };
-            //     prodSchema.innerText=JSON.stringify(obj);
-            //     document.getElementsByTagName('head')[0].appendChild(prodSchema);
-            // },
             clientWidth(){
                 if(document.documentElement.clientWidth<620) this.showGraph = false;
                 else this.showGraph = true;
             },
-            // fbshare(){
-            //     window.open('https://www.facebook.com/dialog/share?'+
-            //     "app_id=1358482950908486&display=popup&href="+location.host+'/#'+this.$route.path);
-            // },
-            // gshare(){
-            //     window.open('https://plus.google.com/share?url='+location.host+'/#'+this.$route.path);
-            //     // window.open('https://plus.google.com/share?url='+location.href+'?hl=ru');
-            // },
+            fbshare(){
+                window.open('https://www.facebook.com/dialog/share?'+
+                "app_id=1358482950908486&display=popup&href="+location.host+'/#'+this.$route.path);
+            },
+            gshare(){
+                window.open('https://plus.google.com/share?url='+location.host+'/#'+this.$route.path);
+            },
             buyItem(item){
                 if(item.available) this.$refs.buyModal.$data.item = item;
             },
             to_compare(){
-                if(selfData.item.is_compare){
+                if(this.item.is_compare){
                     this.$store.commit('rm_compare', this.item.id);
                     this.item.is_compare = 0;
                 }
@@ -186,7 +151,6 @@
                     self.item.isWish = response.data.is_wish ? 1:0;
                     self.item.is_compare = self.$root.compareHas(self.item.id);
                     self.set_total_time();
-                    // self.newSchema();
                 }).catch(function (error) {
                     self.$root.retry(self.itemById, error.response.status);
                 });    

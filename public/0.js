@@ -130,57 +130,20 @@ var self,
     },
 
     methods: {
-        // newSchema(){
-        //     var prodSchema = document.createElement('script');
-        //     prodSchema.setAttribute('type','application/ld+json');
-        //     var obj = {
-        //         "@context": "http://schema.org/",
-        //         "@type": "Product",
-        //         name: selfData.item.name,
-        //         image: window.location.hostname+'/file/'+selfData.item.img_src,
-        //         description: selfData.item.description,
-        //         brand: {
-        //             "@type": "Thing",
-        //             name: "ACME"
-        //         },
-        //         aggregateRating: {
-        //             "@type": "AggregateRating",
-        //             ratingValue: selfData.item.rating,
-        //             reviewCount: selfData.item.vote_count
-        //         },
-        //         offers: {
-        //             "@type": "Offer",
-        //             priceCurrency: window.lng.currency,
-        //             price: selfData.item.price,
-        //             priceValidUntil: new Date(),
-        //             itemCondition: "http://schema.org/UsedCondition",
-        //             availability: selfData.item.available>1?"InStock":"OutOfStock",
-        //             seller: {
-        //                 "@type": "Organization",
-        //                 name: "NAOS"
-        //             }
-        //         }
-        //     };
-        //     prodSchema.innerText=JSON.stringify(obj);
-        //     document.getElementsByTagName('head')[0].appendChild(prodSchema);
-        // },
         clientWidth: function clientWidth() {
             if (document.documentElement.clientWidth < 620) this.showGraph = false;else this.showGraph = true;
         },
-
-        // fbshare(){
-        //     window.open('https://www.facebook.com/dialog/share?'+
-        //     "app_id=1358482950908486&display=popup&href="+location.host+'/#'+this.$route.path);
-        // },
-        // gshare(){
-        //     window.open('https://plus.google.com/share?url='+location.host+'/#'+this.$route.path);
-        //     // window.open('https://plus.google.com/share?url='+location.href+'?hl=ru');
-        // },
+        fbshare: function fbshare() {
+            window.open('https://www.facebook.com/dialog/share?' + "app_id=1358482950908486&display=popup&href=" + location.host + '/#' + this.$route.path);
+        },
+        gshare: function gshare() {
+            window.open('https://plus.google.com/share?url=' + location.host + '/#' + this.$route.path);
+        },
         buyItem: function buyItem(item) {
             if (item.available) this.$refs.buyModal.$data.item = item;
         },
         to_compare: function to_compare() {
-            if (selfData.item.is_compare) {
+            if (this.item.is_compare) {
                 this.$store.commit('rm_compare', this.item.id);
                 this.item.is_compare = 0;
             } else {
@@ -205,7 +168,6 @@ var self,
                 self.item.isWish = response.data.is_wish ? 1 : 0;
                 self.item.is_compare = self.$root.compareHas(self.item.id);
                 self.set_total_time();
-                // self.newSchema();
             }).catch(function (error) {
                 self.$root.retry(self.itemById, error.response.status);
             });
@@ -297,7 +259,33 @@ var render = function() {
                       }
                     })
                   ]
-                )
+                ),
+                _vm._v(" "),
+                _c("a", { staticClass: "action-item fake-link" }, [
+                  _vm._v(" \n                "),
+                  _c("i", {
+                    staticClass: "fa fa-share-alt heart-state",
+                    attrs: { "data-check": "0", "aria-hidden": "true" }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "fake-link", on: { click: _vm.fbshare } },
+                    [
+                      _vm._v(_vm._s(_vm.lng.share) + " "),
+                      _c("i", { staticClass: "fa fa-facebook-official" })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "fake-link", on: { click: _vm.gshare } },
+                    [
+                      _vm._v(_vm._s(_vm.lng.share) + " "),
+                      _c("i", { staticClass: "fa fa-google-plus" })
+                    ]
+                  )
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "prod-container" }, [
