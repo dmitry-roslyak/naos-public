@@ -5,7 +5,7 @@
         </router-link>
         <div class="col-sm-8 col-md-6" style="padding:0;margin-top:14px" @mouseenter="search_result?search_show=1:null" @mouseleave="search_show=0">
             <div class="input-group">
-                <input type="text" class="form-control" :placeholder='lng.search' v-model="search_text" @input='searchTimeout' autofocus>
+                <input type="text" class="form-control" :placeholder='lng.search' v-model="search_text" @input='toSearch' autofocus>
                 <span class="input-group-btn" >
                     <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
                 </span>
@@ -67,35 +67,30 @@
                 if(this.$store.state.compare_list.length>1)
                     this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
             },
-            searchTimeout(){
-                if(timerId){
-                    clearTimeout(timerId);
-                    timerId = setTimeout(function(){ self.toSearch()},500);
-                }
-                else timerId = setTimeout(function(){ self.toSearch()},500);
-            },
             toSearch() {
                 if (this.search_text > '') {
-                    axios.post('/search', {
-                        search: self.search_text
-                    }).then(function (response) {
-                        self.search_result = response.data;
-                        var temp = null;
-                        for (var i = 0; i < self.search_result.length; i++) {
-                            if(self.search_result[i].category_id == temp){
-                                self.search_result[i].show = 0;
-                            }else {
-                                self.search_result[i].show = 1;
-                                temp=self.search_result[i].category_id;
-                            }   
-                        }
-                        if(self.search_result.length<1){
-                            self.search_show = 0;
-                            self.search_result = 0;
-                        }else self.search_show = 1;
-                    }).catch(function (error) {
-                        self.$root.retry(self.toSearch, error.response.status);
-                    });
+                    _.throttle(function(){
+                        axios.post('/search', {
+                            search: self.search_text
+                        }).then(function (response) {
+                            self.search_result = response.data;
+                            var temp = null;
+                            for (var i = 0; i < self.search_result.length; i++) {
+                                if(self.search_result[i].category_id == temp){
+                                    self.search_result[i].show = 0;
+                                }else {
+                                    self.search_result[i].show = 1;
+                                    temp=self.search_result[i].category_id;
+                                }   
+                            }
+                            if(self.search_result.length<1){
+                                self.search_show = 0;
+                                self.search_result = 0;
+                            }else self.search_show = 1;
+                        }).catch(function (error) {
+                            self.$root.retry(self.toSearch, error.response.status);
+                        });
+                    }, 500)
                 } else self.search_show = 0;
             }
         }

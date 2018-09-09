@@ -6437,38 +6437,30 @@ var self,
         compare: function compare() {
             if (this.$store.state.compare_list.length > 1) this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
         },
-        searchTimeout: function searchTimeout() {
-            if (timerId) {
-                clearTimeout(timerId);
-                timerId = setTimeout(function () {
-                    self.toSearch();
-                }, 500);
-            } else timerId = setTimeout(function () {
-                self.toSearch();
-            }, 500);
-        },
         toSearch: function toSearch() {
             if (this.search_text > '') {
-                axios.post('/search', {
-                    search: self.search_text
-                }).then(function (response) {
-                    self.search_result = response.data;
-                    var temp = null;
-                    for (var i = 0; i < self.search_result.length; i++) {
-                        if (self.search_result[i].category_id == temp) {
-                            self.search_result[i].show = 0;
-                        } else {
-                            self.search_result[i].show = 1;
-                            temp = self.search_result[i].category_id;
+                _.throttle(function () {
+                    axios.post('/search', {
+                        search: self.search_text
+                    }).then(function (response) {
+                        self.search_result = response.data;
+                        var temp = null;
+                        for (var i = 0; i < self.search_result.length; i++) {
+                            if (self.search_result[i].category_id == temp) {
+                                self.search_result[i].show = 0;
+                            } else {
+                                self.search_result[i].show = 1;
+                                temp = self.search_result[i].category_id;
+                            }
                         }
-                    }
-                    if (self.search_result.length < 1) {
-                        self.search_show = 0;
-                        self.search_result = 0;
-                    } else self.search_show = 1;
-                }).catch(function (error) {
-                    self.$root.retry(self.toSearch, error.response.status);
-                });
+                        if (self.search_result.length < 1) {
+                            self.search_show = 0;
+                            self.search_result = 0;
+                        } else self.search_show = 1;
+                    }).catch(function (error) {
+                        self.$root.retry(self.toSearch, error.response.status);
+                    });
+                }, 500);
             } else self.search_show = 0;
         }
     }
@@ -52164,7 +52156,7 @@ var render = function() {
                     }
                     _vm.search_text = $event.target.value
                   },
-                  _vm.searchTimeout
+                  _vm.toSearch
                 ]
               }
             }),
