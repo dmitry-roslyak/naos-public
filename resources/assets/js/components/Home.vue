@@ -1,6 +1,5 @@
 <template>
-    <div class="container-fluid" style="padding:0 30px">
-        <search></search>
+    <div class="container-fluid" style="max-width: 80em">
         <div class="col-sm-3 col-md-2" style="padding:0px">
             <div class="ctg-btn fake-link">
                 <i class="fa fa-list" style="font-size:1.2em"></i>
@@ -10,6 +9,7 @@
                 <div class="ctg-itm fake-link" v-for="item in catalog" @click="category(item.id)" :key="item.id">
                     {{lng[item.name]?lng[item.name]:item.name}}
                 </div>
+                <div class="ctg-itm fake-link" v-for="i in dummyCategory" :key="i">*</div>
             </ul>
         </div>
         <div v-if="items.length" class="col-sm-6">
@@ -53,6 +53,7 @@
         lng: {},
         catalog: [],
         items: [],
+        dummyCategory: []
     };
     export default {
         data: function () { return data; },
@@ -61,6 +62,7 @@
         },
         mounted() {
             self = this;
+            this.dummyCategory.length = 8;
             this.get_random_products();
             this.lng = window.lng;
             this.catalog = window.Laravel.catalog;
@@ -92,7 +94,7 @@
         color: white
 .carousel-img
     margin: 15px auto
-    height: 30rem !important
+    height: 33rem !important
 .carousel-inner-bcolor
     background-color: gray
 </style>

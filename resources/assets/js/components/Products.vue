@@ -1,6 +1,5 @@
 <template>
-    <div class="container-fluid" style="padding:0 30px">
-        <search></search>
+    <div class="container-fluid">
         <sidebar class="col-sm-3 col-md-2" style="padding: 0px 4px 0px 0px;"></sidebar>
         <div class="col-sm-9 col-md-10" style="padding:0">
             <div class="row itmc">

@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid" style="padding:12px">
+    <div class="container-fluid" style="padding:0">
         <router-link to='/'>
             <span class="col-sm-12 col-md-2 naos">N&nbsp;&nbsp;&nbsp;<span class="vflip">V</span>OS</span>
         </router-link>

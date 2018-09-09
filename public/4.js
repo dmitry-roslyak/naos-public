@@ -26,7 +26,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var _data = {
     list: []
@@ -115,8 +114,6 @@ var render = function() {
     "div",
     { staticClass: "container-fluid" },
     [
-      _c("search"),
-      _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
       _c(

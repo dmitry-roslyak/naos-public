@@ -118,75 +118,71 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid", staticStyle: { padding: "0" } },
-    [
-      _c(
-        "div",
-        {
-          staticClass: "panel panel-primary",
-          staticStyle: { margin: "15px 0 0" }
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass: "panel-heading",
-              staticStyle: { padding: "6px 15px" }
-            },
-            [
-              _c("i", {
-                staticClass: "fa fa-bar-chart",
-                attrs: { "aria-hidden": "true" }
-              }),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.lng.hist_graph) + " ")]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "btn-group",
-                  attrs: { role: "group", "aria-label": "..." }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-default btn-sm",
-                      attrs: { id: "graph_btn1", type: "button" },
-                      on: {
-                        click: function($event) {
-                          _vm.show_hist(1)
-                        }
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "div",
+      {
+        staticClass: "panel panel-primary",
+        staticStyle: { margin: "15px 0 0" }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "panel-heading",
+            staticStyle: { padding: "6px 15px" }
+          },
+          [
+            _c("i", {
+              staticClass: "fa fa-bar-chart",
+              attrs: { "aria-hidden": "true" }
+            }),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(_vm.lng.hist_graph) + " ")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "btn-group",
+                attrs: { role: "group", "aria-label": "..." }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default btn-sm",
+                    attrs: { id: "graph_btn1", type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.show_hist(1)
                       }
-                    },
-                    [_vm._v(_vm._s(_vm.lng.price_hist))]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-default btn-sm",
-                      attrs: { id: "graph_btn2", type: "button" },
-                      on: {
-                        click: function($event) {
-                          _vm.show_hist(2)
-                        }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.lng.price_hist))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default btn-sm",
+                    attrs: { id: "graph_btn2", type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.show_hist(2)
                       }
-                    },
-                    [_vm._v(_vm._s(_vm.lng.sales_hist))]
-                  )
-                ]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _vm._m(0)
-        ]
-      )
-    ]
-  )
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.lng.sales_hist))]
+                )
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(0)
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {

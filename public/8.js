@@ -79,6 +79,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var self,
     _data = {
@@ -126,117 +127,126 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container" },
+    { staticClass: "container-fluid", staticStyle: { "max-width": "80em" } },
     [
-      _c("search"),
-      _vm._v(" "),
-      _c("div", { staticClass: "container", staticStyle: { padding: "0" } }, [
-        _c("div", { staticClass: "dropdown" }, [
-          _c("i", { staticClass: "fa fa-money" }),
-          _vm._v(" "),
-          _c("label", [_vm._v(" " + _vm._s(_vm.lng.currency_type) + " :  ")]),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "dropdown-toggle",
-              staticStyle: { "text-decoration": "none" },
-              attrs: { "data-toggle": "dropdown", "aria-haspopup": "true" }
-            },
-            [
-              _c("span", { staticStyle: { "vertical-align": "middle" } }, [
-                _vm._v(" " + _vm._s(_vm.lng.currency) + " ")
+      _c(
+        "div",
+        {
+          staticClass: "container-fluid",
+          staticStyle: { padding: "0", "max-width": "80em" }
+        },
+        [
+          _c("div", { staticClass: "container-fluid" }, [
+            _c("div", { staticClass: "dropdown" }, [
+              _c("i", { staticClass: "fa fa-money" }),
+              _vm._v(" "),
+              _c("label", [
+                _vm._v(" " + _vm._s(_vm.lng.currency_type) + " :  ")
               ]),
-              _c("span", { staticClass: "caret" })
-            ]
-          ),
-          _vm._v(" "),
-          _c("ul", { staticClass: "dropdown-menu" }, [
-            _c("li", [
+              _vm._v(" "),
               _c(
                 "a",
                 {
-                  staticClass: "fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.get_currency("UAH")
-                    }
-                  }
+                  staticClass: "dropdown-toggle",
+                  staticStyle: { "text-decoration": "none" },
+                  attrs: { "data-toggle": "dropdown", "aria-haspopup": "true" }
                 },
-                [_c("span", [_vm._v("  " + _vm._s(_vm.lng.UAH))])]
-              )
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c(
-                "a",
-                {
-                  staticClass: "fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.get_currency("RUB")
-                    }
-                  }
-                },
-                [_c("span", [_vm._v("  " + _vm._s(_vm.lng.RUB))])]
-              )
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c(
-                "a",
-                {
-                  staticClass: "fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.get_currency("USD")
-                    }
-                  }
-                },
-                [_c("span", [_vm._v("  " + _vm._s(_vm.lng.USD))])]
-              )
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("hr", { staticStyle: { margin: "8px 0" } }),
-      _vm._v(" "),
-      _c("user-info", { staticStyle: { padding: "0" } }),
-      _vm._v(" "),
-      _c("hr", { staticStyle: { margin: "8px 0" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "container", staticStyle: { padding: "0" } }, [
-        _c("i", { staticClass: "fa fa-envelope" }),
-        _vm._v(" "),
-        _c("label", [_vm._v(_vm._s(_vm.lng.email_me) + " :")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "checkbox disabled" }, [
-            _c("label", [
-              _c("input", { attrs: { type: "checkbox", disabled: "" } }),
-              _vm._v(
-                "\n                    " +
-                  _vm._s(_vm.lng.email_me_offers) +
-                  "\n                "
-              )
+                [
+                  _c("span", { staticStyle: { "vertical-align": "middle" } }, [
+                    _vm._v(" " + _vm._s(_vm.lng.currency) + " ")
+                  ]),
+                  _c("span", { staticClass: "caret" })
+                ]
+              ),
+              _vm._v(" "),
+              _c("ul", { staticClass: "dropdown-menu" }, [
+                _c("li", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "fake-link",
+                      on: {
+                        click: function($event) {
+                          _vm.get_currency("UAH")
+                        }
+                      }
+                    },
+                    [_c("span", [_vm._v("  " + _vm._s(_vm.lng.UAH))])]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "fake-link",
+                      on: {
+                        click: function($event) {
+                          _vm.get_currency("RUB")
+                        }
+                      }
+                    },
+                    [_c("span", [_vm._v("  " + _vm._s(_vm.lng.RUB))])]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "fake-link",
+                      on: {
+                        click: function($event) {
+                          _vm.get_currency("USD")
+                        }
+                      }
+                    },
+                    [_c("span", [_vm._v("  " + _vm._s(_vm.lng.USD))])]
+                  )
+                ])
+              ])
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "checkbox" }, [
-            _c("label", [
-              _c("input", { attrs: { type: "checkbox", disabled: "" } }),
-              _vm._v(
-                "\n                    " +
-                  _vm._s(_vm.lng.email_me_wishlist) +
-                  "\n                "
-              )
+          _c("hr", { staticStyle: { margin: "8px 0" } }),
+          _vm._v(" "),
+          _c("user-info"),
+          _vm._v(" "),
+          _c("hr", { staticStyle: { margin: "8px 0" } }),
+          _vm._v(" "),
+          _c("div", { staticClass: "container-fluid" }, [
+            _c("i", { staticClass: "fa fa-envelope" }),
+            _vm._v(" "),
+            _c("label", [_vm._v(_vm._s(_vm.lng.email_me) + " :")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "container-fluid" }, [
+              _c("div", { staticClass: "checkbox disabled" }, [
+                _c("label", [
+                  _c("input", { attrs: { type: "checkbox", disabled: "" } }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.lng.email_me_offers) +
+                      "\n                "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "checkbox" }, [
+                _c("label", [
+                  _c("input", { attrs: { type: "checkbox", disabled: "" } }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.lng.email_me_wishlist) +
+                      "\n                "
+                  )
+                ])
+              ])
             ])
           ])
-        ])
-      ])
-    ],
-    1
+        ],
+        1
+      )
+    ]
   )
 }
 var staticRenderFns = []

@@ -83,7 +83,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     timerId,
@@ -214,11 +213,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid" },
+    {
+      staticClass: "container-fluid",
+      staticStyle: { "max-width": "80em", padding: "0" }
+    },
     [
-      _c("search"),
-      _c("hr", { staticStyle: { margin: "0 15px" } }),
-      _vm._v(" "),
       _c("buy-modal", { ref: "buyModal" }),
       _vm._v(" "),
       _vm.item

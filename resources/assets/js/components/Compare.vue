@@ -1,6 +1,5 @@
 <template>
     <div class="container-fluid">
-        <search></search>
         <hr>
         <div style="margin:0 15px 15px">
             <div class="product-labels" v-for="(prod,i) in list" :key="i">

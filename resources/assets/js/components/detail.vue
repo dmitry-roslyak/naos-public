@@ -1,6 +1,5 @@
 <template>
-    <div class="container-fluid">
-        <search></search><hr style="margin: 0 15px">
+    <div class="container-fluid" style="max-width: 80em;padding:0">
         <buy-modal ref="buyModal"></buy-modal>
         <div v-if="item" class="col-md-7" style="padding-right:0">
             <h4 style="padding-left:8px">{{item.name}}</h4>

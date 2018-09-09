@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
-        <search></search>
-        <div class="container" style="padding:0">
+    <div class="container-fluid" style="max-width: 80em">
+        <div class="container-fluid" style="padding:0; max-width: 80em">
+        <div class="container-fluid">
             <div class="dropdown">
                 <i class="fa fa-money"></i>
                 <label>&nbsp;{{lng.currency_type}} :&nbsp;&nbsp;</label>
@@ -17,7 +17,7 @@
             </div>
         </div>
         <hr style="margin:8px 0">
-        <user-info style="padding:0"></user-info> 
+        <user-info></user-info> 
         <!-- <hr>
         <div class="row">
             <span class="glyphicon glyphicon-lock"></span>
@@ -33,11 +33,11 @@
             </div>
         </div> -->
         <hr style="margin:8px 0">
-        <div class="container" style="padding:0">
+        <div class="container-fluid">
             <i class="fa fa-envelope"></i>
             <!--<span class="glyphicon glyphicon-envelope"></span>-->
             <label>{{lng.email_me}} :</label>
-            <div class="container">
+            <div class="container-fluid">
                 <div class="checkbox disabled">
                     <label>
                         <!--<input v-bind:checked="" type="checkbox">-->
@@ -69,6 +69,7 @@
                     <label><input type="radio" name="r2">&nbsp;Нет</label>
                 </div>
             </div>  -->
+    </div>
     </div>
 </template>
 

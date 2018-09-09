@@ -161,18 +161,27 @@ a:hover
     bottom: 0
     min-height: 180px
     width: 100%
-    padding: 10px
+    padding: 50px 10px 10px
     background-color: cornflowerblue 
     text-align: center
     color: white
+    & .inv 
+        padding: 10px
+        border-radius: 1em
+        background-color: white
+        color: inherit
     & a 
-        margin: 3px auto
-        width: 140px
-        padding: 8px 
+        // display: inline-block
+        // margin: 3px auto
+        // width: 140px
+        // padding: 8px 
         color: white
         text-decoration: none
-        & > img
+        & svg 
+            height: 40px
+        & img
             display: inline
+            height: 40px
     & a:hover
         color: white
         border-color: #fff
@@ -205,7 +214,7 @@ a:hover
     transition: all 0.4s
 .redirect-enter, .redirect-leave
     opacity: 0
-    transform: translateY(-320px)
+    transform: translateY(320px)
 .fa-angle-up,.fa-angle-down[style='']
     animation: rotate0 0.35s
 .fa-angle-up,.fa-angle-down[style='display:none']

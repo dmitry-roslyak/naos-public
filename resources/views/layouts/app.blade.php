@@ -57,7 +57,7 @@
             <i class="fa fa-cog fa-spin" style="font-size:10rem"></i>  
             <h4>Loading</h4>
         </div>
-        <nav class="navbar navbar-default navbar-static-top" style="margin:0">
+        <nav class="navbar navbar-default navbar-static-top" >
             <div class="container">
                 <!--<div class="navbar-header">
                      Branding Image 

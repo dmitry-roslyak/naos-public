@@ -87,134 +87,128 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid", staticStyle: { "padding-left": "0" } },
-    [
-      _c("i", { staticClass: "fa fa-id-card" }),
-      _vm._v("  "),
-      _c("label", [_vm._v(_vm._s(_vm.lng.personal_info))]),
-      _vm._v(" \n    "),
-      !_vm.guest
-        ? _c(
-            "a",
-            {
-              staticClass: "fake-link",
-              on: {
-                click: function($event) {
-                  _vm.upd_usr_info()
-                }
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("i", { staticClass: "fa fa-id-card" }),
+    _vm._v("  "),
+    _c("label", [_vm._v(_vm._s(_vm.lng.personal_info))]),
+    _vm._v(" \n    "),
+    !_vm.guest
+      ? _c(
+          "a",
+          {
+            staticClass: "fake-link",
+            on: {
+              click: function($event) {
+                _vm.upd_usr_info()
               }
-            },
-            [
-              _c("i", { staticClass: "fa fa-edit" }),
-              _vm._v(
-                " " +
-                  _vm._s(_vm.edit ? _vm.lng.confirm : _vm.lng.edit) +
-                  "\n    "
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "container-fluid" }, [
-        _c(
-          "table",
-          { staticClass: "table", staticStyle: { "margin-bottom": "0" } },
+            }
+          },
           [
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.lng.fname))]),
-                _vm._v(" "),
-                _vm.edit
-                  ? _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.userInfo.fname,
-                            expression: "userInfo.fname"
-                          }
-                        ],
-                        staticClass: "form-control myinput1",
-                        domProps: { value: _vm.userInfo.fname },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.userInfo, "fname", $event.target.value)
-                          }
-                        }
-                      })
-                    ])
-                  : _c("td", [_vm._v(_vm._s(_vm.userInfo.fname))])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.lng.lname))]),
-                _vm._v(" "),
-                _vm.edit
-                  ? _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.userInfo.lname,
-                            expression: "userInfo.lname"
-                          }
-                        ],
-                        staticClass: "form-control myinput1",
-                        domProps: { value: _vm.userInfo.lname },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.userInfo, "lname", $event.target.value)
-                          }
-                        }
-                      })
-                    ])
-                  : _c("td", [_vm._v(_vm._s(_vm.userInfo.lname))])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.lng.tel_number))]),
-                _vm._v(" "),
-                _vm.edit
-                  ? _c("td", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.userInfo.tel,
-                            expression: "userInfo.tel"
-                          }
-                        ],
-                        staticClass: "form-control myinput1",
-                        domProps: { value: _vm.userInfo.tel },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.userInfo, "tel", $event.target.value)
-                          }
-                        }
-                      })
-                    ])
-                  : _c("td", [_vm._v(_vm._s(_vm.userInfo.tel))])
-              ])
-            ])
+            _c("i", { staticClass: "fa fa-edit" }),
+            _vm._v(
+              " " + _vm._s(_vm.edit ? _vm.lng.confirm : _vm.lng.edit) + "\n    "
+            )
           ]
         )
-      ])
-    ]
-  )
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "container-fluid" }, [
+      _c(
+        "table",
+        { staticClass: "table", staticStyle: { "margin-bottom": "0" } },
+        [
+          _c("tbody", [
+            _c("tr", [
+              _c("td", [_vm._v(_vm._s(_vm.lng.fname))]),
+              _vm._v(" "),
+              _vm.edit
+                ? _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.userInfo.fname,
+                          expression: "userInfo.fname"
+                        }
+                      ],
+                      staticClass: "form-control myinput1",
+                      domProps: { value: _vm.userInfo.fname },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.userInfo, "fname", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                : _c("td", [_vm._v(_vm._s(_vm.userInfo.fname))])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v(_vm._s(_vm.lng.lname))]),
+              _vm._v(" "),
+              _vm.edit
+                ? _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.userInfo.lname,
+                          expression: "userInfo.lname"
+                        }
+                      ],
+                      staticClass: "form-control myinput1",
+                      domProps: { value: _vm.userInfo.lname },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.userInfo, "lname", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                : _c("td", [_vm._v(_vm._s(_vm.userInfo.lname))])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v(_vm._s(_vm.lng.tel_number))]),
+              _vm._v(" "),
+              _vm.edit
+                ? _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.userInfo.tel,
+                          expression: "userInfo.tel"
+                        }
+                      ],
+                      staticClass: "form-control myinput1",
+                      domProps: { value: _vm.userInfo.tel },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.userInfo, "tel", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                : _c("td", [_vm._v(_vm._s(_vm.userInfo.tel))])
+            ])
+          ])
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid" style="padding-left:0">
+    <div class="container-fluid">
         <i class="fa fa-id-card"></i> &nbsp;<label>{{lng.personal_info}}</label>&nbsp;
         <a class="fake-link" @click="upd_usr_info()" v-if="!guest">
             <i class="fa fa-edit"></i>&nbsp;{{edit?lng.confirm:lng.edit}}

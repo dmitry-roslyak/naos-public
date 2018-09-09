@@ -76,7 +76,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     _data = {
@@ -211,10 +210,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid", staticStyle: { padding: "0 30px" } },
+    { staticClass: "container-fluid" },
     [
-      _c("search"),
-      _vm._v(" "),
       _c("sidebar", {
         staticClass: "col-sm-3 col-md-2",
         staticStyle: { padding: "0px 4px 0px 0px" }

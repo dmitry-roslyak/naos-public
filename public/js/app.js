@@ -6187,7 +6187,8 @@ var self,
     _data = {
     lng: {},
     catalog: [],
-    items: []
+    items: [],
+    dummyCategory: []
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -6200,6 +6201,7 @@ var self,
     },
     mounted: function mounted() {
         self = this;
+        this.dummyCategory.length = 8;
         this.get_random_products();
         this.lng = window.lng;
         this.catalog = window.Laravel.catalog;
@@ -23617,7 +23619,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.overlay-background-buy-modal{\n    background-color: gray;\n    opacity: 0.5;\n}\n.dr-modal__close{\n    position: absolute;\n    border-bottom-left-radius: 0.8em;\n    padding: 0 0.4em;\n    color:cornflowerblue;\n    background-color: white;\n    top: 0;\n    right: 0;\n    font-size:1.2em;\n    opacity: 1;\n    z-index:1002;\n}\n.dr-modal__close:hover{\n    color:white;\n    background-color: tomato;\n}\n.dr-modal__dialog{ \n    position: fixed;       \n    border-radius: 0 0 1.8em 1.8em; \n    border:2px solid cornflowerblue;\n    background-color: white;\n    z-index:1001;\n    margin-top: -10em;\n    margin-left: -6em;\n    left: 50%;\n    top: 50%;\n}\n", ""]);
+exports.push([module.i, "\n.overlay-background-buy-modal{\n    background-color: gray;\n    opacity: 0.5;\n}\n.dr-modal__close{\n    position: absolute;\n    border-bottom-left-radius: 0.6em;\n    padding: 0 0.4em;\n    color:white;\n    background-color: cornflowerblue;\n    top: 0;\n    right: 0;\n    font-size:1.2em;\n    opacity: 1;\n    z-index:1002;\n}\n.dr-modal__close:hover{\n    color:white;\n    background-color: tomato;\n}\n.dr-modal__dialog{ \n    position: fixed;       \n    border-radius: 0.6em; \n    /* border:2px solid cornflowerblue; */\n    background-color: white;\n    z-index:1001;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    left: 50%;\n    top: 50%;\n}\n", ""]);
 
 // exports
 
@@ -23677,7 +23679,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.carousel-content {\n  color: white !important;\n  padding: 5px;\n  text-shadow: 0 0 5px black, 0 0 5px black;\n  background: radial-gradient(#505050, rgba(255, 0, 0, 0));\n  border-radius: 14px;\n}\n.carousel-content:hover {\n    color: white;\n}\n.carousel-img {\n  margin: 15px auto;\n  height: 30rem !important;\n}\n.carousel-inner-bcolor {\n  background-color: gray;\n}\n", ""]);
+exports.push([module.i, "\n.carousel-content {\n  color: white !important;\n  padding: 5px;\n  text-shadow: 0 0 5px black, 0 0 5px black;\n  background: radial-gradient(#505050, rgba(255, 0, 0, 0));\n  border-radius: 14px;\n}\n.carousel-content:hover {\n    color: white;\n}\n.carousel-img {\n  margin: 15px auto;\n  height: 33rem !important;\n}\n.carousel-inner-bcolor {\n  background-color: gray;\n}\n", ""]);
 
 // exports
 
@@ -51766,6 +51768,17 @@ var render = function() {
         _c("div", { staticClass: "dr-modal__dialog" }, [
           _c(
             "div",
+            { staticClass: "thumbnail", staticStyle: { margin: "0" } },
+            [
+              _c("img", {
+                staticStyle: { "max-height": "10em", "max-width": "10em" },
+                attrs: { src: "file/" + _vm.item.img_src }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
             {
               staticStyle: {
                 "background-color": "cornflowerblue",
@@ -51775,13 +51788,6 @@ var render = function() {
             },
             [_vm._v(_vm._s(_vm.item.name))]
           ),
-          _vm._v(" "),
-          _c("div", { staticClass: "thumbnail" }, [
-            _c("img", {
-              staticStyle: { "max-height": "10em", "max-width": "10em" },
-              attrs: { src: "file/" + _vm.item.img_src }
-            })
-          ]),
           _vm._v(" "),
           _c("div", { staticStyle: { margin: "1em" } }, [
             _c("span", [_vm._v(_vm._s(_vm.lng.count) + ":")]),
@@ -51817,7 +51823,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-primary btn-lg btn-block",
+                staticClass: "btn btn-primary btn-block",
                 on: {
                   click: function($event) {
                     _vm.buy(true)
@@ -51830,7 +51836,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-primary btn-lg btn-block",
+                staticClass: "btn btn-primary btn-block",
                 on: { click: _vm.buy }
               },
               [_vm._v(_vm._s(_vm.lng.addto_cart))]
@@ -52105,7 +52111,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid", staticStyle: { padding: "12px" } },
+    { staticClass: "container-fluid", staticStyle: { padding: "0" } },
     [
       _c("router-link", { attrs: { to: "/" } }, [
         _c("span", { staticClass: "col-sm-12 col-md-2 naos" }, [
@@ -52345,10 +52351,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid", staticStyle: { padding: "0 30px" } },
+    { staticClass: "container-fluid", staticStyle: { "max-width": "80em" } },
     [
-      _c("search"),
-      _vm._v(" "),
       _c(
         "div",
         { staticClass: "col-sm-3 col-md-2", staticStyle: { padding: "0px" } },
@@ -52364,29 +52368,38 @@ var render = function() {
           _c(
             "ul",
             { staticClass: "ctg-frm", staticStyle: { display: "inherit" } },
-            _vm._l(_vm.catalog, function(item) {
-              return _c(
-                "div",
-                {
-                  key: item.id,
-                  staticClass: "ctg-itm fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.category(item.id)
+            [
+              _vm._l(_vm.catalog, function(item) {
+                return _c(
+                  "div",
+                  {
+                    key: item.id,
+                    staticClass: "ctg-itm fake-link",
+                    on: {
+                      click: function($event) {
+                        _vm.category(item.id)
+                      }
                     }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(
-                        _vm.lng[item.name] ? _vm.lng[item.name] : item.name
-                      ) +
-                      "\n            "
-                  )
-                ]
-              )
-            })
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(
+                          _vm.lng[item.name] ? _vm.lng[item.name] : item.name
+                        ) +
+                        "\n            "
+                    )
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.dummyCategory, function(i) {
+                return _c("div", { key: i, staticClass: "ctg-itm fake-link" }, [
+                  _vm._v("*")
+                ])
+              })
+            ],
+            2
           )
         ]
       ),
@@ -52467,8 +52480,7 @@ var render = function() {
             )
           ])
         : _vm._e()
-    ],
-    1
+    ]
   )
 }
 var staticRenderFns = [
