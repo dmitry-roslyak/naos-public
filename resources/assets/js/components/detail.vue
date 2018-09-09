@@ -10,7 +10,7 @@
                     <i class="fa fa-heart heart-state" :data-check="item.isWish" aria-hidden="true"></i>
                 </a>
                 <a class="action-item fake-link">&nbsp;
-                    <i class="fa fa-share-alt heart-state" data-check="0" aria-hidden="true"></i>
+                    <i class="fa fa-share-alt heart-state" aria-hidden="true"></i>
                     <div @click="fbshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></div>
                     <div @click="gshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-google-plus"></i></div>
                 </a>
@@ -124,22 +124,16 @@
             buyItem(item){
                 if(item.available) this.$refs.buyModal.$data.item = item;
             },
-            to_compare(){
-                if(this.item.is_compare){
-                    this.$store.commit('rm_compare', this.item.id);
-                    this.item.is_compare = 0;
-                }
-                else{
-                    this.$store.commit('add_compare', this.item.id);
-                    this.item.is_compare = 1;
-                }
+            to_compare(i){
+                this.item.is_compare = this.item.is_compare ? false : true
+                this.$store.commit('compare', this.item.id);
                 this.$forceUpdate();
             },
             to_wish(){
                 axios.post('/to_wish',{
                     id: self.item.id
                 }).then(function (response) {
-                    self.item.isWish = response.data ? 1:0;
+                    self.item.isWish = response.data ? true : false;
                     self.$forceUpdate();
                 }).catch(function (error) {
                     self.$root.retry(self.to_wish, error.response.status);
@@ -148,8 +142,8 @@
             itemById(){
                 axios.get('prod_by_id?id='+self.id).then(function (response) {
                     self.item = response.data;
-                    self.item.isWish = response.data.is_wish ? 1:0;
-                    self.item.is_compare = self.$root.compareHas(self.item.id);
+                    self.item.isWish = response.data.is_wish ? true : false;
+                    self.item.is_compare = self.$root.compareHas(self.item.id) > -1;
                     self.set_total_time();
                 }).catch(function (error) {
                     self.$root.retry(self.itemById, error.response.status);

@@ -13,9 +13,9 @@
             <div class="search-list" :show-st="search_show">
                 <table style="margin-bottom: 0;width:100%">
                     <tbody style="border-width:0" v-for="item in search_result" :key="item.id">
-                        <!--<div style="height:1.5em;" v-if="item.show">
+                        <!-- <div style="height:1.5em;" v-if="item.show">
                         <span style="position:absolute;width:99%;background:cornflowerblue;color:white">{{lng[item.ctg.name]?lng[item.ctg.name]:item.ctg.name}}</span>
-                        </div>-->
+                        </div> -->
                         <tr class="search-itm">
                             <td style="border-width:0;width:0;padding:4px;text-align:center">
                                 <img v-bind:src="'file/'+item.img_src" style="height:5rem">
@@ -35,9 +35,8 @@
                 <i class="fa fa-shopping-cart font1" aria-hidden="true"></i>
                 <div><nobr>{{lng.cart}}</nobr></div>
                 <span class="badge badge-offset" >{{this.$store.state.cartLength}}</span>
-                <!-- <span class="badge badge-offset" >{{cartLength}}</span> -->
             </router-link>
-            <a href="#" class="dr-btn pull-right" disabled  @click="$event.preventDefault()">
+            <a href="#" class="dr-btn pull-right" @click="$event.preventDefault();compare()">
                 <i class="fa fa-balance-scale font1" aria-hidden="true"></i>
                 <div><nobr>{{lng.compare}}</nobr></div>
                 <span class="badge badge-offset">{{this.$store.state.compare_list.length}}</span>

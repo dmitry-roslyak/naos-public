@@ -6406,7 +6406,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     timerId,
@@ -52284,10 +52283,11 @@ var render = function() {
             "a",
             {
               staticClass: "dr-btn pull-right",
-              attrs: { href: "#", disabled: "" },
+              attrs: { href: "#" },
               on: {
                 click: function($event) {
                   $event.preventDefault()
+                  _vm.compare()
                 }
               }
             },
