@@ -11,7 +11,7 @@
                 <input class="form-control input-xs" v-model.number="count" type="number">
             </div>
             <div style="margin:1em">
-                <button class="btn btn-primary btn-lg btn-block" @click="buy(1)">{{lng.to_order}}</button>
+                <button class="btn btn-primary btn-lg btn-block" @click="buy(true)">{{lng.to_order}}</button>
                 <button class="btn btn-primary btn-lg btn-block" @click="buy">{{lng.addto_cart}}</button>      
             </div>
             <div class="fake-link dr-modal__close" @click="count=1;item=null">X</div>
@@ -31,32 +31,10 @@
         },
         methods: {
             buy(order) {
-                if(this.item){
-                    var count = 0, cart = [];
-                    if(!localStorage.cart||localStorage.cart.length<2) {
-                        cart.push({id: this.item.id, count: this.count});
-                        count = this.count;
-                    }
-                    else{
-                        var array = JSON.parse(localStorage.cart);
-                        array.push({id: this.item.id, count: this.count});
-                        for (var index = 0; index < array.length; index++) {
-                            if (!array[index]) continue;
-                            var b = 0, temp = array[index].id;
-                            for (var j = 0; j < array.length; j++) {
-                                if (!array[j] || temp != array[j].id) continue;
-                                if (++b > 1) array[j] = null;
-                            }
-                            cart.push({id: array[index].id, count: array[index].count + b - 1});
-                            count += array[index].count + b - 1;
-                        }
-                    }
-                    localStorage.cart = JSON.stringify(cart);
-                    this.$store.commit('setCartLength', count);
-                    this.count = 1;
-                    this.item = null;
-                    if(order==1) this.$router.push("/cart/[]");
-                }
+                this.$store.commit('cart', {id: this.item.id, count: this.count});
+                this.count = 1;
+                this.item = null;
+                if(order) this.$router.push("/cart/[]");
             }
         }
     }

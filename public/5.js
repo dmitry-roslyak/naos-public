@@ -113,7 +113,6 @@ var self,
     _data = {
     lng: {},
     products: [],
-    result: [],
     payment: 'cash',
     delivery: 'customer',
     cardValidate: { number: false, expire: { month: false, year: false }, cvv2: false },
@@ -130,8 +129,8 @@ var self,
         },
         total: function total() {
             var res = 0;
-            for (var i = 0; i < this.result.length; i++) {
-                res += this.result[i].price * this.$store.state.currency * this.result[i].count;
+            for (var i = 0; i < this.products.length; i++) {
+                res += this.products[i].price * this.$store.state.currency * this.products[i].count;
             }
             return res;
         }
@@ -139,57 +138,35 @@ var self,
     created: function created() {
         self = this;
         this.lng = window.lng;
-        var tempIds = JSON.parse(this.ids1);
-        if (tempIds.length) {
-            for (var i = 0; i < tempIds.length; i++) {
-                this.products.push({ id: tempIds[i], count: 1 });
+        var requestIDs = JSON.parse(this.ids1);
+        if (requestIDs.length) {
+            for (var i = 0; i < requestIDs.length; i++) {
+                this.$store.commit('cart', { id: requestIDs[i], count: 1 });
             }
-            this.$store.commit('setCartLength', tempIds.length);
-            localStorage.cart = JSON.stringify(this.products);
-            this.get_prodsby_ids(tempIds);
         } else {
-            if (localStorage.cart && localStorage.cart.length > 1) {
-                this.products = JSON.parse(localStorage.cart);
-                for (var i = 0; i < this.products.length; i++) {
-                    tempIds.push(this.products[i].id);
-                }
-                this.get_prodsby_ids(tempIds);
+            for (var key in this.$store.state.cart) {
+                requestIDs.push(key);
             }
         }
+        if (requestIDs.length) this.get_prodsby_ids(requestIDs);
     },
 
     methods: {
-        rmFromCart: function rmFromCart(i) {
-            for (var j = 0; j < this.products.length; j++) {
-                if (this.products[j].id == this.result[i].id) {
-                    var count = this.$store.state.cartLength - this.result[i].count;
-                    this.$store.commit('setCartLength', count);
-                    this.products.splice(j, 1);
-                }
-            }
-            this.result.splice(i, 1);
-            localStorage.cart = JSON.stringify(this.products);
-        },
-        cartClear: function cartClear() {
-            this.$store.commit('setCartLength', 0);
-            localStorage.cart = '';
+        removeFromCart: function removeFromCart(id) {
+            self.products.forEach(function (element, i) {
+                if (element.id == id) self.products.splice(i, 1);
+            });
+            this.$store.commit('cart', { id: id, toRemove: true });
         },
         get_prodsby_ids: function get_prodsby_ids(ids) {
-            if (ids.length) {
-                axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
-                    var res = response.data;
-                    for (var i = 0; i < self.products.length; i++) {
-                        for (var j = 0; j < res.length; j++) {
-                            if (self.products[i].id == res[j].id) {
-                                res[j].count = self.products[i].count;
-                            }
-                        }
-                    }
-                    self.result = res;
-                }).catch(function (error) {
-                    self.$root.retry(self.get_prodsby_ids, error.response.status);
+            axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
+                self.products = response.data;
+                self.products.forEach(function (element) {
+                    element.count = self.$store.state.cart[element.id];
                 });
-            }
+            }).catch(function (error) {
+                self.$root.retry(self.get_prodsby_ids, error.response.status);
+            });
         },
         chk_input: function chk_input(i) {
             this.cardValidate.number = /^(\d{13,19})$/.test(this.card.number);
@@ -213,7 +190,7 @@ var self,
                 delivery: this.delivery,
                 delivery_adr: 'data_self.delivery adr'
             }).then(function (response) {
-                localStorage.cart = '';
+                self.$store.commit('cartClear');
                 // document.getElementById('order-done').style = "display: initial";
                 // setTimeout(function (params) {
                 //     document.getElementById('order-done').style = "display: none";
@@ -296,7 +273,7 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._l(_vm.result, function(item, i1) {
+          _vm._l(_vm.products, function(item) {
             return _c(
               "div",
               {
@@ -312,7 +289,7 @@ var render = function() {
                       staticClass: "action-item fake-link",
                       on: {
                         click: function($event) {
-                          _vm.rmFromCart(i1)
+                          _vm.removeFromCart(item.id)
                         }
                       }
                     },

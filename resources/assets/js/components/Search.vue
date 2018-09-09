@@ -31,10 +31,11 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-4">
-            <router-link to="/cart/[]" class="dr-btn fake-link pull-right">
+            <router-link v-show="cartVisible" to="/cart/[]" class="dr-btn fake-link pull-right">
                 <i class="fa fa-shopping-cart font1" aria-hidden="true"></i>
                 <div><nobr>{{lng.cart}}</nobr></div>
                 <span class="badge badge-offset" >{{this.$store.state.cartLength}}</span>
+                <!-- <span class="badge badge-offset" >{{cartLength}}</span> -->
             </router-link>
             <a href="#" class="dr-btn pull-right" disabled  @click="$event.preventDefault()">
                 <i class="fa fa-balance-scale font1" aria-hidden="true"></i>
@@ -45,17 +46,17 @@
     </div>
 </template>
 <script>
-    var self, data = {
+    var self, timerId, data = {
         lng: {},
         search_result: null,
         search_show: false,
         search_text: '',
-        timerId: 0
     };
     export default {
         data: function () {return data;},
         computed: {
-            currency: function () { return this.$store.state.currency }
+            currency: function () { return this.$store.state.currency },
+            cartVisible() { return this.$route.path.indexOf("cart") > -1 ? false : true }
         },
         mounted() {
             self = this;
@@ -67,11 +68,11 @@
                     this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
             },
             searchTimeout(){
-                if(this.timerId){
-                    clearTimeout(this.timerId);
-                    this.timerId = setTimeout(function(){ self.toSearch()},500);
+                if(timerId){
+                    clearTimeout(timerId);
+                    timerId = setTimeout(function(){ self.toSearch()},500);
                 }
-                else this.timerId = setTimeout(function(){ self.toSearch()},500);
+                else timerId = setTimeout(function(){ self.toSearch()},500);
             },
             toSearch() {
                 if (this.search_text > '') {

@@ -6406,14 +6406,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var self,
+    timerId,
     _data = {
     lng: {},
     search_result: null,
     search_show: false,
-    search_text: '',
-    timerId: 0
+    search_text: ''
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -6422,6 +6423,9 @@ var self,
     computed: {
         currency: function currency() {
             return this.$store.state.currency;
+        },
+        cartVisible: function cartVisible() {
+            return this.$route.path.indexOf("cart") > -1 ? false : true;
         }
     },
     mounted: function mounted() {
@@ -6434,12 +6438,12 @@ var self,
             if (this.$store.state.compare_list.length > 1) this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
         },
         searchTimeout: function searchTimeout() {
-            if (this.timerId) {
-                clearTimeout(this.timerId);
-                this.timerId = setTimeout(function () {
+            if (timerId) {
+                clearTimeout(timerId);
+                timerId = setTimeout(function () {
                     self.toSearch();
                 }, 500);
-            } else this.timerId = setTimeout(function () {
+            } else timerId = setTimeout(function () {
                 self.toSearch();
             }, 500);
         },
@@ -6513,33 +6517,10 @@ var _data = {
 
     methods: {
         buy: function buy(order) {
-            if (this.item) {
-                var count = 0,
-                    cart = [];
-                if (!localStorage.cart || localStorage.cart.length < 2) {
-                    cart.push({ id: this.item.id, count: this.count });
-                    count = this.count;
-                } else {
-                    var array = JSON.parse(localStorage.cart);
-                    array.push({ id: this.item.id, count: this.count });
-                    for (var index = 0; index < array.length; index++) {
-                        if (!array[index]) continue;
-                        var b = 0,
-                            temp = array[index].id;
-                        for (var j = 0; j < array.length; j++) {
-                            if (!array[j] || temp != array[j].id) continue;
-                            if (++b > 1) array[j] = null;
-                        }
-                        cart.push({ id: array[index].id, count: array[index].count + b - 1 });
-                        count += array[index].count + b - 1;
-                    }
-                }
-                localStorage.cart = JSON.stringify(cart);
-                this.$store.commit('setCartLength', count);
-                this.count = 1;
-                this.item = null;
-                if (order == 1) this.$router.push("/cart/[]");
-            }
+            this.$store.commit('cart', { id: this.item.id, count: this.count });
+            this.count = 1;
+            this.item = null;
+            if (order) this.$router.push("/cart/[]");
         }
     }
 });
@@ -51848,7 +51829,7 @@ var render = function() {
                 staticClass: "btn btn-primary btn-lg btn-block",
                 on: {
                   click: function($event) {
-                    _vm.buy(1)
+                    _vm.buy(true)
                   }
                 }
               },
@@ -52282,6 +52263,14 @@ var render = function() {
           _c(
             "router-link",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.cartVisible,
+                  expression: "cartVisible"
+                }
+              ],
               staticClass: "dr-btn fake-link pull-right",
               attrs: { to: "/cart/[]" }
             },
@@ -68509,38 +68498,34 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         ctg_id: 0,
         ctg_ids: [],
         flt_ids: [0],
-        currency: 0
+        currency: 0,
+        cart: {}
     },
-    // mutations: {
-    //     cart: function(t, e) {
-    //         if (e.length) {
-    //             for (var n = 0, r = 0; n < e.length; n++)
-    //                 r += e[n].count;
-    //             t.cartLength = r,
-    //             t.cart = e
-    //         } else {
-    //             for (var n = t.cart.length - 1; n >= 0; n--)
-    //                 if (t.cart[n].id == e.id) {
-    //                     e.count ? (t.cart[n].count += e.count,
-    //                     t.cartLength += e.count) : (t.cartLength -= t.cart[n].count,
-    //                     t.cart.splice(n, 1)),
-    //                     n = 1;
-    //                     break
-    //                 }
-    //             n < 1 && (t.cart.push({
-    //                 id: e.id,
-    //                 count: e.count
-    //             }),
-    //             t.cartLength += e.count),
-    //             localStorage.cart = t.cart.length ? JSON.stringify(t.cart) : ""
-    //         }
-    //     },
-    //     cartClear: function(t) {
-    //         t.cartLength = 0,
-    //         t.cart.length = 0
-    //     }
-    // }
     mutations: {
+        cartClear: function cartClear(state) {
+            state.cart = {};
+            localStorage.cart = '';
+        },
+        cart: function cart(state, item) {
+            if (item) {
+                state.cart[item.id] ? state.cart[item.id] += item.count : state.cart[item.id] = item.count;
+                if (item.toRemove) delete state.cart[item.id];
+                localStorage.cart = JSON.stringify(state.cart);
+            } else {
+                if (localStorage.cart && localStorage.cart.length) {
+                    try {
+                        state.cart = JSON.parse(localStorage.cart);
+                    } catch (error) {
+                        console.log(error);
+                        localStorage.cart = '';
+                    }
+                }
+            }
+            state.cartLength = 0;
+            for (var key in state.cart) {
+                state.cartLength += state.cart[key];
+            }
+        },
         set_currency: function set_currency(state, value) {
             state.currency = value;
         },
@@ -68551,9 +68536,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
             state.ctg_id = id;
             state.compare_list.length = 0;
             state.flt_ids.length = 0;
-        },
-        setCartLength: function setCartLength(state, count) {
-            state.cartLength = count;
         },
 
         compare: function compare(state, item) {
@@ -68586,21 +68568,7 @@ var app = new Vue({
         this.lng = window.lng;
         this.$store.commit('set_currency', window.Laravel.currency.rate);
         if (window.Laravel.user) this.user = window.Laravel.user.name;
-        if (localStorage.cart) {
-            var count = 0,
-                array = JSON.parse(localStorage.cart);
-            for (var index = 0; index < array.length; index++) {
-                if (!array[index]) continue;
-                var b = 0,
-                    temp = array[index].id;
-                for (var j = 0; j < array.length; j++) {
-                    if (!array[j] & temp != array[j].id) continue;
-                    if (++b > 1) array[j] = null;
-                }
-                count += array[index].count + b - 1;
-                this.$store.commit('setCartLength', count);
-            }
-        }
+        this.$store.commit('cart');
     },
 
     methods: {
