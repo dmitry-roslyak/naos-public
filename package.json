@@ -23,6 +23,8 @@
         "bootstrap-sass": "^3.3.7",
         "chart.js": "^2.7.2",
         "firebase": "^5.0.4",
+        "lodash.debounce": "^4.0.8",
+        "lodash.throttle": "^4.1.1",
         "vee-validate": "^2.0.6",
         "vue-router": "^3.0.1",
         "vue-star-rating": "^1.6.0",

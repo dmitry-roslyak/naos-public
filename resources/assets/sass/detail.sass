@@ -1,35 +1,32 @@
-.prod-container
-    position: relative
-    height: 22em
-    background-color: white
-    border: 1px solid cornflowerblue
 .tb-offer
+    position: absolute
+    top: 0
     text-align: center
     border: 1px solid tomato
     border-width: 0 0 1px
-    margin-right: 0.2em
-    /*margin-right: 0.2em;*/
-    /*border-radius: 8px 0 0 8px;*/
-    /*box-shadow: 0 0 8px red;*/
-.tb-offer .offer-caption
-    background-color: tomato
-    color: white
-    padding: 0.2em
+    border-radius: 0 0 8px 0
+    box-shadow: 0 0 8px red
+    & span:nth-child(1)
+        display: inline-block
+        padding: 0.15em 0.6em
+        background-color: tomato
+        color: white
+    & span:nth-child(2)
+        padding: 0 0.4em
+        color: tomato
 .btn-buy
     transition: all 0.3s
     position: absolute
     padding: 0.6em 1em
-    bottom: -1px
-    right: -1px
+    border: 0px solid white
+    border-width: 1px 0 0 1px
+    border-radius: 0.8rem 0
+    right: 0
+    bottom: 0
     width: 10em
     color: white
-    background-color: cornflowerblue
-    border-top-left-radius: 8px
     &:hover
         background-color: royalblue
-@media screen and (max-width: 580px)
-    .hidden-exs
-        display: none
 .border1
     background-color: white
     border: 1px solid lightgray

@@ -114,7 +114,7 @@
             getSelectedProd() {
                 var price = [];
                 price.push(this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency);
-                axios.get('prod_filter', {
+               axios.get('prod_filter', {
                     params: {
                         ctg_id: this.$store.state.ctg_id,
                         skip: this.paginator.skip,
@@ -139,9 +139,7 @@
                         return t - e
                     })
                     self.paginator.total = response.data[0]
-                }).catch(function (error) {
-                    self.$root.retry(self.getSelectedProd, error.response.status);
-                });
+                }).catch(self.$root.retry(self.getSelectedProd));
             },
             buyItem(item){
                 if(item.available) this.$refs.buyModal.$data.item = item;
@@ -163,9 +161,7 @@
                     id: self.items[i].id
                 }).then(function (response) {
                     self.items[i].isWish = response.data ? true : false;
-                }).catch(function (error) {
-                    self.$root.retry(self.to_wish, error.response.status);
-                });
+                }).catch(self.$root.retry(self.to_wish, i));
             }
         }
     }

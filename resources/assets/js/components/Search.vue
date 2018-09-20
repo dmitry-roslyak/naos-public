@@ -86,9 +86,7 @@
                                 self.search_show = 0;
                                 self.search_result = 0;
                             }else self.search_show = 1;
-                        }).catch(function (error) {
-                            self.$root.retry(self.toSearch, error.response.status);
-                        });
+                        }).catch(self.$root.retry(self.toSearch));
                     }, 500)
                 } else self.search_show = 0;
             }

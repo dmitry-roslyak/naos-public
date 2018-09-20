@@ -4,24 +4,24 @@
         <router-view></router-view>
 </transition>
 <footer class="footer">
-        <a class="col-md-2"  href="https://laravel.com">
-                <div class="inv">
+        <a class="col-sm-2 hidden-xs"  href="https://laravel.com">
+                <!-- <div class="inv"> -->
                         <img src="/images/LaravelLogo.png">
                         <span style="font-size:18px;color: #e74430;">Laravel</span>
-                </div>
+                <!-- </div> -->
         </a>
-        <a class="col-md-2"  href="https://Vuejs.org">
+        <a class="col-sm-2 hidden-xs"  href="https://Vuejs.org">
                 <img src="/images/Vue.png">
                 VUE.JS
         </a>
-        <a class="col-md-2" href="https://webpack.js.org/">
+        <a class="col-sm-2 hidden-xs" href="https://webpack.js.org/">
                 <img class="logo" src="https://webpack.js.org/e0b5805d423a4ec9473ee315250968b2.svg" alt="webpack logo">
         </a>
-        <a class="col-md-2" href="https://getbootstrap.com/docs/3.3/">
+        <a class="col-sm-2 hidden-xs" href="https://getbootstrap.com/docs/3.3/">
                 <img src="/images/Boostrap_logo.svg.png">
                 <span style="font-size:1.6em">Boostrap</span>
         </a>
-        <a class="col-md-2" href="https://pusher.com/">
+        <a class="col-sm-2 hidden-xs" href="https://pusher.com/">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="125 90 750 210" width="100%">
                         <g id="Layer_1">
                                 <path fill="#300d4f" d="M327.7 256.6V133.5c0-1.3 1-2.3 2.3-2.3h35.8c22.7 0 36.8 13.5 36.8 36.1s-16 37-37 37h-19.1c-.6 0-1.2.5-1.2 1.2v51.2c0 1.3-1 2.3-2.3 2.3h-13c-1.2 0-2.3-1.1-2.3-2.4zm38.2-67.4c12 0 18.8-10.2 18.8-21.8 0-12-6.2-21.1-18.8-21.1h-19.3c-.6 0-1.2.5-1.2 1.2V188c0 .6.5 1.2 1.2 1.2h19.3z" class="st2"></path>
@@ -34,10 +34,10 @@
                         </g>
                 </svg>
         </a>
-        <a class="col-md-2" href="https://sass-lang.com/">
-                <div class="inv">
+        <a class="col-sm-2 hidden-xs" href="https://sass-lang.com/">
+                <!-- <div class="inv"> -->
                         <img alt="Sass" src="https://sass-lang.com//assets/img/logos/logo-b6e1ef6e.svg">
-                </div>
+                <!-- </div> -->
         </a>
         <div class="col-xs-12">
                 <h5>Copyright&nbsp;&copy;&nbsp;2017-2018&nbsp;Roslyak Dmitry</h5>

@@ -205,22 +205,19 @@ const app = new Vue({
         * Retry request if connection refused 
         * @method retry
         * @param {Function} request function
-        * @param {Number} HTTP response code 
+        * @param {Object} arguments
         */
-        retry(f,e) {
-            if(e) app.ajaxError = e;
-            else {
-                setTimeout(function () {
-                    if(!app.n) app.n = 0;
-                    if(app.n<6) {
-                        app.n++;
-                        f();
-                    }
-                    else{
-                        app.ajaxError = 5;
-                        app.n = 0;
-                    }
-                },700);
+        retry(f, args){
+            var self = this
+            return function(error){
+                if(!self.retry.count) self.retry.count = 0
+                console.log(error)
+                if(self.retry.count++ < 6) {
+                    _.throttle(f.bind(null, args),750)
+                } else {
+                    self.retry.count = 0
+                    app.ajaxError = error.message.length < 150 ? error.message : 'Shit happens'
+                }
             }
         },
         googleIn() {

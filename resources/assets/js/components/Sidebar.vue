@@ -45,6 +45,8 @@
     </div>
 </template>
 <script>
+    var debounce = require('lodash.debounce');
+    var throttle = require('lodash.throttle');
     var self, data = {
         lng: {},
         catalog: [],
@@ -70,11 +72,16 @@
             priceRangeChange() {
                 _.throttle(this.$parent.getSelectedProd, 750)
             },
-            expand(el){
+            expand: throttle(function(el) {
                 $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();
                 $(el.getElementsByClassName('fa-angle-up')[0]).toggle();
                 $(el.getElementsByClassName('fa-angle-down')[0]).toggle();
-            },
+            }, 300, { 'trailing': false }),
+            // expand(el){
+            //     $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();
+            //     $(el.getElementsByClassName('fa-angle-up')[0]).toggle();
+            //     $(el.getElementsByClassName('fa-angle-down')[0]).toggle();
+            // },
             catalog_btn_toggle(i){
                 i?$(".ctg-frm").slideDown():$(".ctg-frm").slideUp();
             },
@@ -131,6 +138,7 @@
                 return o
             },
             toFilter: function() {
+                console.time('cart add')
                 for (var t = [], e = [], i = document.getElementsByClassName("checkbox"), a = 0; a < i.length; a++)
                     if (i[a].firstChild.firstChild.checked) {
                         var s = i[a].firstChild.firstChild.dataset.i1
@@ -155,6 +163,7 @@
                             self.filters[a].values[o].count = self.filters[a].values[o].prod_ids.length
                     }
                 self.$store.commit('set_filter_params', { flt_ids: e });
+                console.timeEnd('cart add')
                 window._.throttle(this.$parent.getSelectedProd, 750)
             }
         }

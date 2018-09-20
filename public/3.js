@@ -95,6 +95,17 @@ var self,
         func: null
     }
 };
+function something(params) {
+    return function () {
+        try {
+            // console.log(this)
+            // console.log(arguments)
+            params();
+        } catch (error) {
+            console.log('error');
+        }
+    };
+}
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
@@ -108,7 +119,7 @@ var self,
         self = this;
         this.lng = window.lng;
         this.paginator.func = this.getSelectedProd;
-        this.getSelectedProd();
+        this.getSelectedProd('valu', 1);
         // window.onhashchange= function(){
         //     if (location.hash != temp) data_self.anmRunning=0;
         // };
@@ -152,9 +163,7 @@ var self,
                     return t - e;
                 });
                 self.paginator.total = response.data[0];
-            }).catch(function (error) {
-                self.$root.retry(self.getSelectedProd, error.response.status);
-            });
+            }).catch(self.$root.retry(self.getSelectedProd));
         },
         buyItem: function buyItem(item) {
             if (item.available) this.$refs.buyModal.$data.item = item;
@@ -177,9 +186,7 @@ var self,
                 id: self.items[i].id
             }).then(function (response) {
                 self.items[i].isWish = response.data ? true : false;
-            }).catch(function (error) {
-                self.$root.retry(self.to_wish, error.response.status);
-            });
+            }).catch(self.$root.retry(self.to_wish, i));
         }
     }
 });
@@ -194,7 +201,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.itmc {\n  margin: 0 5px 5px;\n  padding: 5px;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.6rem;\n}\n.itmc select {\n    height: 27px;\n    display: inline;\n}\n#items-on-page {\n  width: 60px;\n}\n#sortby {\n  width: 180px;\n}\n.product-state {\n  display: inline-block;\n  border-radius: 5px;\n  font-weight: 900;\n  background-color: lightgray;\n  cursor: default;\n}\n.product-state > * {\n    display: inline-block;\n    margin: 7px;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n.ic-s:hover .item-spec {\n    font-size: 1.5rem;\n    width: 100%;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n", ""]);
+exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  /* margin: 0 5px 5px; */\n  padding: 3px 30px;\n  margin-left: -5px;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.1em;\n  line-height: 2em;\n}\n.itmc select {\n    height: 27px;\n    display: inline;\n}\n#items-on-page {\n  width: 60px;\n}\n#sortby {\n  width: 180px;\n}\n.product-state {\n  display: inline-block;\n  border-radius: 5px;\n  font-weight: 900;\n  background-color: lightgray;\n  cursor: default;\n}\n.product-state > * {\n    display: inline-block;\n    margin: 7px;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n.ic-s:hover .item-spec {\n    font-size: 1.5rem;\n    width: 100%;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n", ""]);
 
 // exports
 

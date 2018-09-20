@@ -6180,8 +6180,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 var self,
     _data = {
@@ -6215,9 +6213,7 @@ var self,
         get_random_products: function get_random_products() {
             axios.get('/prod_rnd').then(function (response) {
                 self.items = response.data;
-            }).catch(function (error) {
-                self.$root.retry(self.get_random_products, error.response.status);
-            });
+            }).catch(self.$root.retry(self.get_random_products));
         }
     }
 });
@@ -6458,9 +6454,7 @@ var self,
                             self.search_show = 0;
                             self.search_result = 0;
                         } else self.search_show = 1;
-                    }).catch(function (error) {
-                        self.$root.retry(self.toSearch, error.response.status);
-                    });
+                    }).catch(self.$root.retry(self.toSearch));
                 }, 500);
             } else self.search_show = 0;
         }
@@ -23665,21 +23659,6 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 // module
 exports.push([module.i, "\n.vue-star-rating-star[data-v-616924d1] {\r\n    display: inline-block;\n}\n.vue-star-rating-pointer[data-v-616924d1] {\r\n    cursor: pointer;\n}\n.vue-star-rating[data-v-616924d1] {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\n}\n.vue-star-rating-inline[data-v-616924d1] {\r\n    display: -webkit-inline-box;\r\n    display: -ms-inline-flexbox;\r\n    display: inline-flex;\n}\n.vue-star-rating-rating-text[data-v-616924d1] {\r\n    margin-top: 7px;\r\n    margin-left: 7px;\n}\n.vue-star-rating-rtl[data-v-616924d1] {\r\n    direction: rtl;\n}\n.vue-star-rating-rtl .vue-star-rating-rating-text[data-v-616924d1] {\r\n    margin-right: 10px;\r\n    direction:rtl;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ef4954\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Home.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.carousel-content {\n  color: white !important;\n  padding: 5px;\n  text-shadow: 0 0 5px black, 0 0 5px black;\n  background: radial-gradient(#505050, rgba(255, 0, 0, 0));\n  border-radius: 14px;\n}\n.carousel-content:hover {\n    color: white;\n}\n.carousel-img {\n  margin: 15px auto;\n  height: 33rem !important;\n}\n.carousel-inner-bcolor {\n  background-color: gray;\n}\n", ""]);
 
 // exports
 
@@ -52395,7 +52374,7 @@ var render = function() {
               _vm._v(" "),
               _vm._l(_vm.dummyCategory, function(i) {
                 return _c("div", { key: i, staticClass: "ctg-itm fake-link" }, [
-                  _vm._v("*")
+                  _vm._v(" ")
                 ])
               })
             ],
@@ -52405,7 +52384,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm.items.length
-        ? _c("div", { staticClass: "col-sm-6" }, [
+        ? _c("div", { staticClass: "col-sm-9" }, [
             _c(
               "div",
               {
@@ -52413,7 +52392,17 @@ var render = function() {
                 attrs: { id: "carousel1", "data-ride": "carousel" }
               },
               [
-                _vm._m(0),
+                _c(
+                  "ol",
+                  { staticClass: "carousel-indicators" },
+                  _vm._l(_vm.items, function(item, i) {
+                    return _c("li", {
+                      key: item.id,
+                      class: { active: !i },
+                      attrs: { "data-target": "#carousel1", "data-slide-to": i }
+                    })
+                  })
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -52424,58 +52413,70 @@ var render = function() {
                   _vm._l(_vm.items, function(item, i) {
                     return _c(
                       "div",
-                      { key: item.id, class: "item " + (i ? "" : "active") },
+                      { key: item.id, class: { item: true, active: !i } },
                       [
                         _c("img", {
                           staticClass: "carousel-img",
                           attrs: { src: "file/" + item.img_src, alt: "..." }
                         }),
                         _vm._v(" "),
-                        _c("div", { staticClass: "carousel-caption" }, [
-                          _c(
-                            "h3",
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "carousel-content",
-                                  attrs: {
-                                    to: {
-                                      name: "detail",
-                                      params: { id: item.id }
+                        _c(
+                          "div",
+                          { staticClass: "carousel-caption carousel-content" },
+                          [
+                            _c(
+                              "h3",
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    attrs: {
+                                      to: {
+                                        name: "detail",
+                                        params: { id: item.id }
+                                      }
                                     }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(item.name) +
-                                      "\n                            "
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.name) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  "font-style": "italic",
+                                  "text-shadow": "0 0 1rem black"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    (_vm.currency * item.price).toFixed(1) +
+                                      " " +
+                                      _vm.lng.currency
                                   )
-                                ]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "carousel-content" }, [
-                            _vm._v(
-                              _vm._s(
-                                (_vm.currency * item.price).toFixed(1) +
-                                  " " +
-                                  _vm.lng.currency
-                              )
+                                )
+                              ]
                             )
-                          ])
-                        ])
+                          ]
+                        )
                       ]
                     )
                   })
                 ),
                 _vm._v(" "),
-                _vm._m(1),
+                _vm._m(0),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]
             )
           ])
@@ -52484,31 +52485,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ol", { staticClass: "carousel-indicators" }, [
-      _c("li", {
-        staticClass: "active",
-        attrs: { "data-target": "#carousel1", "data-slide-to": "0" }
-      }),
-      _vm._v(" "),
-      _c("li", {
-        attrs: { "data-target": "#carousel1", "data-slide-to": "1" }
-      }),
-      _vm._v(" "),
-      _c("li", {
-        attrs: { "data-target": "#carousel1", "data-slide-to": "2" }
-      }),
-      _vm._v(" "),
-      _c("li", {
-        attrs: { "data-target": "#carousel1", "data-slide-to": "3" }
-      }),
-      _vm._v(" "),
-      _c("li", { attrs: { "data-target": "#carousel1", "data-slide-to": "4" } })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -55643,33 +55619,6 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../css-loader/index.js!../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-616924d1\",\"scoped\":true,\"hasInlineConfig\":true}!../../vue-loader/lib/selector.js?type=styles&index=0!./star-rating.vue", function() {
      var newContent = require("!!../../css-loader/index.js!../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-616924d1\",\"scoped\":true,\"hasInlineConfig\":true}!../../vue-loader/lib/selector.js?type=styles&index=0!./star-rating.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ef4954\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Home.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ef4954\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Home.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3f139959", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ef4954\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ef4954\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -68460,7 +68409,7 @@ Vue.component('charts', function (resolve) {
     __webpack_require__.e/* require */(7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/charts.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
 Vue.component('sidebar', function (resolve) {
-    __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Sidebar.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Sidebar.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
 // const products = Vue.component('products', require('./components/Products.vue'));
 // const detail = Vue.component('detail', require('./components/detail.vue'));
@@ -68473,10 +68422,10 @@ var products = Vue.component('products', function (resolve) {
     __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Products.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
 var detail = Vue.component('detail', function (resolve) {
-    __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/detail.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/detail.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
 var comments = Vue.component('comments', function (resolve) {
-    __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/comm1.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/comm1.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
 var compare = Vue.component('compare', function (resolve) {
     __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Compare.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
@@ -68599,21 +68548,20 @@ var app = new Vue({
         * Retry request if connection refused 
         * @method retry
         * @param {Function} request function
-        * @param {Number} HTTP response code 
+        * @param {Object} arguments
         */
-        retry: function retry(f, e) {
-            if (e) app.ajaxError = e;else {
-                setTimeout(function () {
-                    if (!app.n) app.n = 0;
-                    if (app.n < 6) {
-                        app.n++;
-                        f();
-                    } else {
-                        app.ajaxError = 5;
-                        app.n = 0;
-                    }
-                }, 700);
-            }
+        retry: function retry(f, args) {
+            var self = this;
+            return function (error) {
+                if (!self.retry.count) self.retry.count = 0;
+                console.log(error);
+                if (self.retry.count++ < 6) {
+                    _.throttle(f.bind(null, args), 750);
+                } else {
+                    self.retry.count = 0;
+                    app.ajaxError = error.message.length < 150 ? error.message : 'Shit happens';
+                }
+            };
         },
         googleIn: function googleIn() {
             this.logIn(new firebase.auth.GoogleAuthProvider());
@@ -68715,10 +68663,6 @@ window.axios.defaults.headers.common = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ef4954\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Home.vue")
-}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Home.vue")
@@ -68727,7 +68671,7 @@ var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/templa
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */

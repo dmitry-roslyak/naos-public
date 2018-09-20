@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid">
-        <div class="panel panel-primary" style="margin:15px 0 0">
+    <div >
+        <div class="panel panel-primary" style="margin:15px 0 0;border-width: 0;">
             <div class="panel-heading" style="padding:6px 15px">
                 <i class="fa fa-bar-chart"  aria-hidden="true"></i>
                 <span>{{lng.hist_graph}}&nbsp;</span>

@@ -64,14 +64,14 @@ var self,
                 self.userInfo = response.data;
                 if (self.userInfo.fname) self.edit = false;
             }).catch(function (error) {
-                self.$root.retry(self.usr_info, error.response.status);
+                self.$root.retry(self.usr_info, error);
             });
         },
         upd_usr_info: function upd_usr_info() {
             if (!self.edit) self.edit = true;else {
                 self.edit = false;
                 axios.post('/update_user_info', { user: self.userInfo }).catch(function (error) {
-                    self.$root.retry(self.usr_info, error.response.status);
+                    self.$root.retry(self.usr_info, error);
                 });
             }
         }

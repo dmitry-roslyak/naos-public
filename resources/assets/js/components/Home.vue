@@ -9,30 +9,28 @@
                 <div class="ctg-itm fake-link" v-for="item in catalog" @click="category(item.id)" :key="item.id">
                     {{lng[item.name]?lng[item.name]:item.name}}
                 </div>
-                <div class="ctg-itm fake-link" v-for="i in dummyCategory" :key="i">*</div>
+                <div class="ctg-itm fake-link" v-for="i in dummyCategory" :key="i">&nbsp;</div>
             </ul>
         </div>
-        <div v-if="items.length" class="col-sm-6">
+        <div v-if="items.length" class="col-sm-9">
             <div id="carousel1" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
-                    <li data-target="#carousel1" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel1" data-slide-to="1"></li>
-                    <li data-target="#carousel1" data-slide-to="2"></li>
-                    <li data-target="#carousel1" data-slide-to="3"></li>
-                    <li data-target="#carousel1" data-slide-to="4"></li>
+                    <li  data-target="#carousel1"
+                        v-for="(item,i) in items" :class="{'active': !i}" :data-slide-to="i" :key="item.id">
+                    </li>
                 </ol>
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner carousel-inner-bcolor" role="listbox">
-                    <div v-for="(item,i) in items" :class="'item '+(i?'':'active')" :key="item.id">
+                    <div v-for="(item,i) in items" :class="{'item': true, 'active': !i}" :key="item.id">
                         <img class="carousel-img" :src="'file/'+item.img_src" alt="...">
-                        <div class="carousel-caption">
+                        <div class="carousel-caption carousel-content">
                             <h3>
-                                <router-link :to="{ name: 'detail', params: { id: item.id }}" class="carousel-content">
+                                <router-link :to="{ name: 'detail', params: { id: item.id }}">
                                     {{item.name}}
                                 </router-link>
                             </h3>
-                            <span class="carousel-content">{{(currency * item.price).toFixed(1)+' '+lng.currency}}</span>
+                            <span style="font-style:italic;text-shadow:0 0 1rem black">{{(currency * item.price).toFixed(1)+' '+lng.currency}}</span>
                         </div>
                     </div>
                 </div>
@@ -75,26 +73,8 @@
             get_random_products() {
                 axios.get('/prod_rnd').then(function (response) {
                     self.items = response.data;
-                }).catch(function (error) {
-                    self.$root.retry(self.get_random_products, error.response.status);
-                });
+                }).catch(self.$root.retry(self.get_random_products));
             }
         }
     }
 </script>
-
-<style lang="sass">
-.carousel-content
-    color: white !important
-    padding: 5px
-    text-shadow: 0 0 5px black, 0 0 5px black
-    background: radial-gradient(rgba(80,80,80,1),rgba(255,0,0,0))
-    border-radius: 14px
-    &:hover
-        color: white
-.carousel-img
-    margin: 15px auto
-    height: 33rem !important
-.carousel-inner-bcolor
-    background-color: gray
-</style>

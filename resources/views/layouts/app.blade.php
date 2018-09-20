@@ -49,7 +49,7 @@
 </head>
 <body>
     <div id='app'>
-        <div :data-err="ajaxError?1:0" class="ajax-error thumbnail">
+        <div :data-err="ajaxError?true:false" class="ajax-error thumbnail">
             <i class="fa fa-warning"></i>&nbsp;@{{ajaxError}}
             <span class="fake-link err-close" @click="ajaxError=0">X</span>
         </div>

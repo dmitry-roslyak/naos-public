@@ -2,8 +2,8 @@
     <div class="container-fluid" style="max-width: 80em;padding:0">
         <buy-modal ref="buyModal"></buy-modal>
         <div v-if="item" class="col-md-7" style="padding-right:0">
-            <h4 style="padding-left:8px">{{item.name}}</h4>
-            <div class="action-frm">
+            <!-- <h4 style="padding-left:8px">{{item.name}}</h4> -->
+            <div class="action-frm" style="border-color: white;border: 1px solid white;border-width: 0 0 1px 1px;background-color:inherit">
                 <a class="action-item fake-link" @click="to_wish()">
                     <span class="hidden-xs">{{lng.to_wishlist}}</span>
                     <i class="fa fa-heart heart-state" :data-check="item.isWish" aria-hidden="true"></i>
@@ -14,45 +14,47 @@
                     <div @click="gshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-google-plus"></i></div>
                 </a>
             </div>
-            <div class="prod-container">
+            <!-- <div class="col-sm-1" style="padding:0 2px;margin-top:8px;">
+                <div class="col-md-12 col-sm-12" style="margin:0;padding:0;height:4.85em" v-for="(img,i) in img_list" v-if="i<4">
+                    <div class="thumbnail" style="border-width:0;background-color: inherit;">
+                        <img v-bind:src="'file/'+img.img" @mouseover="imgZoom=img.img" @mouseleave="imgZoom=-1" style="max-height:4.85em;max-width:4em">  
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="col-xs-7 thumbnail" style="border-width: 0;background-color: transparent">
+                <img v-bind:src="'file/'+item.img_src" style="max-height:28rem">
+            </div> -->
+            <div id="carousel2" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators" v-if="item.gallery">
+                    <li data-target="#carousel2" data-slide-to="0" class="active"></li>
+                </ol>
+                <div class="carousel-inner carousel-inner-bcolor" role="listbox" style="background-color: inherit;background-image: linear-gradient(141deg, #ffffff00 0%, #ffffff00 40%, #1484e3 100%);">
+                    <div class="item active">
+                        <img class="carousel-img" :src="'file/'+item.img_src" alt="..." style="max-height:28rem">
+                        <!-- <div class="carousel-caption carousel-content">
+                            <h3>{{item.name}}</h3>
+                            <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                            <span>{{(currency * item.price).toFixed(1)+' '+lng.currency}}</span>
+                        </div> -->
+                        <div class="tb-offer" v-if="+offerTime > 0">
+                            <span>{{lng.discount +' -'+item.discount.discount+'%'}}</span>
+                            <span class="hidden-xs">{{
+                                lng.offer_end_at + " " +
+                                zero(offerTime.getDate()) + " " + 
+                                lng.offer_d + " " + 
+                                zero(offerTime.getHours()) + ":" + 
+                                zero(offerTime.getMinutes()) + ":" + 
+                                zero(offerTime.getSeconds())
+                                }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div class="btn-buy fake-link" v-if="item.available > 0" @click="buyItem(item)">
                     <i class="fa fa-cart-plus" aria-hidden="true"></i>&nbsp;&nbsp;
                         {{(item.discount?currency * item.price - currency * item.price/100*item.discount.discount : currency * item.price).toFixed(1)+' '+lng.currency}}
                 </div>
                 <div class="btn-buy disabled" v-else>{{lng.not_in_stock}}</div>
-                <!-- <div class="col-sm-1" style="padding:0 2px;margin-top:8px;">
-                    <div class="col-md-12 col-sm-12 hidden-exs" style="margin:0;padding:0;height:4.85em" v-for="(img,i) in img_list" v-if="i<4">
-                        <div class="thumbnail" style="border-width:0;background-color: inherit;">
-                            <img v-bind:src="'file/'+img.img" @mouseover="imgZoom=img.img" @mouseleave="imgZoom=-1" style="max-height:4.85em;max-width:4em">  
-                        </div>
-                    </div>
-                </div> -->
-                <div class="col-xs-7 thumbnail" style="border-width: 0;background-color: transparent">
-                    <img v-bind:src="'file/'+item.img_src" style="max-height:28rem">
-                </div>
-                <div class="col-xs-4" style="padding:2.5em 0 0 0">
-                    <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                    <div class="tb-offer" v-if="+offerTime > 0">
-                        <div class="offer-caption">{{lng.discount +' -'+item.discount.discount+'%'}}</div>
-                        <div class="hidden-exs">
-                            <h5 style="margin-left:1em">{{lng.offer_end_at}}</h5>
-                            <table class="table" style="margin-bottom: 0">
-                                <tr>
-                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getDate())}}</th>
-                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getHours())}}</th>
-                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getMinutes())}}</th> 
-                                    <th style="text-align: center;border-width:0">{{zero(offerTime.getSeconds())}}</th>
-                                </tr>
-                                <tr style="text-align: center">
-                                    <td style="border-width:0">{{lng.offer_d}}</td>
-                                    <td style="border-width:0">{{lng.offer_h}}</td>
-                                    <td style="border-width:0">{{lng.offer_m}}</td>
-                                    <td style="border-width:0">{{lng.offer_s}}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div style="margin-top:15px">
                 <ul class="nav nav-tabs" >
@@ -135,7 +137,7 @@
                     self.item.isWish = response.data ? true : false;
                     self.$forceUpdate();
                 }).catch(function (error) {
-                    self.$root.retry(self.to_wish, error.response.status);
+                    self.$root.retry(self.to_wish, error);
                 });
             },
             itemById(){
@@ -145,7 +147,7 @@
                     self.item.is_compare = self.$root.compareHas(self.item.id) > -1;
                     self.set_total_time();
                 }).catch(function (error) {
-                    self.$root.retry(self.itemById, error.response.status);
+                    self.$root.retry(self.itemById, error);
                 });    
             },
             set_total_time(){
