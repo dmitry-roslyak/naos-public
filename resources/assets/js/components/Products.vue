@@ -114,7 +114,7 @@
             getSelectedProd() {
                 var price = [];
                 price.push(this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency);
-               axios.get('prod_filter', {
+                axios.get('prod_filter', {
                     params: {
                         ctg_id: this.$store.state.ctg_id,
                         skip: this.paginator.skip,
@@ -127,7 +127,7 @@
                     var items = response.data[1];
                     for (var i = 0; i < items.length; i++) {
                         items[i].isWish = items[i].wish ? true : false;
-                        items[i].is_compare = self.$root.compareHas(items[i].id) > -1;
+                        items[i].is_compare = self.$store.state.compare_list.indexOf(items[i].id) > -1;
                         items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                         items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                     }
@@ -146,7 +146,7 @@
             },
             to_compare(i){
                 this.items[i].is_compare = this.items[i].is_compare ? false : true
-                this.$store.commit('compare', this.items[i]);
+                this.$store.commit('compare', this.items[i].id);
             },
             // anm_scale($event.target) //need remove?
             // anm_scale(e){

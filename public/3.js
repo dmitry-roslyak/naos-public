@@ -95,17 +95,6 @@ var self,
         func: null
     }
 };
-function something(params) {
-    return function () {
-        try {
-            // console.log(this)
-            // console.log(arguments)
-            params();
-        } catch (error) {
-            console.log('error');
-        }
-    };
-}
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
@@ -119,7 +108,7 @@ function something(params) {
         self = this;
         this.lng = window.lng;
         this.paginator.func = this.getSelectedProd;
-        this.getSelectedProd('valu', 1);
+        this.getSelectedProd();
         // window.onhashchange= function(){
         //     if (location.hash != temp) data_self.anmRunning=0;
         // };
@@ -151,7 +140,7 @@ function something(params) {
                 var items = response.data[1];
                 for (var i = 0; i < items.length; i++) {
                     items[i].isWish = items[i].wish ? true : false;
-                    items[i].is_compare = self.$root.compareHas(items[i].id) > -1;
+                    items[i].is_compare = self.$store.state.compare_list.indexOf(items[i].id) > -1;
                     items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                     items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                 }
@@ -170,7 +159,7 @@ function something(params) {
         },
         to_compare: function to_compare(i) {
             this.items[i].is_compare = this.items[i].is_compare ? false : true;
-            this.$store.commit('compare', this.items[i]);
+            this.$store.commit('compare', this.items[i].id);
         },
 
         // anm_scale($event.target) //need remove?

@@ -68391,7 +68391,7 @@ window._.throttle = function (func, timeout) {
 // channel.bind('my-event', function(data) {
 //   alert(data.message);
 // });
-window.socket = new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
+// window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -68450,7 +68450,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         compare_list: [],
         ctg_id: 0,
         ctg_ids: [],
-        flt_ids: [0],
+        flt_ids: [],
         currency: 0,
         cart: {}
     },
@@ -68482,8 +68482,11 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
         set_currency: function set_currency(state, value) {
             state.currency = value;
         },
-        set_filter_params: function set_filter_params(state, obj) {
-            state.flt_ids = obj.flt_ids;
+        setFilter: function setFilter(state, id) {
+            if (id) {
+                var i = state.flt_ids.indexOf(id);
+                i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
+            } else state.flt_ids.length = 0;
         },
         set_ctg_id: function set_ctg_id(state, id) {
             state.ctg_id = id;
@@ -68491,13 +68494,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
             state.flt_ids.length = 0;
         },
 
-        compare: function compare(state, item) {
-            if (item.is_compare) {
-                state.compare_list.push(item.id);
-            } else {
-                var i = app.compareHas(item.id);
-                if (i > -1) state.compare_list.splice(i, 1);
-            }
+        compare: function compare(state, id) {
+            var i = state.compare_list.indexOf(id);
+            i < 0 ? state.compare_list.push(id) : state.compare_list.splice(i, 1);
         }
     }
 });
@@ -68536,12 +68535,6 @@ var app = new Vue({
             }).catch(function (error) {
                 app.$root.retry(app.get_locale, error.response.status);
             });
-        },
-        compareHas: function compareHas(id) {
-            for (var i = 0; i < app.$store.state.compare_list.length; i++) {
-                if (app.$store.state.compare_list[i] == id) return i;
-            }
-            return -1;
         },
 
         /** 
