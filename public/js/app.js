@@ -6316,36 +6316,58 @@ var self;
     },
 
     methods: {
-        moveTo: function moveTo(t, e, n, i, a) {
-            var o = n.offsetWidth / (self.value.array.length - 1);
-            n.offsetLeft > e.pageX - t.offsetWidth || n.offsetLeft + n.offsetWidth < e.pageX - t.offsetWidth || t.offsetLeft != a[1].offsetLeft && e.pageX > parseInt(a[1].style.left) + t.offsetWidth || t.offsetLeft != a[0].offsetLeft && e.pageX < parseInt(a[0].style.left) + t.offsetWidth || (t.style.left = e.pageX - t.offsetWidth + "px", i.style.left = a[0].offsetWidth / 2 + a[0].offsetLeft + "px", i.style.width = a[1].offsetLeft - a[0].offsetLeft + "px", self.value.range = [self.value.array[Math.round((parseInt(a[0].style.left) - n.offsetLeft) / o)], self.value.array[Math.round((parseInt(a[1].style.left) - n.offsetLeft) / o)]], self.$emit("change"));
+        moveTo: function moveTo(circle, e, bar, filled, circles, offset) {
+            var pxPerPercent = bar.offsetWidth / 100,
+                step = (e.x - bar.offsetLeft + offset) / pxPerPercent,
+                percentPerArrayItem = 100 / (self.value.array.length - 1);
+
+            if ((parseInt(circle.style.left) < parseInt(circles[1].style.left) ? parseInt(circles[1].style.left) - step : step - parseInt(circles[0].style.left)) < 3 * percentPerArrayItem) return;
+            if (step < 0) circle.style.left = '0%';else if (step > 100) circle.style.left = '100%';else circle.style.left = step + '%';
+
+            filled.style.left = circles[0].style.left;
+            filled.style.width = parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%';
+
+            this.value.range = [this.value.array[Math.round(parseInt(circles[0].style.left) / percentPerArrayItem)], this.value.array[Math.round(parseInt(circles[1].style.left) / percentPerArrayItem)]];
+            this.$emit("change");
         },
         init: function init() {
-            var t = document.getElementsByClassName("circle"),
-                e = document.getElementsByClassName("filled")[0],
-                n = document.getElementsByClassName("bar")[0];
-            t[0].style.left = n.offsetLeft + "px";
-            t[1].style.left = n.offsetLeft + n.offsetWidth + "px";
-            this.value.range = [this.value.array[0], this.value.array[this.value.array.length - 1]];
-            n.onclick = function (i) {
-                var a = null;
-                a = Math.abs(i.offsetX - t[0].offsetLeft) < Math.abs(i.offsetX - t[1].offsetLeft) ? t[0] : t[1], self.moveTo(a, i, n, e, t);
-            };
-            for (var i = 0; i < t.length; i++) {
-                t[i].onmousedown = function (i) {
-                    var _this = this;
+            var circles = document.getElementsByClassName("circle"),
+                filled = document.getElementsByClassName("filled")[0],
+                bar = document.getElementsByClassName("bar")[0],
+                offset = circles[0].offsetLeft,
+                firstTouch = true;
 
-                    document.onmousemove = function (i) {
-                        self.moveTo(_this, i, n, e, t);
-                    }, document.onmouseup = function () {
-                        document.onmouseup = null;
-                        document.onmousemove = null;
-                        // var t = n.onclick;
-                        // n.onclick = function(e) {
-                        //     n.onclick = t
-                        // }
+            circles[0].style.left = "0%";
+            circles[1].style.left = '100%';
+
+            this.value.range = [this.value.array[0], this.value.array[this.value.array.length - 1]];
+            bar.onclick = function (i) {
+                // if(!isMousemove) return;
+                self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1], i, bar, filled, circles, offset);
+            };
+
+            var _loop = function _loop() {
+                var circle = circles[i];
+
+                circles[i].ontouchmove = function (params) {
+                    if (firstTouch) {
+                        offset = circles[0].offsetLeft;
+                        firstTouch = false;
+                    }
+                    var obj = { x: params.touches[0].clientX };
+                    self.moveTo(this, obj, bar, filled, circles, offset);
+                };
+                circles[i].onmousedown = function (e) {
+                    circle.onmousemove = function (move) {
+                        self.moveTo(circle, move, bar, filled, circles, offset);
+                    }, circle.onmouseleave = circle.onmouseup = function () {
+                        circle.onmousemove = null;
                     };
                 };
+            };
+
+            for (var i = 0; i < circles.length; i++) {
+                _loop();
             }
         }
     }
@@ -23628,7 +23650,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.bar,.filled {\n    position:relative\n}\n.bar {\n    top: -1rem;\n    margin: 3rem 2rem 0;\n    background-color: #d3d3d3;\n}\n.bar:hover .filled { \n    background-color:#4169e1\n}\n.filled {\n    height: 1rem;\n    background-color:#6495ed;\n    z-index: 2\n}\n.filled:hover {\n    background-color:#4169e1\n}\n.circle {\n    position:absolute;\n    top:-1rem;\n    margin-left:-4rem;\n    width:3rem;\n    height:3rem;\n    border-radius:2rem;\n    background-color:#fff;\n    -webkit-box-shadow:0 0 .6rem #a9a9a9;\n            box-shadow:0 0 .6rem #a9a9a9;\n    z-index:3\n}\n.circle:hover {\n    background-color:#f5f5f5\n}\n", ""]);
+exports.push([module.i, "\n.bar,.filled {\r\n    position:relative\n}\n.bar {\r\n    top: -1rem;\r\n    margin: 3rem 2rem 0;\r\n    background-color: #d3d3d3;\n}\n.bar:hover .filled { \r\n    background-color:#4169e1\n}\n.filled {\r\n    height: 1rem;\r\n    background-color:#6495ed;\r\n    z-index: 2\n}\n.filled:hover {\r\n    background-color:#4169e1\n}\n.circle {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius:2rem;\r\n    background-color:#fff;\r\n    -webkit-box-shadow:0 0 .6rem #a9a9a9;\r\n            box-shadow:0 0 .6rem #a9a9a9;\r\n    z-index:3\n}\n.circle:hover {\r\n    background-color:#f5f5f5\n}\r\n", ""]);
 
 // exports
 
@@ -51866,11 +51888,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "bar" }, [
-      _c("div", { staticClass: "circle", staticStyle: { left: "25px" } }),
+      _c("div", { staticClass: "circle" }),
       _vm._v(" "),
       _c("div", { staticClass: "filled" }),
       _vm._v(" "),
-      _c("div", { staticClass: "circle", staticStyle: { left: "214px" } })
+      _c("div", { staticClass: "circle" })
     ])
   }
 ]

@@ -1,8 +1,8 @@
 <template>
     <div class="bar">
-        <div class="circle" style="left: 25px;"></div> 
+        <div class="circle"></div> 
         <div class="filled"></div> 
-        <div class="circle" style="left: 214px;"></div>
+        <div class="circle"></div>
     </div>
 </template>
 <script>
@@ -29,40 +29,69 @@
             this.init()
         },
         methods: {
-            moveTo: function(t, e, n, i, a) {
-                var o = n.offsetWidth / (self.value.array.length - 1);
-                n.offsetLeft > e.pageX - t.offsetWidth || n.offsetLeft + n.offsetWidth < e.pageX - t.offsetWidth || t.offsetLeft != a[1].offsetLeft && e.pageX > parseInt(a[1].style.left) + t.offsetWidth || t.offsetLeft != a[0].offsetLeft && e.pageX < parseInt(a[0].style.left) + t.offsetWidth || (t.style.left = e.pageX - t.offsetWidth + "px",
-                i.style.left = a[0].offsetWidth / 2 + a[0].offsetLeft + "px",
-                i.style.width = a[1].offsetLeft - a[0].offsetLeft + "px",
-                self.value.range = [self.value.array[Math.round((parseInt(a[0].style.left) - n.offsetLeft) / o)], self.value.array[Math.round((parseInt(a[1].style.left) - n.offsetLeft) / o)]],
-                self.$emit("change"))
+            moveTo: function(circle, e, bar, filled, circles, offset) {
+                var pxPerPercent = bar.offsetWidth / 100,
+                    step = (e.x - bar.offsetLeft + offset ) / pxPerPercent,
+                    percentPerArrayItem = 100 / (self.value.array.length - 1);
+
+                if(
+                    (parseInt(circle.style.left) < parseInt(circles[1].style.left) 
+                    ? parseInt(circles[1].style.left) - step 
+                    :  step - parseInt(circles[0].style.left))
+                    < 3 * percentPerArrayItem
+                ) return;
+                if(step < 0)
+                    circle.style.left = '0%'
+                else if (step > 100)
+                    circle.style.left = '100%'
+                else
+                    circle.style.left = step + '%'
+
+                filled.style.left =  circles[0].style.left
+                filled.style.width =  parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%'
+
+                this.value.range = [
+                    this.value.array [Math.round((parseInt(circles[0].style.left)) / percentPerArrayItem )], 
+                    this.value.array [Math.round((parseInt(circles[1].style.left)) / percentPerArrayItem )]
+                ];
+                this.$emit("change")
             },
             init: function() {
-                var t = document.getElementsByClassName("circle")
-                  , e = document.getElementsByClassName("filled")[0]
-                  , n = document.getElementsByClassName("bar")[0];
-                t[0].style.left = n.offsetLeft + "px";
-                t[1].style.left = n.offsetLeft + n.offsetWidth + "px";
+                var circles = document.getElementsByClassName("circle")
+                    , filled = document.getElementsByClassName("filled")[0]
+                    , bar = document.getElementsByClassName("bar")[0]
+                    , offset = circles[0].offsetLeft
+                    , firstTouch = true
+
+                circles[0].style.left = "0%";
+                circles[1].style.left = '100%';
+                
                 this.value.range = [this.value.array[0], this.value.array[this.value.array.length - 1]];
-                n.onclick = function(i) {
-                    var a = null;
-                    a = Math.abs(i.offsetX - t[0].offsetLeft) < Math.abs(i.offsetX - t[1].offsetLeft) ? t[0] : t[1],
-                    self.moveTo(a, i, n, e, t)
+                bar.onclick = function(i) {
+                    // if(!isMousemove) return;
+                    self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1],
+                      i, bar, filled, circles, offset)
                 };
-                for (var i = 0; i < t.length; i++)
-                    t[i].onmousedown = function(i) {
-                        document.onmousemove = (i) => {
-                            self.moveTo(this, i, n, e, t)
+                for (var i = 0; i < circles.length; i++){
+                    let circle = circles[i];
+                    
+                    circles[i].ontouchmove = function (params) {
+                        if(firstTouch) {
+                            offset = circles[0].offsetLeft
+                            firstTouch = false
+                        }
+                        var obj = { x: params.touches[0].clientX }
+                        self.moveTo(this, obj, bar, filled, circles, offset)
+                    }
+                    circles[i].onmousedown = function(e) {
+                        circle.onmousemove = function (move) {
+                            self.moveTo(circle, move, bar, filled, circles, offset)
                         },
-                        document.onmouseup = function() {
-                            document.onmouseup = null;
-                            document.onmousemove = null;
-                            // var t = n.onclick;
-                            // n.onclick = function(e) {
-                            //     n.onclick = t
-                            // }
+                        circle.onmouseleave = circle.onmouseup = function() {
+                            circle.onmousemove = null;
                         }
                     }
+                }
             }
         }
     }
@@ -91,9 +120,9 @@
 .circle {
     position:absolute;
     top:-1rem;
-    margin-left:-4rem;
-    width:3rem;
-    height:3rem;
+    margin-left:-1em;
+    width: 2em;
+    height: 2em;
     border-radius:2rem;
     background-color:#fff;
     box-shadow:0 0 .6rem #a9a9a9;
