@@ -25,29 +25,21 @@ class UserController extends Controller
     public function updinfo(Request $data)
     {
         $user = Auth::user();
-        if($user) {
-            if($user->fname != $data->user['fname'] && $data->user['fname']) $user->fname = $data->user['fname'];
-            if($user->lname != $data->user['lname'] && $data->user['lname']) $user->lname = $data->user['lname'];
-            if($user->tel != $data->user['tel'] && $data->user['tel']) $user->tel = $data->user['tel'];
-            if($user->adr != $data->user['adr'] && $data->user['adr']) $user->adr = $data->user['adr'];
-            $user->save();
-        }
-        else return response(null,401);
+        if($user->fname != $data->user['fname'] && $data->user['fname']) $user->fname = $data->user['fname'];
+        if($user->lname != $data->user['lname'] && $data->user['lname']) $user->lname = $data->user['lname'];
+        if($user->tel != $data->user['tel'] && $data->user['tel']) $user->tel = $data->user['tel'];
+        if($user->adr != $data->user['adr'] && $data->user['adr']) $user->adr = $data->user['adr'];
+        $user->save();
     }
     public function info(Request $data)
     {
-        $user = Auth::user();
-        if($user) 
-            return $user;
-        else 
-            return response(null,401);
-        
+        return Auth::user();
     }
     public function likes(Request $data)
     {
         $user_id = Auth::id();
         $comm_id = Comment::where('product_id',$data->id)->get(['id']);
-        if($user_id) return UserCommentsLike::whereIn('comment_id',$comm_id)->where('user_id',$user_id)->get();
+        return UserCommentsLike::whereIn('comment_id',$comm_id)->where('user_id',$user_id)->get();
     }
     public function auth(Request $data)
     {
@@ -80,12 +72,17 @@ class UserController extends Controller
             if(!$user)
             {
                 if(!empty($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
-                else $array = explode(',', str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+                else if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+                    $array = explode(',', str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+                } 
+            
+                $lang = 'en'; $currency = 'USD';
+            
                 for ($index = 0; $index < count($array); $index++) {
                     if($array[$index] == 'ru' || $array[$index] == 'ru-RU') { $lang = 'ru'; $currency = 'RUB'; break; }
-                    else if($array[$index] == 'ua' || $array == 'ua-UA') { $lang = 'ua'; $currency = 'UAH'; break; }
-                    else { $lang = 'en'; $currency = 'USD'; }
+                    else if($array[$index] == 'uk' || $array[$index] == 'ua') { $lang = 'ua'; $currency = 'UAH'; break; }
                 }
+                
                 $user = new User;
                 $user->name = $decoded->name;
                 $user->currency = $currency;

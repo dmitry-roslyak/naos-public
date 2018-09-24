@@ -40,15 +40,18 @@ Route::get('/prod_by_id', 'ProductController@show_one');
 Route::get('/prodsby_ids', 'ProductController@show_many');
 Route::get('/prod_history', 'ProductController@history');
 Route::get('/prod_rnd', 'ProductController@rnd');
-Route::post('/to_wish', 'ProductController@toWish');
 
-Route::get('/user_info', 'UserController@info');
-Route::post('/update_user_info', 'UserController@updinfo');
-Route::post('/user_comments_like', 'UserController@likes');
+Route::group(['middleware' => ['auth']], function () {
+    Route::post('/to_wish', 'ProductController@toWish');
+    Route::post('/leave_comment', 'CommentController@store');
+    Route::get('/comment_like', 'CommentController@like');
+    Route::get('/user_info', 'UserController@info');
+    Route::post('/update_user_info', 'UserController@updinfo');
+    Route::post('/user_comments_like', 'UserController@likes');
+});
+// ->middleware('auth');
 
-Route::post('/leave_comment', 'CommentController@store');
 Route::get('/all_comments', 'CommentController@show');
-Route::get('/comment_like', 'CommentController@like');
 
 Route::post('/order', 'OrderController@store');
 

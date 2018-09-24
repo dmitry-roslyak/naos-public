@@ -95,28 +95,25 @@ class ProductController extends Controller
     public function toWish(Request $data)
     {
         $user_id = Auth::id();
-        if($user_id)
-        {
-            $prod = Product::with(['wish' => function ($query) use ($user_id) {
-                $query->where('user_id',$user_id);
-            }])->where('id',$data->id)->first();
+        $prod = Product::with(['wish' => function ($query) use ($user_id) {
+            $query->where('user_id',$user_id);
+        }])->where('id',$data->id)->first();
 
-            if(isset($prod->wish))
-            {
-                UserWishes::where('product_id',$data->id)->where('user_id',$user_id)->delete();
-                return 0;
-            }
-            else{
-                $date = new \DateTime;
-                $user_wish =  new UserWishes;
-                $user_wish->user_id = $user_id;
-                $user_wish->product_id = $data->id;
-                $user_wish->price = $prod->price;
-                $user_wish->isAvailable = $prod->available>0?1:0;
-                $user_wish->date = $date->format("Y-m-d");
-                $user_wish->save();
-                return 1;
-            }
+        if(isset($prod->wish))
+        {
+            UserWishes::where('product_id',$data->id)->where('user_id',$user_id)->delete();
+            return 0;
+        }
+        else{
+            $date = new \DateTime;
+            $user_wish =  new UserWishes;
+            $user_wish->user_id = $user_id;
+            $user_wish->product_id = $data->id;
+            $user_wish->price = $prod->price;
+            $user_wish->isAvailable = $prod->available>0?1:0;
+            $user_wish->date = $date->format("Y-m-d");
+            $user_wish->save();
+            return 1;
         }
     }
 }

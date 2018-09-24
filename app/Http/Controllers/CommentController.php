@@ -32,8 +32,7 @@ class CommentController extends Controller
     {
         $user_id = Auth::id();
         $comment_id = $data->id;
-        if($user_id&&$comment_id>0)
-        {
+        if($comment_id>0) {
             $comment = Comment::where('id',$comment_id)->first();
             if($comment->user_id == $user_id) return response(null,400);
             $user_comment_like = UserCommentsLike::where('comment_id',$comment_id)->where('user_id',$user_id)->first();
@@ -84,9 +83,7 @@ class CommentController extends Controller
     }
     public function store(Request $data)
     {
-        $user = Auth::user();
-        if(!$user) return response(null,401);
-        $user_id=$user->id;
+        $user_id = Auth::id();
         // $reply = Comment::where('id',$data->cid);//->value('id');
         $prod = Product::find($data->pid);
         if($prod->id&&$data->rating>=0&&$data->rating<=5)
@@ -109,7 +106,7 @@ class CommentController extends Controller
             $comment->reply_id = $data->cid;
             $comment->save();
             $res = $comment->toArray();
-            $res['user'] = array('name'=>$user->name);
+            $res['user'] = array('name'=> Auth::user()->name);
 
             $prod->rating = ($prod->rating * $prod->vote_count + $data->rating) / ($prod->vote_count + 1);
             $prod->vote_count = $prod->vote_count+1;
