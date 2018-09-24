@@ -1,32 +1,28 @@
 <template>
     <div class="bar">
-        <div class="circle"></div> 
         <div class="filled"></div> 
-        <div class="circle"></div>
+        <div class="circle">
+            <div :class="{'t': true,'circle-drag': isDraged == 1}"></div>
+        </div> 
+        <div class="circle">
+            <div :class="{'t': true,'circle-drag': isDraged == 2}"></div>
+        </div>
     </div>
 </template>
 <script>
     var self;
     export default {
+        data: function () {return {isDraged: 0} },
         props: {
             value: {
                 type: Object,
                 default: null
             }
         },
-        computed: {
-            arl: function() {
-                return this.value.array.length
-            }
-        },
-        watch: {
-            arl: function() {
-                this.value.range = [this.value.array[0], this.value.array[this.value.array.length - 1]]
-            }
-        },
         mounted() {
             self = this,
             this.init()
+            this.$emit("load")
         },
         methods: {
             moveTo: function(circle, e, bar, filled, circles, offset) {
@@ -38,7 +34,7 @@
                     (parseInt(circle.style.left) < parseInt(circles[1].style.left) 
                     ? parseInt(circles[1].style.left) - step 
                     :  step - parseInt(circles[0].style.left))
-                    < 3 * percentPerArrayItem
+                    < 10 * percentPerArrayItem
                 ) return;
                 if(step < 0)
                     circle.style.left = '0%'
@@ -68,28 +64,34 @@
                 
                 this.value.range = [this.value.array[0], this.value.array[this.value.array.length - 1]];
                 bar.onclick = function(i) {
-                    // if(!isMousemove) return;
                     self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1],
                       i, bar, filled, circles, offset)
                 };
                 for (var i = 0; i < circles.length; i++){
                     let circle = circles[i];
-                    
+                    let index = i
                     circles[i].ontouchmove = function (params) {
                         if(firstTouch) {
                             offset = circles[0].offsetLeft
                             firstTouch = false
                         }
-                        var obj = { x: params.touches[0].clientX }
-                        self.moveTo(this, obj, bar, filled, circles, offset)
+                        self.isDraged = index+1
+                        self.moveTo(this, { x: params.touches[0].clientX }, bar, filled, circles, offset)
                     }
                     circles[i].onmousedown = function(e) {
+                        e = e || window.event;
+                        e.preventDefault() 
+                        self.isDraged = index+1
                         circle.onmousemove = function (move) {
                             self.moveTo(circle, move, bar, filled, circles, offset)
-                        },
-                        circle.onmouseleave = circle.onmouseup = function() {
-                            circle.onmousemove = null;
                         }
+                    }
+                    circle.ontouchend = function() {
+                        self.isDraged = 0
+                    }
+                    circle.onmouseleave = circle.onmouseup = function() {
+                        self.isDraged = 0
+                        circle.onmousemove = null;
                     }
                 }
             }
@@ -102,20 +104,21 @@
     position:relative
 }
 .bar {
-    top: -1rem;
-    margin: 3rem 2rem 0;
-    background-color: #d3d3d3;
+    transition: all 0.25s;
+    margin: 1.5em 1.4em 1.2em;
+    border-radius: 1em;
+    background-color: gainsboro;;
+    box-shadow: 0 0 0.2em;
 }
-.bar:hover .filled { 
-    background-color:#4169e1
+/* .bar:hover .filled { 
+    background-color:rgb(0, 101, 253);
+} */
+.bar:hover { 
+    box-shadow:0 0 .2rem rgb(0, 101, 253);
 }
 .filled {
     height: 1rem;
-    background-color:#6495ed;
-    z-index: 2
-}
-.filled:hover {
-    background-color:#4169e1
+    background-color:#fff;
 }
 .circle {
     position:absolute;
@@ -126,8 +129,23 @@
     border-radius:2rem;
     background-color:#fff;
     box-shadow:0 0 .6rem #a9a9a9;
-    z-index:3}
+}
 .circle:hover {
     background-color:#f5f5f5
+}
+.t {
+    transition: all 0.25s;
+    position: absolute;
+    top: -0.5em;
+    left: -0.5em;
+    border-radius: 50%;
+    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));
+    width: 3em;
+    height: 3em;
+    transform: scale(0);
+    z-index: -1;
+}
+.circle-drag{
+    transform: scale(1);
 }
 </style>
