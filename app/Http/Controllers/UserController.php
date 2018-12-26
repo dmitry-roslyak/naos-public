@@ -14,6 +14,9 @@ use App\Comment;
 use Auth;
 use \Firebase\JWT\JWT;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Mailer;
 
 class UserController extends Controller
 {
@@ -95,5 +98,47 @@ class UserController extends Controller
             else $user_id = $user->id;
             if(Auth::loginUsingId($user_id, true)) return response(null,200);
             else return response(null,401);
+    }
+    public function mail(Request $data) {
+        $states = [127,63,31,15,7,3,1]; //is User subscribed to receive email updates
+        $users = User::with('wishes')->whereIn('bstate', $states)->get();
+
+        foreach ($users as $key => $user) {
+            if (!count($user->wishes)) continue;
+            $currency = \App\Currency::where('name', $user->currency)->orderBy('date','desc')->first();
+            $products = [];
+
+            foreach ($user->wishes as $wish) {
+                if(!$wish->isAvailable && $wish->prod->available > 0)
+                    $type = 3;
+                else if($wish->price - $wish->prod->price >= $wish->price/100*5)
+                    $type = 1;
+                else continue;
+                array_push($products, [
+                    'type' => $type,
+                    'id' => $wish->prod->id,
+                    'name' => $wish->prod->name,
+                    'old_price' => $wish->price * $currency->rate,
+                    'price' => $wish->prod->price * $currency->rate,
+                    'img_src' => env("APP_URL")."/file/".$wish->prod->img_src
+                ]);
+                // $wish->price = $wish->prod->price;
+                // $wish->save();
+            }
+            // \App::setLocale($user->language);
+            // return view('mail')->with([
+            //     'user' => $user->name,
+            //     'currency' => $currency->name,
+            //     'products' => $products
+            // ]);
+            Mail::to($user->email)->send(
+                (new Mailer($user, $products))->locale($user->language)
+            );
+        }
+        // $encrypted = Crypt::encryptString('Hello world.');
+        // return Crypt::decryptString($encrypted);
+        // return bcrypt(env('KEY1', false).'4895142232120006');
+        //   $value = file_get_contents('https://openexchangerates.org/api/latest.json?app_id=9d63c3fdce5f4b218824682ec539a810');
+        //   return json_decode($value)->rates->UAH;
     }
 }

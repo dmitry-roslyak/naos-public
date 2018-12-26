@@ -32,11 +32,7 @@ class User extends Authenticatable
     }
     public function wishes()
     {
-        return $this->hasMany('App\UserWishes', 'user_id', 'id')->with('prod','crnc');
-    }
-    public function crnc()
-    {
-        return $this->hasOne('App\Currency', 'name', 'currency')->orderBy('date', 'desc')->select(['id','rate','name']);
+        return $this->hasMany('App\UserWishes', 'user_id', 'id')->with('prod');
     }
     public function getPanAttribute($value)
     {

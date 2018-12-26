@@ -20,10 +20,10 @@ class Mailer extends Mailable
     public  $user;
     public  $currency;
     public  $products;
-    public function __construct($user, $currency, array $products)
+    public function __construct($user, array $products)
     {
-        $this->$user = $user;
-        $this->$currency = $currency;
+        $this->user = $user->name;
+        $this->currency = $user->currency;
         $this->products = $products;
     }
 
@@ -34,6 +34,6 @@ class Mailer extends Mailable
      */
     public function build()
     {
-        return $this->view('test1');
+        return $this->view('mail');
     }
 }

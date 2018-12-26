@@ -1,0 +1,60 @@
+a {
+    text-decoration: none;
+}
+.product {
+    margin: 4px 0;
+    background-color: inherit;
+    background-image: linear-gradient(141deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgb(20, 132, 227) 100%);
+    box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+}
+.img-cell {
+    text-align: center;
+    padding: 15px 0;
+}
+.img-cell > img {
+    height: 96px;
+    width: auto;
+}
+table {
+    width: 100%;
+    border-spacing: 0 1em;
+}
+.buy-btn {
+    margin-top:20px;
+    text-align:center;
+}
+.buy-btn > a {
+    padding: 1em;
+    background-color:cornflowerblue;
+    color:white
+}
+.status-bar {
+    position: absolute;
+    top: 0.4em;
+    right: 0;
+}
+.status-bar > span {
+    padding: 0.4em 0.5em 0.5em 0.4em;
+    border-radius: 0 0 0 0.5em;
+    color: white;
+    background-color: cornflowerblue;
+}
+.price-bar {
+    position:absolute;
+    bottom: 0;
+    right: 0
+}
+.price-bar > * {
+    display: inline-block;
+    min-width: 4em;
+    padding: 0.4em;
+    border: 0 solid white;
+    border-width: 0.05em 0 0 0;
+    text-align: center;
+    color: white;
+}
+.price-bar > s {
+    color: lightcoral;
+    background-color: whitesmoke;
+    border-radius: 0.5em 0 0 0;
+}

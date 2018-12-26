@@ -12,10 +12,7 @@
 */
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image1;
-use Illuminate\Support\Facades\Crypt;
 
-use Illuminate\Support\Facades\Mail;
-use App\Mail\Mailer;
 Route::domain('dashboard.localhost')->group(function () {
     Route::get('/', function () {
         return view('dashboard');
@@ -51,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 // ->middleware('auth');
 
+Route::get('/test', 'UserController@mail');
 Route::get('/all_comments', 'CommentController@show');
 
 Route::post('/order', 'OrderController@store');
@@ -121,59 +119,4 @@ Route::get('/init_filters', function (Request $data) {
     return 'done';
 });
 
-Route::get('/test', function () {
-    $states = [127,63,31,15,7,3,1]; //is User subscribed to receive email updates
-    $usr = App\User::with('wishes','crnc')->whereIn('bstate', $states)->get();
-
-    $count = count($usr);
-    for ($i=0; $i < $count; $i++) {
-        if (isset($usr[$i]->wishes)) {
-            $products = [];
-            foreach ($usr[$i]->wishes as $wish) {
-                // if(!$wish->isAvailable && $wish->prod->available > 0 ){
-                if(true){
-                    array_push($products, [
-                        'type' => 3,
-                        'id' => $wish->prod->id,
-                        'name' => $wish->prod->name,
-                        'old_price' => 0,
-                        'price' => $wish->prod->price * $usr[$i]->crnc->rate,
-                        'img_src' => $_SERVER['APP_URL']."/file/".$wish->prod->img_src
-                    ]);
-                }
-                else if ($wish->prod->price < $wish->price && $wish->price - $wish->prod->price >= $wish->prod->price/100*3) {
-                    array_push($products, [
-                        'type' => 1,
-                        'id' => $wish->prod->id,
-                        'name' => $wish->prod->name,
-                        'old_price' => $wish->price * $wish->crnc->where('name',$usr[$i]->crnc->name)->first()->rate,
-                        'price' => $wish->prod->price * $usr[$i]->crnc->rate,
-                        'img_src' => $_SERVER['APP_URL']."/file/".$wish->prod->img_src
-                    ]);
-                }
-                // $wish->price = $wish->prod->price;
-                // $wish->save();
-            }
-            if($usr[$i]->language=='ru')
-                return view('ru-mail')->with([
-                    'user' => $usr[$i]->name,
-                    'currency' => $usr[$i]->crnc->name,
-                    'products' => $products
-                ]);
-            else if($usr[$i]->language=='en')
-                return view('en-mail')->with([
-                    'user' => $usr[$i]->name,
-                    'currency' => $usr[$i]->crnc->name,
-                    'products' => $products
-                ]);
-            // Mail::to($notify[$i][0]->user->email,'test')->send(new Mailer($message));
-        }
-    }
-    // $encrypted = Crypt::encryptString('Hello world.');
-    // return Crypt::decryptString($encrypted);
-    // return env('KEY1', false);
-    // return bcrypt(env('KEY1', false).'4895142232120006');
-    //   $value = file_get_contents('https://openexchangerates.org/api/latest.json?app_id=9d63c3fdce5f4b218824682ec539a810');
-    //   return json_decode($value)->rates->UAH;
-});
 Auth::routes();
