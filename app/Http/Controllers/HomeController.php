@@ -56,7 +56,7 @@ class HomeController extends Controller
             if($data->lng=='RU'||$data->lng=='ru'||$data->lng=='ru-RU') { $lang = 'ru'; $currency = 'RUB'; }
             elseif ($data->lng=='UA'||$data->lng=='ua'||$data->lng=='ua-UA'){ $lang = 'ua'; $currency = 'UAH'; }
             else{ $lang = 'en'; $currency = 'USD'; }
-            Cookie::queue('lang', $lang, 86400 * 360);
+            Cookie::queue('lang', $lang, 86400 * 60);
             return [Lang::where('lng', $lang)->get(['name','text']), Currency::where('name', $currency )->orderBy('date','desc')->first()];
         }
     }

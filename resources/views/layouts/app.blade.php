@@ -20,12 +20,16 @@
                     $lang = $user->language;
                 }
                 else {
-                    if(isset($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
-                    else $array = explode(',', str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+                    if(!empty($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
+                    else if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+                        $array = explode(',', str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+                    } 
+                
+                    $lang = 'en'; $currency = 'USD';
+                
                     for ($index = 0; $index < count($array); $index++) {
                         if($array[$index] == 'ru' || $array[$index] == 'ru-RU') { $lang = 'ru'; $currency = 'RUB'; break; }
-                        else if($array[$index] == 'ua' || $array == 'ua-UA') { $lang = 'ua'; $currency = 'UAH'; break; }
-                        else { $lang = 'en'; $currency = 'USD'; }
+                        else if($array[$index] == 'uk' || $array[$index] == 'ua') { $lang = 'ua'; $currency = 'UAH'; break; }
                     }
                 }
                 return json_encode([

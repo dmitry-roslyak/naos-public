@@ -125,15 +125,13 @@ class UserController extends Controller
                 // $wish->price = $wish->prod->price;
                 // $wish->save();
             }
-            // \App::setLocale($user->language);
+            \App::setLocale($user->language);
             // return view('mail')->with([
             //     'user' => $user->name,
             //     'currency' => $currency->name,
             //     'products' => $products
             // ]);
-            Mail::to($user->email)->send(
-                (new Mailer($user, $products))->locale($user->language)
-            );
+            Mail::to($user->email)->send(new Mailer($user, $products));
         }
         // $encrypted = Crypt::encryptString('Hello world.');
         // return Crypt::decryptString($encrypted);
