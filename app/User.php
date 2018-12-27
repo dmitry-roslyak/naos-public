@@ -39,4 +39,10 @@ class User extends Authenticatable
         if(!$value) return '';
         return Crypt::decryptString($value);
     }
+    public function isAdmin()
+    {
+        return $this->bstate == 255;
+        //->where('bstate', 255)->get();;
+        // return User::where('bstate', 255)->get();
+    }
 }

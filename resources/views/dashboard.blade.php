@@ -33,5 +33,5 @@
             </div>
     </footer>
 </body>
-<script src="js/dashboard.js"></script>
+<script src="/js/dashboard.js"></script>
 </html>

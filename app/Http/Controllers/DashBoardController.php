@@ -11,7 +11,7 @@ use App\User;
 use App\Spec;
 use Auth;
 use Intervention\Image\ImageManagerStatic as Image1;
-class DashBoardController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -20,7 +20,7 @@ class DashBoardController extends Controller
      */
     public function tg(Request $data)
     {
-         return App\Product::with('ctg')->get();
+         return Product::with('ctg')->get();
     }
     public function imgUpload(Request $data)
     {
@@ -56,5 +56,56 @@ class DashBoardController extends Controller
             $item->save();
             return $item;
         }else return '0';
+    }
+    public function initFilters(Request $data) {
+        $categories = Product::get(['id','category_id'])->groupBy('category_id');
+    
+        foreach ($categories as $category_id => $category) {
+            $product_id = [];
+            $filters = [];
+            foreach ($category as $product) {
+               $product_id[] = $product->id;
+            }
+            $spec = \App\Spec::whereIn('prod_id',$product_id)->where('isFilterable','1')->get(['prod_id','name','value'])->groupBy('name');
+            foreach ($spec as $name => $value) {
+                $val = $value->groupBy('value');
+                $vvs = [];
+                foreach ($val as $value => $arr) {
+                    $ids = [];
+                    foreach ($arr as $key => $v1) {
+                        array_push($ids,['product_id'=>$v1->prod_id]);
+                    }
+                    array_push($vvs,[['priority'=>2,'popularity'=>0,'value'=> $value],$ids]);
+                }
+                $temp  = \App\Filter::updateOrCreate(
+                    ['category_id'=> $category_id,'name'=> $name,'desc'=> 'some text']
+                );
+                
+                foreach ($vvs as $key => $v2) {
+                    $filter_value = \App\FilterValue::with('prod_ids')->where('filter_id',$temp->id)->where('value',$v2[0]['value'])->first();
+    
+                    if($filter_value){
+                        if(count($filter_value->prod_ids)){
+                            foreach ($v2[1] as $value) {
+                                if(!$filter_value->prod_ids->contains('product_id', $value['product_id'])){
+                                    \App\FilterValueProduct::create([
+                                        'filter_value_id' => $filter_value->id,
+                                        'product_id' => $value['product_id']
+                                    ]);
+                                }
+                            }
+                        }
+                        else $filter_value->prod_ids()->createMany($v2[1]);
+                    }
+                    else{
+                        \App\FilterValue::create((function($temp,$v3){
+                            return ['filter_id'=>$temp->id,'priority'=>$v3['priority'],
+                            'popularity'=> $v3['popularity'],'value'=>$v3['value']];
+                        })($temp,$v2[0]))->prod_ids()->createMany($v2[1]);
+                    }
+                }
+            }
+        }
+        return 'done';
     }
 }
