@@ -51,13 +51,13 @@
                             <a class="dropdown-toggle fake-link" style="text-decoration: none"
                                 data-toggle="dropdown" aria-haspopup="true">
                                 <i class="fa fa-globe"></i>
-                                <img style="max-height:1.8em;margin-top:-0.5em" :src="lng.img_path">
-                                <span style="vertical-align:middle;">&nbsp;@{{lng.lang_name_ISO}}&nbsp;</span><span class="caret"></span>
+                                <img style="max-height:1.8em;margin-top:-0.5em" :src="'images/'+lng.ISO_code+'.png'">
+                                <span style="vertical-align:middle;text-transform: uppercase;">&nbsp;@{{lng.ISO_code}}&nbsp;</span><span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li v-for="lng in langs">
-                                    <a class="fake-link" @click="get_locale(lng.ISO)">
-                                        <img :src="lng.img"> &nbsp;&nbsp;@{{lng.name}}
+                                <li v-for="(lng,ISO_code) in langs">
+                                    <a class="fake-link" @click="get_locale(ISO_code)">
+                                        <img :src="'images/'+ISO_code+'.png'"> &nbsp;&nbsp;@{{lng.text}}
                                     </a>
                                 </li>
                             </ul>

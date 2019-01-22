@@ -68542,9 +68542,7 @@ var app = new Vue({
         return _data;
     },
     created: function created() {
-        this.langs = $.map(window.Laravel.langsAvailable, function (value) {
-            return { img: value[0].text, name: value[1].text, ISO: value[2].text };
-        });
+        this.langs = window.Laravel.langsAvailable;
         this.lng = window.lng;
         this.$store.commit('set_currency', window.Laravel.currency.rate);
         if (window.Laravel.user) this.user = window.Laravel.user.name;

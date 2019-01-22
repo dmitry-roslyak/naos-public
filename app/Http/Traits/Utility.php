@@ -27,8 +27,7 @@ trait Utility
         $user = \Auth::user();
         $locale = $user ? $user : Utility::locale();
         return [
-            'langsAvailable' => \App\Lang::where('name', 'lang_name_ISO')->orWhere('name', 'lang_name')->
-        orWhere('name', 'img_path')->orderBy('name','asc')->get(['text','lng','name'])->groupBy('lng'),
+            'langsAvailable' => \App\Lang::where('name', 'lang_name')->get(['text','lng'])->keyBy('lng'),
             'user' =>  $user,
             'catalog' => \App\Category::get(),
             'lng' => \App\Lang::where('lng', $locale['language'])->get(['name','text']), 

@@ -12,11 +12,6 @@
 */
 use Illuminate\Http\Request;
 
-Route::get('/d', function (Request $data) {
-    return \App\Lang::orWhere('name', 'lang_name')->get(['text','lng'])->keyBy('lng');
-    // $query2 = \App\Lang::where('name', 'lang_name_ISO')->get(['text','lng', 'name'])->keyBy('lng');
-    // return $query->concat($query2);
-});
 Route::get('/', function (Request $data) {
     return view('vue');
 });
