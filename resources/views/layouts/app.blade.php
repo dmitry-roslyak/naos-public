@@ -12,37 +12,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="markup.js"></script>
     <script>
-        window.Laravel = {!! 
-            (function(){
-                $user = Auth::user();
-                if($user){
-                    $currency = $user->currency;
-                    $lang = $user->language;
-                }
-                else {
-                    if(!empty($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
-                    else if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-                        $array = explode(',', str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
-                    } 
-                
-                    $lang = 'en'; $currency = 'USD';
-                
-                    for ($index = 0; $index < count($array); $index++) {
-                        if($array[$index] == 'ru' || $array[$index] == 'ru-RU') { $lang = 'ru'; $currency = 'RUB'; break; }
-                        else if($array[$index] == 'uk' || $array[$index] == 'ua') { $lang = 'ua'; $currency = 'UAH'; break; }
-                    }
-                }
-                return json_encode([
-                    'csrfToken' => csrf_token(),
-                    'langsAvailable' => App\Lang::where('name', 'lang_name_ISO')->orWhere('name', 'lang_name')->
-                orWhere('name', 'img_path')->orderBy('name','asc')->get(['text','lng','name'])->groupBy('lng'),
-                    'user' =>  $user,
-                    'catalog' => App\Category::get(),
-                    'lng' => App\Lang::where('lng', $lang)->get(['name','text']), 
-                    'currency' => App\Currency::where('name', $currency)->orderBy('date','desc')->first()
-                ]);
-            })();
-        !!};
+        window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
         window.lng = {};
         window.Laravel.lng.map(function (t) { window.lng[t.name] = t.text; });
         window.lng.currency = window.lng[window.Laravel.currency.name];

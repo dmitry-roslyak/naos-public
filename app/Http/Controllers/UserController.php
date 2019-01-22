@@ -11,12 +11,17 @@ use App\UserCommentsLike;
 use App\User;
 use App\Spec;
 use App\Comment;
+use App\Currency;
+
 use Auth;
 use \Firebase\JWT\JWT;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Mailer;
+use App\Http\Traits\Utility;
+
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -25,14 +30,44 @@ class UserController extends Controller
      *
      * @return void
      */
+    public function currency(Request $data)
+    {
+        $validation = Validator::make($data->all(), [
+            'val' => 'required|exists:currencies,name',
+        ]);
+        if($validation->fails()) return response($validation->errors(), 422);
+        $user = Auth::user();
+        $user->currency = $data->val;
+        $user->save();
+        return Currency::where('name', $user->currency)->orderBy('date','desc')->first();
+    }
+    public function lang(Request $data)
+    {
+        $validation = Validator::make(['lng' => $data->lng], [
+            'lng' => 'required|exists:langs,lng',
+        ]);
+        if($validation->fails()) return response($validation->errors(), 422);
+        $user = Auth::user();
+        if($user) {
+            $user->language = $data->lng;
+            $user->save();
+        } else {
+            $user = Utility::locale([ 0 => $data->lng ]);
+            \Cookie::queue('lang', $user['language'], 86400 * 60);
+        }
+        return [\App\Lang::where('lng', $user['language'])->get(['name','text']), Currency::where('name', $user['currency'])->orderBy('date','desc')->first()];
+    }
     public function updinfo(Request $data)
     {
         $user = Auth::user();
-        if($user->fname != $data->user['fname'] && $data->user['fname']) $user->fname = $data->user['fname'];
-        if($user->lname != $data->user['lname'] && $data->user['lname']) $user->lname = $data->user['lname'];
-        if($user->tel != $data->user['tel'] && $data->user['tel']) $user->tel = $data->user['tel'];
-        if($user->adr != $data->user['adr'] && $data->user['adr']) $user->adr = $data->user['adr'];
-        $user->save();
+        $validation = Validator::make($data->all(), [
+            'user.fname' => 'required|min:1',
+            'user.lname' => 'required|min:1',
+            'user.tel' => 'required|numeric|min:5',
+            // 'user.adr' => 'required|min:5',
+        ]);
+        if($validation->fails()) return response($validation->errors(), 422);
+        $user->update(collect($data->user)->only(['fname','lname', 'tel'])->all());
     }
     public function info(Request $data)
     {
@@ -40,9 +75,8 @@ class UserController extends Controller
     }
     public function likes(Request $data)
     {
-        $user_id = Auth::id();
         $comm_id = Comment::where('product_id',$data->id)->get(['id']);
-        return UserCommentsLike::whereIn('comment_id',$comm_id)->where('user_id',$user_id)->get();
+        return UserCommentsLike::whereIn('comment_id',$comm_id)->where('user_id', Auth::id())->get();
     }
     public function auth(Request $data)
     {
@@ -74,29 +108,17 @@ class UserController extends Controller
             
             if(!$user)
             {
-                if(!empty($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
-                else if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-                    $array = explode(',', str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
-                } 
-            
-                $lang = 'en'; $currency = 'USD';
-            
-                for ($index = 0; $index < count($array); $index++) {
-                    if($array[$index] == 'ru' || $array[$index] == 'ru-RU') { $lang = 'ru'; $currency = 'RUB'; break; }
-                    else if($array[$index] == 'uk' || $array[$index] == 'ua') { $lang = 'ua'; $currency = 'UAH'; break; }
-                }
+                $locale = Utility::locale();
                 
                 $user = new User;
                 $user->name = $decoded->name;
-                $user->currency = $currency;
-                $user->language = $lang;
+                $user->currency = $locale['currency'];
+                $user->language = $locale['language'];
                 $user->email = $email;
                 $user->password = Uuid::uuid4();
                 $user->save();
-                $user_id = $user->id;
             }
-            else $user_id = $user->id;
-            if(Auth::loginUsingId($user_id, true)) return response(null,200);
+            if(Auth::loginUsingId($user->id, true)) return response(null,200);
             else return response(null,401);
     }
     public function mail(Request $data) {
@@ -133,10 +155,5 @@ class UserController extends Controller
             // ]);
             Mail::to($user->email)->send(new Mailer($user, $products));
         }
-        // $encrypted = Crypt::encryptString('Hello world.');
-        // return Crypt::decryptString($encrypted);
-        // return bcrypt(env('KEY1', false).'4895142232120006');
-        //   $value = file_get_contents('https://openexchangerates.org/api/latest.json?app_id=9d63c3fdce5f4b218824682ec539a810');
-        //   return json_decode($value)->rates->UAH;
     }
 }

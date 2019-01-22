@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Traits\Utility;
 
 class RegisterController extends Controller
 {
@@ -62,28 +63,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if(isset($_COOKIE['lang']))
-        {
-            $lang = $_COOKIE['lang'];
-            if($lang == 'RU' || $lang == 'ru' || $lang == 'ru-RU') { $lang = 'ru'; $currency = 'RUB'; }
-            else if($lang == 'UA' || $lang == 'ua' || $lang == 'ua-UA') { $lang = 'ua'; $currency = 'UAH'; }
-            else { $lang = 'en'; $currency = 'USD'; }
-        }
-        else{
-            $temp = str_replace(";",',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-            $temp2 = explode(',',$temp);
-            for ($index = 0; $index < count($temp2); $index++) {
-                if($temp2[$index] == 'ru' || $temp2[$index] == 'ru-RU') { $lang = 'ru'; $currency = 'RUB'; }
-                else if($temp2[$index] == 'ua') { $lang = 'ua'; $currency = 'UAH'; }
-                else { $lang = 'en'; $currency = 'USD'; }
-            }
-        }
+        $locale = Utility::locale();
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'language' => $lang,
-            'currency' => $currency
+            'language' => $locale['language'],
+            'currency' => $locale['currency']
         ]);
     }
 }

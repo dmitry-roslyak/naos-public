@@ -12,6 +12,16 @@
 */
 use Illuminate\Http\Request;
 
+Route::get('/d', function (Request $data) {
+    return \App\Lang::orWhere('name', 'lang_name')->get(['text','lng'])->keyBy('lng');
+    // $query2 = \App\Lang::where('name', 'lang_name_ISO')->get(['text','lng', 'name'])->keyBy('lng');
+    // return $query->concat($query2);
+});
+Route::get('/', function (Request $data) {
+    return view('vue');
+});
+Route::get('/lang/{lng}', 'UserController@lang');
+
 Route::group(['middleware' => 'admin'], function() {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -22,15 +32,15 @@ Route::group(['middleware' => 'admin'], function() {
         return App\Discount::get();
     });
     Route::get('/ex', function (Request $data) {
+        // $encrypted = Crypt::encryptString('Hello world.');
+        // return Crypt::decryptString($encrypted);
+        // return bcrypt(env('KEY1', false).'4895142232120006');
         return $value = file_get_contents('https://openexchangerates.org/api/latest.json?app_id=9d63c3fdce5f4b218824682ec539a810');
+        //   return json_decode($value)->rates->UAH;
     });
     Route::get('/test', 'UserController@mail');
     Route::get('/init_filters', 'DashboardController@initFilters'); 
 });
-
-Route::get('/', 'HomeController@index');
-Route::get('/lang/{lng}', 'HomeController@lang');
-Route::get('/set_currency', 'HomeController@currency');
 
 Route::post('/search', 'ProductController@search');
 Route::get('/prod_filter', 'ProductController@filterBy');
@@ -62,5 +72,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/update_user_info', 'UserController@updinfo');
     Route::post('/user_comments_like', 'UserController@likes');
 });
+Route::get('/set_currency', 'UserController@currency');
 
 Auth::routes();

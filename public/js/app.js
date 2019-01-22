@@ -68662,7 +68662,7 @@ window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 window.axios = __webpack_require__("./node_modules/axios/index.js");
 
 window.axios.defaults.headers.common = {
-  'X-CSRF-TOKEN': window.Laravel.csrfToken,
+  'X-CSRF-TOKEN': document.getElementsByName('csrf-token')[0].content,
   'X-Requested-With': 'XMLHttpRequest'
 };
 
