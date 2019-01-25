@@ -4,7 +4,7 @@
         <div class="col-sm-9 col-md-10" style="padding:0">
             <div class="row itmc">
                 {{lng.showed_items}}
-                <a v-show="cng1" style="text-decoration:none" @click="cng1=false">&nbsp;{{items.length}}&nbsp;</a>
+                <a v-show="cng1" @click="cng1=false">&nbsp;{{items.length}}&nbsp;</a>
                 <select v-show="!cng1" v-model.number="paginator.take" class="form-control input-sm" id="items-on-page" @change="getSelectedProd();cng1=true" @mouseleave="cng1=true">       
                     <option value="20">20</option>
                     <option value="30">30</option>
@@ -37,8 +37,7 @@
                     </a>
                 </div>
                 <div class="thumbnail ic-s">
-                    <i class="fa fa-cog fa-spin" style="font-size:10rem"></i>  
-                    <img class="item-card-img" style="display: none" :src="'file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
+                    <img class="item-card-img" style="visibility: hidden" :src="'file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
                     <div class="caption" style="padding: 2px 6px">
                         <router-link class="item-card-name" :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
                         <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
@@ -102,18 +101,16 @@
             // };
         },
         methods: {
-            imgReady(e,i){
-                e.parentElement.firstChild.style = 'display:none';
-                e.style.display = 'inherit';
+            imgReady(e){
+                e.style.visibility = 'initial';
             },
-            img404(e,i){
-                e.parentElement.firstChild.style = 'display:none';
+            img404(e){
                 e.src = "/images/404.png";
-                e.style.display = 'inherit';
+                e.style.visibility = 'initial';
+                e.style.padding = "4em";
             },
             getSelectedProd() {
-                var price = [];
-                price.push(this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency);
+                var price = [this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency];
                 axios.get('prod_filter', {
                     params: {
                         ctg_id: this.$store.state.ctg_id,

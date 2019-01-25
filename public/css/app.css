@@ -11783,7 +11783,6 @@ a:hover {
 
 .footer a {
   color: white;
-  text-decoration: none;
 }
 
 .footer a svg {
@@ -11798,7 +11797,6 @@ a:hover {
 .footer a:hover {
   color: white;
   border-color: #fff;
-  text-decoration: none;
 }
 
 .ctg-btn {
@@ -12074,22 +12072,27 @@ a:hover {
   text-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
 }
 
+.naos:hover,
+.naos:focus {
+  color: cornflowerblue;
+  text-decoration: none;
+}
+
 .vflip {
-  position: absolute;
-  -webkit-transform: scale(1, -1);
-          transform: scale(1, -1);
-  left: 1.2em;
+  position: relative;
+  display: inline-block;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
 }
 
 .search-list {
   -webkit-transition: all 0.25s;
   transition: all 0.25s;
   position: absolute;
-  z-index: 4;
   -webkit-transform-origin: top;
           transform-origin: top;
   background-color: white;
-  border: 1px solid lightgray;
+  z-index: 4;
 }
 
 .search-list[show-st="0"] {
@@ -12103,6 +12106,7 @@ a:hover {
   -webkit-transform: scale(1, 1);
           transform: scale(1, 1);
   width: 100%;
+  border: 1px solid lightgray;
 }
 
 .search-itm:hover {

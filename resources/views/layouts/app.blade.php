@@ -7,7 +7,7 @@
     <meta name="theme-color" content="cornflowerblue">
     <meta name="robots" content="noindex, nofollow, noarchive"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name') }}</title>
     <link rel="manifest" href="manifest.json">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="markup.js"></script>
@@ -33,12 +33,13 @@
         </div>
         <nav class="navbar navbar-default navbar-static-top" >
             <div class="container">
-                <!--<div class="navbar-header">
-                     Branding Image 
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                <div class="navbar-header naos hidden-md hidden-lg" style="display:inline-block">
+                     <!-- Branding Image  -->
+                    <a class="navbar-brand" style="font-size: inherit;color: inherit;" href="#/">
+                        <span>N<span class="vflip">V</span>OS</span>
+                        <!-- {{ config('app.name') }} -->
                     </a>
-                </div>-->
+                </div>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
                     <span class="sr-only">Toggle Navigation</span>
                     <span class="icon-bar"></span>

@@ -1,36 +1,38 @@
 <template>
-    <div class="container-fluid" style="padding:0">
-        <router-link to='/'>
-            <span class="col-sm-12 col-md-2 naos">N&nbsp;&nbsp;&nbsp;<span class="vflip">V</span>OS</span>
+    <div class="container-fluid">
+        <router-link to='/' class="hidden-xs hidden-sm col-md-2 naos">
+            <span>N<span class="vflip">V</span>OS</span>
         </router-link>
-        <div class="col-sm-8 col-md-6" style="padding:0;margin-top:14px" @mouseenter="search_result?search_show=1:null" @mouseleave="search_show=0">
-            <div class="input-group">
-                <input type="text" class="form-control" :placeholder='lng.search' v-model="search_text" @input='toSearch' autofocus>
-                <span class="input-group-btn" >
-                    <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-                </span>
-            </div>
-            <div class="search-list" :show-st="search_show">
-                <table style="margin-bottom: 0;width:100%">
-                    <tbody style="border-width:0" v-for="item in search_result" :key="item.id">
-                        <!-- <div style="height:1.5em;" v-if="item.show">
-                        <span style="position:absolute;width:99%;background:cornflowerblue;color:white">{{lng[item.ctg.name]?lng[item.ctg.name]:item.ctg.name}}</span>
-                        </div> -->
-                        <tr class="search-itm">
-                            <td style="border-width:0;width:0;padding:4px;text-align:center">
-                                <img v-bind:src="'file/'+item.img_src" style="height:5rem">
-                            </td>
-                            <td style="border-width:0;padding:4px">
-                                <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
-                                <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                            </td>
-                            <td style="border-width:0">{{(currency * item.price).toFixed(1) +' '+ lng.currency}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="col-sm-8 col-md-7">
+            <div style="position: relative;margin-top:14px" @mouseenter="search_result?search_show=1:null" @mouseleave="search_show=0">
+                <div class="input-group">
+                    <input type="text" class="form-control" :placeholder='lng.search' v-model="search_text" @input='toSearch' autofocus>
+                    <span class="input-group-btn" >
+                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+                <div class="search-list" :show-st="search_show">
+                    <table style="width:100%">
+                        <tbody style="border-width:0" v-for="item in search_result" :key="item.id">
+                            <!-- <div style="height:1.5em;" v-if="item.show">
+                            <span style="position:absolute;width:99%;background:cornflowerblue;color:white">{{lng[item.ctg.name]?lng[item.ctg.name]:item.ctg.name}}</span>
+                            </div> -->
+                            <tr class="search-itm">
+                                <td style="border-width:0;width:0;padding:4px;text-align:center">
+                                    <img v-bind:src="'file/'+item.img_src" style="height:5rem">
+                                </td>
+                                <td style="border-width:0;padding:4px">
+                                    <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
+                                    <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                                </td>
+                                <td style="border-width:0">{{(currency * item.price).toFixed(1) +' '+ lng.currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-xs-12 col-sm-4 col-md-3">
             <router-link v-show="cartVisible" to="/cart/[]" class="dr-btn fake-link pull-right">
                 <i class="fa fa-shopping-cart font1" aria-hidden="true"></i>
                 <div><nobr>{{lng.cart}}</nobr></div>

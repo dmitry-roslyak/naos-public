@@ -79,7 +79,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     _data = {
@@ -148,7 +147,6 @@ var render = function() {
                 "a",
                 {
                   staticClass: "dropdown-toggle",
-                  staticStyle: { "text-decoration": "none" },
                   attrs: { "data-toggle": "dropdown", "aria-haspopup": "true" }
                 },
                 [

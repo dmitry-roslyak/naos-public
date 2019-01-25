@@ -23,22 +23,21 @@
     background-color: white
 .naos
     font-size: 3em
-    // padding: 0
     color: cornflowerblue
     text-shadow:  0 0 8px rgba(82, 168, 236, .6)
+    &:hover, &:focus 
+        color: cornflowerblue
+        text-decoration: none
 .vflip
-    position: absolute
-    transform: scale(1, -1)
-    // left: 0.85em
-    // top: -0.03em
-    left: 1.2em
+    position: relative
+    display: inline-block
+    transform: rotate(180deg)
 .search-list
     transition: all 0.25s
     position: absolute
-    z-index: 4
     transform-origin: top
     background-color: white
-    border: 1px solid lightgray 
+    z-index: 4
     &[show-st="0"]
         opacity: 0
         transform: scale(0, 0)
@@ -46,5 +45,6 @@
         opacity: 1
         transform: scale(1, 1)
         width: 100%
+        border: 1px solid lightgray 
 .search-itm:hover
     background-color: whitesmoke

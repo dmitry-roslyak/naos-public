@@ -6431,6 +6431,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var self,
     timerId,
@@ -52114,151 +52116,162 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid", staticStyle: { padding: "0" } },
+    { staticClass: "container-fluid" },
     [
-      _c("router-link", { attrs: { to: "/" } }, [
-        _c("span", { staticClass: "col-sm-12 col-md-2 naos" }, [
-          _vm._v("N   "),
-          _c("span", { staticClass: "vflip" }, [_vm._v("V")]),
-          _vm._v("OS")
-        ])
+      _c(
+        "router-link",
+        {
+          staticClass: "hidden-xs hidden-sm col-md-2 naos",
+          attrs: { to: "/" }
+        },
+        [
+          _c("span", [
+            _vm._v("N"),
+            _c("span", { staticClass: "vflip" }, [_vm._v("V")]),
+            _vm._v("OS")
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-8 col-md-7" }, [
+        _c(
+          "div",
+          {
+            staticStyle: { position: "relative", "margin-top": "14px" },
+            on: {
+              mouseenter: function($event) {
+                _vm.search_result ? (_vm.search_show = 1) : null
+              },
+              mouseleave: function($event) {
+                _vm.search_show = 0
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "input-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search_text,
+                    expression: "search_text"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  placeholder: _vm.lng.search,
+                  autofocus: ""
+                },
+                domProps: { value: _vm.search_text },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.search_text = $event.target.value
+                    },
+                    _vm.toSearch
+                  ]
+                }
+              }),
+              _vm._v(" "),
+              _vm._m(0)
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "search-list",
+                attrs: { "show-st": _vm.search_show }
+              },
+              [
+                _c(
+                  "table",
+                  { staticStyle: { width: "100%" } },
+                  _vm._l(_vm.search_result, function(item) {
+                    return _c(
+                      "tbody",
+                      { key: item.id, staticStyle: { "border-width": "0" } },
+                      [
+                        _c("tr", { staticClass: "search-itm" }, [
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                "border-width": "0",
+                                width: "0",
+                                padding: "4px",
+                                "text-align": "center"
+                              }
+                            },
+                            [
+                              _c("img", {
+                                staticStyle: { height: "5rem" },
+                                attrs: { src: "file/" + item.img_src }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                "border-width": "0",
+                                padding: "4px"
+                              }
+                            },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "detail",
+                                      params: { id: item.id }
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(item.name))]
+                              ),
+                              _vm._v(" "),
+                              _c("star-rating", {
+                                attrs: {
+                                  rating: +item.rating,
+                                  "star-size": 16,
+                                  "show-rating": false,
+                                  "read-only": true
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("td", { staticStyle: { "border-width": "0" } }, [
+                            _vm._v(
+                              _vm._s(
+                                (_vm.currency * item.price).toFixed(1) +
+                                  " " +
+                                  _vm.lng.currency
+                              )
+                            )
+                          ])
+                        ])
+                      ]
+                    )
+                  })
+                )
+              ]
+            )
+          ]
+        )
       ]),
       _vm._v(" "),
       _c(
         "div",
-        {
-          staticClass: "col-sm-8 col-md-6",
-          staticStyle: { padding: "0", "margin-top": "14px" },
-          on: {
-            mouseenter: function($event) {
-              _vm.search_result ? (_vm.search_show = 1) : null
-            },
-            mouseleave: function($event) {
-              _vm.search_show = 0
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "input-group" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.search_text,
-                  expression: "search_text"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                placeholder: _vm.lng.search,
-                autofocus: ""
-              },
-              domProps: { value: _vm.search_text },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.search_text = $event.target.value
-                  },
-                  _vm.toSearch
-                ]
-              }
-            }),
-            _vm._v(" "),
-            _vm._m(0)
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "search-list",
-              attrs: { "show-st": _vm.search_show }
-            },
-            [
-              _c(
-                "table",
-                { staticStyle: { "margin-bottom": "0", width: "100%" } },
-                _vm._l(_vm.search_result, function(item) {
-                  return _c(
-                    "tbody",
-                    { key: item.id, staticStyle: { "border-width": "0" } },
-                    [
-                      _c("tr", { staticClass: "search-itm" }, [
-                        _c(
-                          "td",
-                          {
-                            staticStyle: {
-                              "border-width": "0",
-                              width: "0",
-                              padding: "4px",
-                              "text-align": "center"
-                            }
-                          },
-                          [
-                            _c("img", {
-                              staticStyle: { height: "5rem" },
-                              attrs: { src: "file/" + item.img_src }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticStyle: { "border-width": "0", padding: "4px" }
-                          },
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                attrs: {
-                                  to: {
-                                    name: "detail",
-                                    params: { id: item.id }
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(item.name))]
-                            ),
-                            _vm._v(" "),
-                            _c("star-rating", {
-                              attrs: {
-                                rating: +item.rating,
-                                "star-size": 16,
-                                "show-rating": false,
-                                "read-only": true
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("td", { staticStyle: { "border-width": "0" } }, [
-                          _vm._v(
-                            _vm._s(
-                              (_vm.currency * item.price).toFixed(1) +
-                                " " +
-                                _vm.lng.currency
-                            )
-                          )
-                        ])
-                      ])
-                    ]
-                  )
-                })
-              )
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-xs-12 col-sm-4" },
+        { staticClass: "col-xs-12 col-sm-4 col-md-3" },
         [
           _c(
             "router-link",
@@ -52408,7 +52421,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm.items.length
-        ? _c("div", { staticClass: "col-sm-9" }, [
+        ? _c("div", { staticClass: "col-sm-9 col-md-10" }, [
             _c(
               "div",
               {

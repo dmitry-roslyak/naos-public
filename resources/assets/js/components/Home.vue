@@ -12,7 +12,7 @@
                 <div class="ctg-itm fake-link" v-for="i in dummyCategory" :key="i">&nbsp;</div>
             </ul>
         </div>
-        <div v-if="items.length" class="col-sm-9">
+        <div v-if="items.length" class="col-sm-9 col-md-10">
             <div id="carousel1" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">

@@ -75,7 +75,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     _data = {
@@ -115,18 +114,16 @@ var self,
     },
 
     methods: {
-        imgReady: function imgReady(e, i) {
-            e.parentElement.firstChild.style = 'display:none';
-            e.style.display = 'inherit';
+        imgReady: function imgReady(e) {
+            e.style.visibility = 'initial';
         },
-        img404: function img404(e, i) {
-            e.parentElement.firstChild.style = 'display:none';
+        img404: function img404(e) {
             e.src = "/images/404.png";
-            e.style.display = 'inherit';
+            e.style.visibility = 'initial';
+            e.style.padding = "4em";
         },
         getSelectedProd: function getSelectedProd() {
-            var price = [];
-            price.push(this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency);
+            var price = [this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency];
             axios.get('prod_filter', {
                 params: {
                     ctg_id: this.$store.state.ctg_id,
@@ -232,7 +229,6 @@ var render = function() {
                     expression: "cng1"
                   }
                 ],
-                staticStyle: { "text-decoration": "none" },
                 on: {
                   click: function($event) {
                     _vm.cng1 = false
@@ -448,14 +444,9 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "thumbnail ic-s" }, [
-                  _c("i", {
-                    staticClass: "fa fa-cog fa-spin",
-                    staticStyle: { "font-size": "10rem" }
-                  }),
-                  _vm._v(" "),
                   _c("img", {
                     staticClass: "item-card-img",
-                    staticStyle: { display: "none" },
+                    staticStyle: { visibility: "hidden" },
                     attrs: { src: "file/" + item.img_src },
                     on: {
                       load: function($event) {

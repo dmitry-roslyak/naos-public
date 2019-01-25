@@ -5,8 +5,7 @@
             <div class="dropdown">
                 <i class="fa fa-money"></i>
                 <label>&nbsp;{{lng.currency_type}} :&nbsp;&nbsp;</label>
-                <a class="dropdown-toggle" style="text-decoration: none;"
-                    data-toggle="dropdown" aria-haspopup="true">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
                     <span style="vertical-align:middle;">&nbsp;{{lng.currency}}&nbsp;</span><span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
