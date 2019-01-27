@@ -73,7 +73,7 @@
             get_random_products() {
                 axios.get('/prod_rnd').then(function (response) {
                     self.items = response.data;
-                }).catch(self.$root.retry(self.get_random_products));
+                });
             }
         }
     }

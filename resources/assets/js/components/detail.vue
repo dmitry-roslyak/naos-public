@@ -137,7 +137,6 @@
                     self.item.isWish = response.data ? true : false;
                     self.$forceUpdate();
                 }).catch(function (error) {
-                    self.$root.retry(self.to_wish, error);
                 });
             },
             itemById(){
@@ -147,7 +146,6 @@
                     self.item.is_compare = self.$root.compareHas(self.item.id) > -1;
                     self.set_total_time();
                 }).catch(function (error) {
-                    self.$root.retry(self.itemById, error);
                 });    
             },
             set_total_time(){

@@ -54,20 +54,20 @@
             </div>
         </div>
         <!--<span>Разрешить хранение: </span>
-            <div class="form-inline" style="padding:8px 0 0 16px">
-                <span>личной информации:&nbsp;</span>
-                <div class="radio">
-                    <label><input type="radio" name="r1" checked>&nbsp;Да</label>
-                    <label><input type="radio" name="r1">&nbsp;Нет</label>
-                </div>
-            </div> 
-            <div class="form-inline" style="padding:8px 0 0 16px">
-                <span>номера платежной карты (PAN):&nbsp;</span>
-                <div class="radio">
-                    <label><input type="radio" name="r2" checked>&nbsp;Да</label>
-                    <label><input type="radio" name="r2">&nbsp;Нет</label>
-                </div>
-            </div>  -->
+        <div class="form-inline" style="padding:8px 0 0 16px">
+            <span>личной информации:&nbsp;</span>
+            <div class="radio">
+                <label><input type="radio" name="r1" checked>&nbsp;Да</label>
+                <label><input type="radio" name="r1">&nbsp;Нет</label>
+            </div>
+        </div> 
+        <div class="form-inline" style="padding:8px 0 0 16px">
+            <span>номера платежной карты (PAN):&nbsp;</span>
+            <div class="radio">
+                <label><input type="radio" name="r2" checked>&nbsp;Да</label>
+                <label><input type="radio" name="r2">&nbsp;Нет</label>
+            </div>
+        </div>  -->
     </div>
     </div>
 </template>
@@ -95,7 +95,6 @@
                     self.lng.currency = self.lng[response.data.name];
                     self.$store.commit('set_currency', response.data.rate);
                 }).catch(function (error) {
-                    self.$root.retry(self.get_currency, error.response.status);
                 }); 
             },
             get_locale(lng){this.$root.get_locale(lng);}

@@ -1,15 +1,20 @@
 <template>
     <div class="container-fluid">
-        <sidebar class="col-sm-3 col-md-2" style="padding: 0px 4px 0px 0px;"></sidebar>
+        <sidebar class="col-sm-3 col-md-2" style="padding: 0"></sidebar>
         <div class="col-sm-9 col-md-10" style="padding:0">
             <div class="row itmc">
                 {{lng.showed_items}}
-                <a v-show="cng1" @click="cng1=false">&nbsp;{{items.length}}&nbsp;</a>
-                <select v-show="!cng1" v-model.number="paginator.take" class="form-control input-sm" id="items-on-page" @change="getSelectedProd();cng1=true" @mouseleave="cng1=true">       
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                </select>({{paginator.total}})
+                <div class="dropdown" style="display: inline-block;">
+                    <a class="dropdown-toggle fake-link" data-toggle="dropdown" aria-haspopup="true">
+                        {{items.length}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="fake-link" @click="paginator.take = 20;getSelectedProd();">20</a></li>
+                        <li><a class="fake-link" @click="paginator.take = 30;getSelectedProd();">30</a></li>
+                        <li><a class="fake-link" @click="paginator.take = 40;getSelectedProd();">40</a></li>
+                    </ul>
+                </div>
+                ({{paginator.total}})
                 <div class="pull-right">
                     {{lng.sortby}}
                     <select v-model="ordby" class="form-control input-sm" id="sortby" @change="getSelectedProd()"> 
@@ -73,7 +78,6 @@
         lng: {},
         ordby: 'bydef',
         items: [],
-        cng1: true,
         price: {
             array: null,
             range: [0, 0],
@@ -96,9 +100,6 @@
             this.lng = window.lng;
             this.paginator.func = this.getSelectedProd;
             this.getSelectedProd();
-            // window.onhashchange= function(){
-            //     if (location.hash != temp) data_self.anmRunning=0;
-            // };
         },
         methods: {
             imgReady(e){
@@ -136,7 +137,7 @@
                         return t - e
                     })
                     self.paginator.total = response.data[0]
-                }).catch(self.$root.retry(self.getSelectedProd));
+                });
             },
             buyItem(item){
                 if(item.available) this.$refs.buyModal.$data.item = item;
@@ -145,20 +146,12 @@
                 this.items[i].is_compare = this.items[i].is_compare ? false : true
                 this.$store.commit('compare', this.items[i].id);
             },
-            // anm_scale($event.target) //need remove?
-            // anm_scale(e){
-            //     e.parentNode.lastElementChild.animate([
-            //         { transform: 'scale(1)' }, 
-            //         { transform: 'scale(1.4)' }, 
-            //         { transform: 'scale(1)' }
-            //     ], { duration: 350,iterations: 1});
-            // },
             to_wish(i){
                 axios.post('/to_wish',{
                     id: self.items[i].id
                 }).then(function (response) {
                     self.items[i].isWish = response.data ? true : false;
-                }).catch(self.$root.retry(self.to_wish, i));
+                });
             }
         }
     }

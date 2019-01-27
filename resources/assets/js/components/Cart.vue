@@ -152,7 +152,6 @@
                         element.count = self.$store.state.cart[element.id]
                     });
                 }).catch(function (error) {
-                    self.$root.retry(self.get_prodsby_ids, error.response.status);
                 });
             },
             chk_input(i) {
@@ -184,7 +183,6 @@
                     //     location.replace('/');
                     // },2000)
                 }).catch(function (error) {
-                    self.$root.retry(self.to_order, error.response.status);
                 });
             }
         }

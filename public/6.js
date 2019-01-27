@@ -63,16 +63,12 @@ var self,
             axios.get('/user_info').then(function (response) {
                 self.userInfo = response.data;
                 if (self.userInfo.fname) self.edit = false;
-            }).catch(function (error) {
-                self.$root.retry(self.usr_info, error);
-            });
+            }).catch(function (error) {});
         },
         upd_usr_info: function upd_usr_info() {
             if (!self.edit) self.edit = true;else {
                 self.edit = false;
-                axios.post('/update_user_info', { user: self.userInfo }).catch(function (error) {
-                    self.$root.retry(self.usr_info, error);
-                });
+                axios.post('/update_user_info', { user: self.userInfo }).catch(function (error) {});
             }
         }
     }
@@ -113,100 +109,96 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "container-fluid" }, [
-      _c(
-        "table",
-        { staticClass: "table", staticStyle: { "margin-bottom": "0" } },
-        [
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_vm._v(_vm._s(_vm.lng.fname))]),
-              _vm._v(" "),
-              _vm.edit
-                ? _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.userInfo.fname,
-                          expression: "userInfo.fname"
-                        }
-                      ],
-                      staticClass: "form-control myinput1",
-                      domProps: { value: _vm.userInfo.fname },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.userInfo, "fname", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                : _c("td", [_vm._v(_vm._s(_vm.userInfo.fname))])
-            ]),
+      _c("table", { staticClass: "table user-info-table" }, [
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v(_vm._s(_vm.lng.fname))]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v(_vm._s(_vm.lng.lname))]),
-              _vm._v(" "),
-              _vm.edit
-                ? _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.userInfo.lname,
-                          expression: "userInfo.lname"
-                        }
-                      ],
-                      staticClass: "form-control myinput1",
-                      domProps: { value: _vm.userInfo.lname },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.userInfo, "lname", $event.target.value)
-                        }
+            _vm.edit
+              ? _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.userInfo.fname,
+                        expression: "userInfo.fname"
                       }
-                    })
-                  ])
-                : _c("td", [_vm._v(_vm._s(_vm.userInfo.lname))])
-            ]),
+                    ],
+                    staticClass: "form-control myinput1",
+                    domProps: { value: _vm.userInfo.fname },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.userInfo, "fname", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _c("td", [_vm._v(_vm._s(_vm.userInfo.fname))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v(_vm._s(_vm.lng.lname))]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v(_vm._s(_vm.lng.tel_number))]),
-              _vm._v(" "),
-              _vm.edit
-                ? _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.userInfo.tel,
-                          expression: "userInfo.tel"
-                        }
-                      ],
-                      staticClass: "form-control myinput1",
-                      domProps: { value: _vm.userInfo.tel },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.userInfo, "tel", $event.target.value)
-                        }
+            _vm.edit
+              ? _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.userInfo.lname,
+                        expression: "userInfo.lname"
                       }
-                    })
-                  ])
-                : _c("td", [_vm._v(_vm._s(_vm.userInfo.tel))])
-            ])
+                    ],
+                    staticClass: "form-control myinput1",
+                    domProps: { value: _vm.userInfo.lname },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.userInfo, "lname", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _c("td", [_vm._v(_vm._s(_vm.userInfo.lname))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v(_vm._s(_vm.lng.tel_number))]),
+            _vm._v(" "),
+            _vm.edit
+              ? _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.userInfo.tel,
+                        expression: "userInfo.tel"
+                      }
+                    ],
+                    staticClass: "form-control myinput1",
+                    domProps: { value: _vm.userInfo.tel },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.userInfo, "tel", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              : _c("td", [_vm._v(_vm._s(_vm.userInfo.tel))])
           ])
-        ]
-      )
+        ])
+      ])
     ])
   ])
 }

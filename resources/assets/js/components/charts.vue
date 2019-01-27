@@ -91,7 +91,6 @@ export default {
                     }
                    chart_self.update();
                 }).catch(function(error) { 
-                    self.$root.retry(self.show_hist, error.response.status);
                 });
             }
         }

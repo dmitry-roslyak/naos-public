@@ -107,18 +107,12 @@
     transition: all 0.25s;
     margin: 1.5em 1.4em 1.2em;
     border-radius: 1em;
-    background-color: gainsboro;;
+    background-color: whitesmoke;
     box-shadow: 0 0 0.2em;
-}
-/* .bar:hover .filled { 
-    background-color:rgb(0, 101, 253);
-} */
-.bar:hover { 
-    box-shadow:0 0 .2rem rgb(0, 101, 253);
 }
 .filled {
     height: 1rem;
-    background-color:#fff;
+    background-color:rgb(136, 184, 255);
 }
 .circle {
     position:absolute;

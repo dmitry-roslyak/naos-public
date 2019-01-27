@@ -169,7 +169,6 @@ const store = new Vuex.Store({
 var data = {
     lng: null,
     langs: null,
-    ajaxError: 0,
     user: null
 };
 const app = new Vue({
@@ -192,27 +191,7 @@ const app = new Vue({
                 app.$store.commit('set_currency', response.data[1].rate);
                 app.$forceUpdate();
             }).catch(function (error) {
-                app.$root.retry(app.get_locale, error.response.status);
             });
-        },
-        /** 
-        * Retry request if connection refused 
-        * @method retry
-        * @param {Function} request function
-        * @param {Object} arguments
-        */
-        retry(f, args){
-            var self = this
-            return function(error){
-                if(!self.retry.count) self.retry.count = 0
-                console.log(error)
-                if(self.retry.count++ < 6) {
-                    _.throttle(f.bind(null, args),750)
-                } else {
-                    self.retry.count = 0
-                    app.ajaxError = error.message.length < 150 ? error.message : 'Shit happens'
-                }
-            }
         },
         googleIn() {
             this.logIn(new firebase.auth.GoogleAuthProvider());
@@ -228,7 +207,6 @@ const app = new Vue({
                 // this.$router.push('/');
                 location.replace('/');
             }).catch(function (error) {
-                app.$root.retry(app.logIn2, error.response.status);
             });
         },
         logIn(provider) {

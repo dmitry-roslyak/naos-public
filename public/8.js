@@ -105,9 +105,7 @@ var self,
             axios.get('/set_currency?val=' + val).then(function (response) {
                 self.lng.currency = self.lng[response.data.name];
                 self.$store.commit('set_currency', response.data.rate);
-            }).catch(function (error) {
-                self.$root.retry(self.get_currency, error.response.status);
-            });
+            }).catch(function (error) {});
         },
         get_locale: function get_locale(lng) {
             this.$root.get_locale(lng);

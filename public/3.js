@@ -75,13 +75,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 var self,
     _data = {
     lng: {},
     ordby: 'bydef',
     items: [],
-    cng1: true,
     price: {
         array: null,
         range: [0, 0],
@@ -108,9 +112,6 @@ var self,
         this.lng = window.lng;
         this.paginator.func = this.getSelectedProd;
         this.getSelectedProd();
-        // window.onhashchange= function(){
-        //     if (location.hash != temp) data_self.anmRunning=0;
-        // };
     },
 
     methods: {
@@ -149,7 +150,7 @@ var self,
                     return t - e;
                 });
                 self.paginator.total = response.data[0];
-            }).catch(self.$root.retry(self.getSelectedProd));
+            });
         },
         buyItem: function buyItem(item) {
             if (item.available) this.$refs.buyModal.$data.item = item;
@@ -158,21 +159,12 @@ var self,
             this.items[i].is_compare = this.items[i].is_compare ? false : true;
             this.$store.commit('compare', this.items[i].id);
         },
-
-        // anm_scale($event.target) //need remove?
-        // anm_scale(e){
-        //     e.parentNode.lastElementChild.animate([
-        //         { transform: 'scale(1)' }, 
-        //         { transform: 'scale(1.4)' }, 
-        //         { transform: 'scale(1)' }
-        //     ], { duration: 350,iterations: 1});
-        // },
         to_wish: function to_wish(i) {
             axios.post('/to_wish', {
                 id: self.items[i].id
             }).then(function (response) {
                 self.items[i].isWish = response.data ? true : false;
-            }).catch(self.$root.retry(self.to_wish, i));
+            });
         }
     }
 });
@@ -187,7 +179,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  /* margin: 0 5px 5px; */\n  padding: 3px 30px;\n  margin-left: -5px;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.1em;\n  line-height: 2em;\n}\n.itmc select {\n    height: 27px;\n    display: inline;\n}\n#items-on-page {\n  width: 60px;\n}\n#sortby {\n  width: 180px;\n}\n.product-state {\n  display: inline-block;\n  border-radius: 5px;\n  font-weight: 900;\n  background-color: lightgray;\n  cursor: default;\n}\n.product-state > * {\n    display: inline-block;\n    margin: 7px;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n.ic-s:hover .item-spec {\n    font-size: 1.5rem;\n    width: 100%;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n", ""]);
+exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.1em;\n  line-height: 2em;\n}\n.itmc select {\n    height: 27px;\n    display: inline;\n}\n#sortby {\n  width: 180px;\n}\n.product-state {\n  display: inline-block;\n  border-radius: 5px;\n  font-weight: 900;\n  background-color: lightgray;\n  cursor: default;\n}\n.product-state > * {\n    display: inline-block;\n    margin: 7px;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n.ic-s:hover .item-spec {\n    font-size: 1.5rem;\n    width: 100%;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n", ""]);
 
 // exports
 
@@ -207,7 +199,7 @@ var render = function() {
     [
       _c("sidebar", {
         staticClass: "col-sm-3 col-md-2",
-        staticStyle: { padding: "0px 4px 0px 0px" }
+        staticStyle: { padding: "0" }
       }),
       _vm._v(" "),
       _c(
@@ -219,83 +211,86 @@ var render = function() {
               "\n            " + _vm._s(_vm.lng.showed_items) + "\n            "
             ),
             _c(
-              "a",
+              "div",
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.cng1,
-                    expression: "cng1"
-                  }
-                ],
-                on: {
-                  click: function($event) {
-                    _vm.cng1 = false
-                  }
-                }
-              },
-              [_vm._v(" " + _vm._s(_vm.items.length) + " ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.cng1,
-                    expression: "!cng1"
-                  },
-                  {
-                    name: "model",
-                    rawName: "v-model.number",
-                    value: _vm.paginator.take,
-                    expression: "paginator.take",
-                    modifiers: { number: true }
-                  }
-                ],
-                staticClass: "form-control input-sm",
-                attrs: { id: "items-on-page" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return _vm._n(val)
-                        })
-                      _vm.$set(
-                        _vm.paginator,
-                        "take",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    },
-                    function($event) {
-                      _vm.getSelectedProd()
-                      _vm.cng1 = true
-                    }
-                  ],
-                  mouseleave: function($event) {
-                    _vm.cng1 = true
-                  }
-                }
+                staticClass: "dropdown",
+                staticStyle: { display: "inline-block" }
               },
               [
-                _c("option", { attrs: { value: "20" } }, [_vm._v("20")]),
+                _c(
+                  "a",
+                  {
+                    staticClass: "dropdown-toggle fake-link",
+                    attrs: {
+                      "data-toggle": "dropdown",
+                      "aria-haspopup": "true"
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.items.length) +
+                        "\n                "
+                    )
+                  ]
+                ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "30" } }, [_vm._v("30")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "40" } }, [_vm._v("40")])
+                _c("ul", { staticClass: "dropdown-menu" }, [
+                  _c("li", [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "fake-link",
+                        on: {
+                          click: function($event) {
+                            _vm.paginator.take = 20
+                            _vm.getSelectedProd()
+                          }
+                        }
+                      },
+                      [_vm._v("20")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "fake-link",
+                        on: {
+                          click: function($event) {
+                            _vm.paginator.take = 30
+                            _vm.getSelectedProd()
+                          }
+                        }
+                      },
+                      [_vm._v("30")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "fake-link",
+                        on: {
+                          click: function($event) {
+                            _vm.paginator.take = 40
+                            _vm.getSelectedProd()
+                          }
+                        }
+                      },
+                      [_vm._v("40")]
+                    )
+                  ])
+                ])
               ]
             ),
-            _vm._v("(" + _vm._s(_vm.paginator.total) + ")\n            "),
+            _vm._v(
+              "\n            (" +
+                _vm._s(_vm.paginator.total) +
+                ")\n            "
+            ),
             _c("div", { staticClass: "pull-right" }, [
               _vm._v(
                 "\n                " +

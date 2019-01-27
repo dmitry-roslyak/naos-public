@@ -109,9 +109,7 @@ var self,
                 self.$store.commit('set_ctg_id', id);
                 self.flt_reset();
                 _.throttle(self.$parent.getSelectedProd, 750);
-            }).catch(function (error) {
-                self.$root.retry(self.get_filters, error.response.status);
-            });
+            }).catch(function (error) {});
         },
         toFilter: function toFilter(e) {
             this.$store.commit('setFilter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);

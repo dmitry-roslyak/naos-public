@@ -21,15 +21,11 @@
         };
     </script>
 </head>
-<body>
+<body lang="{{ config('app.locale') }}">
     <div id='app'>
-        <div :data-err="ajaxError?true:false" class="ajax-error thumbnail">
-            <i class="fa fa-warning"></i>&nbsp;@{{ajaxError}}
-            <span class="fake-link err-close" @click="ajaxError=0">X</span>
-        </div>
         <div id="site_loading" class="overlay-view">
             <i class="fa fa-cog fa-spin" style="font-size:10rem"></i>  
-            <h4>Loading</h4>
+            <h4>@lang('app.loading')<span>.</span><span>.</span><span>.</span></h4>
         </div>
         <nav class="navbar navbar-default navbar-static-top" >
             <div class="container">

@@ -97,7 +97,6 @@
                     self.flt_reset();
                     _.throttle(self.$parent.getSelectedProd, 750)
                 }).catch(function (error) {
-                    self.$root.retry(self.get_filters, error.response.status);
                 });                  
             },
             toFilter(e){

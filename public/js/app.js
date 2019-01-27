@@ -6213,7 +6213,7 @@ var self,
         get_random_products: function get_random_products() {
             axios.get('/prod_rnd').then(function (response) {
                 self.items = response.data;
-            }).catch(self.$root.retry(self.get_random_products));
+            });
         }
     }
 });
@@ -6483,7 +6483,7 @@ var self,
                             self.search_show = 0;
                             self.search_result = 0;
                         } else self.search_show = 1;
-                    }).catch(self.$root.retry(self.toSearch));
+                    });
                 }, 500);
             } else self.search_show = 0;
         }
@@ -23657,7 +23657,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.bar,.filled {\r\n    position:relative\n}\n.bar {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.5em 1.4em 1.2em;\r\n    border-radius: 1em;\r\n    background-color: gainsboro;;\r\n    -webkit-box-shadow: 0 0 0.2em;;\r\n            box-shadow: 0 0 0.2em;\n}\r\n/* .bar:hover .filled { \r\n    background-color:rgb(0, 101, 253);\r\n} */\n.bar:hover { \r\n    -webkit-box-shadow:0 0 .2rem rgb(0, 101, 253); \r\n            box-shadow:0 0 .2rem rgb(0, 101, 253);\n}\n.filled {\r\n    height: 1rem;\r\n    background-color:#fff;\n}\n.circle {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius:2rem;\r\n    background-color:#fff;\r\n    -webkit-box-shadow:0 0 .6rem #a9a9a9;\r\n            box-shadow:0 0 .6rem #a9a9a9;\n}\n.circle:hover {\r\n    background-color:#f5f5f5\n}\n.t {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
+exports.push([module.i, "\n.bar,.filled {\r\n    position:relative\n}\n.bar {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.5em 1.4em 1.2em;\r\n    border-radius: 1em;\r\n    background-color: whitesmoke;\r\n    -webkit-box-shadow: 0 0 0.2em;\r\n            box-shadow: 0 0 0.2em;\n}\n.filled {\r\n    height: 1rem;\r\n    background-color:rgb(136, 184, 255);\n}\n.circle {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius:2rem;\r\n    background-color:#fff;\r\n    -webkit-box-shadow:0 0 .6rem #a9a9a9;\r\n            box-shadow:0 0 .6rem #a9a9a9;\n}\n.circle:hover {\r\n    background-color:#f5f5f5\n}\n.t {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
 
 // exports
 
@@ -68544,7 +68544,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
 var _data = {
     lng: null,
     langs: null,
-    ajaxError: 0,
     user: null
 };
 var app = new Vue({
@@ -68571,29 +68570,7 @@ var app = new Vue({
                 window.lng.currency = window.lng[response.data[1].name];
                 app.$store.commit('set_currency', response.data[1].rate);
                 app.$forceUpdate();
-            }).catch(function (error) {
-                app.$root.retry(app.get_locale, error.response.status);
-            });
-        },
-
-        /** 
-        * Retry request if connection refused 
-        * @method retry
-        * @param {Function} request function
-        * @param {Object} arguments
-        */
-        retry: function retry(f, args) {
-            var self = this;
-            return function (error) {
-                if (!self.retry.count) self.retry.count = 0;
-                console.log(error);
-                if (self.retry.count++ < 6) {
-                    _.throttle(f.bind(null, args), 750);
-                } else {
-                    self.retry.count = 0;
-                    app.ajaxError = error.message.length < 150 ? error.message : 'Shit happens';
-                }
-            };
+            }).catch(function (error) {});
         },
         googleIn: function googleIn() {
             this.logIn(new firebase.auth.GoogleAuthProvider());
@@ -68608,9 +68585,7 @@ var app = new Vue({
                 // app.user = response.data;
                 // this.$router.push('/');
                 location.replace('/');
-            }).catch(function (error) {
-                app.$root.retry(app.logIn2, error.response.status);
-            });
+            }).catch(function (error) {});
         },
         logIn: function logIn(provider) {
             firebase.auth().signInWithPopup(provider).then(function (result) {

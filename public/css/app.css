@@ -11742,19 +11742,6 @@ a:hover {
   z-index: -1;
 }
 
-.ajax-error .fa-warning {
-  color: red;
-  font-size: 1.2em;
-}
-
-.err-close {
-  background-color: tomato;
-  color: white;
-  border-radius: 4px;
-  padding: 2px 4px;
-  font-size: 1.5rem;
-}
-
 .copyright {
   position: absolute;
   width: 100%;
@@ -12030,6 +12017,50 @@ a:hover {
 
 .carousel-indicators {
   bottom: -8px !important;
+}
+
+#site_loading > h4 span {
+  -webkit-animation: opacity_anm 0.6s infinite alternate;
+          animation: opacity_anm 0.6s infinite alternate;
+}
+
+#site_loading > h4 span:nth-child(2) {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+}
+
+#site_loading > h4 span:nth-child(3) {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
+}
+
+@-webkit-keyframes opacity_anm {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes opacity_anm {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.user-info-table {
+  margin-bottom: 0;
+}
+
+.user-info-table td {
+  width: 50%;
+  line-height: 2 !important;
 }
 
 .dr-btn {

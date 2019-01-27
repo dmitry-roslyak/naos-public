@@ -26,6 +26,7 @@ trait Utility
     {
         $user = \Auth::user();
         $locale = $user ? $user : Utility::locale();
+        \App::setLocale($locale['language']);
         return [
             'langsAvailable' => \App\Lang::where('name', 'lang_name')->get(['text','lng'])->keyBy('lng'),
             'user' =>  $user,

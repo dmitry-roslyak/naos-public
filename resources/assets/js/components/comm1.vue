@@ -101,7 +101,6 @@
                         self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
                         self.$forceUpdate();
                     }).catch(function(error) {
-                        self.$root.retry(self.comment_like, error.response.status);
                     }); 
                 } 
             },
@@ -113,7 +112,6 @@
                         self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
                     }
                 }).catch(function(error) {
-                   self.$root.retry(self.show_comments, error.response.status);
                 });
             },
             leave_comment() {
@@ -123,7 +121,6 @@
                     pid: pid,
                     cid: 0
                 }).catch(function(error) {
-                    self.$root.retry(self.leave_comment, error.response.status);
                 });
             }
         }

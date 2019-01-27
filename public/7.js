@@ -102,9 +102,7 @@ var chart_self,
                     }
                 }
                 chart_self.update();
-            }).catch(function (error) {
-                self.$root.retry(self.show_hist, error.response.status);
-            });
+            }).catch(function (error) {});
         }
     }
 });

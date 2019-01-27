@@ -163,9 +163,7 @@ var self,
                 self.products.forEach(function (element) {
                     element.count = self.$store.state.cart[element.id];
                 });
-            }).catch(function (error) {
-                self.$root.retry(self.get_prodsby_ids, error.response.status);
-            });
+            }).catch(function (error) {});
         },
         chk_input: function chk_input(i) {
             this.cardValidate.number = /^(\d{13,19})$/.test(this.card.number);
@@ -195,9 +193,7 @@ var self,
                 //     document.getElementById('order-done').style = "display: none";
                 //     location.replace('/');
                 // },2000)
-            }).catch(function (error) {
-                self.$root.retry(self.to_order, error.response.status);
-            });
+            }).catch(function (error) {});
         }
     }
 });
