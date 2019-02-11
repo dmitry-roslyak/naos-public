@@ -122,7 +122,7 @@
     height: 2em;
     border-radius:2rem;
     background-color:#fff;
-    box-shadow:0 0 .6rem #a9a9a9;
+    box-shadow: 0 0 0.5rem #868686;
 }
 .circle:hover {
     background-color:#f5f5f5

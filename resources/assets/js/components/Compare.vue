@@ -1,77 +1,162 @@
 <template>
-    <div class="container-fluid">
-        <hr>
-        <div style="margin:0 15px 15px">
-            <div class="product-labels" v-for="(prod,i) in list" :key="i">
-                <router-link :to="{ name: 'detail', params: { id: prod.id }}">{{prod.name}}</router-link>
-                <!-- <span @click="removeProd(i)">X</span> -->
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-6">
-            <div style="text-align:center">Price</div>
-            <canvas id="graph-1"></canvas>
-        </div>
-        <div v-once v-for="(spec,i) in list[0].specs" :key="i" v-if="list.length" class="col-sm-3 col-xs-6">
-            <div v-if="spec.isComparable">
-                <div style="text-align:center">{{spec.name}}</div>
-                <canvas :id="'graph'+i"></canvas>
-            </div>
-        </div>
+    <div class="container-fluid compare">
+        <!-- <div v-show="show_graph" class="fds">
+            <canvas id="cmprGraph"></canvas>
+        </div> -->
+        <table class="table" v-if="list.length>0" style="margin-top: 1rem;"> 
+            <tbody style="white-space: nowrap;">
+                <tr style="display:inline-block">
+                    <td style="width: 12em;height: 15rem;;text-align:center;border: inherit">
+                        <div style="margin-bottom:6px">Сравнить</div>
+                        <button class="btn btn-primary btn-sm" @click="diffType?diffType=0:diffType=1">{{diffType == 1 ? 'Проценты' : 'Значения'}}</button>
+                    </td>
+                    <td class="td_name" v-for="specs in list[0].specs" :key="specs.name" @mouseover="reGraph(specs.name);show_graph=true" @mouseleave="show_graph=false" style="width: 12em;float:left;clear:both">
+                        <!-- <i class="fa fa-bar-chart"  aria-hidden="true"></i> -->
+                        {{specs.name}}
+                    </td>
+                </tr>
+                <tr class="table-item t-name" @mouseover="cmpr(i1)" v-for="(temp,i1) in list" :key="i1">
+                    <td style="float:left;clear:both;width:100%;height: 15rem;">
+                        <div class="thumbnail" style="margin:0;border: 0;">
+                            <img v-bind:src="'file/'+temp.img_src" @error="img404($event.target)" style="max-height: 4em">
+                        </div>
+                        <router-link class="t-name" :to="{ name: 'detail', params: { id: temp.id }}">{{temp.name}}</router-link>
+                        <star-rating :rating="+temp.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                        <router-link to="/coms">{{temp.vote_count}} Reviews</router-link>
+                    </td>
+                    <td v-for="specs in temp.specs" :key="specs.name" style="float:left;clear:both;width:100%;overflow: hidden;text-overflow: ellipsis;">{{specs.value}}
+                        <span v-show="+specs.diff" :style="specs.diff < 0 ? 'color:red' : 'color:green'">
+                            {{(specs.diff > 0 ? '(+' : '(') + specs.diff  + (diffType == 0 ? '%) ' : ') ')}}
+                        </span>{{specs.val_type}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 <script>
-var data = {
-    list: []
-};
-var self, selfData, selfProps, selfChart=[],promiseGraph;
-export default {
-    data: function () { return data },
-    props: ['ids'],
-    created() {
-        self = this, selfData = this.$data, selfProps = this.$props;        
-        this.get_prodsby_ids();
-        promiseGraph.then(()=>{ self.initGraphs() })
-    },
-    methods: {
-        removeProd(i){
-            selfData.list.splice(i,1);    
-            //selfChart[0].update();
-        },
-        initGraphs() {
-            for (var i = -1; i < selfData.list[0].specs.length; i++) {
-                if(selfData.list[0].specs[i] && !selfData.list[0].specs[i].isComparable) continue;
-                var temp = {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)','rgba(66, 95, 244,0.2)','rgba(255, 234, 50,0.2)','rgba(32, 201, 48,0.2)',
-                            'rgba(30, 195, 255,0.2)','rgba(172, 30, 255,0.2)','rgba(255, 30, 161,0.2)',],
-                        borderColor: ['rgba(255,99,132,1)','rgba(66, 95, 244,1)','rgba(255, 234, 50,1)','rgba(32, 201, 48,1)','rgba(30, 195, 255,1)',
-                            'rgba(172, 30, 255,1)','rgba(255, 30, 161,1)',]
-                    }]
-                };
-                for (var j = 0; j < selfData.list.length; j++) {
-                    if(i==-1) temp.datasets[0].data.push((selfData.list[j].price * window.Laravel.currency.rate).toFixed(1));
-                    else temp.datasets[0].data.push(selfData.list[j].specs[i].value)
-                    temp.labels.push(selfData.list[j].name)
-                    /// temp.label = val;
-                }
-                selfChart.push(new Chart(document.getElementById('graph' + i), {
+    var data ={
+        list:[],
+        show_graph:false,
+        diffType:0,
+    };
+    var chartData = {
+        labels: [],
+        datasets: [{
+            data: [],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255,99,132,1)'
+        }]
+    };
+    var self, selfChart;
+    export default {
+        data: function() { return data },
+        props: ['ids'],
+        mounted(){
+            self = this;
+            this.get_prodsby_ids();
+            var cmprGraph = document.getElementById('cmprGraph');
+            if(cmprGraph){
+                selfChart = new Chart(cmprGraph, {
                     type: 'polarArea',
-                    data: temp,
-                    options: {responsive: true,legend: { display: false},layout: {padding: 4},}
-                }));
+                    data: chartData,
+                    options: {}//{ legend: { display: true} }
+                });
             }
+            this.$forceUpdate();
         },
-        get_prodsby_ids() {
-            promiseGraph=axios.get('/prodsby_ids', { params: { ids: JSON.parse(selfProps.ids) } }).then(function (response) {
-                selfData.list = response.data;
-            }).catch(function (error) {
-                self.$root.retry(self.get_prodsby_ids, error.response.status);
-            });
+        methods: {
+            img404(e){
+                e.src = "/images/404.png";
+            },
+            cmpr(x){
+                for (var k = 0; k < this.list.length; k++) {
+                    for (var j = 0; j < this.list[k].specs.length; j++){
+                        for (var i = 0; i < this.list.length; i++){
+                            if(i!=x && this.list[k].specs[j].isComparable == 1) {
+                                this.list[i].specs[j].diff = (this.diffType == 0 ? 
+                                    Math.round(this.list[i].specs[j].value/this.list[x].specs[j].value*100)-100 :
+                                    this.list[i].specs[j].value-this.list[x].specs[j].value).toFixed(1);
+                            } else this.list[i].specs[j].diff = 0;
+                        }  
+                    }
+                }
+                this.$forceUpdate();
+            },
+            reGraph(val) {
+                return;
+                for (var i = 0; i < this.list.length; i++) {
+                    for (var j = 0; j < this.list[i].specs.length; j++){
+                        if(this.list[i].specs[j].name == val)
+                            chartData.datasets[0].data[i] = this.list[i].specs[j].value;
+                    }
+                } 
+                chartData.datasets[0].label = val;
+                selfChart.update();
+            },
+            get_prodsby_ids(n){
+                axios.get('/prodsby_ids', {params:{ids:JSON.parse(this.ids)}}).then(function (response) {
+                    self.list = response.data;
+                    for (var i = 0; i < self.list.length; i++) {
+                        self.list[i].specs.unshift({
+                            name: 'price',
+                            value: self.list[i].price
+                        })
+                        chartData.labels.push(self.list[i].name); 
+                    }
+                });
+            }
         }
     }
-}
 </script>
-
-<style lang="sass" src="../../sass/compare.sass"></style>
+<style>
+.compare {
+    overflow: overlay
+}
+@media (max-width: 768px){
+    .compare {
+        padding: 0;
+    }
+}
+.t-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.fds{
+    position:absolute;
+    position: fixed;
+    transition: all 0.4s;
+    width:30em;
+    height:25em;
+    margin: -15em 0 0 -12.5em;
+    z-index:4;
+    /*transform: translate(60%, 45%);*/
+    left:45%;
+    top:60%;
+    background-color:white;
+    box-shadow: 0 0 0.5rem #0049ce;
+    border-radius: 1rem;
+}
+.table-item:hover {
+    border-radius: 1rem;
+    box-shadow: 0 0 0.5rem #0049ce;
+    background-color: white;
+}
+.table-item td:first-child {
+    border: inherit !important
+}
+.table-item {
+    display:inline-block;
+    transition: all 0.5s;
+    width: 20rem;
+}
+.td_name{
+    transition: all 0.3s;
+}
+/* .td_name:hover{
+    color: white;
+    background-color: cornflowerblue;
+} */
+</style>
