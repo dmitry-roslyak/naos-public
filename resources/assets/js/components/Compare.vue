@@ -6,13 +6,12 @@
         <table class="table" v-if="list.length>0" style="margin-top: 1rem;"> 
             <tbody style="white-space: nowrap;">
                 <tr style="display:inline-block">
-                    <td style="width: 12em;height: 15rem;;text-align:center;border: inherit">
-                        <div style="margin-bottom:6px">Сравнить</div>
-                        <button class="btn btn-primary btn-sm" @click="diffType?diffType=0:diffType=1">{{diffType == 1 ? 'Проценты' : 'Значения'}}</button>
+                    <td style="padding: 25px;width: 12em;height: 15rem;text-align:center;border: inherit">
+                        <button class="btn btn-primary btn-sm" style="width: 100%;" @click="diffType?diffType=0:diffType=1">{{diffType == 1 ? '%' : lng.value}}</button>
                     </td>
                     <td class="td_name" v-for="specs in list[0].specs" :key="specs.name" @mouseover="reGraph(specs.name);show_graph=true" @mouseleave="show_graph=false" style="width: 12em;float:left;clear:both">
                         <!-- <i class="fa fa-bar-chart"  aria-hidden="true"></i> -->
-                        {{specs.name}}
+                        {{lng[specs.name]?lng[specs.name]:specs.name}}
                     </td>
                 </tr>
                 <tr class="table-item t-name" @mouseover="cmpr(i1)" v-for="(temp,i1) in list" :key="i1">
@@ -22,7 +21,7 @@
                         </div>
                         <router-link class="t-name" :to="{ name: 'detail', params: { id: temp.id }}">{{temp.name}}</router-link>
                         <star-rating :rating="+temp.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                        <router-link to="/coms">{{temp.vote_count}} Reviews</router-link>
+                        <!-- <router-link to="/coms">{{temp.vote_count}} Reviews</router-link> -->
                     </td>
                     <td v-for="specs in temp.specs" :key="specs.name" style="float:left;clear:both;width:100%;overflow: hidden;text-overflow: ellipsis;">{{specs.value}}
                         <span v-show="+specs.diff" :style="specs.diff < 0 ? 'color:red' : 'color:green'">
@@ -54,6 +53,7 @@
         props: ['ids'],
         mounted(){
             self = this;
+            this.lng = window.lng;
             this.get_prodsby_ids();
             var cmprGraph = document.getElementById('cmprGraph');
             if(cmprGraph){

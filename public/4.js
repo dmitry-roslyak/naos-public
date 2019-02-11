@@ -40,7 +40,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var _data = {
     list: [],
@@ -63,6 +62,7 @@ var self, selfChart;
     props: ['ids'],
     mounted: function mounted() {
         self = this;
+        this.lng = window.lng;
         this.get_prodsby_ids();
         var cmprGraph = document.getElementById('cmprGraph');
         if (cmprGraph) {
@@ -158,6 +158,7 @@ var render = function() {
                       "td",
                       {
                         staticStyle: {
+                          padding: "25px",
                           width: "12em",
                           height: "15rem",
                           "text-align": "center",
@@ -165,14 +166,11 @@ var render = function() {
                         }
                       },
                       [
-                        _c("div", { staticStyle: { "margin-bottom": "6px" } }, [
-                          _vm._v("Сравнить")
-                        ]),
-                        _vm._v(" "),
                         _c(
                           "button",
                           {
                             staticClass: "btn btn-primary btn-sm",
+                            staticStyle: { width: "100%" },
                             on: {
                               click: function($event) {
                                 _vm.diffType
@@ -183,9 +181,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              _vm._s(
-                                _vm.diffType == 1 ? "Проценты" : "Значения"
-                              )
+                              _vm._s(_vm.diffType == 1 ? "%" : _vm.lng.value)
                             )
                           ]
                         )
@@ -216,7 +212,11 @@ var render = function() {
                         [
                           _vm._v(
                             "\n                    " +
-                              _vm._s(specs.name) +
+                              _vm._s(
+                                _vm.lng[specs.name]
+                                  ? _vm.lng[specs.name]
+                                  : specs.name
+                              ) +
                               "\n                "
                           )
                         ]
@@ -287,11 +287,7 @@ var render = function() {
                               "show-rating": false,
                               "read-only": true
                             }
-                          }),
-                          _vm._v(" "),
-                          _c("router-link", { attrs: { to: "/coms" } }, [
-                            _vm._v(_vm._s(temp.vote_count) + " Reviews")
-                          ])
+                          })
                         ],
                         1
                       ),
