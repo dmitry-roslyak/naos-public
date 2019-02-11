@@ -39,9 +39,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var _data = {
+    lng: {},
     list: [],
     show_graph: false,
     diffType: 0
@@ -126,7 +126,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.compare {\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\n        padding: 0;\n}\n}\n.t-name {\n    display: block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n.fds{\n    position:absolute;\n    position: fixed;\n    -webkit-transition: all 0.4s;\n    transition: all 0.4s;\n    width:30em;\n    height:25em;\n    margin: -15em 0 0 -12.5em;\n    z-index:4;\n    /*transform: translate(60%, 45%);*/\n    left:45%;\n    top:60%;\n    background-color:white;\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\n            box-shadow: 0 0 0.5rem #0049ce;\n    border-radius: 1rem;\n}\n.table-item:hover {\n    border-radius: 1rem;\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\n            box-shadow: 0 0 0.5rem #0049ce;\n    background-color: white;\n}\n.table-item td:first-child {\n    border: inherit !important\n}\n.table-item {\n    display:inline-block;\n    -webkit-transition: all 0.5s;\n    transition: all 0.5s;\n    width: 20rem;\n}\n.td_name{\n    -webkit-transition: all 0.3s;\n    transition: all 0.3s;\n}\n/* .td_name:hover{\n    color: white;\n    background-color: cornflowerblue;\n} */\n", ""]);
+exports.push([module.i, "\n.compare {\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\n        padding: 0;\n}\n}\n.t-name {\n    display: block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n.table-item:hover {\n    border-radius: 1rem;\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\n            box-shadow: 0 0 0.5rem #0049ce;\n    background-color: white;\n}\n.table-item td:first-child {\n    border: inherit !important\n}\n.table-item {\n    display:inline-block;\n    -webkit-transition: all 0.5s;\n    transition: all 0.5s;\n    width: 20rem;\n}\n", ""]);
 
 // exports
 
@@ -160,7 +160,7 @@ var render = function() {
                         staticStyle: {
                           padding: "25px",
                           width: "12em",
-                          height: "15rem",
+                          height: "12rem",
                           "text-align": "center",
                           border: "inherit"
                         }
@@ -246,7 +246,7 @@ var render = function() {
                             float: "left",
                             clear: "both",
                             width: "100%",
-                            height: "15rem"
+                            height: "12rem"
                           }
                         },
                         [
