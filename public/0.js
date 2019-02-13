@@ -76,7 +76,8 @@ var self,
         self = this;
         this.catalog = window.Laravel.catalog;
         this.lng = window.lng;
-        this.price = this.$parent.price, this.get_filters(this.$store.state.ctg_id);
+        this.price = this.$parent.price;
+        this.get_filters(this.$parent.category, window.Laravel.catalog[this.$parent.category].id);
     },
 
     methods: {
@@ -103,10 +104,10 @@ var self,
             }
             this.$store.commit('setFilter');
         },
-        get_filters: function get_filters(id) {
+        get_filters: function get_filters(name, id) {
+            this.$router.push('/products/' + name);
             axios.get('/get_filters?id=' + id).then(function (response) {
                 self.filters = response.data;
-                self.$store.commit('set_ctg_id', id);
                 self.flt_reset();
                 _.throttle(self.$parent.getSelectedProd, 750);
             }).catch(function (error) {});
@@ -607,7 +608,7 @@ var render = function() {
             blur: function($event) {
               _vm.catalog_btn_toggle(0)
             },
-            click: function($event) {
+            mouseover: function($event) {
               _vm.catalog_btn_toggle(1)
             }
           }
@@ -617,37 +618,37 @@ var render = function() {
             staticClass: "fa fa-list",
             staticStyle: { "font-size": "1.2em" }
           }),
-          _vm._v("\n        " + _vm._s(_vm.lng.catalog) + "\n    ")
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "ul",
-        {
-          staticClass: "ctg-frm",
-          attrs: { "aria-labelledby": "dropdownMenu1" }
-        },
-        _vm._l(_vm.catalog, function(item) {
-          return _c(
-            "div",
+          _vm._v("\n        " + _vm._s(_vm.lng.catalog) + "\n        "),
+          _c(
+            "ul",
             {
-              key: item.id,
-              staticClass: "ctg-itm fake-link",
-              on: {
-                click: function($event) {
-                  _vm.get_filters(item.id)
-                }
-              }
+              staticClass: "ctg-frm",
+              attrs: { "aria-labelledby": "dropdownMenu1" }
             },
-            [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm.lng[item.name] ? _vm.lng[item.name] : item.name) +
-                  "\n        "
+            _vm._l(_vm.catalog, function(item, name) {
+              return _c(
+                "div",
+                {
+                  key: item.id,
+                  staticClass: "ctg-itm fake-link",
+                  on: {
+                    click: function($event) {
+                      _vm.get_filters(name, item.id)
+                      _vm.catalog_btn_toggle(0)
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
+                      "\n            "
+                  )
+                ]
               )
-            ]
+            })
           )
-        })
+        ]
       ),
       _vm._v(" "),
       _c(

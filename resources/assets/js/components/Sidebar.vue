@@ -1,14 +1,14 @@
 <template>
     <div class="container-fluid">
-        <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @click="catalog_btn_toggle(1)"  type="button" id="dropdownMenu1" aria-haspopup="true">
+        <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @mouseover="catalog_btn_toggle(1)"  type="button" id="dropdownMenu1" aria-haspopup="true">
             <i class="fa fa-list" style="font-size:1.2em"></i>
             {{lng.catalog}}
+            <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
+                <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="get_filters(name, item.id);catalog_btn_toggle(0)" :key="item.id">
+                    {{lng[name]?lng[name]:name}}
+                </div>
+            </ul>
         </div>
-        <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
-            <div class="ctg-itm fake-link" v-for="item in catalog" @click="get_filters(item.id)" :key="item.id">
-                {{lng[item.name]?lng[item.name]:item.name}}
-            </div>
-        </ul>
         <button class="form-control" v-show="showClear" @click="flt_reset">{{lng.flt_reset}}</button>
         <div class="thumbnail flt-grp" v-if="filters.length" >
             <div class="flt-btn fake-link" @click="price_show?price_show=false:price_show=true;expand($event.currentTarget)">
@@ -64,8 +64,8 @@
             self = this;
             this.catalog = window.Laravel.catalog;
             this.lng = window.lng;
-            this.price = this.$parent.price,
-            this.get_filters(this.$store.state.ctg_id);
+            this.price = this.$parent.price;
+            this.get_filters(this.$parent.category,window.Laravel.catalog[this.$parent.category].id);
         },
         methods: {
             // priceRange: function(t, e) {
@@ -90,10 +90,10 @@
                 }
                 this.$store.commit('setFilter')
             },
-            get_filters(id) {
+            get_filters(name, id) {
+                this.$router.push('/products/'+name);
                 axios.get('/get_filters?id='+id).then(function (response) {
                     self.filters = response.data;
-                    self.$store.commit('set_ctg_id', id);
                     self.flt_reset();
                     _.throttle(self.$parent.getSelectedProd, 750)
                 }).catch(function (error) {

@@ -11,7 +11,6 @@
                 <a class="action-item fake-link">&nbsp;
                     <i class="fa fa-share-alt heart-state" aria-hidden="true"></i>
                     <div @click="fbshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></div>
-                    <div @click="gshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-google-plus"></i></div>
                 </a>
             </div>
             <!-- <div class="col-sm-1" style="padding:0 2px;margin-top:8px;">
@@ -118,9 +117,6 @@
             fbshare(){
                 window.open('https://www.facebook.com/dialog/share?'+
                 "app_id=1358482950908486&display=popup&href="+location.host+'/#'+this.$route.path);
-            },
-            gshare(){
-                window.open('https://plus.google.com/share?url='+location.host+'/#'+this.$route.path);
             },
             buyItem(item){
                 if(item.available) this.$refs.buyModal.$data.item = item;

@@ -102,6 +102,7 @@ var self,
     data: function data() {
         return _data;
     },
+    props: ['category'],
     computed: {
         currency: function currency() {
             return this.$store.state.currency;
@@ -127,7 +128,7 @@ var self,
             var price = [this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency];
             axios.get('prod_filter', {
                 params: {
-                    ctg_id: this.$store.state.ctg_id,
+                    ctg_id: window.Laravel.catalog[this.category].id,
                     skip: this.paginator.skip,
                     take: this.paginator.take,
                     f: this.$store.state.flt_ids,

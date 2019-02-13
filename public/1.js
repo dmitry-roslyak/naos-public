@@ -84,7 +84,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     timerId,
@@ -136,9 +135,6 @@ var self,
         },
         fbshare: function fbshare() {
             window.open('https://www.facebook.com/dialog/share?' + "app_id=1358482950908486&display=popup&href=" + location.host + '/#' + this.$route.path);
-        },
-        gshare: function gshare() {
-            window.open('https://plus.google.com/share?url=' + location.host + '/#' + this.$route.path);
         },
         buyItem: function buyItem(item) {
             if (item.available) this.$refs.buyModal.$data.item = item;
@@ -273,15 +269,6 @@ var render = function() {
                       [
                         _vm._v(_vm._s(_vm.lng.share) + " "),
                         _c("i", { staticClass: "fa fa-facebook-official" })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "fake-link", on: { click: _vm.gshare } },
-                      [
-                        _vm._v(_vm._s(_vm.lng.share) + " "),
-                        _c("i", { staticClass: "fa fa-google-plus" })
                       ]
                     )
                   ])

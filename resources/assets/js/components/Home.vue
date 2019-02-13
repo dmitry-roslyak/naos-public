@@ -6,8 +6,8 @@
                 {{lng.catalog}}
             </div>
             <ul class="ctg-frm" style="display: inherit">
-                <div class="ctg-itm fake-link" v-for="item in catalog" @click="category(item.id)" :key="item.id">
-                    {{lng[item.name]?lng[item.name]:item.name}}
+                <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="category(name, item.id)" :key="item.id">
+                    {{lng[name]?lng[name]:name}}
                 </div>
                 <div class="ctg-itm fake-link" v-for="i in dummyCategory" :key="i">&nbsp;</div>
             </ul>
@@ -66,9 +66,8 @@
             this.catalog = window.Laravel.catalog;
         },
         methods: {
-            category(id) {
-                self.$store.commit('set_ctg_id', id);
-                self.$router.push("/products");
+            category(name, id) {
+                self.$router.push('products/'+name);
             },
             get_random_products() {
                 axios.get('/prod_rnd').then(function (response) {

@@ -97,7 +97,7 @@ var self,
         this.langs = $.map(window.langs, function (value) {
             return { img: value[0].text, name: value[1].text, ISO: value[2].text };
         });
-        this.lng = window.lng; //lng.currency undefined
+        this.lng = window.lng;
     },
 
     methods: {

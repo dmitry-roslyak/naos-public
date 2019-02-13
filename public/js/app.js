@@ -6206,9 +6206,8 @@ var self,
     },
 
     methods: {
-        category: function category(id) {
-            self.$store.commit('set_ctg_id', id);
-            self.$router.push("/products");
+        category: function category(name, id) {
+            self.$router.push('products/' + name);
         },
         get_random_products: function get_random_products() {
             axios.get('/prod_rnd').then(function (response) {
@@ -52385,7 +52384,7 @@ var render = function() {
             "ul",
             { staticClass: "ctg-frm", staticStyle: { display: "inherit" } },
             [
-              _vm._l(_vm.catalog, function(item) {
+              _vm._l(_vm.catalog, function(item, name) {
                 return _c(
                   "div",
                   {
@@ -52393,16 +52392,14 @@ var render = function() {
                     staticClass: "ctg-itm fake-link",
                     on: {
                       click: function($event) {
-                        _vm.category(item.id)
+                        _vm.category(name, item.id)
                       }
                     }
                   },
                   [
                     _vm._v(
                       "\n                " +
-                        _vm._s(
-                          _vm.lng[item.name] ? _vm.lng[item.name] : item.name
-                        ) +
+                        _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
                         "\n            "
                     )
                   ]
@@ -68480,17 +68477,15 @@ var account = Vue.component('account', function (resolve) {
 Vue.component('user-info', function (resolve) {
     __webpack_require__.e/* require */(6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/userInfo.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
-var routes = [{ path: '/', component: home }, { path: '/products', component: products }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids1', component: cart, props: true }, { path: '/account', component: account }];
+var routes = [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids1', component: cart, props: true }, { path: '/account', component: account }];
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
+    // mode: 'history',
     routes: routes // short for routes: routes
 });
 var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
     state: {
-        count: 0,
         cartLength: 0,
         compare_list: [],
-        ctg_id: 0,
-        ctg_ids: [],
         flt_ids: [],
         currency: 0,
         cart: {}
@@ -68528,11 +68523,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
                 var i = state.flt_ids.indexOf(id);
                 i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
             } else state.flt_ids.length = 0;
-        },
-        set_ctg_id: function set_ctg_id(state, id) {
-            state.ctg_id = id;
-            state.compare_list.length = 0;
-            state.flt_ids.length = 0;
         },
 
         compare: function compare(state, id) {
@@ -68590,15 +68580,14 @@ var app = new Vue({
         logIn: function logIn(provider) {
             firebase.auth().signInWithPopup(provider).then(function (result) {
                 // This gives you a Google Access Token. You can use it to access the Google API.
-                var token = result.credential.accessToken;
+                // var token = result.credential.accessToken;
                 app.logIn2(result.user.qa);
             }).catch(function (error) {
                 //different api error
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                var email = error.email;
-                var credential = error.credential;
-                // ...
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // var email = error.email;
+                // var credential = error.credential;
             });
         },
         logout: function logout() {

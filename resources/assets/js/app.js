@@ -100,22 +100,20 @@ Vue.component('user-info', function (resolve) {
 });
 const routes = [
     { path: '/', component: home },
-    { path: '/products', component: products },
+    { path: '/products/:category', component: products, props: true  },
     { name: 'detail', path: '/detail/:id', component: detail, props: true },
     { path: '/compare/:ids', component: compare, props: true },
     { path: '/cart/:ids1', component: cart, props: true  },
     { path: '/account', component: account }
 ];
 const router = new VueRouter({
+    // mode: 'history',
     routes // short for routes: routes
 });
 const store = new Vuex.Store({
     state: {
-        count: 0,
         cartLength: 0,
         compare_list: [],
-        ctg_id: 0,
-        ctg_ids: [],
         flt_ids: [],
         currency:0,
         cart: {},
@@ -154,11 +152,6 @@ const store = new Vuex.Store({
                 var i = state.flt_ids.indexOf(id)
                 i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i,1)
             } else state.flt_ids.length = 0
-        },
-        set_ctg_id(state, id) {
-            state.ctg_id = id; 
-            state.compare_list.length = 0;
-            state.flt_ids.length = 0;
         },
         compare: function(state, id) {
             var i = state.compare_list.indexOf(id)
@@ -212,15 +205,14 @@ const app = new Vue({
         logIn(provider) {
             firebase.auth().signInWithPopup(provider).then(function (result) {
                 // This gives you a Google Access Token. You can use it to access the Google API.
-                var token = result.credential.accessToken;
+                // var token = result.credential.accessToken;
                 app.logIn2(result.user.qa);
             }).catch(function (error) {
                 //different api error
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                var email = error.email;
-                var credential = error.credential;
-                // ...
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // var email = error.email;
+                // var credential = error.credential;
             });
         },
         logout() {

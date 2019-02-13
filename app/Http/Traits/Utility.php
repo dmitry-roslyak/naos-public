@@ -30,7 +30,7 @@ trait Utility
         return [
             'langsAvailable' => \App\Lang::where('name', 'lang_name')->get(['text','lng'])->keyBy('lng'),
             'user' =>  $user,
-            'catalog' => \App\Category::get(),
+            'catalog' => \App\Category::get()->keyBy('name'),
             'lng' => \App\Lang::where('lng', $locale['language'])->get(['name','text']), 
             'currency' => \App\Currency::where('name', $locale['currency'])->orderBy('date','desc')->first()
         ];
