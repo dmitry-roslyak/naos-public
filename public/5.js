@@ -99,14 +99,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 var self,
     _data = {
@@ -172,27 +164,24 @@ var self,
             this.cardValidate.cvv2 = /^(\d{3,4})$/.test(this.card.cvv2);
         },
         next_input: function next_input(i) {
-            if (i == 2) this.card.number = 4005520000011126;
+            this.chk_input();
             document.getElementById('input' + i).focus();
         },
         to_order: function to_order() {
             axios.post('/order', {
                 products: this.products,
                 card: this.card,
-                // n: this.card.number,
-                // e: this.card.expire.month + '-' + this.card.expire.year,
-                // c: this.card.cvv2,
                 user_info: self.$refs.userInfo.userInfo,
                 payment: this.payment,
                 delivery: this.delivery,
-                delivery_adr: 'data_self.delivery adr'
+                delivery_adr: 'somewhere'
             }).then(function (response) {
                 self.$store.commit('cartClear');
-                // document.getElementById('order-done').style = "display: initial";
-                // setTimeout(function (params) {
-                //     document.getElementById('order-done').style = "display: none";
-                //     location.replace('/');
-                // },2000)
+                document.getElementById('order-done').style = "display: initial";
+                setTimeout(function (params) {
+                    document.getElementById('order-done').style = "display: none";
+                    self.$router.push('/');
+                }, 3000);
             }).catch(function (error) {});
         }
     }
@@ -208,7 +197,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.cart-caption {\n  background-color: cornflowerblue;\n  padding: 15px;\n  color: white;\n}\n.cart-item {\n  border: 1px solid cornflowerblue;\n  background-color: white;\n  padding: 15px;\n}\n", ""]);
+exports.push([module.i, "\n.cart-caption {\n  background-color: cornflowerblue;\n  padding: 15px;\n  color: white;\n}\n.cart-item {\n  border: 1px solid cornflowerblue;\n  background-color: white;\n  padding: 15px;\n}\ntd > .fa-check-circle {\n  color: green;\n}\ntd > .fa-times {\n  color: red;\n}\n", ""]);
 
 // exports
 
@@ -254,9 +243,13 @@ var render = function() {
               ),
               _c("div", { staticClass: "pull-right" }, [
                 _vm._v(
-                  _vm._s(_vm.lng.total_sum) +
-                    "\n                " +
-                    _vm._s(_vm.total.toFixed(1) + " " + _vm.lng.currency)
+                  _vm._s(
+                    _vm.lng.total_sum +
+                      " " +
+                      _vm.total.toFixed(1) +
+                      " " +
+                      _vm.lng.currency
+                  )
                 )
               ])
             ])
@@ -356,13 +349,13 @@ var render = function() {
       "div",
       { staticClass: "col-sm-12 col-md-5" },
       [
-        _c("user-info", { ref: "userInfo" }),
+        _c("user-info", { ref: "userInfo", staticStyle: { padding: "0" } }),
         _vm._v(" "),
         _c("hr"),
         _vm._v(" "),
         _c("label", [_vm._v(_vm._s(_vm.lng.payment_type) + " ")]),
         _vm._v(" "),
-        _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "col-xs-12" }, [
           _c("div", { staticClass: "radio" }, [
             _c("i", { staticClass: "fa fa-money" }),
             _vm._v(" "),
@@ -450,6 +443,7 @@ var render = function() {
                             ) {
                               return null
                             }
+                            _vm.card.number = 4005520000011126
                             _vm.next_input(2)
                           },
                           input: [
@@ -468,15 +462,11 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm.cardValidate.number
-                        ? _c("i", {
-                            staticClass: "fa fa-check-circle",
-                            staticStyle: { color: "green" }
-                          })
-                        : _c("i", {
-                            staticClass: "fa fa-times",
-                            staticStyle: { color: "red" }
-                          })
+                      _c("i", {
+                        class: _vm.cardValidate.number
+                          ? "fa fa-check-circle"
+                          : "fa fa-times"
+                      })
                     ])
                   ]),
                   _vm._v(" "),
@@ -570,16 +560,13 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm.cardValidate.expire.month &&
-                      _vm.cardValidate.expire.year
-                        ? _c("i", {
-                            staticClass: "fa fa-check-circle",
-                            staticStyle: { color: "green" }
-                          })
-                        : _c("i", {
-                            staticClass: "fa fa-times",
-                            staticStyle: { color: "red" }
-                          })
+                      _c("i", {
+                        class:
+                          _vm.cardValidate.expire.month &&
+                          _vm.cardValidate.expire.year
+                            ? "fa fa-check-circle"
+                            : "fa fa-times"
+                      })
                     ])
                   ]),
                   _vm._v(" "),
@@ -617,15 +604,11 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm.cardValidate.cvv2
-                        ? _c("i", {
-                            staticClass: "fa fa-check-circle",
-                            staticStyle: { color: "green" }
-                          })
-                        : _c("i", {
-                            staticClass: "fa fa-times",
-                            staticStyle: { color: "red" }
-                          })
+                      _c("i", {
+                        class: _vm.cardValidate.cvv2
+                          ? "fa fa-check-circle"
+                          : "fa fa-times"
+                      })
                     ])
                   ])
                 ])
@@ -635,11 +618,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "button",
-          {
-            staticClass: "btn btn-primary pull-right",
-            staticStyle: { "margin-top": "10px" },
-            on: { click: _vm.to_order }
-          },
+          { staticClass: "btn btn-primary", on: { click: _vm.to_order } },
           [_vm._v(_vm._s(_vm.lng.confirm_order))]
         )
       ],

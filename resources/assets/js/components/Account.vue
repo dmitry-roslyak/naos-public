@@ -1,6 +1,5 @@
 <template>
     <div class="container-fluid" style="max-width: 80em">
-        <div class="container-fluid" style="padding:0; max-width: 80em">
         <div class="container-fluid">
             <div class="dropdown">
                 <i class="fa fa-money"></i>
@@ -68,7 +67,6 @@
                 <label><input type="radio" name="r2">&nbsp;Нет</label>
             </div>
         </div>  -->
-    </div>
     </div>
 </template>
 

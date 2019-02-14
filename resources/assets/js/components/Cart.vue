@@ -6,8 +6,7 @@
             <div class="col-md-12" style="padding:0 0 15px 15px">
                 <div class="cart-caption">
                     {{lng.cart}}
-                    <div class="pull-right">{{lng.total_sum}}
-                    {{(total).toFixed(1)+' '+ lng.currency}}</div>
+                    <div class="pull-right">{{lng.total_sum +' '+(total).toFixed(1)+' '+ lng.currency}}</div>
                 </div>
             </div>
             <div class="col-sm-6 col-xs-12" style="padding:0 0 15px 15px" v-for="item in products" :key="item.id">
@@ -30,7 +29,7 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-5">
-            <user-info ref="userInfo"></user-info>
+            <user-info ref="userInfo" style="padding:0"></user-info>
             <hr>
             <!-- <div class="form-inline">
                 <span>Способ доставки:&nbsp;</span>
@@ -46,7 +45,7 @@
                 </tr>
             </table> -->
             <label>{{lng.payment_type}}&nbsp;</label>
-            <div class="container-fluid">
+            <div class="col-xs-12">
                 <div class="radio">
                     <i class="fa fa-money"></i>
                     <label><input type="radio" v-model="payment" value="cash">{{lng.cash}} </label>
@@ -63,38 +62,31 @@
                     <tbody>
                         <tr>
                             <td>{{lng.paycard_number}}</td>
-                            <td><input placeholder="4005520000011126" v-model="card.number" maxlength="19" @keyup.13='next_input(2)'
+                            <td><input placeholder="4005520000011126" v-model="card.number" maxlength="19" @keyup.13="card.number = 4005520000011126;next_input(2)"
                                     @input="chk_input(1)" class="form-control myinput1"></td>
-                            <td><i v-if="cardValidate.number" class="fa fa-check-circle" style="color:green"></i>
-                                <i v-else class="fa fa-times" style="color:red"></i>
-                            </td>
+                            <td><i :class="cardValidate.number ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                         </tr>
                         <tr>
                             <td>Exp Date</td>
                             <td>
                                 <div class="form-inline">
-                                    <input id="input2" maxlength="2" @keyup.13='next_input(3)' style="width:3em" @input="chk_input(2)"
+                                    <input id="input2" maxlength="2" @keyup.13="next_input(3)" style="width:3em" @input="chk_input(2)"
                                         v-model="card.expire.month" class="form-control myinput1">&nbsp;/
-                                    <input id="input3" maxlength="2" @keyup.13='next_input(4)' style="width:3em" @input="chk_input(3)" 
+                                    <input id="input3" maxlength="2" @keyup.13="next_input(4)" style="width:3em" @input="chk_input(3)" 
                                         v-model="card.expire.year" class="form-control myinput1">
                                 </div>
                             </td>
-                            <td><i v-if="cardValidate.expire.month && cardValidate.expire.year" class="fa fa-check-circle" style="color:green"></i>
-                                <i v-else class="fa fa-times" style="color:red"></i>
-                            </td>
+                            <td><i :class="cardValidate.expire.month && cardValidate.expire.year ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                         </tr>
                         <tr>
                             <td>CVV2</td>
                             <td><input id="input4" maxlength="4" v-model="card.cvv2" style="width:7em" @input="chk_input(4)" class="form-control myinput1"></td>
-                            <td>
-                                <i v-if="cardValidate.cvv2" class="fa fa-check-circle" style="color:green"></i>
-                                <i v-else class="fa fa-times" style="color:red"></i>
-                            </td>
+                            <td><i :class="cardValidate.cvv2 ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <button class="btn btn-primary pull-right" style="margin-top:10px" @click="to_order">{{lng.confirm_order}}</button>
+            <button class="btn btn-primary" @click="to_order">{{lng.confirm_order}}</button>
         </div>
         <hr>
     </div>
@@ -130,8 +122,7 @@
                 for (var i = 0; i < requestIDs.length; i++) {
                     this.$store.commit('cart', {id: requestIDs[i], count: 1});
                 }
-            }
-            else {
+            } else {
                 for (const key in this.$store.state.cart) {
                     requestIDs.push(key);
                 }
@@ -161,27 +152,24 @@
                 this.cardValidate.cvv2 = /^(\d{3,4})$/.test(this.card.cvv2);                        
             },
             next_input(i) {
-                if (i == 2) this.card.number = 4005520000011126;
+                this.chk_input();
                 document.getElementById('input' + i).focus();
             },
             to_order() {
                 axios.post('/order', {
                     products: this.products,
                     card: this.card,
-                    // n: this.card.number,
-                    // e: this.card.expire.month + '-' + this.card.expire.year,
-                    // c: this.card.cvv2,
                     user_info: self.$refs.userInfo.userInfo,
                     payment: this.payment,
                     delivery: this.delivery,
-                    delivery_adr: 'data_self.delivery adr',
+                    delivery_adr: 'somewhere',
                 }).then(function (response) {
                     self.$store.commit('cartClear');
-                    // document.getElementById('order-done').style = "display: initial";
-                    // setTimeout(function (params) {
-                    //     document.getElementById('order-done').style = "display: none";
-                    //     location.replace('/');
-                    // },2000)
+                    document.getElementById('order-done').style = "display: initial";
+                    setTimeout(function (params) {
+                        document.getElementById('order-done').style = "display: none";
+                        self.$router.push('/')
+                    }, 3000)
                 }).catch(function (error) {
                 });
             }

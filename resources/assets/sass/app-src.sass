@@ -41,15 +41,6 @@ a:hover
     &.new
         box-shadow: 0.1em 0.1em 1em lightgreen
         background-color: limegreen
-// .halots
-//     position: relative
-//     padding-bottom: 7px
-//     &:hover .fa-share-alt
-//         color: chartreuse
-//     &:hover .share
-//         padding: 2px 4px
-//         margin: 2px 0
-//         font-size: $right-note-font-size
 .action-frm
     position: absolute
     right: 0
@@ -67,11 +58,9 @@ a:hover
         font-size: $right-note-font-size
 .compare-state[data-check]
     animation: bounce1 0.35s
-    font-size: $right-note-icon-size
     color: $compare-state-check1-color
 .heart-state[data-check]
     animation: bounce1 0.35s
-    font-size: $right-note-icon-size
     color: $heart-state-check1-color
 .compare-state,.heart-state
     animation: bounce0 0.35s
@@ -79,23 +68,6 @@ a:hover
 .fake-link:hover
     cursor: pointer
     text-decoration: none
-.ajax-error
-    transition: all 0.35s
-    position: fixed
-    right: 0
-    bottom: 30px
-    z-index: 300
-    box-shadow: 2px 2px 15px gray
-    background-color: white
-    border: 1px solid lightgray
-    border-radius: 6px
-    padding: 0.5em
-    opacity: 0
-    z-index: -1
-    &[data-err]
-        z-index: 1
-        opacity: 1
-        transform: translateX(-30px)
 .divider-or
     margin: 18px auto 8px
     position: relative
@@ -124,13 +96,11 @@ a:hover
         position: relative
         text-align: center
         top: 50%
-#site_loading
-    text-align: center
 .overlay-view
     position: fixed
     left: 50%
     top: 50%
-    margin: -29px 0 0 -29px
+    margin: -5rem 0 0 -5rem
     z-index: 1001
 .overlay-view::after
     content: ""
@@ -162,10 +132,6 @@ a:hover
         background-color: white
         color: inherit
     & a 
-        // display: inline-block
-        // margin: 3px auto
-        // width: 140px
-        // padding: 8px 
         color: white
         & svg 
             height: 40px
@@ -176,11 +142,9 @@ a:hover
         color: white
         border-color: #fff
 .ctg-btn
-    /*text-align: center;*/
     color: white
     background-color: cornflowerblue
     width: 100%
-    padding: 10px 10px 6px
     &:hover
         background-color: royalblue
 .ctg-frm
@@ -258,6 +222,10 @@ a:hover
     background-color: gray
 .carousel-indicators
     bottom: -8px !important
+#site_loading
+    text-align: center
+#site_loading > .fa-cog
+    font-size: 10rem
 #site_loading > h4 span
     animation: opacity_anm 0.6s infinite alternate
 #site_loading > h4 span:nth-child(2)

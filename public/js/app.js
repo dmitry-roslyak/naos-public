@@ -6180,6 +6180,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var self,
     _data = {
@@ -52373,47 +52375,55 @@ var render = function() {
         { staticClass: "col-sm-3 col-md-2", staticStyle: { padding: "0px" } },
         [
           _c("div", { staticClass: "ctg-btn fake-link" }, [
-            _c("i", {
-              staticClass: "fa fa-list",
-              staticStyle: { "font-size": "1.2em" }
-            }),
-            _vm._v("\n            " + _vm._s(_vm.lng.catalog) + "\n        ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "ul",
-            { staticClass: "ctg-frm", staticStyle: { display: "inherit" } },
-            [
-              _vm._l(_vm.catalog, function(item, name) {
-                return _c(
-                  "div",
-                  {
-                    key: item.id,
-                    staticClass: "ctg-itm fake-link",
-                    on: {
-                      click: function($event) {
-                        _vm.category(name, item.id)
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
-                        "\n            "
-                    )
-                  ]
-                )
+            _c("div", { staticStyle: { padding: "9px 10px 6px" } }, [
+              _c("i", {
+                staticClass: "fa fa-list",
+                staticStyle: { "font-size": "1.2em" }
               }),
-              _vm._v(" "),
-              _vm._l(_vm.dummyCategory, function(i) {
-                return _c("div", { key: i, staticClass: "ctg-itm fake-link" }, [
-                  _vm._v(" ")
-                ])
-              })
-            ],
-            2
-          )
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.lng.catalog) +
+                  "\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "ul",
+              { staticClass: "ctg-frm", staticStyle: { display: "inherit" } },
+              [
+                _vm._l(_vm.catalog, function(item, name) {
+                  return _c(
+                    "div",
+                    {
+                      key: item.id,
+                      staticClass: "ctg-itm fake-link",
+                      on: {
+                        click: function($event) {
+                          _vm.category(name, item.id)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
+                          "\n                "
+                      )
+                    ]
+                  )
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.dummyCategory, function(i) {
+                  return _c(
+                    "div",
+                    { key: i, staticClass: "ctg-itm fake-link" },
+                    [_vm._v(" ")]
+                  )
+                })
+              ],
+              2
+            )
+          ])
         ]
       ),
       _vm._v(" "),

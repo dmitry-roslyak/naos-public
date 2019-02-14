@@ -11631,14 +11631,12 @@ a:hover {
 .compare-state[data-check] {
   -webkit-animation: bounce1 0.35s;
           animation: bounce1 0.35s;
-  font-size: 1.6rem;
   color: orange;
 }
 
 .heart-state[data-check] {
   -webkit-animation: bounce1 0.35s;
           animation: bounce1 0.35s;
-  font-size: 1.6rem;
   color: crimson;
 }
 
@@ -11652,30 +11650,6 @@ a:hover {
 .fake-link:hover {
   cursor: pointer;
   text-decoration: none;
-}
-
-.ajax-error {
-  -webkit-transition: all 0.35s;
-  transition: all 0.35s;
-  position: fixed;
-  right: 0;
-  bottom: 30px;
-  z-index: 300;
-  -webkit-box-shadow: 2px 2px 15px gray;
-          box-shadow: 2px 2px 15px gray;
-  background-color: white;
-  border: 1px solid lightgray;
-  border-radius: 6px;
-  padding: 0.5em;
-  opacity: 0;
-  z-index: -1;
-}
-
-.ajax-error[data-err] {
-  z-index: 1;
-  opacity: 1;
-  -webkit-transform: translateX(-30px);
-          transform: translateX(-30px);
 }
 
 .divider-or {
@@ -11719,15 +11693,11 @@ a:hover {
   top: 50%;
 }
 
-#site_loading {
-  text-align: center;
-}
-
 .overlay-view {
   position: fixed;
   left: 50%;
   top: 50%;
-  margin: -29px 0 0 -29px;
+  margin: -5rem 0 0 -5rem;
   z-index: 1001;
 }
 
@@ -11787,11 +11757,9 @@ a:hover {
 }
 
 .ctg-btn {
-  /*text-align: center;*/
   color: white;
   background-color: cornflowerblue;
   width: 100%;
-  padding: 10px 10px 6px;
 }
 
 .ctg-btn:hover {
@@ -12017,6 +11985,14 @@ a:hover {
 
 .carousel-indicators {
   bottom: -8px !important;
+}
+
+#site_loading {
+  text-align: center;
+}
+
+#site_loading > .fa-cog {
+  font-size: 10rem;
 }
 
 #site_loading > h4 span {

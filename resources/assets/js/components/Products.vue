@@ -80,8 +80,7 @@
         items: [],
         price: {
             array: null,
-            range: [0, 0],
-            visible: !0
+            range: [0, 0]
         },
         paginator: {
             total: 0,

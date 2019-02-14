@@ -52,6 +52,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 // var debounce = require('lodash.debounce');
 var throttle = __webpack_require__("./node_modules/lodash.throttle/index.js");
@@ -614,11 +616,14 @@ var render = function() {
           }
         },
         [
-          _c("i", {
-            staticClass: "fa fa-list",
-            staticStyle: { "font-size": "1.2em" }
-          }),
-          _vm._v("\n        " + _vm._s(_vm.lng.catalog) + "\n        "),
+          _c("div", { staticStyle: { padding: "9px 10px 6px" } }, [
+            _c("i", {
+              staticClass: "fa fa-list",
+              staticStyle: { "font-size": "1.2em" }
+            }),
+            _vm._v("\n            " + _vm._s(_vm.lng.catalog) + "\n        ")
+          ]),
+          _vm._v(" "),
           _c(
             "ul",
             {
@@ -743,7 +748,7 @@ var render = function() {
                     }
                   }),
                   _c("span", { staticClass: "input-group-addon" }, [
-                    _vm._v("₽")
+                    _vm._v(_vm._s(_vm.lng.currency))
                   ])
                 ]),
                 _vm._v("\n            " + _vm._s(_vm.lng.to)),
@@ -770,7 +775,7 @@ var render = function() {
                     }
                   }),
                   _c("span", { staticClass: "input-group-addon" }, [
-                    _vm._v("₽")
+                    _vm._v(_vm._s(_vm.lng.currency))
                   ])
                 ]),
                 _vm._v(" "),

@@ -24,7 +24,7 @@
 <body lang="{{ config('app.locale') }}">
     <div id='app'>
         <div id="site_loading" class="overlay-view">
-            <i class="fa fa-cog fa-spin" style="font-size:10rem"></i>  
+            <i class="fa fa-cog fa-spin"></i>  
             <h4>@lang('app.loading')<span>.</span><span>.</span><span>.</span></h4>
         </div>
         <nav class="navbar navbar-default navbar-static-top" >
@@ -45,7 +45,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <ul class="nav navbar-nav navbar-right" >
                         <li class="dropdown">
-                            <a class="dropdown-toggle fake-link" style="text-decoration: none"
+                            <a class="dropdown-toggle fake-link"
                                 data-toggle="dropdown" aria-haspopup="true">
                                 <i class="fa fa-globe"></i>
                                 <img style="max-height:1.8em;margin-top:-0.5em" :src="'images/'+lng.ISO_code+'.png'">

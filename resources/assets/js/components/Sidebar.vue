@@ -1,8 +1,10 @@
 <template>
     <div class="container-fluid">
         <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @mouseover="catalog_btn_toggle(1)"  type="button" id="dropdownMenu1" aria-haspopup="true">
-            <i class="fa fa-list" style="font-size:1.2em"></i>
-            {{lng.catalog}}
+            <div style="padding: 9px 10px 6px">
+                <i class="fa fa-list" style="font-size:1.2em"></i>
+                {{lng.catalog}}
+            </div>
             <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
                 <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="get_filters(name, item.id);catalog_btn_toggle(0)" :key="item.id">
                     {{lng[name]?lng[name]:name}}
@@ -17,8 +19,8 @@
                 <i v-show="!price_show" class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
             </div>
             <div class="flip" style="margin: 6px 0px;">
-                {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[0]"><span class="input-group-addon">₽</span></div>
-                {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[1]"><span class="input-group-addon">₽</span></div> 
+                {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[0]"><span class="input-group-addon">{{lng.currency}}</span></div>
+                {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[1]"><span class="input-group-addon">{{lng.currency}}</span></div> 
                 <range v-model="price" @change="priceRangeChange"></range>
             </div>
         </div>

@@ -2,15 +2,17 @@
     <div class="container-fluid" style="max-width: 80em">
         <div class="col-sm-3 col-md-2" style="padding:0px">
             <div class="ctg-btn fake-link">
-                <i class="fa fa-list" style="font-size:1.2em"></i>
-                {{lng.catalog}}
-            </div>
-            <ul class="ctg-frm" style="display: inherit">
-                <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="category(name, item.id)" :key="item.id">
-                    {{lng[name]?lng[name]:name}}
+                <div style="padding: 9px 10px 6px">
+                    <i class="fa fa-list" style="font-size:1.2em"></i>
+                    {{lng.catalog}}
                 </div>
-                <div class="ctg-itm fake-link" v-for="i in dummyCategory" :key="i">&nbsp;</div>
-            </ul>
+                <ul class="ctg-frm" style="display: inherit">
+                    <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="category(name, item.id)" :key="item.id">
+                        {{lng[name]?lng[name]:name}}
+                    </div>
+                    <div class="ctg-itm fake-link" v-for="i in dummyCategory" :key="i">&nbsp;</div>
+                </ul>
+            </div>
         </div>
         <div v-if="items.length" class="col-sm-9 col-md-10">
             <div id="carousel1" class="carousel slide" data-ride="carousel">
