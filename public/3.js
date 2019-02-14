@@ -79,7 +79,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     _data = {
@@ -153,7 +152,7 @@ var self,
             });
         },
         buyItem: function buyItem(item) {
-            if (item.available) this.$refs.buyModal.$data.item = item;
+            this.$store.commit('cart', { id: item.id, count: 1 });
         },
         to_compare: function to_compare(i) {
             this.items[i].is_compare = this.items[i].is_compare ? false : true;
@@ -590,8 +589,6 @@ var render = function() {
         ],
         2
       ),
-      _vm._v(" "),
-      _c("buy-modal", { ref: "buyModal" }),
       _vm._v(" "),
       _c("pagination", {
         staticClass: "col-xs-12",

@@ -83,7 +83,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     timerId,
@@ -137,7 +136,7 @@ var self,
             window.open('https://www.facebook.com/dialog/share?' + "app_id=1358482950908486&display=popup&href=" + location.host + '/#' + this.$route.path);
         },
         buyItem: function buyItem(item) {
-            if (item.available) this.$refs.buyModal.$data.item = item;
+            this.$store.commit('cart', { id: item.id, count: 1 });
         },
         to_compare: function to_compare(i) {
             this.item.is_compare = this.item.is_compare ? false : true;
@@ -212,8 +211,6 @@ var render = function() {
       staticStyle: { "max-width": "80em", padding: "0" }
     },
     [
-      _c("buy-modal", { ref: "buyModal" }),
-      _vm._v(" "),
       _vm.item
         ? _c(
             "div",

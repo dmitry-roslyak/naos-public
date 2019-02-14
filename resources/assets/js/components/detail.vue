@@ -1,6 +1,5 @@
 <template>
     <div class="container-fluid" style="max-width: 80em;padding:0">
-        <buy-modal ref="buyModal"></buy-modal>
         <div v-if="item" class="col-md-7" style="padding-right:0">
             <!-- <h4 style="padding-left:8px">{{item.name}}</h4> -->
             <div class="action-frm" style="border-color: white;border: 1px solid white;border-width: 0 0 1px 1px;background-color:inherit">
@@ -119,7 +118,7 @@
                 "app_id=1358482950908486&display=popup&href="+location.host+'/#'+this.$route.path);
             },
             buyItem(item){
-                if(item.available) this.$refs.buyModal.$data.item = item;
+                this.$store.commit('cart', {id: item.id, count: 1});
             },
             to_compare(i){
                 this.item.is_compare = this.item.is_compare ? false : true

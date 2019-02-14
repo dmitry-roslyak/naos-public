@@ -60,7 +60,6 @@ const home = Vue.component('home', require('./components/Home.vue'));
 Vue.component('search', require('./components/Search.vue'));
 // Vue.component('star-rating', require('vue-star-rating'));
 Vue.component('star-rating', require('C:/Users/xiaomi/Desktop/downloads/naos/node_modules/vue-star-rating/src/star-rating.vue'));
-Vue.component('buy-modal', require('./components/buy-modal.vue'));
 Vue.component('pagination', require('./components/Pagination.vue'));
 Vue.component('range', require('./components/Range.vue'));
 

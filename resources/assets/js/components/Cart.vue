@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div id="order-done" style="display:none" class="overlay-background"><h4>{{lng.order_done}} !</h4> </div>
+        <div id="order-done" style="display:none" class="overlay-view"><h4>{{lng.order_done}} !</h4> </div>
         <hr>
         <div class="col-md-7 col-sm-12" style="padding:0">
             <div class="col-md-12" style="padding:0 0 15px 15px">

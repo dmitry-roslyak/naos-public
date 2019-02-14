@@ -6493,57 +6493,6 @@ var self,
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/buy-modal.vue":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var _data = {
-    lng: {},
-    item: null,
-    count: 1
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return _data;
-    },
-    mounted: function mounted() {
-        this.lng = window.lng;
-    },
-
-    methods: {
-        buy: function buy(order) {
-            this.$store.commit('cart', { id: this.item.id, count: this.count });
-            this.count = 1;
-            this.item = null;
-            if (order) this.$router.push("/cart/[]");
-        }
-    }
-});
-
-/***/ }),
-
 /***/ "./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js":
 /***/ (function(module, exports) {
 
@@ -23631,21 +23580,6 @@ module.exports = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 };
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1773d85f\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/buy-modal.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.overlay-background-buy-modal{\n    background-color: gray;\n    opacity: 0.5;\n}\n.dr-modal__close{\n    position: absolute;\n    border-bottom-left-radius: 0.6em;\n    padding: 0 0.4em;\n    color:white;\n    background-color: cornflowerblue;\n    top: 0;\n    right: 0;\n    font-size:1.2em;\n    opacity: 1;\n    z-index:1002;\n}\n.dr-modal__close:hover{\n    color:white;\n    background-color: tomato;\n}\n.dr-modal__dialog{ \n    position: fixed;       \n    border-radius: 0.6em; \n    /* border:2px solid cornflowerblue; */\n    background-color: white;\n    z-index:1001;\n    -webkit-transform: translate(-50%,-50%);\n            transform: translate(-50%,-50%);\n    left: 50%;\n    top: 50%;\n}\n", ""]);
-
-// exports
 
 
 /***/ }),
@@ -51761,126 +51695,6 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1773d85f\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/buy-modal.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.item
-    ? _c("div", { staticClass: "container-fluid" }, [
-        _c("div", {
-          staticClass: "overlay-background overlay-background-buy-modal"
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "dr-modal__dialog" }, [
-          _c(
-            "div",
-            { staticClass: "thumbnail", staticStyle: { margin: "0" } },
-            [
-              _c("img", {
-                staticStyle: { "max-height": "10em", "max-width": "10em" },
-                attrs: { src: "file/" + _vm.item.img_src }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticStyle: {
-                "background-color": "cornflowerblue",
-                color: "white",
-                padding: "0.5em"
-              }
-            },
-            [_vm._v(_vm._s(_vm.item.name))]
-          ),
-          _vm._v(" "),
-          _c("div", { staticStyle: { margin: "1em" } }, [
-            _c("span", [_vm._v(_vm._s(_vm.lng.count) + ":")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model.number",
-                  value: _vm.count,
-                  expression: "count",
-                  modifiers: { number: true }
-                }
-              ],
-              staticClass: "form-control input-xs",
-              attrs: { type: "number" },
-              domProps: { value: _vm.count },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.count = _vm._n($event.target.value)
-                },
-                blur: function($event) {
-                  _vm.$forceUpdate()
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticStyle: { margin: "1em" } }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary btn-block",
-                on: {
-                  click: function($event) {
-                    _vm.buy(true)
-                  }
-                }
-              },
-              [_vm._v(_vm._s(_vm.lng.to_order))]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary btn-block",
-                on: { click: _vm.buy }
-              },
-              [_vm._v(_vm._s(_vm.lng.addto_cart))]
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "fake-link dr-modal__close",
-              on: {
-                click: function($event) {
-                  _vm.count = 1
-                  _vm.item = null
-                }
-              }
-            },
-            [_vm._v("X")]
-          )
-        ])
-      ])
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1773d85f", module.exports)
-  }
-}
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3b9535d6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Range.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55562,33 +55376,6 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1773d85f\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/buy-modal.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1773d85f\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/buy-modal.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("e5509344", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1773d85f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./buy-modal.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1773d85f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./buy-modal.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
 
 /***/ }),
 
@@ -68449,7 +68236,6 @@ var home = Vue.component('home', __webpack_require__("./resources/assets/js/comp
 Vue.component('search', __webpack_require__("./resources/assets/js/components/Search.vue"));
 // Vue.component('star-rating', require('vue-star-rating'));
 Vue.component('star-rating', __webpack_require__("./node_modules/vue-star-rating/src/star-rating.vue"));
-Vue.component('buy-modal', __webpack_require__("./resources/assets/js/components/buy-modal.vue"));
 Vue.component('pagination', __webpack_require__("./resources/assets/js/components/Pagination.vue"));
 Vue.component('range', __webpack_require__("./resources/assets/js/components/Range.vue"));
 
@@ -68850,58 +68636,6 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-7b88e3df", Component.options)
   } else {
     hotAPI.reload("data-v-7b88e3df", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/buy-modal.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1773d85f\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/buy-modal.vue")
-}
-var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
-/* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/buy-modal.vue")
-/* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1773d85f\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/buy-modal.vue")
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\buy-modal.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1773d85f", Component.options)
-  } else {
-    hotAPI.reload("data-v-1773d85f", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

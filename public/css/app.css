@@ -11677,20 +11677,10 @@ a:hover {
   content: " ";
 }
 
-.overlay-background {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background-color: white;
-  z-index: 1000;
-}
-
-.overlay-background h4 {
-  position: relative;
-  text-align: center;
-  top: 50%;
+#order-done > h4 {
+  margin: 5rem;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
 }
 
 .overlay-view {

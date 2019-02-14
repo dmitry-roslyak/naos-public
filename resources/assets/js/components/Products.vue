@@ -69,7 +69,6 @@
                 </div>
             </div>
         </div>
-        <buy-modal ref="buyModal"></buy-modal>
         <pagination v-model="paginator" class="col-xs-12"></pagination>      
     </div>
 </template>
@@ -140,7 +139,7 @@
                 });
             },
             buyItem(item){
-                if(item.available) this.$refs.buyModal.$data.item = item;
+                this.$store.commit('cart', {id: item.id, count: 1});
             },
             to_compare(i){
                 this.items[i].is_compare = this.items[i].is_compare ? false : true

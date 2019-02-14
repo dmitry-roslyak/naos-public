@@ -215,7 +215,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "overlay-background",
+        staticClass: "overlay-view",
         staticStyle: { display: "none" },
         attrs: { id: "order-done" }
       },
