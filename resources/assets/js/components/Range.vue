@@ -1,11 +1,13 @@
 <template>
-    <div class="bar">
-        <div class="filled"></div> 
-        <div class="circle">
-            <div :class="{'t': true,'circle-drag': isDraged == 1}"></div>
-        </div> 
-        <div class="circle">
-            <div :class="{'t': true,'circle-drag': isDraged == 2}"></div>
+    <div class="range">
+        <div class="bar">
+            <div class="filled"></div> 
+            <div class="circle">
+                <div :class="{'t': true,'circle-drag': isDraged == 1}"></div>
+            </div> 
+            <div class="circle">
+                <div :class="{'t': true,'circle-drag': isDraged == 2}"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -34,7 +36,7 @@
                     (parseInt(circle.style.left) < parseInt(circles[1].style.left) 
                     ? parseInt(circles[1].style.left) - step 
                     :  step - parseInt(circles[0].style.left))
-                    < 10 * percentPerArrayItem
+                    <  8 * percentPerArrayItem
                 ) return;
                 if(step < 0)
                     circle.style.left = '0%'
@@ -54,9 +56,10 @@
                 var circles = document.getElementsByClassName("circle")
                     , filled = document.getElementsByClassName("filled")[0]
                     , bar = document.getElementsByClassName("bar")[0]
+                    , range = document.getElementsByClassName("range")[0]
                     , offset = circles[0].offsetLeft
                     , firstTouch = true;
-                    
+
                 bar.onclick = function(i) {
                     self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1],
                       i, bar, filled, circles, offset)
@@ -72,21 +75,21 @@
                         self.isDraged = index+1
                         self.moveTo(this, { x: params.touches[0].clientX }, bar, filled, circles, offset)
                     }
+                    circle.ontouchend = function() {
+                        self.isDraged = 0
+                    }
                     circles[i].onmousedown = function(e) {
                         e = e || window.event;
                         e.preventDefault() 
                         self.isDraged = index+1
-                        circle.onmousemove = function (move) {
+                        range.onmousemove = function (move) {
                             self.moveTo(circle, move, bar, filled, circles, offset)
                         }
                     }
-                    circle.ontouchend = function() {
-                        self.isDraged = 0
-                    }
-                    circle.onmouseleave = circle.onmouseup = function() {
-                        self.isDraged = 0
-                        circle.onmousemove = null;
-                    }
+                }
+                range.onmouseleave = range.onmouseup = function() {
+                    self.isDraged = 0
+                    range.onmousemove = null;
                 }
                 this.$on('reset', function() {
                     filled.style.left = circles[0].style.left = "0%";
@@ -102,13 +105,16 @@
 </script>
 
 <style>
+.range {
+    padding: 1px 0;
+}
 .bar,.filled {
     position:relative
 }
 .bar {
     transition: all 0.25s;
-    margin: 1.5em 1.4em 1.2em;
-    border-radius: 1em;
+    margin: 1.2em 1.4em;
+    border-radius: 0.3em;
     background-color: whitesmoke;
     box-shadow: 0 0 0.2em;
 }
@@ -122,7 +128,7 @@
     margin-left:-1em;
     width: 2em;
     height: 2em;
-    border-radius:2rem;
+    border-radius: 50%;
     background-color:#fff;
     box-shadow: 0 0 0.5rem #868686;
 }

@@ -18,10 +18,10 @@
                 <i v-show="price_show" class="fa fa-angle-up font1 pull-right" aria-hidden="true"></i>
                 <i v-show="!price_show" class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
             </div>
-            <div class="flip" style="margin: 6px 0px;">
+            <div class="flip">
                 {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[0]" @input="priceRangeChange()"><span class="input-group-addon">{{lng.currency}}</span></div>
                 {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[1]" @input="priceRangeChange()"><span class="input-group-addon">{{lng.currency}}</span></div> 
-                <range v-model="price" ref="range" @change="rangeIndexReset();priceRangeChange()" @ready="rangeIndexReset()"></range>
+                <range v-model="price" ref="range" style="margin-top:8px" @change="rangeIndexReset();priceRangeChange()" @ready="rangeIndexReset()"></range>
             </div>
         </div>
         <div class="thumbnail flt-grp" v-for="(filter,i1) in filters" :key="filter.id">
