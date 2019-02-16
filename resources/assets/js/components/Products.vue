@@ -79,7 +79,9 @@
         items: [],
         price: {
             array: null,
-            range: [0, 0]
+            range: [null, null],
+            indexFrom: 0,
+            indexTo: 0
         },
         paginator: {
             total: 0,
@@ -110,8 +112,8 @@
                 e.style.padding = "4em";
             },
             getSelectedProd() {
-                var price = [this.price.range[0] / this.$store.state.currency, this.price.range[1] / this.$store.state.currency];
-                axios.get('prod_filter', {
+                var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
+                return axios.get('prod_filter', {
                     params: {
                         ctg_id: window.Laravel.catalog[this.category].id,
                         skip: this.paginator.skip,
@@ -130,7 +132,7 @@
                     }
                     self.items = items; 
                     for (var n = [], i = 0; i < response.data[2].length; i++) {
-                        n.push(self.$store.state.currency * response.data[2][i].price);
+                        n.push(+response.data[2][i].price);
                     }
                     self.price.array = n.sort(function(t, e) {
                         return t - e

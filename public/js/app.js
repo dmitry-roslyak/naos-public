@@ -6281,106 +6281,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Range.vue":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var self;
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return { isDraged: 0 };
-    },
-    props: {
-        value: {
-            type: Object,
-            default: null
-        }
-    },
-    mounted: function mounted() {
-        self = this, this.init();
-        this.$emit("load");
-    },
-
-    methods: {
-        moveTo: function moveTo(circle, e, bar, filled, circles, offset) {
-            var pxPerPercent = bar.offsetWidth / 100,
-                step = (e.x - bar.offsetLeft + offset) / pxPerPercent,
-                percentPerArrayItem = 100 / (self.value.array.length - 1);
-
-            if ((parseInt(circle.style.left) < parseInt(circles[1].style.left) ? parseInt(circles[1].style.left) - step : step - parseInt(circles[0].style.left)) < 10 * percentPerArrayItem) return;
-            if (step < 0) circle.style.left = '0%';else if (step > 100) circle.style.left = '100%';else circle.style.left = step + '%';
-
-            filled.style.left = circles[0].style.left;
-            filled.style.width = parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%';
-
-            this.value.range = [this.value.array[Math.round(parseInt(circles[0].style.left) / percentPerArrayItem)], this.value.array[Math.round(parseInt(circles[1].style.left) / percentPerArrayItem)]];
-            this.$emit("change");
-        },
-        init: function init() {
-            var circles = document.getElementsByClassName("circle"),
-                filled = document.getElementsByClassName("filled")[0],
-                bar = document.getElementsByClassName("bar")[0],
-                offset = circles[0].offsetLeft,
-                firstTouch = true;
-
-            circles[0].style.left = "0%";
-            circles[1].style.left = '100%';
-
-            this.value.range = [this.value.array[0], this.value.array[this.value.array.length - 1]];
-            bar.onclick = function (i) {
-                self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1], i, bar, filled, circles, offset);
-            };
-
-            var _loop = function _loop() {
-                var circle = circles[i];
-                var index = i;
-                circles[i].ontouchmove = function (params) {
-                    if (firstTouch) {
-                        offset = circles[0].offsetLeft;
-                        firstTouch = false;
-                    }
-                    self.isDraged = index + 1;
-                    self.moveTo(this, { x: params.touches[0].clientX }, bar, filled, circles, offset);
-                };
-                circles[i].onmousedown = function (e) {
-                    e = e || window.event;
-                    e.preventDefault();
-                    self.isDraged = index + 1;
-                    circle.onmousemove = function (move) {
-                        self.moveTo(circle, move, bar, filled, circles, offset);
-                    };
-                };
-                circle.ontouchend = function () {
-                    self.isDraged = 0;
-                };
-                circle.onmouseleave = circle.onmouseup = function () {
-                    self.isDraged = 0;
-                    circle.onmousemove = null;
-                };
-            };
-
-            for (var i = 0; i < circles.length; i++) {
-                _loop();
-            }
-        }
-    }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Search.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -23584,21 +23484,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.bar,.filled {\r\n    position:relative\n}\n.bar {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.5em 1.4em 1.2em;\r\n    border-radius: 1em;\r\n    background-color: whitesmoke;\r\n    -webkit-box-shadow: 0 0 0.2em;\r\n            box-shadow: 0 0 0.2em;\n}\n.filled {\r\n    height: 1rem;\r\n    background-color:rgb(136, 184, 255);\n}\n.circle {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius:2rem;\r\n    background-color:#fff;\r\n    -webkit-box-shadow: 0 0 0.5rem #868686;\r\n            box-shadow: 0 0 0.5rem #868686;\n}\n.circle:hover {\r\n    background-color:#f5f5f5\n}\n.t {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5538ee49\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./node_modules/vue-star-rating/src/star.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23748,7 +23633,6 @@ module.exports = firebase;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_auth__ = __webpack_require__("./node_modules/@firebase/auth/dist/auth.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__firebase_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__firebase_auth__);
 
@@ -51695,37 +51579,6 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3b9535d6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Range.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "bar" }, [
-    _c("div", { staticClass: "filled" }),
-    _vm._v(" "),
-    _c("div", { staticClass: "circle" }, [
-      _c("div", { class: { t: true, "circle-drag": _vm.isDraged == 1 } })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "circle" }, [
-      _c("div", { class: { t: true, "circle-drag": _vm.isDraged == 2 } })
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3b9535d6", module.exports)
-  }
-}
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5538ee49\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./node_modules/vue-star-rating/src/star.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55376,33 +55229,6 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1551d7f6", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Range.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Range.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
 
 /***/ }),
 
@@ -68171,73 +67997,45 @@ module.exports = function(module) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js__ = __webpack_require__("./node_modules/chart.js/src/chart.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_chart_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__("./resources/assets/js/bootstrap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__("./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-__webpack_require__("./resources/assets/js/bootstrap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase_app__ = __webpack_require__("./node_modules/firebase/app/dist/index.cjs.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_firebase_app__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase_auth__ = __webpack_require__("./node_modules/firebase/auth/dist/index.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js__ = __webpack_require__("./node_modules/chart.js/src/chart.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_chart_js__);
 
-var firebase = __webpack_require__("./node_modules/firebase/app/dist/index.cjs.js");
-__webpack_require__("./node_modules/firebase/auth/dist/index.esm.js");
-// Initialize Firebase
-var config = {
+
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.initializeApp({
     apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
     authDomain: "dev-naos.firebaseapp.com",
     databaseURL: "https://dev-naos.firebaseio.com",
     projectId: "dev-naos",
     storageBucket: "dev-naos.appspot.com",
     messagingSenderId: "515353712594"
-};
-firebase.initializeApp(config);
-
-
+});
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
-
 Vue.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
 
-window._ = {};
-
-window._.throttle = function (func, timeout) {
-    if (this.throttle.id) clearTimeout(this.throttle.id);
-
-    this.throttle.id = setTimeout(function () {
-        func();
-    }, timeout);
-};
-// Enable pusher logging - don't include this in production
-// Pusher.logToConsole = true;
-
-// var pusher = new Pusher('69e878ea5991b6099fb6', {
-//   cluster: 'eu',
-//   encrypted: true
-// });
-
-// var channel = pusher.subscribe('my-channel');
-// channel.bind('my-event', function(data) {
-//   alert(data.message);
-// });
-window.socket = {};
-window.socket.send = function () {
-    console.log('socket disabled');
-};
-// window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 var home = Vue.component('home', __webpack_require__("./resources/assets/js/components/Home.vue"));
+// const products = Vue.component('products', require('./components/Products.vue'));
+// const detail = Vue.component('detail', require('./components/detail.vue'));
+// const comments = Vue.component('comments', require('./components/comm1.vue'));
+// const compare = Vue.component('compare', require('./components/Compare.vue'));
+// const cart = Vue.component('cart', require('./components/Cart.vue'));
+// const account = Vue.component('account', require('./components/Account.vue'));
 Vue.component('search', __webpack_require__("./resources/assets/js/components/Search.vue"));
 // Vue.component('star-rating', require('vue-star-rating'));
 Vue.component('star-rating', __webpack_require__("./node_modules/vue-star-rating/src/star-rating.vue"));
 Vue.component('pagination', __webpack_require__("./resources/assets/js/components/Pagination.vue"));
-Vue.component('range', __webpack_require__("./resources/assets/js/components/Range.vue"));
 
 Vue.component('charts', function (resolve) {
     __webpack_require__.e/* require */(7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/charts.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
@@ -68245,13 +68043,6 @@ Vue.component('charts', function (resolve) {
 Vue.component('sidebar', function (resolve) {
     __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Sidebar.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
-// const products = Vue.component('products', require('./components/Products.vue'));
-// const detail = Vue.component('detail', require('./components/detail.vue'));
-// const comments = Vue.component('comments', require('./components/comm1.vue'));
-// const compare = Vue.component('compare', require('./components/Compare.vue'));
-// const cart = Vue.component('cart', require('./components/Cart.vue'));
-// const account = Vue.component('account', require('./components/Account.vue'));
-
 var products = Vue.component('products', function (resolve) {
     __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Products.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
@@ -68359,10 +68150,10 @@ var app = new Vue({
             }).catch(function (error) {});
         },
         googleIn: function googleIn() {
-            this.logIn(new firebase.auth.GoogleAuthProvider());
+            this.logIn(new __WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.auth.GoogleAuthProvider());
         },
         facebookLogIn: function facebookLogIn() {
-            this.logIn(new firebase.auth.FacebookAuthProvider());
+            this.logIn(new __WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.auth.FacebookAuthProvider());
         },
         logIn2: function logIn2(ie) {
             axios.post('/auth', {
@@ -68374,7 +68165,7 @@ var app = new Vue({
             }).catch(function (error) {});
         },
         logIn: function logIn(provider) {
-            firebase.auth().signInWithPopup(provider).then(function (result) {
+            __WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.auth().signInWithPopup(provider).then(function (result) {
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 // var token = result.credential.accessToken;
                 app.logIn2(result.user.qa);
@@ -68390,7 +68181,7 @@ var app = new Vue({
             axios.post('/logout').then(function (response) {
                 app.user = null;
             });
-            firebase.auth().signOut().then(function () {
+            __WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.auth().signOut().then(function () {
                 // Sign-out successful.
             }).catch(function (error) {
                 console.log(error);
@@ -68403,8 +68194,9 @@ var app = new Vue({
 /***/ }),
 
 /***/ "./resources/assets/js/bootstrap.js":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 // window._ = require('lodash');
 
 /**
@@ -68448,6 +68240,32 @@ window.axios.defaults.headers.common = {
 // window.Echo = new Echo({
 //     broadcaster: 'redis'
 // });
+// Enable pusher logging - don't include this in production
+// Pusher.logToConsole = true;
+
+// var pusher = new Pusher('69e878ea5991b6099fb6', {
+//   cluster: 'eu',
+//   encrypted: true
+// });
+
+// var channel = pusher.subscribe('my-channel');
+// channel.bind('my-event', function(data) {
+//   alert(data.message);
+// });
+window.socket = {};
+window.socket.send = function () {
+  console.log('socket disabled');
+};
+// window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
+window._ = {};
+
+window._.throttle = function (func, timeout) {
+  if (this.throttle.id) clearTimeout(this.throttle.id);
+
+  this.throttle.id = setTimeout(function () {
+    func();
+  }, timeout);
+};
 
 /***/ }),
 
@@ -68536,58 +68354,6 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-96baf55e", Component.options)
   } else {
     hotAPI.reload("data-v-96baf55e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/Range.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue")
-}
-var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
-/* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Range.vue")
-/* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3b9535d6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Range.vue")
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Range.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3b9535d6", Component.options)
-  } else {
-    hotAPI.reload("data-v-3b9535d6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

@@ -20,9 +20,9 @@
             }
         },
         mounted() {
-            self = this,
+            self = this
             this.init()
-            this.$emit("load")
+            this.$emit("ready")
         },
         methods: {
             moveTo: function(circle, e, bar, filled, circles, offset) {
@@ -46,10 +46,8 @@
                 filled.style.left =  circles[0].style.left
                 filled.style.width =  parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%'
 
-                this.value.range = [
-                    this.value.array [Math.round((parseInt(circles[0].style.left)) / percentPerArrayItem )], 
-                    this.value.array [Math.round((parseInt(circles[1].style.left)) / percentPerArrayItem )]
-                ];
+                this.value.indexFrom = Math.round((parseInt(circles[0].style.left)) / percentPerArrayItem );
+                this.value.indexTo = Math.round((parseInt(circles[1].style.left)) / percentPerArrayItem );
                 this.$emit("change")
             },
             init: function() {
@@ -57,12 +55,8 @@
                     , filled = document.getElementsByClassName("filled")[0]
                     , bar = document.getElementsByClassName("bar")[0]
                     , offset = circles[0].offsetLeft
-                    , firstTouch = true
-
-                circles[0].style.left = "0%";
-                circles[1].style.left = '100%';
-                
-                this.value.range = [this.value.array[0], this.value.array[this.value.array.length - 1]];
+                    , firstTouch = true;
+                    
                 bar.onclick = function(i) {
                     self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1],
                       i, bar, filled, circles, offset)
@@ -94,6 +88,14 @@
                         circle.onmousemove = null;
                     }
                 }
+                this.$on('reset', function() {
+                    filled.style.left = circles[0].style.left = "0%";
+                    filled.style.width = circles[1].style.left = '100%';
+                    this.value.indexFrom = 0;
+                    this.value.indexTo = this.value.array.length - 1;
+                    this.$emit("ready")
+                })
+                this.$emit("reset")
             }
         }
     }

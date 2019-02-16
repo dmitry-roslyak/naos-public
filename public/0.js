@@ -1,5 +1,111 @@
 webpackJsonp([0],{
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Range.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var self;
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return { isDraged: 0 };
+    },
+    props: {
+        value: {
+            type: Object,
+            default: null
+        }
+    },
+    mounted: function mounted() {
+        self = this;
+        this.init();
+        this.$emit("ready");
+    },
+
+    methods: {
+        moveTo: function moveTo(circle, e, bar, filled, circles, offset) {
+            var pxPerPercent = bar.offsetWidth / 100,
+                step = (e.x - bar.offsetLeft + offset) / pxPerPercent,
+                percentPerArrayItem = 100 / (self.value.array.length - 1);
+
+            if ((parseInt(circle.style.left) < parseInt(circles[1].style.left) ? parseInt(circles[1].style.left) - step : step - parseInt(circles[0].style.left)) < 10 * percentPerArrayItem) return;
+            if (step < 0) circle.style.left = '0%';else if (step > 100) circle.style.left = '100%';else circle.style.left = step + '%';
+
+            filled.style.left = circles[0].style.left;
+            filled.style.width = parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%';
+
+            this.value.indexFrom = Math.round(parseInt(circles[0].style.left) / percentPerArrayItem);
+            this.value.indexTo = Math.round(parseInt(circles[1].style.left) / percentPerArrayItem);
+            this.$emit("change");
+        },
+        init: function init() {
+            var circles = document.getElementsByClassName("circle"),
+                filled = document.getElementsByClassName("filled")[0],
+                bar = document.getElementsByClassName("bar")[0],
+                offset = circles[0].offsetLeft,
+                firstTouch = true;
+
+            bar.onclick = function (i) {
+                self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1], i, bar, filled, circles, offset);
+            };
+
+            var _loop = function _loop() {
+                var circle = circles[i];
+                var index = i;
+                circles[i].ontouchmove = function (params) {
+                    if (firstTouch) {
+                        offset = circles[0].offsetLeft;
+                        firstTouch = false;
+                    }
+                    self.isDraged = index + 1;
+                    self.moveTo(this, { x: params.touches[0].clientX }, bar, filled, circles, offset);
+                };
+                circles[i].onmousedown = function (e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    self.isDraged = index + 1;
+                    circle.onmousemove = function (move) {
+                        self.moveTo(circle, move, bar, filled, circles, offset);
+                    };
+                };
+                circle.ontouchend = function () {
+                    self.isDraged = 0;
+                };
+                circle.onmouseleave = circle.onmouseup = function () {
+                    self.isDraged = 0;
+                    circle.onmousemove = null;
+                };
+            };
+
+            for (var i = 0; i < circles.length; i++) {
+                _loop();
+            }
+            this.$on('reset', function () {
+                filled.style.left = circles[0].style.left = "0%";
+                filled.style.width = circles[1].style.left = '100%';
+                this.value.indexFrom = 0;
+                this.value.indexTo = this.value.array.length - 1;
+                this.$emit("ready");
+            });
+            this.$emit("reset");
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Sidebar.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -55,6 +161,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+var range = __webpack_require__("./resources/assets/js/components/Range.vue");
+// import range from './Range.vue'
 // var debounce = require('lodash.debounce');
 var throttle = __webpack_require__("./node_modules/lodash.throttle/index.js");
 var self,
@@ -68,6 +176,9 @@ var self,
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
+    },
+    components: {
+        range: range
     },
     computed: {
         showClear: function showClear() {
@@ -83,10 +194,9 @@ var self,
     },
 
     methods: {
-        // priceRange: function(t, e) {
-        //     r.price.range[e] = (t.currentTarget.value / this.currency).toFixed(2),
-        //     this.$root.throttle(this.$parent.getSelectedProd, 750)
-        // },
+        rangeIndexReset: function rangeIndexReset() {
+            this.price.range = [this.price.array[this.price.indexFrom] * this.$store.state.currency, this.price.array[this.price.indexTo] * this.$store.state.currency];
+        },
         priceRangeChange: function priceRangeChange() {
             _.throttle(this.$parent.getSelectedProd, 750);
         },
@@ -100,6 +210,7 @@ var self,
             i ? $(".ctg-frm").slideDown() : $(".ctg-frm").slideUp();
         },
         flt_reset: function flt_reset() {
+            this.price.range = [null, null];
             var checkList = document.getElementsByClassName('checkbox');
             for (var i = 0; i < checkList.length; i++) {
                 checkList[i].firstChild.firstChild.checked = false;
@@ -110,9 +221,11 @@ var self,
             this.$router.push('/products/' + name);
             axios.get('/get_filters?id=' + id).then(function (response) {
                 self.filters = response.data;
-                self.flt_reset();
-                _.throttle(self.$parent.getSelectedProd, 750);
-            }).catch(function (error) {});
+            });
+            this.flt_reset();
+            this.$parent.getSelectedProd().then(function () {
+                return self.$refs.range.$emit('reset');
+            });
         },
         toFilter: function toFilter(e) {
             this.$store.commit('setFilter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);
@@ -132,6 +245,21 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 // module
 exports.push([module.i, "\n.flt-grp {\n  margin: 2px 0;\n}\n.flt-btn {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  color: white;\n  background-color: cornflowerblue;\n  border-radius: 5px;\n  padding: 5px 8px;\n}\n.flt-btn:hover {\n    background-color: royalblue;\n}\n@media screen and (max-width: 767px) {\n.flip {\n    display: none;\n}\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.bar,.filled {\r\n    position:relative\n}\n.bar {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.5em 1.4em 1.2em;\r\n    border-radius: 1em;\r\n    background-color: whitesmoke;\r\n    -webkit-box-shadow: 0 0 0.2em;\r\n            box-shadow: 0 0 0.2em;\n}\n.filled {\r\n    height: 1rem;\r\n    background-color:rgb(136, 184, 255);\n}\n.circle {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius:2rem;\r\n    background-color:#fff;\r\n    -webkit-box-shadow: 0 0 0.5rem #868686;\r\n            box-shadow: 0 0 0.5rem #868686;\n}\n.circle:hover {\r\n    background-color:#f5f5f5\n}\n.t {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
 
 // exports
 
@@ -730,20 +858,33 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.number",
                         value: _vm.price.range[0],
-                        expression: "price.range[0]"
+                        expression: "price.range[0]",
+                        modifiers: { number: true }
                       }
                     ],
                     staticClass: "form-control myinput1",
                     attrs: { type: "number" },
                     domProps: { value: _vm.price.range[0] },
                     on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      input: [
+                        function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.price.range,
+                            0,
+                            _vm._n($event.target.value)
+                          )
+                        },
+                        function($event) {
+                          _vm.priceRangeChange()
                         }
-                        _vm.$set(_vm.price.range, 0, $event.target.value)
+                      ],
+                      blur: function($event) {
+                        _vm.$forceUpdate()
                       }
                     }
                   }),
@@ -757,20 +898,33 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.number",
                         value: _vm.price.range[1],
-                        expression: "price.range[1]"
+                        expression: "price.range[1]",
+                        modifiers: { number: true }
                       }
                     ],
                     staticClass: "form-control myinput1",
                     attrs: { type: "number" },
                     domProps: { value: _vm.price.range[1] },
                     on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      input: [
+                        function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.price.range,
+                            1,
+                            _vm._n($event.target.value)
+                          )
+                        },
+                        function($event) {
+                          _vm.priceRangeChange()
                         }
-                        _vm.$set(_vm.price.range, 1, $event.target.value)
+                      ],
+                      blur: function($event) {
+                        _vm.$forceUpdate()
                       }
                     }
                   }),
@@ -780,7 +934,16 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("range", {
-                  on: { change: _vm.priceRangeChange },
+                  ref: "range",
+                  on: {
+                    change: function($event) {
+                      _vm.rangeIndexReset()
+                      _vm.priceRangeChange()
+                    },
+                    ready: function($event) {
+                      _vm.rangeIndexReset()
+                    }
+                  },
                   model: {
                     value: _vm.price,
                     callback: function($$v) {
@@ -894,6 +1057,37 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3b9535d6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Range.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "bar" }, [
+    _c("div", { staticClass: "filled" }),
+    _vm._v(" "),
+    _c("div", { staticClass: "circle" }, [
+      _c("div", { class: { t: true, "circle-drag": _vm.isDraged == 1 } })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "circle" }, [
+      _c("div", { class: { t: true, "circle-drag": _vm.isDraged == 2 } })
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3b9535d6", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-00467796\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/sidebar.sass":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -918,6 +1112,85 @@ if(false) {
  // When the module is disposed, remove the <style> tags
  module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1551d7f6", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Range.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Range.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Range.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b9535d6\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Range.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Range.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3b9535d6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Range.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Range.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3b9535d6", Component.options)
+  } else {
+    hotAPI.reload("data-v-3b9535d6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 

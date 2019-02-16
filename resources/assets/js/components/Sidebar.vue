@@ -19,9 +19,9 @@
                 <i v-show="!price_show" class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
             </div>
             <div class="flip" style="margin: 6px 0px;">
-                {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[0]"><span class="input-group-addon">{{lng.currency}}</span></div>
-                {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model="price.range[1]"><span class="input-group-addon">{{lng.currency}}</span></div> 
-                <range v-model="price" @change="priceRangeChange"></range>
+                {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[0]" @input="priceRangeChange()"><span class="input-group-addon">{{lng.currency}}</span></div>
+                {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[1]" @input="priceRangeChange()"><span class="input-group-addon">{{lng.currency}}</span></div> 
+                <range v-model="price" ref="range" @change="rangeIndexReset();priceRangeChange()" @ready="rangeIndexReset()"></range>
             </div>
         </div>
         <div class="thumbnail flt-grp" v-for="(filter,i1) in filters" :key="filter.id">
@@ -48,6 +48,8 @@
     </div>
 </template>
 <script>
+    const range = require('./Range.vue')
+    // import range from './Range.vue'
     // var debounce = require('lodash.debounce');
     var throttle = require('lodash.throttle');
     var self, data = {
@@ -59,6 +61,9 @@
     };
     export default {
         data: function () {return data;},
+        components: {
+            range
+        },
         computed: {
             showClear: function () { return this.$store.state.flt_ids.length },
         },
@@ -70,10 +75,9 @@
             this.get_filters(this.$parent.category,window.Laravel.catalog[this.$parent.category].id);
         },
         methods: {
-            // priceRange: function(t, e) {
-            //     r.price.range[e] = (t.currentTarget.value / this.currency).toFixed(2),
-            //     this.$root.throttle(this.$parent.getSelectedProd, 750)
-            // },
+            rangeIndexReset(){
+                this.price.range = [ this.price.array[this.price.indexFrom] * this.$store.state.currency , this.price.array[this.price.indexTo] * this.$store.state.currency ];
+            },
             priceRangeChange() {
                 _.throttle(this.$parent.getSelectedProd, 750)
             },
@@ -86,6 +90,7 @@
                 i?$(".ctg-frm").slideDown():$(".ctg-frm").slideUp();
             },
             flt_reset(){
+                this.price.range = [null, null];
                 var checkList = document.getElementsByClassName('checkbox');
                 for (var i = 0; i < checkList.length; i++) {
                     checkList[i].firstChild.firstChild.checked = false;
@@ -96,10 +101,9 @@
                 this.$router.push('/products/'+name);
                 axios.get('/get_filters?id='+id).then(function (response) {
                     self.filters = response.data;
-                    self.flt_reset();
-                    _.throttle(self.$parent.getSelectedProd, 750)
-                }).catch(function (error) {
                 });                  
+                this.flt_reset();
+                this.$parent.getSelectedProd().then( ()=> self.$refs.range.$emit('reset') );
             },
             toFilter(e){
                 this.$store.commit('setFilter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);

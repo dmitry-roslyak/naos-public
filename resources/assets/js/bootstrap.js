@@ -41,3 +41,29 @@ window.axios.defaults.headers.common = {
 // window.Echo = new Echo({
 //     broadcaster: 'redis'
 // });
+// Enable pusher logging - don't include this in production
+// Pusher.logToConsole = true;
+
+// var pusher = new Pusher('69e878ea5991b6099fb6', {
+//   cluster: 'eu',
+//   encrypted: true
+// });
+
+// var channel = pusher.subscribe('my-channel');
+// channel.bind('my-event', function(data) {
+//   alert(data.message);
+// });
+window.socket = {}
+window.socket.send = function (){
+    console.log('socket disabled')
+}
+// window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
+window._ = {};
+
+window._.throttle = function (func, timeout) {
+    if(this.throttle.id) clearTimeout(this.throttle.id);
+
+    this.throttle.id = setTimeout(function () {
+        func();
+    }, timeout);
+}

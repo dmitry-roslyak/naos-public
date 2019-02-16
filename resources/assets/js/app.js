@@ -1,67 +1,33 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-require('./bootstrap');
+import './bootstrap';
+import VueRouter from 'vue-router';
+import Vuex from 'vuex'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'chart.js';
 
-var firebase = require("firebase/app");
-require("firebase/auth");
-// Initialize Firebase
-var config = {
+firebase.initializeApp({
     apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
     authDomain: "dev-naos.firebaseapp.com",
     databaseURL: "https://dev-naos.firebaseio.com",
     projectId: "dev-naos",
     storageBucket: "dev-naos.appspot.com",
     messagingSenderId: "515353712594"
-};
-firebase.initializeApp(config);
+});
 
-import Chart from 'chart.js';
-import VueRouter from 'vue-router';
-Vue.use( VueRouter );
-import Vuex from 'vuex'
+Vue.use(VueRouter);
 Vue.use(Vuex);
 
-
-window._ = {};
-
-window._.throttle = function (func, timeout) {
-    if(this.throttle.id) clearTimeout(this.throttle.id);
-
-    this.throttle.id = setTimeout(function () {
-        func();
-    }, timeout);
-}
-// Enable pusher logging - don't include this in production
-// Pusher.logToConsole = true;
-
-// var pusher = new Pusher('69e878ea5991b6099fb6', {
-//   cluster: 'eu',
-//   encrypted: true
-// });
-
-// var channel = pusher.subscribe('my-channel');
-// channel.bind('my-event', function(data) {
-//   alert(data.message);
-// });
-window.socket = {}
-window.socket.send = function (){
-    console.log('socket disabled')
-}
-// window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 const home = Vue.component('home', require('./components/Home.vue'));
+// const products = Vue.component('products', require('./components/Products.vue'));
+// const detail = Vue.component('detail', require('./components/detail.vue'));
+// const comments = Vue.component('comments', require('./components/comm1.vue'));
+// const compare = Vue.component('compare', require('./components/Compare.vue'));
+// const cart = Vue.component('cart', require('./components/Cart.vue'));
+// const account = Vue.component('account', require('./components/Account.vue'));
 Vue.component('search', require('./components/Search.vue'));
 // Vue.component('star-rating', require('vue-star-rating'));
 Vue.component('star-rating', require('C:/Users/xiaomi/Desktop/downloads/naos/node_modules/vue-star-rating/src/star-rating.vue'));
 Vue.component('pagination', require('./components/Pagination.vue'));
-Vue.component('range', require('./components/Range.vue'));
 
 Vue.component('charts', function (resolve) {
     require(['./components/charts.vue'], resolve)
@@ -69,13 +35,6 @@ Vue.component('charts', function (resolve) {
 Vue.component('sidebar', function (resolve) {
     require(['./components/Sidebar.vue'], resolve)
 });
-// const products = Vue.component('products', require('./components/Products.vue'));
-// const detail = Vue.component('detail', require('./components/detail.vue'));
-// const comments = Vue.component('comments', require('./components/comm1.vue'));
-// const compare = Vue.component('compare', require('./components/Compare.vue'));
-// const cart = Vue.component('cart', require('./components/Cart.vue'));
-// const account = Vue.component('account', require('./components/Account.vue'));
-
 const products = Vue.component('products', function (resolve) {
     require(['./components/Products.vue'], resolve)
 });
