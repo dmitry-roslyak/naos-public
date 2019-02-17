@@ -107,7 +107,8 @@ var self, selfChart;
                 for (var i = 0; i < self.list.length; i++) {
                     self.list[i].specs.unshift({
                         name: 'price',
-                        value: self.list[i].price
+                        value: self.list[i].price,
+                        isComparable: true
                     });
                     chartData.labels.push(self.list[i].name);
                 }

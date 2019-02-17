@@ -1,8 +1,8 @@
 import './bootstrap';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import router from "./router";
+import store from "./store";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import 'chart.js';
 
 firebase.initializeApp({
@@ -14,109 +14,6 @@ firebase.initializeApp({
     messagingSenderId: "515353712594"
 });
 
-Vue.use(VueRouter);
-Vue.use(Vuex);
-
-const home = Vue.component('home', require('./components/Home.vue'));
-// const products = Vue.component('products', require('./components/Products.vue'));
-// const detail = Vue.component('detail', require('./components/detail.vue'));
-// const comments = Vue.component('comments', require('./components/comm1.vue'));
-// const compare = Vue.component('compare', require('./components/Compare.vue'));
-// const cart = Vue.component('cart', require('./components/Cart.vue'));
-// const account = Vue.component('account', require('./components/Account.vue'));
-Vue.component('search', require('./components/Search.vue'));
-// Vue.component('star-rating', require('vue-star-rating'));
-Vue.component('star-rating', require('C:/Users/xiaomi/Desktop/downloads/naos/node_modules/vue-star-rating/src/star-rating.vue'));
-Vue.component('pagination', require('./components/Pagination.vue'));
-
-Vue.component('charts', function (resolve) {
-    require(['./components/charts.vue'], resolve)
-});
-Vue.component('sidebar', function (resolve) {
-    require(['./components/Sidebar.vue'], resolve)
-});
-const products = Vue.component('products', function (resolve) {
-    require(['./components/Products.vue'], resolve)
-});
-const detail = Vue.component('detail', function (resolve) {
-    require(['./components/detail.vue'], resolve)
-});
-const comments = Vue.component('comments', function (resolve) {
-    require(['./components/comm1.vue'], resolve)
-});
-const compare = Vue.component('compare', function (resolve) {
-    require(['./components/Compare.vue'], resolve)
-});
-const cart = Vue.component('cart', function (resolve) {
-    require(['./components/Cart.vue'], resolve)
-});
-const account = Vue.component('account', function (resolve) {
-    require(['./components/Account.vue'], resolve)
-});
-Vue.component('user-info', function (resolve) {
-    require(['./components/userInfo.vue'], resolve)
-});
-const routes = [
-    { path: '/', component: home },
-    { path: '/products/:category', component: products, props: true  },
-    { name: 'detail', path: '/detail/:id', component: detail, props: true },
-    { path: '/compare/:ids', component: compare, props: true },
-    { path: '/cart/:ids1', component: cart, props: true  },
-    { path: '/account', component: account }
-];
-const router = new VueRouter({
-    // mode: 'history',
-    routes // short for routes: routes
-});
-const store = new Vuex.Store({
-    state: {
-        cartLength: 0,
-        compare_list: [],
-        flt_ids: [],
-        currency:0,
-        cart: {},
-    },
-    mutations: {
-        cartClear: function(state) {
-            state.cart = {}
-            localStorage.cart = ''
-        },
-        cart(state, item){
-            if(item){
-                state.cart[item.id] ? state.cart[item.id] += item.count : state.cart[item.id] = item.count
-                if(item.toRemove) delete state.cart[item.id]
-                localStorage.cart = JSON.stringify(state.cart);
-            } 
-            else {
-                if(localStorage.cart && localStorage.cart.length) {
-                    try {
-                        state.cart = JSON.parse(localStorage.cart);
-                    } catch (error) {
-                        console.log(error)
-                        localStorage.cart = ''
-                    }
-                }
-            }
-            state.cartLength = 0
-            for (const key in state.cart) {
-                state.cartLength += state.cart[key];
-            }
-        },
-        set_currency(state,value){
-            state.currency = value;
-        },
-        setFilter(state, id) {
-            if(id) {
-                var i = state.flt_ids.indexOf(id)
-                i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i,1)
-            } else state.flt_ids.length = 0
-        },
-        compare: function(state, id) {
-            var i = state.compare_list.indexOf(id)
-            i < 0 ? state.compare_list.push(id) : state.compare_list.splice(i,1)
-        }
-    }
-});
 var data = {
     lng: null,
     langs: null,

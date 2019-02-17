@@ -67999,8 +67999,8 @@ module.exports = function(module) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__("./resources/assets/js/bootstrap.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__("./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__("./resources/assets/js/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store__ = __webpack_require__("./resources/assets/js/store.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase_app__ = __webpack_require__("./node_modules/firebase/app/dist/index.cjs.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_firebase_app__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase_auth__ = __webpack_require__("./node_modules/firebase/auth/dist/index.esm.js");
@@ -68022,111 +68022,15 @@ __WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.initializeApp({
     messagingSenderId: "515353712594"
 });
 
-Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
-Vue.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
-
-var home = Vue.component('home', __webpack_require__("./resources/assets/js/components/Home.vue"));
-// const products = Vue.component('products', require('./components/Products.vue'));
-// const detail = Vue.component('detail', require('./components/detail.vue'));
-// const comments = Vue.component('comments', require('./components/comm1.vue'));
-// const compare = Vue.component('compare', require('./components/Compare.vue'));
-// const cart = Vue.component('cart', require('./components/Cart.vue'));
-// const account = Vue.component('account', require('./components/Account.vue'));
-Vue.component('search', __webpack_require__("./resources/assets/js/components/Search.vue"));
-// Vue.component('star-rating', require('vue-star-rating'));
-Vue.component('star-rating', __webpack_require__("./node_modules/vue-star-rating/src/star-rating.vue"));
-Vue.component('pagination', __webpack_require__("./resources/assets/js/components/Pagination.vue"));
-
-Vue.component('charts', function (resolve) {
-    __webpack_require__.e/* require */(7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/charts.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-Vue.component('sidebar', function (resolve) {
-    __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Sidebar.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-var products = Vue.component('products', function (resolve) {
-    __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Products.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-var detail = Vue.component('detail', function (resolve) {
-    __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/detail.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-var comments = Vue.component('comments', function (resolve) {
-    __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/comm1.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-var compare = Vue.component('compare', function (resolve) {
-    __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Compare.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-var cart = Vue.component('cart', function (resolve) {
-    __webpack_require__.e/* require */(5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Cart.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-var account = Vue.component('account', function (resolve) {
-    __webpack_require__.e/* require */(8).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Account.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-Vue.component('user-info', function (resolve) {
-    __webpack_require__.e/* require */(6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/userInfo.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-});
-var routes = [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids1', component: cart, props: true }, { path: '/account', component: account }];
-var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-    // mode: 'history',
-    routes: routes // short for routes: routes
-});
-var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
-    state: {
-        cartLength: 0,
-        compare_list: [],
-        flt_ids: [],
-        currency: 0,
-        cart: {}
-    },
-    mutations: {
-        cartClear: function cartClear(state) {
-            state.cart = {};
-            localStorage.cart = '';
-        },
-        cart: function cart(state, item) {
-            if (item) {
-                state.cart[item.id] ? state.cart[item.id] += item.count : state.cart[item.id] = item.count;
-                if (item.toRemove) delete state.cart[item.id];
-                localStorage.cart = JSON.stringify(state.cart);
-            } else {
-                if (localStorage.cart && localStorage.cart.length) {
-                    try {
-                        state.cart = JSON.parse(localStorage.cart);
-                    } catch (error) {
-                        console.log(error);
-                        localStorage.cart = '';
-                    }
-                }
-            }
-            state.cartLength = 0;
-            for (var key in state.cart) {
-                state.cartLength += state.cart[key];
-            }
-        },
-        set_currency: function set_currency(state, value) {
-            state.currency = value;
-        },
-        setFilter: function setFilter(state, id) {
-            if (id) {
-                var i = state.flt_ids.indexOf(id);
-                i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
-            } else state.flt_ids.length = 0;
-        },
-
-        compare: function compare(state, id) {
-            var i = state.compare_list.indexOf(id);
-            i < 0 ? state.compare_list.push(id) : state.compare_list.splice(i, 1);
-        }
-    }
-});
 var _data = {
     lng: null,
     langs: null,
     user: null
 };
 var app = new Vue({
-    router: router,
+    router: __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */],
     el: '#app',
-    store: store,
+    store: __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */],
     data: function data() {
         return _data;
     },
@@ -68194,9 +68098,8 @@ var app = new Vue({
 /***/ }),
 
 /***/ "./resources/assets/js/bootstrap.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 // window._ = require('lodash');
 
 /**
@@ -68208,11 +68111,6 @@ var app = new Vue({
 window.$ = window.jQuery = __webpack_require__("./node_modules/jquery/dist/jquery.js");
 
 __webpack_require__("./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js");
-/**
- * Vue is a modern JavaScript library for building interactive web interfaces
- * using reactive data binding and reusable components. Vue's API is clean
- * and simple, leaving you to focus on building your next great project.
- */
 
 window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
@@ -68225,8 +68123,8 @@ window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 window.axios = __webpack_require__("./node_modules/axios/index.js");
 
 window.axios.defaults.headers.common = {
-  'X-CSRF-TOKEN': document.getElementsByName('csrf-token')[0].content,
-  'X-Requested-With': 'XMLHttpRequest'
+    'X-CSRF-TOKEN': document.getElementsByName('csrf-token')[0].content,
+    'X-Requested-With': 'XMLHttpRequest'
 };
 
 /**
@@ -68254,17 +68152,17 @@ window.axios.defaults.headers.common = {
 // });
 window.socket = {};
 window.socket.send = function () {
-  console.log('socket disabled');
+    console.log('socket disabled');
 };
 // window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
 window._ = {};
 
 window._.throttle = function (func, timeout) {
-  if (this.throttle.id) clearTimeout(this.throttle.id);
+    if (this.throttle.id) clearTimeout(this.throttle.id);
 
-  this.throttle.id = setTimeout(function () {
-    func();
-  }, timeout);
+    this.throttle.id = setTimeout(function () {
+        func();
+    }, timeout);
 };
 
 /***/ }),
@@ -68410,6 +68308,126 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/router.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__("./node_modules/vue-router/dist/vue-router.esm.js");
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
+
+var home = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('home', __webpack_require__("./resources/assets/js/components/Home.vue"));
+// const products = Vue.component('products', require('./components/Products.vue'));
+// const detail = Vue.component('detail', require('./components/detail.vue'));
+// const comments = Vue.component('comments', require('./components/comm1.vue'));
+// const compare = Vue.component('compare', require('./components/Compare.vue'));
+// const cart = Vue.component('cart', require('./components/Cart.vue'));
+// const account = Vue.component('account', require('./components/Account.vue'));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('search', __webpack_require__("./resources/assets/js/components/Search.vue"));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('star-rating', __webpack_require__("./node_modules/vue-star-rating/src/star-rating.vue"));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('pagination', __webpack_require__("./resources/assets/js/components/Pagination.vue"));
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('charts', function (resolve) {
+    __webpack_require__.e/* require */(7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/charts.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('sidebar', function (resolve) {
+    __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Sidebar.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('comments', function (resolve) {
+    __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/comm1.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+var products = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('products', function (resolve) {
+    __webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Products.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+var detail = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('detail', function (resolve) {
+    __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/detail.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+var compare = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('compare', function (resolve) {
+    __webpack_require__.e/* require */(4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Compare.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+var cart = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('cart', function (resolve) {
+    __webpack_require__.e/* require */(5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Cart.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+var account = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('account', function (resolve) {
+    __webpack_require__.e/* require */(8).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/Account.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('user-info', function (resolve) {
+    __webpack_require__.e/* require */(6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/userInfo.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+});
+/* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
+    // mode: 'history',
+    routes: [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids1', component: cart, props: true }, { path: '/account', component: account }]
+}));
+
+/***/ }),
+
+/***/ "./resources/assets/js/store.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+    state: {
+        cartLength: 0,
+        compare_list: [],
+        flt_ids: [],
+        currency: 0,
+        cart: {}
+    },
+    mutations: {
+        cartClear: function cartClear(state) {
+            state.cart = {};
+            localStorage.cart = '';
+        },
+        cart: function cart(state, item) {
+            if (item) {
+                state.cart[item.id] ? state.cart[item.id] += item.count : state.cart[item.id] = item.count;
+                if (item.toRemove) delete state.cart[item.id];
+                localStorage.cart = JSON.stringify(state.cart);
+            } else {
+                if (localStorage.cart && localStorage.cart.length) {
+                    try {
+                        state.cart = JSON.parse(localStorage.cart);
+                    } catch (error) {
+                        console.log(error);
+                        localStorage.cart = '';
+                    }
+                }
+            }
+            state.cartLength = 0;
+            for (var key in state.cart) {
+                state.cartLength += state.cart[key];
+            }
+        },
+        set_currency: function set_currency(state, value) {
+            state.currency = value;
+        },
+        setFilter: function setFilter(state, id) {
+            if (id) {
+                var i = state.flt_ids.indexOf(id);
+                i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
+            } else state.flt_ids.length = 0;
+        },
+        compare: function compare(state, id) {
+            var i = state.compare_list.indexOf(id);
+            i < 0 ? state.compare_list.push(id) : state.compare_list.splice(i, 1);
+        }
+    }
+}));
 
 /***/ }),
 

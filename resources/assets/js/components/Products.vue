@@ -78,7 +78,7 @@
         ordby: 'bydef',
         items: [],
         price: {
-            array: null,
+            array: [],
             range: [null, null],
             indexFrom: 0,
             indexTo: 0
@@ -100,7 +100,8 @@
             self = this; 
             this.lng = window.lng;
             this.paginator.func = this.getSelectedProd;
-            this.getSelectedProd();
+            if(window.Laravel.catalog[this.category]) 
+                this.getSelectedProd();
         },
         methods: {
             imgReady(e){

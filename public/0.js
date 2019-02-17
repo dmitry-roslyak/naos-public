@@ -193,7 +193,7 @@ var self,
         this.catalog = window.Laravel.catalog;
         this.lng = window.lng;
         this.price = this.$parent.price;
-        this.get_filters(this.$parent.category, window.Laravel.catalog[this.$parent.category].id);
+        if (window.Laravel.catalog[this.$parent.category]) this.get_filters(this.$parent.category, window.Laravel.catalog[this.$parent.category].id);
     },
 
     methods: {
@@ -224,11 +224,11 @@ var self,
             this.$router.push('/products/' + name);
             axios.get('/get_filters?id=' + id).then(function (response) {
                 self.filters = response.data;
+                self.$parent.getSelectedProd().then(function () {
+                    return self.$refs.range.$emit('reset');
+                });
             });
             this.flt_reset();
-            this.$parent.getSelectedProd().then(function () {
-                return self.$refs.range.$emit('reset');
-            });
         },
         toFilter: function toFilter(e) {
             this.$store.commit('setFilter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);
