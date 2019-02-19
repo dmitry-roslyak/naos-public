@@ -7,6 +7,8 @@ export default new Vuex.Store({
     state: {
         cartLength: 0,
         compare_list: [],
+        compare: {},
+        compareLength: 0,
         flt_ids: [],
         currency:0,
         cart: {},
@@ -46,9 +48,31 @@ export default new Vuex.Store({
                 i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i,1)
             } else state.flt_ids.length = 0
         },
-        compare(state, id) {
-            var i = state.compare_list.indexOf(id)
-            i < 0 ? state.compare_list.push(id) : state.compare_list.splice(i,1)
+        compareInit(state) {
+            if(localStorage.compare && localStorage.cart.length) {
+                try {
+                    state.compare = JSON.parse(localStorage.compare);
+                } catch (error) {
+                    console.log(error)
+                    localStorage.compare = ''
+                }
+                state.compareLength = 0
+                for (const key in state.compare) {
+                    state.compareLength += state.compare[key].length
+                }
+            }
+        },
+        compare(state, item) {
+            state.compare[item.category_id] ? null : state.compare[item.category_id] = [] ;
+            var i = state.compare[item.category_id].indexOf(item.id)
+            i < 0 ?  state.compare[item.category_id].push(item.id) :  state.compare[item.category_id].splice(i,1)
+            state.compare[item.category_id].length ? null : delete state.compare[item.category_id];
+            localStorage.compare = JSON.stringify(state.compare);
+            
+            state.compareLength = 0
+            for (const key in state.compare) {
+                state.compareLength += state.compare[key].length
+            }
         }
     }
 });

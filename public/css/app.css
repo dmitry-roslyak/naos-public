@@ -11644,6 +11644,9 @@ a:hover {
 .heart-state {
   -webkit-animation: bounce0 0.35s;
           animation: bounce0 0.35s;
+}
+
+.action-item .fa {
   font-size: 1.6rem;
 }
 
@@ -12034,15 +12037,27 @@ a:hover {
   width: 6.3em;
   text-align: center;
   border-radius: 6px;
-  margin: 3px;
   padding: 8px 0 4px;
-  color: white;
-  background-color: cornflowerblue;
+  -webkit-box-shadow: 0 0 0.3em;
+          box-shadow: 0 0 0.3em;
+  background-color: white;
 }
 
-.dr-btn:hover {
+.dr-btn:focus .compare-drop {
+  opacity: 1;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+.dr-btn:focus .compare-drop::after {
+  border-width: 10px;
+}
+
+.dr-btn:hover,
+.dr-btn:focus {
   color: whitesmoke;
-  background-color: royalblue;
+  background-color: cornflowerblue;
+  text-decoration: none;
 }
 
 .dr-btn[disabled] {
@@ -12053,6 +12068,10 @@ a:hover {
 .dr-btn[disabled],
 .dr-btn[disabled] * {
   cursor: not-allowed;
+}
+
+.dr-btn + .dr-btn {
+  margin-right: 6px;
 }
 
 .badge-offset {

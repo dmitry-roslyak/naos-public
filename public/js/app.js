@@ -6334,6 +6334,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var self,
     timerId,
@@ -6341,13 +6343,21 @@ var self,
     lng: {},
     search_result: null,
     search_show: false,
-    search_text: ''
+    search_text: '',
+    catalog: []
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
     },
     computed: {
+        compareLength1: function compareLength1() {
+            return this.$store.state.compareLength;
+        },
+        compare1: function compare1() {
+            return this.$store.state.compare;
+        },
+
         currency: function currency() {
             return this.$store.state.currency;
         },
@@ -6358,12 +6368,40 @@ var self,
     mounted: function mounted() {
         self = this;
         this.lng = window.lng;
+        this.catalog = window.Laravel.catalog;
+        this.$store.commit('compareInit');
     },
 
     methods: {
-        compare: function compare() {
-            if (this.$store.state.compare_list.length > 1) this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
+        compareLength: function compareLength() {
+            return Object.keys(this.$store.state.compare).length;
         },
+        ctg: function ctg(value) {
+            for (var key in this.catalog) {
+                if (this.catalog[key].id == value) {
+                    return key;
+                }
+            }
+        },
+        compare: function (_compare) {
+            function compare() {
+                return _compare.apply(this, arguments);
+            }
+
+            compare.toString = function () {
+                return _compare.toString();
+            };
+
+            return compare;
+        }(function () {
+            var item = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+            this.$store.state.compare[Object.keys(this.$store.state.compare)[0]] && this.compareLength() == 1 ? item = this.$store.state.compare[Object.keys(this.$store.state.compare)[0]] : null;
+            if (item.length || this.$store.state.compare_list.length > 1) {
+                compare.blur();
+                this.$router.push("/compare/" + JSON.stringify(item || self.$store.state.compare_list));
+            }
+        }),
         toSearch: function toSearch() {
             if (this.search_text > '') {
                 _.throttle(function () {
@@ -23508,6 +23546,21 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 // module
 exports.push([module.i, "\n.vue-star-rating-star[data-v-616924d1] {\r\n    display: inline-block;\n}\n.vue-star-rating-pointer[data-v-616924d1] {\r\n    cursor: pointer;\n}\n.vue-star-rating[data-v-616924d1] {\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\n}\n.vue-star-rating-inline[data-v-616924d1] {\r\n    display: -webkit-inline-box;\r\n    display: -ms-inline-flexbox;\r\n    display: inline-flex;\n}\n.vue-star-rating-rating-text[data-v-616924d1] {\r\n    margin-top: 7px;\r\n    margin-left: 7px;\n}\n.vue-star-rating-rtl[data-v-616924d1] {\r\n    direction: rtl;\n}\n.vue-star-rating-rtl .vue-star-rating-rating-text[data-v-616924d1] {\r\n    margin-right: 10px;\r\n    direction:rtl;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b88e3df\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Search.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.compare-drop {\n  position: absolute;\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: #ffffff;\n  right: 0;\n  color: black;\n  margin: 15px 0px;\n  border-radius: 0.3em;\n  -webkit-box-shadow: 0 1px 0.3em cornflowerblue;\n          box-shadow: 0 1px 0.3em cornflowerblue;\n  z-index: 5;\n  border-top: 1px solid cornflowerblue;\n  white-space: nowrap;\n  text-align: left;\n  opacity: 0;\n  -webkit-transform-origin: top right;\n          transform-origin: top right;\n  -webkit-transform: scale(0);\n          transform: scale(0);\n}\n.compare-drop > div {\n  border-radius: 0.3em;\n  padding: 5px 10px;\n}\n.compare-drop > div:hover {\n  background-color: #f5f5f5;\n  color: cornflowerblue;\n}\n.compare-drop::after {\n  content: \"\";\n  top: -21px;\n  position: absolute;\n  right: 15px;\n  border: 0 solid transparent;\n  border-bottom-color: cornflowerblue;\n}\n", ""]);
 
 // exports
 
@@ -51973,7 +52026,7 @@ var render = function() {
             "a",
             {
               staticClass: "dr-btn pull-right",
-              attrs: { href: "#" },
+              attrs: { id: "compare", href: "#" },
               on: {
                 click: function($event) {
                   $event.preventDefault()
@@ -51986,12 +52039,40 @@ var render = function() {
                 staticClass: "fa fa-balance-scale font1",
                 attrs: { "aria-hidden": "true" }
               }),
-              _vm._v(" "),
               _c("div", [_c("nobr", [_vm._v(_vm._s(_vm.lng.compare))])], 1),
               _vm._v(" "),
               _c("span", { staticClass: "badge badge-offset" }, [
-                _vm._v(_vm._s(this.$store.state.compare_list.length))
-              ])
+                _vm._v(_vm._s(_vm.compareLength1))
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.compareLength() > 1,
+                      expression: "compareLength() > 1"
+                    }
+                  ],
+                  staticClass: "compare-drop"
+                },
+                _vm._l(_vm.compare1, function(item, key) {
+                  return _c(
+                    "div",
+                    {
+                      key: key,
+                      on: {
+                        click: function($event) {
+                          _vm.compare(item)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.lng[_vm.ctg(key)] + ": " + item.length))]
+                  )
+                })
+              )
             ]
           )
         ],
@@ -55276,6 +55357,33 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../css-loader/index.js!../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-616924d1\",\"scoped\":true,\"hasInlineConfig\":true}!../../vue-loader/lib/selector.js?type=styles&index=0!./star-rating.vue", function() {
      var newContent = require("!!../../css-loader/index.js!../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-616924d1\",\"scoped\":true,\"hasInlineConfig\":true}!../../vue-loader/lib/selector.js?type=styles&index=0!./star-rating.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b88e3df\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Search.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b88e3df\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Search.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("2963ded5", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b88e3df\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Search.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b88e3df\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Search.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -68267,6 +68375,10 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b88e3df\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Search.vue")
+}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Search.vue")
@@ -68275,7 +68387,7 @@ var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/templa
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -68384,6 +68496,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
     state: {
         cartLength: 0,
         compare_list: [],
+        compare: {},
+        compareLength: 0,
         flt_ids: [],
         currency: 0,
         cart: {}
@@ -68422,9 +68536,31 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
                 i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
             } else state.flt_ids.length = 0;
         },
-        compare: function compare(state, id) {
-            var i = state.compare_list.indexOf(id);
-            i < 0 ? state.compare_list.push(id) : state.compare_list.splice(i, 1);
+        compareInit: function compareInit(state) {
+            if (localStorage.compare && localStorage.cart.length) {
+                try {
+                    state.compare = JSON.parse(localStorage.compare);
+                } catch (error) {
+                    console.log(error);
+                    localStorage.compare = '';
+                }
+                state.compareLength = 0;
+                for (var key in state.compare) {
+                    state.compareLength += state.compare[key].length;
+                }
+            }
+        },
+        compare: function compare(state, item) {
+            state.compare[item.category_id] ? null : state.compare[item.category_id] = [];
+            var i = state.compare[item.category_id].indexOf(item.id);
+            i < 0 ? state.compare[item.category_id].push(item.id) : state.compare[item.category_id].splice(i, 1);
+            state.compare[item.category_id].length ? null : delete state.compare[item.category_id];
+            localStorage.compare = JSON.stringify(state.compare);
+
+            state.compareLength = 0;
+            for (var key in state.compare) {
+                state.compareLength += state.compare[key].length;
+            }
         }
     }
 }));

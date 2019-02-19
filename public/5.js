@@ -282,8 +282,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("i", {
-                      staticClass: "fa fa-minus",
-                      staticStyle: { "font-size": "1.5rem" },
+                      staticClass: "fa fa-trash",
                       attrs: { "aria-hidden": "true" }
                     })
                   ]

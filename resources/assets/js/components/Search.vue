@@ -38,10 +38,12 @@
                 <div><nobr>{{lng.cart}}</nobr></div>
                 <span class="badge badge-offset" >{{this.$store.state.cartLength}}</span>
             </router-link>
-            <a href="#" class="dr-btn pull-right" @click="$event.preventDefault();compare()">
-                <i class="fa fa-balance-scale font1" aria-hidden="true"></i>
-                <div><nobr>{{lng.compare}}</nobr></div>
-                <span class="badge badge-offset">{{this.$store.state.compare_list.length}}</span>
+            <a id="compare" href="#" class="dr-btn pull-right" @click="$event.preventDefault();compare()">
+                <i class="fa fa-balance-scale font1" aria-hidden="true"></i><div><nobr>{{lng.compare}}</nobr></div>
+                <span class="badge badge-offset">{{compareLength1}}</span>
+                <div v-show="compareLength() > 1" class="compare-drop">
+                    <div v-for="(item, key) in compare1" :key="key" @click="compare(item)">{{lng[ctg(key)] + ': ' + item.length}}</div>
+                </div>
             </a>
         </div>
     </div>
@@ -52,21 +54,38 @@
         search_result: null,
         search_show: false,
         search_text: '',
+        catalog: []
     };
     export default {
         data: function () {return data;},
         computed: {
+            compareLength1() { return this.$store.state.compareLength },
+            compare1() { return this.$store.state.compare },
             currency: function () { return this.$store.state.currency },
             cartVisible() { return this.$route.path.indexOf("cart") > -1 ? false : true }
         },
         mounted() {
             self = this;
             this.lng = window.lng;
+            this.catalog = window.Laravel.catalog;
+            this.$store.commit('compareInit');
         },
         methods: {
-            compare(){
-                if(this.$store.state.compare_list.length>1)
-                    this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
+            compareLength() { return Object.keys(this.$store.state.compare).length },
+            ctg(value){
+                for (const key in this.catalog) {
+                    if (this.catalog[key].id == value) {
+                        return key;
+                    }
+                }
+            },
+            compare(item = []){
+                (this.$store.state.compare[Object.keys(this.$store.state.compare)[0]] && this.compareLength() == 1) ? 
+                    item = this.$store.state.compare[Object.keys(this.$store.state.compare)[0]] : null;
+                if(item.length || this.$store.state.compare_list.length>1) {
+                    compare.blur()
+                    this.$router.push("/compare/" + JSON.stringify(item || self.$store.state.compare_list));
+                }
             },
             toSearch() {
                 if (this.search_text > '') {
@@ -95,3 +114,39 @@
         }
     }
 </script>
+
+<style lang="scss">
+.compare-drop {
+    position: absolute;
+    transition: all 0.3s;
+    background-color: #ffffff;
+    right: 0;
+    color: black;
+    margin: 15px 0px;
+    border-radius: 0.3em;
+    box-shadow: 0 1px 0.3em cornflowerblue;
+    z-index: 5;
+    border-top: 1px solid cornflowerblue;
+    white-space: nowrap;
+    text-align: left;
+    opacity: 0;
+    transform-origin: top right;
+    transform: scale(0);
+}
+.compare-drop > div {
+    border-radius: 0.3em;
+    padding: 5px 10px;
+}
+.compare-drop > div:hover {
+    background-color: #f5f5f5;
+    color: cornflowerblue;
+}
+.compare-drop::after {
+    content: "";
+    top: -21px;
+    position: absolute;
+    right: 15px;
+    border: 0 solid transparent;
+    border-bottom-color: cornflowerblue;
+}
+</style>

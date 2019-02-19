@@ -139,7 +139,7 @@ var self,
                 var items = response.data[1];
                 for (var i = 0; i < items.length; i++) {
                     items[i].isWish = items[i].wish ? true : false;
-                    items[i].is_compare = self.$store.state.compare_list.indexOf(items[i].id) > -1;
+                    items[i].is_compare = self.$store.state.compare[items[i].category_id] ? self.$store.state.compare[items[i].category_id].indexOf(items[i].id) > -1 : false;
                     items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                     items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
                 }
@@ -157,8 +157,8 @@ var self,
             this.$store.commit('cart', { id: item.id, count: 1 });
         },
         to_compare: function to_compare(i) {
-            this.items[i].is_compare = this.items[i].is_compare ? false : true;
-            this.$store.commit('compare', this.items[i].id);
+            this.items[i].is_compare = !this.items[i].is_compare;
+            this.$store.commit('compare', this.items[i]);
         },
         to_wish: function to_wish(i) {
             axios.post('/to_wish', {
