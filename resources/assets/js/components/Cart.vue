@@ -117,16 +117,7 @@
         created() {
             self = this
             this.lng = window.lng;
-            var requestIDs = JSON.parse(this.ids1);
-            if(requestIDs.length) {
-                for (var i = 0; i < requestIDs.length; i++) {
-                    this.$store.commit('cart', {id: requestIDs[i], count: 1});
-                }
-            } else {
-                for (const key in this.$store.state.cart) {
-                    requestIDs.push(key);
-                }
-            }
+            var requestIDs = this.ids1 && JSON.parse(this.ids1) || Object.keys(this.$store.state.cart)
             if(requestIDs.length) this.get_prodsby_ids(requestIDs);
         },
         methods: {
@@ -140,9 +131,8 @@
                 axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
                     self.products = response.data;
                     self.products.forEach(function (element)  {
-                        element.count = self.$store.state.cart[element.id]
+                        element.count = self.$store.state.cart[element.id] || 1
                     });
-                }).catch(function (error) {
                 });
             },
             chk_input(i) {
@@ -170,7 +160,6 @@
                         document.getElementById('order-done').style = "display: none";
                         self.$router.push('/')
                     }, 3000)
-                }).catch(function (error) {
                 });
             }
         }

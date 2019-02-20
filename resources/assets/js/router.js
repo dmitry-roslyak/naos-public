@@ -48,7 +48,7 @@ export default new VueRouter({
         { path: '/products/:category', component: products, props: true  },
         { name: 'detail', path: '/detail/:id', component: detail, props: true },
         { path: '/compare/:ids', component: compare, props: true },
-        { path: '/cart/:ids1', component: cart, props: true  },
+        { path: '/cart/:ids1?', component: cart, props: true },
         { path: '/account', component: account }
     ]
 });

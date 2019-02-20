@@ -6260,9 +6260,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         pageCount: function pageCount() {
-            var res = Math.ceil(this.value.total / this.value.take);
-            if (!res) res = 1;
-            return res;
+            return Math.ceil(this.value.total / this.value.take) || 1;
         }
     },
     methods: {
@@ -6329,18 +6327,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 var self,
-    timerId,
     _data = {
     lng: {},
     search_result: null,
-    search_show: false,
     search_text: ''
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6350,9 +6341,6 @@ var self,
     computed: {
         currency: function currency() {
             return this.$store.state.currency;
-        },
-        cartVisible: function cartVisible() {
-            return this.$route.path.indexOf("cart") > -1 ? false : true;
         }
     },
     mounted: function mounted() {
@@ -6361,32 +6349,18 @@ var self,
     },
 
     methods: {
-        compare: function compare() {
-            if (this.$store.state.compare_list.length > 1) this.$router.push("/compare/" + JSON.stringify(self.$store.state.compare_list));
-        },
         toSearch: function toSearch() {
-            if (this.search_text > '') {
-                _.throttle(function () {
-                    axios.post('/search', {
-                        search: self.search_text
-                    }).then(function (response) {
-                        self.search_result = response.data;
-                        var temp = null;
-                        for (var i = 0; i < self.search_result.length; i++) {
-                            if (self.search_result[i].category_id == temp) {
-                                self.search_result[i].show = 0;
-                            } else {
-                                self.search_result[i].show = 1;
-                                temp = self.search_result[i].category_id;
-                            }
-                        }
-                        if (self.search_result.length < 1) {
-                            self.search_show = 0;
-                            self.search_result = 0;
-                        } else self.search_show = 1;
-                    });
-                }, 500);
-            } else self.search_show = 0;
+            if (!this.search_text.length) {
+                self.search_result = null;
+                return;
+            }
+            _.throttle(function () {
+                axios.post('/search', {
+                    search: self.search_text
+                }).then(function (response) {
+                    self.search_result = response.data;
+                });
+            }, 500);
         }
     }
 });
@@ -51804,135 +51778,109 @@ var render = function() {
       _c("div", { staticClass: "col-sm-8 col-md-7" }, [
         _c(
           "div",
-          {
-            staticStyle: { position: "relative", "margin-top": "14px" },
-            on: {
-              mouseenter: function($event) {
-                _vm.search_result ? (_vm.search_show = 1) : null
-              },
-              mouseleave: function($event) {
-                _vm.search_show = 0
-              }
-            }
-          },
+          { staticClass: "input-group", staticStyle: { "margin-top": "14px" } },
           [
-            _c("div", { staticClass: "input-group" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.search_text,
-                    expression: "search_text"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: _vm.lng.search,
-                  autofocus: ""
-                },
-                domProps: { value: _vm.search_text },
-                on: {
-                  input: [
-                    function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.search_text = $event.target.value
-                    },
-                    _vm.toSearch
-                  ]
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_text,
+                  expression: "search_text"
                 }
-              }),
-              _vm._v(" "),
-              _vm._m(0)
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "search-list",
-                attrs: { "show-st": _vm.search_show }
+              ],
+              staticClass: "form-control search-input",
+              attrs: {
+                type: "text",
+                placeholder: _vm.lng.search,
+                autofocus: ""
               },
-              [
+              domProps: { value: _vm.search_text },
+              on: {
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.search_text = $event.target.value
+                  },
+                  function($event) {
+                    _vm.toSearch()
+                  }
+                ]
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "search-list" }, [
+              _c("table", { staticStyle: { width: "100%" } }, [
                 _c(
-                  "table",
-                  { staticStyle: { width: "100%" } },
+                  "tbody",
                   _vm._l(_vm.search_result, function(item) {
                     return _c(
-                      "tbody",
-                      { key: item.id, staticStyle: { "border-width": "0" } },
+                      "tr",
+                      { key: item.id, staticClass: "search-itm" },
                       [
-                        _c("tr", { staticClass: "search-itm" }, [
-                          _c(
-                            "td",
-                            {
-                              staticStyle: {
-                                "border-width": "0",
-                                width: "0",
-                                padding: "4px",
-                                "text-align": "center"
-                              }
-                            },
-                            [
-                              _c("img", {
-                                staticStyle: { height: "5rem" },
-                                attrs: { src: "file/" + item.img_src }
-                              })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticStyle: {
-                                "border-width": "0",
-                                padding: "4px"
-                              }
-                            },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  attrs: {
-                                    to: {
-                                      name: "detail",
-                                      params: { id: item.id }
-                                    }
-                                  }
-                                },
-                                [_vm._v(_vm._s(item.name))]
-                              ),
-                              _vm._v(" "),
-                              _c("star-rating", {
+                        _c(
+                          "td",
+                          {
+                            staticStyle: {
+                              padding: "4px",
+                              "text-align": "center"
+                            }
+                          },
+                          [
+                            _c("img", {
+                              staticStyle: { height: "5rem" },
+                              attrs: { src: "file/" + item.img_src }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "router-link",
+                              {
                                 attrs: {
-                                  rating: +item.rating,
-                                  "star-size": 16,
-                                  "show-rating": false,
-                                  "read-only": true
+                                  to: {
+                                    name: "detail",
+                                    params: { id: item.id }
+                                  }
                                 }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("td", { staticStyle: { "border-width": "0" } }, [
-                            _vm._v(
-                              _vm._s(
-                                (_vm.currency * item.price).toFixed(1) +
-                                  " " +
-                                  _vm.lng.currency
-                              )
+                              },
+                              [_vm._v(_vm._s(item.name))]
+                            ),
+                            _vm._v(" "),
+                            _c("star-rating", {
+                              attrs: {
+                                rating: +item.rating,
+                                "star-size": 16,
+                                "show-rating": false,
+                                "read-only": true
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(
+                              (_vm.currency * item.price).toFixed(1) +
+                                " " +
+                                _vm.lng.currency
                             )
-                          ])
+                          )
                         ])
                       ]
                     )
                   })
                 )
-              ]
-            )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
           ]
         )
       ]),
@@ -51944,16 +51892,8 @@ var render = function() {
           _c(
             "router-link",
             {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.cartVisible,
-                  expression: "cartVisible"
-                }
-              ],
               staticClass: "dr-btn fake-link pull-right",
-              attrs: { to: "/cart/[]" }
+              attrs: { to: "/cart" }
             },
             [
               _c("i", {
@@ -52268,7 +52208,7 @@ var render = function() {
             {
               on: {
                 click: function($event) {
-                  _vm.currentPage > 1 ? _vm.page(_vm.currentPage - 1) : null
+                  _vm.currentPage > 1 && _vm.page(_vm.currentPage - 1)
                 }
               }
             },
@@ -52472,9 +52412,8 @@ var render = function() {
             {
               on: {
                 click: function($event) {
-                  _vm.currentPage < _vm.pageCount
-                    ? _vm.page(_vm.currentPage + 1)
-                    : null
+                  _vm.currentPage < _vm.pageCount &&
+                    _vm.page(_vm.currentPage + 1)
                 }
               }
             },
@@ -68363,7 +68302,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('user-info', function (res
 });
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     // mode: 'history',
-    routes: [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids1', component: cart, props: true }, { path: '/account', component: account }]
+    routes: [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids1?', component: cart, props: true }, { path: '/account', component: account }]
 }));
 
 /***/ }),

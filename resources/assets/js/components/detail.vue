@@ -56,10 +56,8 @@
             </div>
             <div style="margin-top:15px">
                 <ul class="nav nav-tabs" >
-                    <li role="presentation" v-if="show_specs" class="active"><a>{{lng.specs}}</a></li>
-                    <li role="presentation" v-else><a @click="show_specs=true">{{lng.specs}}</a></li>
-                    <li role="presentation" v-if="show_specs==false" class="active"><a>{{lng.descr}}</a></li>
-                    <li role="presentation" v-else><a @click="show_specs=false">{{lng.descr}}</a></li>
+                    <li role="presentation" :class="{ active: show_specs}" @click="show_specs=true"><a>{{lng.specs}}</a></li>
+                    <li role="presentation" :class="{ active: !show_specs}" @click="show_specs=false"><a>{{lng.descr}}</a></li>
                 </ul>
                 <table v-if="show_specs&&item"  class="table border1">
                     <tbody style="text-align:center">
@@ -70,7 +68,7 @@
                     </tbody>
                 </table>
                 <div v-else class="border1" style="padding:4px">{{item.description}}</div>
-                <charts v-if="showGraph"></charts>
+                <charts v-if="showGraph" :product-id="id"></charts>
             </div>
         </div>
         <comments class="col-md-5"></comments> 
@@ -109,10 +107,7 @@
         },
         destroyed(){ if(timerId) clearInterval(timerId);},
         methods:{
-            clientWidth(){
-                if(document.documentElement.clientWidth<620) this.showGraph = false;
-                else this.showGraph = true;
-            },
+            clientWidth(){ this.showGraph = document.documentElement.clientWidth > 620 },
             fbshare(){
                 window.open('https://www.facebook.com/dialog/share?'+
                 "app_id=1358482950908486&display=popup&href="+location.host+'/#'+this.$route.path);
@@ -121,7 +116,7 @@
                 this.$store.commit('cart', {id: item.id, count: 1});
             },
             to_compare(i){
-                this.item.is_compare = this.item.is_compare ? false : true
+                this.item.is_compare = !this.item.is_compare
                 this.$store.commit('compare', this.item.id);
                 this.$forceUpdate();
             },
@@ -129,18 +124,15 @@
                 axios.post('/to_wish',{
                     id: self.item.id
                 }).then(function (response) {
-                    self.item.isWish = response.data ? true : false;
+                    self.item.isWish = !!response.data;
                     self.$forceUpdate();
-                }).catch(function (error) {
                 });
             },
             itemById(){
                 axios.get('prod_by_id?id='+self.id).then(function (response) {
                     self.item = response.data;
-                    self.item.isWish = response.data.is_wish ? true : false;
-                    self.item.is_compare = self.$root.compareHas(self.item.id) > -1;
+                    self.item.isWish = !!response.data.is_wish;
                     self.set_total_time();
-                }).catch(function (error) {
                 });    
             },
             set_total_time(){

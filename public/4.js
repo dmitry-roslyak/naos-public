@@ -64,15 +64,12 @@ var self, selfChart;
         self = this;
         this.lng = window.lng;
         this.get_prodsby_ids();
-        var cmprGraph = document.getElementById('cmprGraph');
-        if (cmprGraph) {
-            selfChart = new Chart(cmprGraph, {
-                type: 'polarArea',
-                data: chartData,
-                options: {} //{ legend: { display: true} }
-            });
-        }
-        this.$forceUpdate();
+        // selfChart = new Chart(document.getElementById('cmprGraph'), {
+        //     type: 'polarArea',
+        //     data: chartData,
+        //     options: {}//{ legend: { display: true} }
+        // });
+        // this.$forceUpdate();
     },
 
     methods: {
@@ -127,7 +124,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.compare {\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\n        padding: 0;\n}\n}\n.t-name {\n    display: block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n.table-item:hover {\n    border-radius: 1rem;\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\n            box-shadow: 0 0 0.5rem #0049ce;\n    background-color: white;\n}\n.table-item td:first-child {\n    border: inherit !important\n}\n.table-item {\n    display:inline-block;\n    -webkit-transition: all 0.5s;\n    transition: all 0.5s;\n    width: 20rem;\n}\n", ""]);
+exports.push([module.i, "\n.compare {\r\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\r\n        padding: 0;\n}\n}\n.t-name {\r\n    display: block;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\n}\n.table-item:hover {\r\n    border-radius: 1rem;\r\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\r\n            box-shadow: 0 0 0.5rem #0049ce;\r\n    background-color: white;\n}\n.table-item td:first-child {\r\n    border: inherit !important\n}\n.table-item {\r\n    display:inline-block;\r\n    -webkit-transition: all 0.5s;\r\n    transition: all 0.5s;\r\n    width: 20rem;\n}\r\n", ""]);
 
 // exports
 

@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid compare">
-        <!-- <div v-show="show_graph" class="fds">
+        <!-- <div>
             <canvas id="cmprGraph"></canvas>
         </div> -->
         <table class="table" v-if="list.length>0" style="margin-top: 1rem;"> 
@@ -55,15 +55,12 @@
             self = this;
             this.lng = window.lng;
             this.get_prodsby_ids();
-            var cmprGraph = document.getElementById('cmprGraph');
-            if(cmprGraph){
-                selfChart = new Chart(cmprGraph, {
-                    type: 'polarArea',
-                    data: chartData,
-                    options: {}//{ legend: { display: true} }
-                });
-            }
-            this.$forceUpdate();
+            // selfChart = new Chart(document.getElementById('cmprGraph'), {
+            //     type: 'polarArea',
+            //     data: chartData,
+            //     options: {}//{ legend: { display: true} }
+            // });
+            // this.$forceUpdate();
         },
         methods: {
             img404(e){

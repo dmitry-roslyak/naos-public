@@ -100,7 +100,6 @@
                         self.comments[i] = response.data;
                         self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
                         self.$forceUpdate();
-                    }).catch(function(error) {
                     }); 
                 } 
             },
@@ -111,7 +110,6 @@
                     for (var i = 0; i < self.comments.length; i++){
                         self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
                     }
-                }).catch(function(error) {
                 });
             },
             leave_comment() {
@@ -120,7 +118,6 @@
                     message: self.message,
                     pid: pid,
                     cid: 0
-                }).catch(function(error) {
                 });
             }
         }

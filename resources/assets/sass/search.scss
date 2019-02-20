@@ -1,0 +1,59 @@
+.dr-btn {
+    position: relative;
+    width: 6.3em;
+    text-align: center;
+    border-radius: 6px;
+    margin: 3px;
+    padding: 8px 0 4px;
+    color: white;
+    background-color: cornflowerblue;
+    &:hover, &:focus {
+        color: whitesmoke;
+        background-color: royalblue;
+    }
+}
+.badge-offset {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: royalblue;
+    background-color: white;
+}
+.naos {
+    font-size: 3em;
+    color: cornflowerblue;
+    text-shadow:  0 0 8px rgba(82, 168, 236, .6);
+    &:hover, &:focus {
+        color: cornflowerblue;
+    }
+}
+.vflip {
+    position: relative;
+    display: inline-block;
+    transform: rotate(180deg);
+}
+.search-list {
+    position: absolute;
+    transition: all 0.3s;
+    transform: scale(0);
+    transform-origin: top;
+    width: 100%;
+    top: 4.2rem;
+    box-shadow: 0 0 0.5em #909090;
+    background-color: white;
+    opacity: 0;
+    /* border-radius: 0.3em; */
+    z-index: 3;
+}
+.search-input:focus + .search-list {
+    transform: scale(1);
+    opacity: 1;
+}
+.search-list:hover {
+    transform: scale(1);
+    opacity: 1;
+}
+.search-itm:hover {
+    background-color: whitesmoke;
+    /* border-radius: 0.3em; */
+}

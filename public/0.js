@@ -173,8 +173,7 @@ var self,
     lng: {},
     catalog: [],
     filters: [],
-    price: {},
-    price_show: true
+    price: {}
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -188,7 +187,7 @@ var self,
             return this.$store.state.flt_ids.length;
         }
     },
-    mounted: function mounted() {
+    created: function created() {
         self = this;
         this.catalog = window.Laravel.catalog;
         this.lng = window.lng;
@@ -741,7 +740,7 @@ var render = function() {
             blur: function($event) {
               _vm.catalog_btn_toggle(0)
             },
-            mouseover: function($event) {
+            focus: function($event) {
               _vm.catalog_btn_toggle(1)
             }
           }
@@ -799,168 +798,142 @@ var render = function() {
             }
           ],
           staticClass: "form-control",
-          on: { click: _vm.flt_reset }
+          on: {
+            click: function($event) {
+              _vm.flt_reset()
+            }
+          }
         },
         [_vm._v(_vm._s(_vm.lng.flt_reset))]
       ),
       _vm._v(" "),
-      _vm.filters.length
-        ? _c("div", { staticClass: "thumbnail flt-grp" }, [
-            _c(
-              "div",
-              {
-                staticClass: "flt-btn fake-link",
+      _c("div", { staticClass: "thumbnail flt-grp" }, [
+        _c(
+          "div",
+          {
+            staticClass: "flt-btn fake-link",
+            on: {
+              click: function($event) {
+                _vm.expand($event.currentTarget)
+              }
+            }
+          },
+          [
+            _vm._v("\n            " + _vm._s(_vm.lng.price) + "\n            "),
+            _c("i", {
+              staticClass: "fa fa-angle-up font1 pull-right",
+              staticStyle: { display: "none" },
+              attrs: { "aria-hidden": "true" }
+            }),
+            _vm._v(" "),
+            _c("i", {
+              staticClass: "fa fa-angle-down font1 pull-right",
+              attrs: { "aria-hidden": "true" }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "flip" },
+          [
+            _vm._v("\n            " + _vm._s(_vm.lng.from)),
+            _c("div", { staticClass: "input-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model.number",
+                    value: _vm.price.range[0],
+                    expression: "price.range[0]",
+                    modifiers: { number: true }
+                  }
+                ],
+                staticClass: "form-control myinput1",
+                attrs: { type: "number" },
+                domProps: { value: _vm.price.range[0] },
                 on: {
-                  click: function($event) {
-                    _vm.price_show
-                      ? (_vm.price_show = false)
-                      : (_vm.price_show = true)
-                    _vm.expand($event.currentTarget)
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.price.range, 0, _vm._n($event.target.value))
+                    },
+                    function($event) {
+                      _vm.priceRangeChange()
+                    }
+                  ],
+                  blur: function($event) {
+                    _vm.$forceUpdate()
                   }
                 }
-              },
-              [
-                _vm._v(
-                  "\n            " + _vm._s(_vm.lng.price) + "\n            "
-                ),
-                _c("i", {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.price_show,
-                      expression: "price_show"
-                    }
-                  ],
-                  staticClass: "fa fa-angle-up font1 pull-right",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" "),
-                _c("i", {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: !_vm.price_show,
-                      expression: "!price_show"
-                    }
-                  ],
-                  staticClass: "fa fa-angle-down font1 pull-right",
-                  attrs: { "aria-hidden": "true" }
-                })
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "flip" },
-              [
-                _vm._v("\n            " + _vm._s(_vm.lng.from)),
-                _c("div", { staticClass: "input-group" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model.number",
-                        value: _vm.price.range[0],
-                        expression: "price.range[0]",
-                        modifiers: { number: true }
-                      }
-                    ],
-                    staticClass: "form-control myinput1",
-                    attrs: { type: "number" },
-                    domProps: { value: _vm.price.range[0] },
-                    on: {
-                      input: [
-                        function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.price.range,
-                            0,
-                            _vm._n($event.target.value)
-                          )
-                        },
-                        function($event) {
-                          _vm.priceRangeChange()
-                        }
-                      ],
-                      blur: function($event) {
-                        _vm.$forceUpdate()
-                      }
-                    }
-                  }),
-                  _c("span", { staticClass: "input-group-addon" }, [
-                    _vm._v(_vm._s(_vm.lng.currency))
-                  ])
-                ]),
-                _vm._v("\n            " + _vm._s(_vm.lng.to)),
-                _c("div", { staticClass: "input-group" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model.number",
-                        value: _vm.price.range[1],
-                        expression: "price.range[1]",
-                        modifiers: { number: true }
-                      }
-                    ],
-                    staticClass: "form-control myinput1",
-                    attrs: { type: "number" },
-                    domProps: { value: _vm.price.range[1] },
-                    on: {
-                      input: [
-                        function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.price.range,
-                            1,
-                            _vm._n($event.target.value)
-                          )
-                        },
-                        function($event) {
-                          _vm.priceRangeChange()
-                        }
-                      ],
-                      blur: function($event) {
-                        _vm.$forceUpdate()
-                      }
-                    }
-                  }),
-                  _c("span", { staticClass: "input-group-addon" }, [
-                    _vm._v(_vm._s(_vm.lng.currency))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("range", {
-                  ref: "range",
-                  staticStyle: { "margin-top": "8px" },
-                  on: {
-                    change: function($event) {
-                      _vm.rangeIndexReset()
-                      _vm.priceRangeChange()
-                    },
-                    ready: function($event) {
-                      _vm.rangeIndexReset()
-                    }
-                  },
-                  model: {
-                    value: _vm.price,
-                    callback: function($$v) {
-                      _vm.price = $$v
-                    },
-                    expression: "price"
+              }),
+              _c("span", { staticClass: "input-group-addon" }, [
+                _vm._v(_vm._s(_vm.lng.currency))
+              ])
+            ]),
+            _vm._v("\n            " + _vm._s(_vm.lng.to)),
+            _c("div", { staticClass: "input-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model.number",
+                    value: _vm.price.range[1],
+                    expression: "price.range[1]",
+                    modifiers: { number: true }
                   }
-                })
-              ],
-              1
-            )
-          ])
-        : _vm._e(),
+                ],
+                staticClass: "form-control myinput1",
+                attrs: { type: "number" },
+                domProps: { value: _vm.price.range[1] },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.price.range, 1, _vm._n($event.target.value))
+                    },
+                    function($event) {
+                      _vm.priceRangeChange()
+                    }
+                  ],
+                  blur: function($event) {
+                    _vm.$forceUpdate()
+                  }
+                }
+              }),
+              _c("span", { staticClass: "input-group-addon" }, [
+                _vm._v(_vm._s(_vm.lng.currency))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("range", {
+              ref: "range",
+              staticStyle: { "margin-top": "8px" },
+              on: {
+                change: function($event) {
+                  _vm.rangeIndexReset()
+                  _vm.priceRangeChange()
+                },
+                ready: function($event) {
+                  _vm.rangeIndexReset()
+                }
+              },
+              model: {
+                value: _vm.price,
+                callback: function($$v) {
+                  _vm.price = $$v
+                },
+                expression: "price"
+              }
+            })
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
       _vm._l(_vm.filters, function(filter, i1) {
         return _c("div", { key: filter.id, staticClass: "thumbnail flt-grp" }, [

@@ -2,7 +2,7 @@
     <div >
         <div class="panel panel-primary" style="margin:15px 0 0;border-width: 0;">
             <div class="panel-heading" style="padding:6px 15px">
-                <i class="fa fa-bar-chart"  aria-hidden="true"></i>
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
                 <span>{{lng.hist_graph}}&nbsp;</span>
                 <div class="btn-group" role="group" aria-label="...">
                     <button id="graph_btn1" type="button" class="btn btn-default btn-sm" @click="show_hist(1)">{{lng.price_hist}}</button>
@@ -51,7 +51,7 @@ var chart_self, self, data = {
     ready: false
 };
 export default {
-    props: ['id'],
+    props: ['productId'],
     data: function () {return data;},
     mounted(){
         self = this;
@@ -65,20 +65,16 @@ export default {
     },
     methods:{
         show_hist(t) {
-            var prod_id = this.$parent.$props.id;
-            // console.log(chart_data.datasets[0].data);
-            axios.get('/prod_history', { params: { id: prod_id , currency:  window.Laravel.currency.name} }) 
+            axios.get('/prod_history', { params: { id: this.productId , currency:  window.Laravel.currency.name} }) 
                 .then(function(response) {
                     var i = 0,l=response.data.length,l2=chart_data.datasets[0].data.length;
                     if(l2>0&&l2>l) chart_data.datasets[0].data.splice(0,l2);
                     if(t==1){
-                        // document.getElementById('graph_btn1')
                         for (; i < l; i++) {   
                             chart_data.datasets[0].data[i] = { x: response.data[i].date, 
                                 y: response.data[i].price * response.data[i].currency.rate
                             };
                             chart_data.datasets[0].label = 'Price';
-                            // console.log(response.data[i].price);
                         }
                     }
                     else if(t==2) {
@@ -90,7 +86,6 @@ export default {
                         }
                     }
                    chart_self.update();
-                }).catch(function(error) { 
                 });
             }
         }

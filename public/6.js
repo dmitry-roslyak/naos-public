@@ -63,12 +63,12 @@ var self,
             axios.get('/user_info').then(function (response) {
                 self.userInfo = response.data;
                 if (self.userInfo.fname) self.edit = false;
-            }).catch(function (error) {});
+            });
         },
         upd_usr_info: function upd_usr_info() {
             if (!self.edit) self.edit = true;else {
                 self.edit = false;
-                axios.post('/update_user_info', { user: self.userInfo }).catch(function (error) {});
+                axios.post('/update_user_info', { user: self.userInfo });
             }
         }
     }

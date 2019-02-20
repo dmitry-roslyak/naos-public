@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul class="pagination fake-link" style="position:relative;left:50%;z-index:1;transform: translateX(-50%);">
-            <li :class="{'disabled': currentPage == 1}"><a @click="currentPage>1?page(currentPage-1):null">&laquo;</a></li>
+            <li :class="{'disabled': currentPage == 1}"><a @click="currentPage > 1 && page(currentPage-1)">&laquo;</a></li>
             <li v-show="currentPage!=1"><a @click="page(1)">1</a></li>
             <li>
                 <a v-show="currentPage>2&&currentPage-2!=1&&currentPage<4" @click="page(currentPage-2)">{{currentPage-2}}</a>
@@ -16,7 +16,7 @@
                 <a v-show="currentPage<pageCount-3">...</a>
             </li>
             <li v-show="currentPage!=pageCount"><a @click="page(pageCount)">{{pageCount}}</a></li>
-            <li :class="{'disabled': currentPage == pageCount}"><a @click="currentPage<pageCount?page(currentPage+1):null">&raquo;</a></li>
+            <li :class="{'disabled': currentPage == pageCount}"><a @click="currentPage < pageCount && page(currentPage+1)">&raquo;</a></li>
         </ul>
     </div>
 </template>
@@ -31,11 +31,7 @@
             value: Object
         },
         computed: {
-            pageCount: function () { 
-                var res = Math.ceil(this.value.total/this.value.take)
-                if(!res) res = 1;
-                return res; 
-            }
+            pageCount() { return Math.ceil(this.value.total/this.value.take) || 1}
         },
         methods: {
             skip(){

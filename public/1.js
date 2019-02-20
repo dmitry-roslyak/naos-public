@@ -81,8 +81,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 var self,
     timerId,
@@ -130,7 +128,7 @@ var self,
 
     methods: {
         clientWidth: function clientWidth() {
-            if (document.documentElement.clientWidth < 620) this.showGraph = false;else this.showGraph = true;
+            this.showGraph = document.documentElement.clientWidth > 620;
         },
         fbshare: function fbshare() {
             window.open('https://www.facebook.com/dialog/share?' + "app_id=1358482950908486&display=popup&href=" + location.host + '/#' + this.$route.path);
@@ -139,7 +137,7 @@ var self,
             this.$store.commit('cart', { id: item.id, count: 1 });
         },
         to_compare: function to_compare(i) {
-            this.item.is_compare = this.item.is_compare ? false : true;
+            this.item.is_compare = !this.item.is_compare;
             this.$store.commit('compare', this.item.id);
             this.$forceUpdate();
         },
@@ -147,17 +145,16 @@ var self,
             axios.post('/to_wish', {
                 id: self.item.id
             }).then(function (response) {
-                self.item.isWish = response.data ? true : false;
+                self.item.isWish = !!response.data;
                 self.$forceUpdate();
-            }).catch(function (error) {});
+            });
         },
         itemById: function itemById() {
             axios.get('prod_by_id?id=' + self.id).then(function (response) {
                 self.item = response.data;
-                self.item.isWish = response.data.is_wish ? true : false;
-                self.item.is_compare = self.$root.compareHas(self.item.id) > -1;
+                self.item.isWish = !!response.data.is_wish;
                 self.set_total_time();
-            }).catch(function (error) {});
+            });
         },
         set_total_time: function set_total_time() {
             this.offerTime = null;
@@ -389,51 +386,33 @@ var render = function() {
                 { staticStyle: { "margin-top": "15px" } },
                 [
                   _c("ul", { staticClass: "nav nav-tabs" }, [
-                    _vm.show_specs
-                      ? _c(
-                          "li",
-                          {
-                            staticClass: "active",
-                            attrs: { role: "presentation" }
-                          },
-                          [_c("a", [_vm._v(_vm._s(_vm.lng.specs))])]
-                        )
-                      : _c("li", { attrs: { role: "presentation" } }, [
-                          _c(
-                            "a",
-                            {
-                              on: {
-                                click: function($event) {
-                                  _vm.show_specs = true
-                                }
-                              }
-                            },
-                            [_vm._v(_vm._s(_vm.lng.specs))]
-                          )
-                        ]),
+                    _c(
+                      "li",
+                      {
+                        class: { active: _vm.show_specs },
+                        attrs: { role: "presentation" },
+                        on: {
+                          click: function($event) {
+                            _vm.show_specs = true
+                          }
+                        }
+                      },
+                      [_c("a", [_vm._v(_vm._s(_vm.lng.specs))])]
+                    ),
                     _vm._v(" "),
-                    _vm.show_specs == false
-                      ? _c(
-                          "li",
-                          {
-                            staticClass: "active",
-                            attrs: { role: "presentation" }
-                          },
-                          [_c("a", [_vm._v(_vm._s(_vm.lng.descr))])]
-                        )
-                      : _c("li", { attrs: { role: "presentation" } }, [
-                          _c(
-                            "a",
-                            {
-                              on: {
-                                click: function($event) {
-                                  _vm.show_specs = false
-                                }
-                              }
-                            },
-                            [_vm._v(_vm._s(_vm.lng.descr))]
-                          )
-                        ])
+                    _c(
+                      "li",
+                      {
+                        class: { active: !_vm.show_specs },
+                        attrs: { role: "presentation" },
+                        on: {
+                          click: function($event) {
+                            _vm.show_specs = false
+                          }
+                        }
+                      },
+                      [_c("a", [_vm._v(_vm._s(_vm.lng.descr))])]
+                    )
                   ]),
                   _vm._v(" "),
                   _vm.show_specs && _vm.item
@@ -473,7 +452,9 @@ var render = function() {
                         [_vm._v(_vm._s(_vm.item.description))]
                       ),
                   _vm._v(" "),
-                  _vm.showGraph ? _c("charts") : _vm._e()
+                  _vm.showGraph
+                    ? _c("charts", { attrs: { "product-id": _vm.id } })
+                    : _vm._e()
                 ],
                 1
               )

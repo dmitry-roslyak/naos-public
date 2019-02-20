@@ -60,7 +60,7 @@ var chart_self,
     ready: false
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['id'],
+    props: ['productId'],
     data: function data() {
         return _data;
     },
@@ -77,21 +77,17 @@ var chart_self,
 
     methods: {
         show_hist: function show_hist(t) {
-            var prod_id = this.$parent.$props.id;
-            // console.log(chart_data.datasets[0].data);
-            axios.get('/prod_history', { params: { id: prod_id, currency: window.Laravel.currency.name } }).then(function (response) {
+            axios.get('/prod_history', { params: { id: this.productId, currency: window.Laravel.currency.name } }).then(function (response) {
                 var i = 0,
                     l = response.data.length,
                     l2 = chart_data.datasets[0].data.length;
                 if (l2 > 0 && l2 > l) chart_data.datasets[0].data.splice(0, l2);
                 if (t == 1) {
-                    // document.getElementById('graph_btn1')
                     for (; i < l; i++) {
                         chart_data.datasets[0].data[i] = { x: response.data[i].date,
                             y: response.data[i].price * response.data[i].currency.rate
                         };
                         chart_data.datasets[0].label = 'Price';
-                        // console.log(response.data[i].price);
                     }
                 } else if (t == 2) {
                     for (; i < l; i++) {
@@ -102,7 +98,7 @@ var chart_self,
                     }
                 }
                 chart_self.update();
-            }).catch(function (error) {});
+            });
         }
     }
 });

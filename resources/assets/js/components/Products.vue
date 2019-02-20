@@ -126,7 +126,7 @@
                 }).then(function (response) {
                     var items = response.data[1];
                     for (var i = 0; i < items.length; i++) {
-                        items[i].isWish = items[i].wish ? true : false;
+                        items[i].isWish = !!items[i].wish;
                         items[i].is_compare = self.$store.state.compare_list.indexOf(items[i].id) > -1;
                         items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
                         items[i].isNew = new Date(items[i].arrive_date) > new Date() - 1000 * 60 * 60 * 24 * 21;
@@ -145,14 +145,14 @@
                 this.$store.commit('cart', {id: item.id, count: 1});
             },
             to_compare(i){
-                this.items[i].is_compare = this.items[i].is_compare ? false : true
+                this.items[i].is_compare = !this.items[i].is_compare;
                 this.$store.commit('compare', this.items[i].id);
             },
             to_wish(i){
                 axios.post('/to_wish',{
                     id: self.items[i].id
                 }).then(function (response) {
-                    self.items[i].isWish = response.data ? true : false;
+                    self.items[i].isWish = !!response.data;
                 });
             }
         }

@@ -73,18 +73,12 @@
 <script>
     var self, data = {
         lng: {},
-        langs: null,
-        edit: false,
-        paycard: true,
         pass_reset: false
     };
     export default {
         data: function () {return data;},
         mounted() {
             self = this;
-            this.langs = $.map(window.langs, function (value) {
-                return {img: value[0].text, name: value[1].text, ISO: value[2].text};
-            });
             this.lng = window.lng;
         },
         methods: {
@@ -92,10 +86,8 @@
                 axios.get('/set_currency?val='+val).then(function (response) {
                     self.lng.currency = self.lng[response.data.name];
                     self.$store.commit('set_currency', response.data.rate);
-                }).catch(function (error) {
                 }); 
-            },
-            get_locale(lng){this.$root.get_locale(lng);}
+            }
         }
     }
 </script>

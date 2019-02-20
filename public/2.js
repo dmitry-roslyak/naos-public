@@ -112,7 +112,7 @@ var formatter = new Intl.DateTimeFormat([], {
                     self.comments[i] = response.data;
                     self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at + 'Z'));
                     self.$forceUpdate();
-                }).catch(function (error) {});
+                });
             }
         },
         show_comments: function show_comments() {
@@ -122,7 +122,7 @@ var formatter = new Intl.DateTimeFormat([], {
                 for (var i = 0; i < self.comments.length; i++) {
                     self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at + 'Z'));
                 }
-            }).catch(function (error) {});
+            });
         },
         leave_comment: function leave_comment() {
             axios.post('leave_comment', {
@@ -130,7 +130,7 @@ var formatter = new Intl.DateTimeFormat([], {
                 message: self.message,
                 pid: pid,
                 cid: 0
-            }).catch(function (error) {});
+            });
         }
     }
 });

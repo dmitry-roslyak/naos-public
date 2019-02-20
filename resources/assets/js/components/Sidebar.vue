@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @mouseover="catalog_btn_toggle(1)"  type="button" id="dropdownMenu1" aria-haspopup="true">
+        <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @focus="catalog_btn_toggle(1)" type="button" id="dropdownMenu1" aria-haspopup="true">
             <div style="padding: 9px 10px 6px">
                 <i class="fa fa-list" style="font-size:1.2em"></i>
                 {{lng.catalog}}
@@ -11,12 +11,12 @@
                 </div>
             </ul>
         </div>
-        <button class="form-control" v-show="showClear" @click="flt_reset">{{lng.flt_reset}}</button>
-        <div class="thumbnail flt-grp" v-if="filters.length" >
-            <div class="flt-btn fake-link" @click="price_show?price_show=false:price_show=true;expand($event.currentTarget)">
+        <button class="form-control" v-show="showClear" @click="flt_reset()">{{lng.flt_reset}}</button>
+        <div class="thumbnail flt-grp">
+            <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
                 {{lng.price}}
-                <i v-show="price_show" class="fa fa-angle-up font1 pull-right" aria-hidden="true"></i>
-                <i v-show="!price_show" class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
+                <i class="fa fa-angle-up font1 pull-right" style="display:none" aria-hidden="true"></i>
+                <i class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
             </div>
             <div class="flip">
                 {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[0]" @input="priceRangeChange()"><span class="input-group-addon">{{lng.currency}}</span></div>
@@ -56,8 +56,7 @@
         lng: {},
         catalog: [],
         filters: [],
-        price: {},
-        price_show: true
+        price: {}
     };
     export default {
         data: function () {return data;},
@@ -67,7 +66,7 @@
         computed: {
             showClear: function () { return this.$store.state.flt_ids.length },
         },
-        mounted() {
+        created() {
             self = this;
             this.catalog = window.Laravel.catalog;
             this.lng = window.lng;
