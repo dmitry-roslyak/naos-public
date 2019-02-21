@@ -2,31 +2,32 @@
     <div class="container-fluid">
         <div id="order-done" style="display:none" class="overlay-view"><h4>{{lng.order_done}} !</h4> </div>
         <hr>
-        <div class="col-md-7 col-sm-12" style="padding:0">
-            <div class="col-md-12" style="padding:0 0 15px 15px">
-                <div class="cart-caption">
-                    {{lng.cart}}
-                    <div class="pull-right">{{lng.total_sum +' '+(total).toFixed(1)+' '+ lng.currency}}</div>
-                </div>
+        <div class="col-md-7 col-sm-12 cart-products">
+            <div class="cart-caption">{{lng.cart}}
+                <div class="pull-right">{{lng.total_sum +': '+total+' '+ lng.currency}}</div>
             </div>
-            <div class="col-sm-6 col-xs-12" style="padding:0 0 15px 15px" v-for="item in products" :key="item.id">
-                <div class="action-frm">
-                    <a class="action-item fake-link" @click="removeFromCart(item.id)">
-                        <span class="hidden-xs">{{lng.remove}}</span>
-                        <i class="fa fa-minus" style="font-size:1.5rem" aria-hidden="true"></i>
-                    </a>
-                </div>
-                <div class="cart-item container-fluid">
-                    <div class="col-sm-6" style="padding:0">
-                        <img v-bind:src="'file/'+item.img_src" style="height:10rem;">
-                    </div>
-                    <div class="col-sm-6">
-                        <div>{{item.name}}</div>
-                        {{(currency * item.price).toFixed(1)+' '+ lng.currency}}
-                        <div><input class="form-control" v-model="item.count" type="number"></div>
-                    </div>
-                </div>
-            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>{{lng.product}}</th>
+                        <th>{{lng.count}}</th>
+                        <th>{{lng.price}}</th>
+                    </tr>
+                    <tr v-for="item in products" :key="item.id">
+                        <td><img v-bind:src="'file/'+item.img_src"></td>
+                        <td><router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link></td>
+                        <td><input class="form-control" v-model="item.count" type="number"></td>
+                        <td>{{(currency * item.price).toFixed(1)+' '+ lng.currency}}</td>
+                        <div class="action-frm">
+                            <a class="action-item fake-link" @click="removeFromCart(item.id)">
+                                <span class="hidden-xs">{{lng.remove}}</span>
+                                <i class="fa fa-minus" style="font-size:1.5rem" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="col-sm-12 col-md-5">
             <user-info ref="userInfo" style="padding:0"></user-info>
@@ -111,7 +112,7 @@
                 for (var i = 0; i < this.products.length; i++) {
                     res += this.products[i].price * this.$store.state.currency * this.products[i].count;
                 }
-                return res;
+                return res.toFixed(1);
             }
         },
         created() {
@@ -166,4 +167,4 @@
     }
 </script>
 
-<style lang="sass" src="../../sass/cart.sass"></style>
+<style lang="scss" src="../../sass/cart.scss"></style>

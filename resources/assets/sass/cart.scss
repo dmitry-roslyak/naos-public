@@ -1,0 +1,36 @@
+.cart-caption {
+    background-color: cornflowerblue;
+    padding: 10px;
+    color: white;
+    border-radius: 0.3rem 0.3rem 0 0;
+}
+.cart-item {
+    border: 1px solid cornflowerblue;
+    background-color: white;
+    padding: 15px;
+}
+td > .fa-check-circle {
+    color: green;
+}
+td > .fa-times {
+    color: red;
+}
+.cart-products {
+    padding: 0px;
+    margin: 0;
+    border-radius: 0.3rem;
+    background-color: white;
+    box-shadow: 0 0 0.4rem #ddd;
+}
+.cart-products > .table {
+    margin: 0;
+}
+.cart-products tr td:first-child {
+    text-align: center !important;
+}
+.cart-products tr td > img {
+    height: 6rem;
+}
+.cart-products td {
+    vertical-align: initial !important;
+}

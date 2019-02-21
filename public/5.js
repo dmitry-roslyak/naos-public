@@ -99,6 +99,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var self,
     _data = {
@@ -123,7 +124,7 @@ var self,
             for (var i = 0; i < this.products.length; i++) {
                 res += this.products[i].price * this.$store.state.currency * this.products[i].count;
             }
-            return res;
+            return res.toFixed(1);
         }
     },
     created: function created() {
@@ -180,7 +181,7 @@ var self,
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/cart.sass":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -188,7 +189,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.cart-caption {\n  background-color: cornflowerblue;\n  padding: 15px;\n  color: white;\n}\n.cart-item {\n  border: 1px solid cornflowerblue;\n  background-color: white;\n  padding: 15px;\n}\ntd > .fa-check-circle {\n  color: green;\n}\ntd > .fa-times {\n  color: red;\n}\n", ""]);
+exports.push([module.i, "\n.cart-caption {\n  background-color: cornflowerblue;\n  padding: 10px;\n  color: white;\n  border-radius: 0.3rem 0.3rem 0 0;\n}\n.cart-item {\n  border: 1px solid cornflowerblue;\n  background-color: white;\n  padding: 15px;\n}\ntd > .fa-check-circle {\n  color: green;\n}\ntd > .fa-times {\n  color: red;\n}\n.cart-products {\n  padding: 0px;\n  margin: 0;\n  border-radius: 0.3rem;\n  background-color: white;\n  -webkit-box-shadow: 0 0 0.4rem #ddd;\n          box-shadow: 0 0 0.4rem #ddd;\n}\n.cart-products > .table {\n  margin: 0;\n}\n.cart-products tr td:first-child {\n  text-align: center !important;\n}\n.cart-products tr td > img {\n  height: 6rem;\n}\n.cart-products td {\n  vertical-align: initial !important;\n}\n", ""]);
 
 // exports
 
@@ -215,126 +216,119 @@ var render = function() {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-md-7 col-sm-12", staticStyle: { padding: "0" } },
-      [
+    _c("div", { staticClass: "col-md-7 col-sm-12 cart-products" }, [
+      _c("div", { staticClass: "cart-caption" }, [
+        _vm._v(_vm._s(_vm.lng.cart) + "\n            "),
+        _c("div", { staticClass: "pull-right" }, [
+          _vm._v(
+            _vm._s(
+              _vm.lng.total_sum + ": " + _vm.total + " " + _vm.lng.currency
+            )
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("table", { staticClass: "table" }, [
         _c(
-          "div",
-          {
-            staticClass: "col-md-12",
-            staticStyle: { padding: "0 0 15px 15px" }
-          },
+          "tbody",
           [
-            _c("div", { staticClass: "cart-caption" }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.lng.cart) +
-                  "\n                "
-              ),
-              _c("div", { staticClass: "pull-right" }, [
-                _vm._v(
-                  _vm._s(
-                    _vm.lng.total_sum +
-                      " " +
-                      _vm.total.toFixed(1) +
-                      " " +
-                      _vm.lng.currency
-                  )
-                )
-              ])
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _vm._l(_vm.products, function(item) {
-          return _c(
-            "div",
-            {
-              key: item.id,
-              staticClass: "col-sm-6 col-xs-12",
-              staticStyle: { padding: "0 0 15px 15px" }
-            },
-            [
-              _c("div", { staticClass: "action-frm" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "action-item fake-link",
-                    on: {
-                      click: function($event) {
-                        _vm.removeFromCart(item.id)
-                      }
-                    }
-                  },
-                  [
-                    _c("span", { staticClass: "hidden-xs" }, [
-                      _vm._v(_vm._s(_vm.lng.remove))
-                    ]),
-                    _vm._v(" "),
-                    _c("i", {
-                      staticClass: "fa fa-minus",
-                      staticStyle: { "font-size": "1.5rem" },
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ]
-                )
-              ]),
+            _c("tr", [
+              _c("th"),
               _vm._v(" "),
-              _c("div", { staticClass: "cart-item container-fluid" }, [
+              _c("th", [_vm._v(_vm._s(_vm.lng.product))]),
+              _vm._v(" "),
+              _c("th", [_vm._v(_vm._s(_vm.lng.count))]),
+              _vm._v(" "),
+              _c("th", [_vm._v(_vm._s(_vm.lng.price))])
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.products, function(item) {
+              return _c("tr", { key: item.id }, [
+                _c("td", [
+                  _c("img", { attrs: { src: "file/" + item.img_src } })
+                ]),
+                _vm._v(" "),
                 _c(
-                  "div",
-                  { staticClass: "col-sm-6", staticStyle: { padding: "0" } },
+                  "td",
                   [
-                    _c("img", {
-                      staticStyle: { height: "10rem" },
-                      attrs: { src: "file/" + item.img_src }
-                    })
-                  ]
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: { name: "detail", params: { id: item.id } }
+                        }
+                      },
+                      [_vm._v(_vm._s(item.name))]
+                    )
+                  ],
+                  1
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", [_vm._v(_vm._s(item.name))]),
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(
-                        (_vm.currency * item.price).toFixed(1) +
-                          " " +
-                          _vm.lng.currency
-                      ) +
-                      "\n                    "
-                  ),
-                  _c("div", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: item.count,
-                          expression: "item.count"
+                _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.count,
+                        expression: "item.count"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number" },
+                    domProps: { value: item.count },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "number" },
-                      domProps: { value: item.count },
+                        _vm.$set(item, "count", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(
+                      (_vm.currency * item.price).toFixed(1) +
+                        " " +
+                        _vm.lng.currency
+                    )
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "action-frm" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "action-item fake-link",
                       on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(item, "count", $event.target.value)
+                        click: function($event) {
+                          _vm.removeFromCart(item.id)
                         }
                       }
-                    })
-                  ])
+                    },
+                    [
+                      _c("span", { staticClass: "hidden-xs" }, [
+                        _vm._v(_vm._s(_vm.lng.remove))
+                      ]),
+                      _vm._v(" "),
+                      _c("i", {
+                        staticClass: "fa fa-minus",
+                        staticStyle: { "font-size": "1.5rem" },
+                        attrs: { "aria-hidden": "true" }
+                      })
+                    ]
+                  )
                 ])
               ])
-            ]
-          )
-        })
-      ],
-      2
-    ),
+            })
+          ],
+          2
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c(
       "div",
@@ -631,23 +625,23 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/cart.sass":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/cart.sass");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3cb182c4", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("57f49d06", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!./cart.sass", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!./cart.sass");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./cart.scss", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./cart.scss");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -664,7 +658,7 @@ if(false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/cart.sass")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b324dd2\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
