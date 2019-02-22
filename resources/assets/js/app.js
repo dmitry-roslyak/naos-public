@@ -29,7 +29,6 @@ const app = new Vue({
         this.lng = window.lng;
         this.$store.commit('set_currency', window.Laravel.currency.rate);
         if (window.Laravel.user) this.user = window.Laravel.user.name;
-        this.$store.commit('cart');
     },
     methods: {
         get_locale(lng) {

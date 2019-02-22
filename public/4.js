@@ -39,6 +39,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _data = {
     lng: {},
@@ -60,6 +70,11 @@ var self, selfChart;
         return _data;
     },
     props: ['ids'],
+    watch: {
+        '$route.params.ids': function $routeParamsIds() {
+            this.get_prodsby_ids();
+        }
+    },
     mounted: function mounted() {
         self = this;
         this.lng = window.lng;
@@ -73,6 +88,17 @@ var self, selfChart;
     },
 
     methods: {
+        ctg: function ctg(value) {
+            for (var key in window.Laravel.catalog) {
+                if (window.Laravel.catalog[key].id == value) {
+                    return key;
+                }
+            }
+        },
+        removeItem: function removeItem(i) {
+            this.$store.commit('compare', this.list[i]);
+            this.list.splice(i, 1);
+        },
         img404: function img404(e) {
             e.src = "/images/404.png";
         },
@@ -98,7 +124,7 @@ var self, selfChart;
             chartData.datasets[0].label = val;
             selfChart.update();
         },
-        get_prodsby_ids: function get_prodsby_ids(n) {
+        get_prodsby_ids: function get_prodsby_ids() {
             axios.get('/prodsby_ids', { params: { ids: JSON.parse(this.ids) } }).then(function (response) {
                 self.list = response.data;
                 for (var i = 0; i < self.list.length; i++) {
@@ -124,7 +150,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.compare {\r\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\r\n        padding: 0;\n}\n}\n.t-name {\r\n    display: block;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\n}\n.table-item:hover {\r\n    border-radius: 1rem;\r\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\r\n            box-shadow: 0 0 0.5rem #0049ce;\r\n    background-color: white;\n}\n.table-item td:first-child {\r\n    border: inherit !important\n}\n.table-item {\r\n    display:inline-block;\r\n    -webkit-transition: all 0.5s;\r\n    transition: all 0.5s;\r\n    width: 20rem;\n}\r\n", ""]);
+exports.push([module.i, "\n.compare {\r\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\r\n        padding: 0;\n}\n}\n.t-name {\r\n    display: block;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\n}\n.table-item:hover {\r\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\r\n            box-shadow: 0 0 0.5rem #0049ce;\r\n    background-color: white;\n}\n.table-item td:first-child {\r\n    border: inherit !important\n}\n.table-item {\r\n    display:inline-block;\r\n    -webkit-transition: all 0.5s;\r\n    transition: all 0.5s;\r\n    width: 20rem;\n}\r\n", ""]);
 
 // exports
 
@@ -139,6 +165,22 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid compare" }, [
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: !_vm.list.length,
+            expression: "!list.length"
+          }
+        ],
+        staticStyle: { "text-align": "center", padding: "12em" }
+      },
+      [_vm._v("\n        Add products to compare\n    ")]
+    ),
+    _vm._v(" "),
     _vm.list.length > 0
       ? _c(
           "table",
@@ -182,8 +224,24 @@ var render = function() {
                               _vm._s(_vm.diffType == 1 ? "%" : _vm.lng.value)
                             )
                           ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "router-link",
+                          {
+                            staticStyle: {
+                              display: "block",
+                              "margin-top": "10px"
+                            },
+                            attrs: {
+                              to:
+                                "/products/" + _vm.ctg(_vm.list[0].category_id)
+                            }
+                          },
+                          [_vm._v("Add more products to compare")]
                         )
-                      ]
+                      ],
+                      1
                     ),
                     _vm._v(" "),
                     _vm._l(_vm.list[0].specs, function(specs) {
@@ -224,15 +282,15 @@ var render = function() {
                   2
                 ),
                 _vm._v(" "),
-                _vm._l(_vm.list, function(temp, i1) {
+                _vm._l(_vm.list, function(temp, i) {
                   return _c(
                     "tr",
                     {
-                      key: i1,
+                      key: i,
                       staticClass: "table-item t-name",
                       on: {
                         mouseover: function($event) {
-                          _vm.cmpr(i1)
+                          _vm.cmpr(i)
                         }
                       }
                     },
@@ -244,10 +302,42 @@ var render = function() {
                             float: "left",
                             clear: "both",
                             width: "100%",
-                            height: "12rem"
+                            height: "12rem",
+                            position: "relative"
                           }
                         },
                         [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "action-frm",
+                              staticStyle: { top: "0" }
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "action-item fake-link",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.removeItem(i)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", { staticClass: "hidden-xs" }, [
+                                    _vm._v(_vm._s(_vm.lng.remove))
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("i", {
+                                    staticClass: "fa fa-trash",
+                                    attrs: { "aria-hidden": "true" }
+                                  })
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {

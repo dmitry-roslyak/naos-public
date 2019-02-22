@@ -6327,6 +6327,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var self,
     _data = {
@@ -6339,16 +6341,26 @@ var self,
         return _data;
     },
     computed: {
+        compare: function compare() {
+            return this.$store.state.compare;
+        },
+
         currency: function currency() {
             return this.$store.state.currency;
         }
     },
-    mounted: function mounted() {
+    created: function created() {
         self = this;
         this.lng = window.lng;
+        this.$store.getters.loadFromLocalStorage('compare');
+        this.$store.getters.loadFromLocalStorage('cart');
     },
 
     methods: {
+        toCompare: function toCompare(i) {
+            compare.blur();
+            this.$router.push("/compare/" + JSON.stringify(this.$store.state.compare[i].array));
+        },
         toSearch: function toSearch() {
             if (!this.search_text.length) {
                 self.search_result = null;
@@ -51904,7 +51916,7 @@ var render = function() {
               _c("div", [_c("nobr", [_vm._v(_vm._s(_vm.lng.cart))])], 1),
               _vm._v(" "),
               _c("span", { staticClass: "badge badge-offset" }, [
-                _vm._v(_vm._s(this.$store.state.cartLength))
+                _vm._v(_vm._s(this.$store.getters.cartItemsCount))
               ])
             ]
           ),
@@ -51913,11 +51925,11 @@ var render = function() {
             "a",
             {
               staticClass: "dr-btn pull-right",
-              attrs: { href: "#" },
+              attrs: { id: "compare", href: "#" },
               on: {
                 click: function($event) {
                   $event.preventDefault()
-                  _vm.compare()
+                  _vm.$store.state.compare.length == 1 && _vm.toCompare(0)
                 }
               }
             },
@@ -51926,12 +51938,46 @@ var render = function() {
                 staticClass: "fa fa-balance-scale font1",
                 attrs: { "aria-hidden": "true" }
               }),
-              _vm._v(" "),
               _c("div", [_c("nobr", [_vm._v(_vm._s(_vm.lng.compare))])], 1),
               _vm._v(" "),
               _c("span", { staticClass: "badge badge-offset" }, [
-                _vm._v(_vm._s(this.$store.state.compare_list.length))
-              ])
+                _vm._v(_vm._s(this.$store.getters.compareItemsCount))
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: this.$store.state.compare.length > 1,
+                      expression: "this.$store.state.compare.length > 1"
+                    }
+                  ],
+                  staticClass: "compare-drop"
+                },
+                _vm._l(_vm.compare, function(item, key) {
+                  return _c(
+                    "div",
+                    {
+                      key: key,
+                      on: {
+                        click: function($event) {
+                          _vm.toCompare(key)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        _vm._s(
+                          _vm.lng[item.category] + ": " + item.array.length
+                        )
+                      )
+                    ]
+                  )
+                })
+              )
             ]
           )
         ],
@@ -67978,7 +68024,6 @@ var app = new Vue({
         this.lng = window.lng;
         this.$store.commit('set_currency', window.Laravel.currency.rate);
         if (window.Laravel.user) this.user = window.Laravel.user.name;
-        this.$store.commit('cart');
     },
 
     methods: {
@@ -68321,8 +68366,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     state: {
-        cartLength: 0,
-        compare_list: [],
+        compare: [],
         flt_ids: [],
         currency: 0,
         cart: {}
@@ -68333,24 +68377,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
             localStorage.cart = '';
         },
         cart: function cart(state, item) {
-            if (item) {
-                state.cart[item.id] ? state.cart[item.id] += item.count : state.cart[item.id] = item.count;
-                if (item.toRemove) delete state.cart[item.id];
-                localStorage.cart = JSON.stringify(state.cart);
-            } else {
-                if (localStorage.cart && localStorage.cart.length) {
-                    try {
-                        state.cart = JSON.parse(localStorage.cart);
-                    } catch (error) {
-                        console.log(error);
-                        localStorage.cart = '';
-                    }
-                }
-            }
-            state.cartLength = 0;
-            for (var key in state.cart) {
-                state.cartLength += state.cart[key];
-            }
+            state.cart[item.id] ? state.cart[item.id] += item.count : __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.cart, item.id, item.count);
+            if (item.toRemove) delete state.cart[item.id];
+            localStorage.cart = JSON.stringify(state.cart);
         },
         set_currency: function set_currency(state, value) {
             state.currency = value;
@@ -68361,9 +68390,56 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
                 i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
             } else state.flt_ids.length = 0;
         },
-        compare: function compare(state, id) {
-            var i = state.compare_list.indexOf(id);
-            i < 0 ? state.compare_list.push(id) : state.compare_list.splice(i, 1);
+        compare: function compare(state, item) {
+            var categoryIndex = this.getters.compareCategoryIndex(item.category_id);
+
+            if (categoryIndex < 0) categoryIndex = state.compare.push({ categoryId: item.category_id, category: item.category, array: [] }) - 1;
+
+            var i = this.getters.isCompare(categoryIndex, item.id);
+            i < 0 ? state.compare[categoryIndex].array.push(item.id) : state.compare[categoryIndex].array.splice(i, 1);
+            !state.compare[categoryIndex].array.length && state.compare.splice(categoryIndex, 1);
+
+            localStorage.compare = JSON.stringify(state.compare);
+        }
+    },
+    getters: {
+        compareCategoryIndex: function compareCategoryIndex(state) {
+            return function (categoryId) {
+                return state.compare.findIndex(function (value) {
+                    return value.categoryId == categoryId;
+                });
+            };
+        },
+        isCompare: function isCompare(state) {
+            return function (categoryIndex, itemId) {
+                return state.compare[categoryIndex].array.indexOf(itemId);
+            };
+        },
+        cartItemsCount: function cartItemsCount(state) {
+            var count = 0;
+            for (var key in state.cart) {
+                count += state.cart[key];
+            }
+            return count;
+        },
+        compareItemsCount: function compareItemsCount(state) {
+            var count = 0;
+            for (var key in state.compare) {
+                count += state.compare[key].array.length;
+            }
+            return count;
+        },
+        loadFromLocalStorage: function loadFromLocalStorage(state) {
+            return function (propery) {
+                if (localStorage[propery] && localStorage[propery].length) {
+                    try {
+                        state[propery] = JSON.parse(localStorage[propery]);
+                    } catch (error) {
+                        console.log(error);
+                        localStorage[propery] = '';
+                    }
+                }
+            };
         }
     }
 }));
