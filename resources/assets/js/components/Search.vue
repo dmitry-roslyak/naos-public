@@ -36,13 +36,13 @@
             <router-link v-show="cartVisible" to="/cart/[]" class="dr-btn fake-link pull-right">
                 <i class="fa fa-shopping-cart font1" aria-hidden="true"></i>
                 <div><nobr>{{lng.cart}}</nobr></div>
-                <span class="badge badge-offset" >{{this.$store.state.cartLength}}</span>
+                <span class="badge badge-offset" >{{this.$store.getters.cartItemsCount}}</span>
             </router-link>
-            <a id="compare" href="#" class="dr-btn pull-right" @click="$event.preventDefault();compare()">
+            <a id="compare" href="#" class="dr-btn pull-right" @click.prevent="$store.state.compare.length == 1 && toCompare(0)">
                 <i class="fa fa-balance-scale font1" aria-hidden="true"></i><div><nobr>{{lng.compare}}</nobr></div>
-                <span class="badge badge-offset">{{compareLength1}}</span>
-                <div v-show="compareLength() > 1" class="compare-drop">
-                    <div v-for="(item, key) in compare1" :key="key" @click="compare(item)">{{lng[ctg(key)] + ': ' + item.length}}</div>
+                <span class="badge badge-offset">{{this.$store.getters.compareItemsCount}}</span>
+                <div v-show="this.$store.state.compare.length > 1" class="compare-drop">
+                    <div v-for="(item, key) in compare" :key="key" @click="toCompare(key)">{{lng[item.category] + ': ' + item.array.length}}</div>
                 </div>
             </a>
         </div>
@@ -54,38 +54,24 @@
         search_result: null,
         search_show: false,
         search_text: '',
-        catalog: []
     };
     export default {
-        data: function () {return data;},
+        data: function () { return data; },
         computed: {
-            compareLength1() { return this.$store.state.compareLength },
-            compare1() { return this.$store.state.compare },
+            compare() { return this.$store.state.compare },
             currency: function () { return this.$store.state.currency },
             cartVisible() { return this.$route.path.indexOf("cart") > -1 ? false : true }
         },
-        mounted() {
+        created() {
             self = this;
             this.lng = window.lng;
-            this.catalog = window.Laravel.catalog;
-            this.$store.commit('compareInit');
+            this.$store.getters.loadFromLocalStorage('compare');
+            this.$store.getters.loadFromLocalStorage('cart');
         },
         methods: {
-            compareLength() { return Object.keys(this.$store.state.compare).length },
-            ctg(value){
-                for (const key in this.catalog) {
-                    if (this.catalog[key].id == value) {
-                        return key;
-                    }
-                }
-            },
-            compare(item = []){
-                (this.$store.state.compare[Object.keys(this.$store.state.compare)[0]] && this.compareLength() == 1) ? 
-                    item = this.$store.state.compare[Object.keys(this.$store.state.compare)[0]] : null;
-                if(item.length || this.$store.state.compare_list.length>1) {
-                    compare.blur()
-                    this.$router.push("/compare/" + JSON.stringify(item || self.$store.state.compare_list));
-                }
+            toCompare(i){
+                compare.blur()
+                this.$router.push("/compare/" + JSON.stringify(this.$store.state.compare[i].array));
             },
             toSearch() {
                 if (this.search_text > '') {
