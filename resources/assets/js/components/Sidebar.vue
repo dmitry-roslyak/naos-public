@@ -6,7 +6,7 @@
                 {{lng.catalog}}
             </div>
             <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
-                <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="get_filters(name, item.id);catalog_btn_toggle(0)" :key="item.id">
+                <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="get_filters(name, item.id)" :key="item.id">
                     {{lng[name]?lng[name]:name}}
                 </div>
             </ul>

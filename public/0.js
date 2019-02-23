@@ -769,7 +769,6 @@ var render = function() {
                   on: {
                     click: function($event) {
                       _vm.get_filters(name, item.id)
-                      _vm.catalog_btn_toggle(0)
                     }
                   }
                 },

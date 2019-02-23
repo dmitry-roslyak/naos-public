@@ -22,7 +22,7 @@
                         <div class="action-frm">
                             <a class="action-item fake-link" @click="removeFromCart(item.id)">
                                 <span class="hidden-xs">{{lng.remove}}</span>
-                                <i class="fa fa-minus" style="font-size:1.5rem" aria-hidden="true"></i>
+                                <i class="fa fa-trash" aria-hidden="true"></i>
                             </a>
                         </div>
                     </tr>

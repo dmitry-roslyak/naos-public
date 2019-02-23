@@ -11565,50 +11565,6 @@ a:focus {
   z-index: -1;
 }
 
-.copyright {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  color: white;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  min-height: 180px;
-  width: 100%;
-  padding: 50px 10px 10px;
-  background-color: cornflowerblue;
-  text-align: center;
-  color: white;
-}
-
-.footer .inv {
-  padding: 10px;
-  border-radius: 0.5em;
-  background-color: white;
-  color: inherit;
-}
-
-.footer a {
-  color: white;
-}
-
-.footer a svg {
-  height: 40px;
-}
-
-.footer a img {
-  display: inline;
-  height: 40px;
-}
-
-.footer a:hover {
-  color: white;
-  border-color: #fff;
-}
-
 .ctg-btn {
   color: white;
   background-color: cornflowerblue;
@@ -11892,6 +11848,74 @@ a:focus {
   line-height: 2 !important;
 }
 
+.copyright {
+  position: absolute;
+  bottom: 0;
+  margin: 30px;
+}
+
+@media screen and (max-width: 767px) {
+  .copyright {
+    position: relative;
+    margin: 11px 0;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  min-height: 180px;
+  width: 100%;
+  padding: 40px 10px 15px;
+  -webkit-box-shadow: 0 0 0.3em #2e2e38;
+          box-shadow: 0 0 0.3em #2e2e38;
+  background-color: #2e2e38;
+  text-align: center;
+  color: whitesmoke;
+}
+
+.footer > div {
+  max-width: 80em;
+  margin: auto;
+}
+
+.footer table {
+  width: 100%;
+}
+
+.footer svg,
+.footer img {
+  height: 40px;
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+}
+
+.footer svg:hover,
+.footer img:hover {
+  -webkit-filter: grayscale(0);
+          filter: grayscale(0);
+}
+
+.footer div > h5 {
+  margin-top: 40px;
+}
+
+.footer h5 > a {
+  display: inline-block;
+  font-size: 2em;
+  width: 5rem;
+  line-height: 5rem;
+  margin-right: 1rem;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 0 0.3em;
+          box-shadow: 0 0 0.3em;
+  color: whitesmoke;
+}
+
+.footer h5 > a:hover {
+  color: cyan;
+}
+
 .dr-btn {
   position: relative;
   width: 6.3em;
@@ -11947,6 +11971,7 @@ a:focus {
   display: inline-block;
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
+  top: -1px;
 }
 
 .search-list {
