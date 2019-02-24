@@ -23,6 +23,7 @@
         "bootstrap-sass": "^3.3.7",
         "chart.js": "^2.7.2",
         "firebase": "^5.0.4",
+        "font-awesome": "^4.7.0",
         "lodash.debounce": "^4.0.8",
         "lodash.throttle": "^4.1.1",
         "vee-validate": "^2.0.6",

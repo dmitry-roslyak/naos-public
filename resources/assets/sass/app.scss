@@ -1,6 +1,8 @@
 // Fonts
 // @import url('https://fonts.googleapis.com/css?family=Raleway');
-@import "font-awesome-4.7.0/scss/font-awesome.scss";
+// @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400&subset=cyrillic');
+@import 'node_modules/font-awesome/scss/font-awesome.scss';
 
 // Variables
 @import "variables";
