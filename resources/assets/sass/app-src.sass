@@ -3,9 +3,7 @@ $right-note-color: cornflowerblue
 $compare-state-check1-color: orange
 $heart-state-check1-color: crimson
 $compare-heart-state-check0-color: whitesmoke
-$right-note-font-size: 1.4rem
 $item-note-font-size: 1.4rem
-$item-spec-font-size: 1.5rem
 body
     padding-bottom: 225px
 hr
@@ -54,7 +52,7 @@ a:hover, a:focus
     transition: all 0.25s
     font-size: 0
     &:hover
-        font-size: $right-note-font-size
+        font-size: $item-note-font-size
 .compare-state[data-check]
     animation: bounce1 0.35s
     color: $compare-state-check1-color
@@ -207,8 +205,6 @@ a:hover, a:focus
     position: absolute
     bottom: 0
     margin: 30px
-    // position: relative
-    // margin: 11px 0
 @media screen and (max-width: 767px)
     .copyright
         position: relative

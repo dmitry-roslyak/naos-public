@@ -12,39 +12,35 @@
                     <label>{{lng.to_rate}}</label>
                     <star-rating :star-size="16" @rating-selected="rating = $event" :rating="rating" :show-rating="false"></star-rating>
                 </div>
-                <div class="form-group" style="margin-bottom:0px">
+                <div class="form-group">
                     <label>{{lng.comment}}</label>
                     <textarea class="form-control" v-model="message" rows="3"></textarea>
-                    <button class="btn btn-default" style="margin-top:6px;width:100%" @click="leave_comment()">{{lng.to_comment}}</button>
                 </div>
+                <button class="btn btn-default" style="width:100%" @click="leave_comment()">{{lng.to_comment}}</button>
             </div>
         </div>
         <div v-for="(comment,i) in comments" :key="comment.id" class="panel panel-default">
             <div class="panel-body" style="position:relative">
-                <span class="text-primary col-xs-12 col-sm-4">{{comment.user.name}}</span>
-                <star-rating class="col-xs-12 col-sm-3" v-if="comment.rating" :rating="+comment.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                <span class="pull-right" style="margin-right:15px">{{comment.created_at}}</span>
-                <div class="col-xs-12" style="margin:10px 0 30px">{{comment.message}}</div>
-                <!-- <a @click="reply=comment.id" v-if="comment.reply_id==0" class="fake-link">
-                    <i class="fa fa-comments-o" aria-hidden="true"></i>
-                    &nbsp;{{lng.to_reply}}
-                </a> -->
+                <span class="text-primary">{{comment.user.name}}</span>
+                <div>
+                    {{lng.rating}} &nbsp;
+                    <star-rating style="display:inline-block" :rating="+comment.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                </div>
+                <span style="top: 15px;right: 15px;position: absolute;">{{comment.created_at}}</span>
+                <div style="margin: 10px 0">{{comment.message}}</div>
                 <div class="like-tab" @click="comment_like(i,$event.target)">
-                    <i v-if="comment.vote?comment.vote.is_liked>0:false" data-check="1" class="fa fa-thumbs-up like"></i>
-                    <i v-else class="fa fa-thumbs-o-up like" data-check="0"></i>
-                    <i>{{comment.like}}</i>&nbsp;
-                    <i v-if="comment.vote?comment.vote.is_liked<0:false" data-check="1" class="fa fa-thumbs-down dislike"></i>
-                    <i v-else class="fa fa-thumbs-o-down dislike" data-check="0"></i>
-                    <i>{{comment.dislike}}</i>
+                    <i :class="comment.vote && comment.vote.is_liked > 0 ? 'fa fa-thumbs-up like' : 'fa fa-thumbs-o-up like'"></i>
+                        {{comment.like}}
+                    <i :class="comment.vote && comment.vote.is_liked < 0 ? 'fa fa-thumbs-down dislike' : 'fa fa-thumbs-o-down dislike'"></i>
+                        {{comment.dislike}}
                 </div>
             </div>
         </div>
-        <pagination v-model="paginator" class="col-xs-12"></pagination>      
+        <pagination v-model="paginator"></pagination>      
     </div>
 </template>
 <script>
-    var self, pid, data = {
-        reply: null,
+    var self, data = {
         comments: [],
         rating: 0,
         message: '',
@@ -64,16 +60,16 @@
         minute: "numeric"
     });
     export default {
+        props: ['productId'],
         mounted() {
             self = this;
-            pid = this.$parent.$props.id;
             this.lng = window.lng;
             this.paginator.func = this.show_comments
             this.show_comments();
             window.socket.send(JSON.stringify({
                 "event": "pusher:subscribe",
                 "data": {
-                    "channel": 'chat-product' + pid
+                    "channel": 'chat-product' + this.productId
             }}));
             window.socket.onmessage = function (event) {
                 var res = JSON.parse(event.data);
@@ -93,18 +89,19 @@
                 $(el.getElementsByClassName('fa-angle-down')[0]).toggle();
             },
             comment_like(i,el) {
-                var like = el.classList.contains('like');
-                if(like||el.classList.contains('dislike')){
-                    el.getAttribute('data-check')>0 ? el.setAttribute('data-check','0') : el.setAttribute('data-check','1');
-                    axios.get('/comment_like?id='+self.comments[i].id+'&x='+ (like ? 1 : -1)).then(function(response) {
-                        self.comments[i] = response.data;
-                        self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
-                        self.$forceUpdate();
-                    }); 
-                } 
+                axios.get('/comment_like', { 
+                    params: {
+                        id: this.comments[i].id,
+                        x: el.classList.contains('like') ? 1 : -1
+                    }
+                }).then(function(response) {
+                    self.comments[i] = response.data;
+                    self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at+'Z'));
+                    self.$forceUpdate();
+                }).catch(function() {}); 
             },
             show_comments() {
-                axios.get('/all_comments?id='+pid+'&skip=' + self.paginator.skip).then(function(response) {
+                axios.get('/all_comments?id='+this.productId+'&skip=' + self.paginator.skip).then(function(response) {
                     self.paginator.total = response.data[0];
                     self.comments = response.data[1];
                     for (var i = 0; i < self.comments.length; i++){
@@ -116,8 +113,7 @@
                 axios.post('leave_comment', {
                     rating: self.rating,
                     message: self.message,
-                    pid: pid,
-                    cid: 0
+                    pid: this.productId
                 });
             }
         }
@@ -134,9 +130,7 @@
         margin-bottom: 15px;
     }
     .like-tab {
-        position: absolute;
-        bottom: 15px;
-        right: 60px;
+        float: right;
     }
     .like {
         color: green;
@@ -150,10 +144,10 @@
     .dislike:hover {
         text-shadow: 0.1em 0.1em 0.5em lightcoral;
     }
-     .like,.dislike[data-check="1"]{
+     .like-tab > .fa[class*="fa-thumbs"]{
         animation: bounce1 0.35s;
      }
-     .dislike,.like[data-check="0"]{
+     .like-tab > .fa[class*="fa-thumbs-o"]{
         animation: bounce0 0.35s;
      }
 </style>

@@ -62,32 +62,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var self,
     timerId,
     _data = {
     show_specs: true,
-    item: null,
-    img_list: [],
+    item: {},
     lng: {},
     offerTime: null,
     showGraph: true
@@ -102,7 +82,7 @@ var self,
             return this.$store.state.currency;
         }
     },
-    mounted: function mounted() {
+    created: function created() {
         var _this = this;
 
         self = this;
@@ -129,9 +109,6 @@ var self,
     methods: {
         clientWidth: function clientWidth() {
             this.showGraph = document.documentElement.clientWidth > 620;
-        },
-        fbshare: function fbshare() {
-            window.open('https://www.facebook.com/dialog/share?' + "app_id=1358482950908486&display=popup&href=" + location.host + '/#' + this.$route.path);
         },
         buyItem: function buyItem(item) {
             this.$store.commit('cart', { id: item.id, count: 1 });
@@ -208,261 +185,242 @@ var render = function() {
       staticStyle: { "max-width": "80em", padding: "0" }
     },
     [
-      _vm.item
-        ? _c(
+      _c(
+        "div",
+        { staticClass: "col-md-7", staticStyle: { "padding-right": "0" } },
+        [
+          _c(
             "div",
-            { staticClass: "col-md-7", staticStyle: { "padding-right": "0" } },
+            {
+              staticClass: "action-frm",
+              staticStyle: {
+                "border-color": "white",
+                border: "1px solid white",
+                "border-width": "0 0 1px 1px",
+                "background-color": "inherit"
+              }
+            },
             [
               _c(
-                "div",
+                "a",
                 {
-                  staticClass: "action-frm",
-                  staticStyle: {
-                    "border-color": "white",
-                    border: "1px solid white",
-                    "border-width": "0 0 1px 1px",
-                    "background-color": "inherit"
+                  staticClass: "action-item fake-link",
+                  on: {
+                    click: function($event) {
+                      _vm.to_wish()
+                    }
                   }
                 },
                 [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "action-item fake-link",
-                      on: {
-                        click: function($event) {
-                          _vm.to_wish()
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { staticClass: "hidden-xs" }, [
-                        _vm._v(_vm._s(_vm.lng.to_wishlist))
-                      ]),
-                      _vm._v(" "),
-                      _c("i", {
-                        staticClass: "fa fa-heart heart-state",
-                        attrs: {
-                          "data-check": _vm.item.isWish,
-                          "aria-hidden": "true"
-                        }
-                      })
-                    ]
-                  ),
+                  _c("span", { staticClass: "hidden-xs" }, [
+                    _vm._v(_vm._s(_vm.lng.to_wishlist))
+                  ]),
                   _vm._v(" "),
-                  _c("a", { staticClass: "action-item fake-link" }, [
-                    _vm._v(" \n                "),
-                    _c("i", {
-                      staticClass: "fa fa-share-alt heart-state",
-                      attrs: { "aria-hidden": "true" }
+                  _c("i", {
+                    staticClass: "fa fa-heart heart-state",
+                    attrs: {
+                      "data-check": _vm.item.isWish,
+                      "aria-hidden": "true"
+                    }
+                  })
+                ]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "carousel slide",
+              attrs: { id: "carousel2", "data-ride": "carousel" }
+            },
+            [
+              _vm.item.gallery
+                ? _c("ol", { staticClass: "carousel-indicators" }, [
+                    _c("li", {
+                      staticClass: "active",
+                      attrs: {
+                        "data-target": "#carousel2",
+                        "data-slide-to": "0"
+                      }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "carousel-inner carousel-inner-bcolor",
+                  staticStyle: {
+                    "background-color": "inherit",
+                    "background-image":
+                      "linear-gradient(141deg, #ffffff00 0%, #ffffff00 40%, #1484e3 100%)"
+                  },
+                  attrs: { role: "listbox" }
+                },
+                [
+                  _c("div", { staticClass: "item active" }, [
+                    _c("img", {
+                      staticClass: "carousel-img",
+                      staticStyle: { "max-height": "28rem" },
+                      attrs: {
+                        src: _vm.item.img_src && "file/" + _vm.item.img_src
+                      }
                     }),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "fake-link", on: { click: _vm.fbshare } },
-                      [
-                        _vm._v(_vm._s(_vm.lng.share) + " "),
-                        _c("i", { staticClass: "fa fa-facebook-official" })
-                      ]
-                    )
+                    +_vm.offerTime > 0
+                      ? _c("div", { staticClass: "tb-offer" }, [
+                          _c("span", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.lng.discount +
+                                  " -" +
+                                  _vm.item.discount.discount +
+                                  "%"
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "hidden-xs" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm.lng.offer_end_at +
+                                  " " +
+                                  _vm.zero(_vm.offerTime.getDate()) +
+                                  " " +
+                                  _vm.lng.offer_d +
+                                  " " +
+                                  _vm.zero(_vm.offerTime.getHours()) +
+                                  ":" +
+                                  _vm.zero(_vm.offerTime.getMinutes()) +
+                                  ":" +
+                                  _vm.zero(_vm.offerTime.getSeconds())
+                              ) + "\n                        "
+                            )
+                          ])
+                        ])
+                      : _vm._e()
                   ])
                 ]
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "carousel slide",
-                  attrs: { id: "carousel2", "data-ride": "carousel" }
-                },
-                [
-                  _vm.item.gallery
-                    ? _c("ol", { staticClass: "carousel-indicators" }, [
-                        _c("li", {
-                          staticClass: "active",
-                          attrs: {
-                            "data-target": "#carousel2",
-                            "data-slide-to": "0"
-                          }
-                        })
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
+              _vm.item.available > 0
+                ? _c(
                     "div",
                     {
-                      staticClass: "carousel-inner carousel-inner-bcolor",
-                      staticStyle: {
-                        "background-color": "inherit",
-                        "background-image":
-                          "linear-gradient(141deg, #ffffff00 0%, #ffffff00 40%, #1484e3 100%)"
-                      },
-                      attrs: { role: "listbox" }
+                      staticClass: "btn-buy fake-link",
+                      on: {
+                        click: function($event) {
+                          _vm.buyItem(_vm.item)
+                        }
+                      }
                     },
                     [
-                      _c("div", { staticClass: "item active" }, [
-                        _c("img", {
-                          staticClass: "carousel-img",
-                          staticStyle: { "max-height": "28rem" },
-                          attrs: { src: "file/" + _vm.item.img_src, alt: "..." }
-                        }),
-                        _vm._v(" "),
-                        +_vm.offerTime > 0
-                          ? _c("div", { staticClass: "tb-offer" }, [
-                              _c("span", [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.lng.discount +
-                                      " -" +
-                                      _vm.item.discount.discount +
-                                      "%"
-                                  )
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "hidden-xs" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.lng.offer_end_at +
-                                      " " +
-                                      _vm.zero(_vm.offerTime.getDate()) +
-                                      " " +
-                                      _vm.lng.offer_d +
-                                      " " +
-                                      _vm.zero(_vm.offerTime.getHours()) +
-                                      ":" +
-                                      _vm.zero(_vm.offerTime.getMinutes()) +
-                                      ":" +
-                                      _vm.zero(_vm.offerTime.getSeconds())
-                                  ) + "\n                        "
-                                )
-                              ])
-                            ])
-                          : _vm._e()
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _vm.item.available > 0
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "btn-buy fake-link",
-                          on: {
-                            click: function($event) {
-                              _vm.buyItem(_vm.item)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-cart-plus",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "  \n                    " +
-                              _vm._s(
-                                (_vm.item.discount
-                                  ? _vm.currency * _vm.item.price -
-                                    ((_vm.currency * _vm.item.price) / 100) *
-                                      _vm.item.discount.discount
-                                  : _vm.currency * _vm.item.price
-                                ).toFixed(1) +
-                                  " " +
-                                  _vm.lng.currency
-                              ) +
-                              "\n            "
-                          )
-                        ]
+                      _c("i", {
+                        staticClass: "fa fa-cart-plus",
+                        attrs: { "aria-hidden": "true" }
+                      }),
+                      _vm._v(
+                        "  \n                    " +
+                          _vm._s(
+                            (_vm.item.discount
+                              ? _vm.currency * _vm.item.price -
+                                ((_vm.currency * _vm.item.price) / 100) *
+                                  _vm.item.discount.discount
+                              : _vm.currency * _vm.item.price
+                            ).toFixed(1) +
+                              " " +
+                              _vm.lng.currency
+                          ) +
+                          "\n            "
                       )
-                    : _c("div", { staticClass: "btn-buy disabled" }, [
-                        _vm._v(_vm._s(_vm.lng.not_in_stock))
-                      ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticStyle: { "margin-top": "15px" } },
-                [
-                  _c("ul", { staticClass: "nav nav-tabs" }, [
-                    _c(
-                      "li",
-                      {
-                        class: { active: _vm.show_specs },
-                        attrs: { role: "presentation" },
-                        on: {
-                          click: function($event) {
-                            _vm.show_specs = true
-                          }
-                        }
-                      },
-                      [_c("a", [_vm._v(_vm._s(_vm.lng.specs))])]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        class: { active: !_vm.show_specs },
-                        attrs: { role: "presentation" },
-                        on: {
-                          click: function($event) {
-                            _vm.show_specs = false
-                          }
-                        }
-                      },
-                      [_c("a", [_vm._v(_vm._s(_vm.lng.descr))])]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _vm.show_specs && _vm.item
-                    ? _c("table", { staticClass: "table border1" }, [
-                        _c(
-                          "tbody",
-                          { staticStyle: { "text-align": "center" } },
-                          _vm._l(_vm.item.specs, function(specs, i) {
-                            return _c("tr", { key: i }, [
-                              _c("td", [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.lng[specs.name]
-                                      ? _vm.lng[specs.name]
-                                      : specs.name
-                                  )
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
-                                  _vm._s(specs.value) +
-                                    " " +
-                                    _vm._s(specs.val_type)
-                                )
-                              ])
-                            ])
-                          })
-                        )
-                      ])
-                    : _c(
-                        "div",
-                        {
-                          staticClass: "border1",
-                          staticStyle: { padding: "4px" }
-                        },
-                        [_vm._v(_vm._s(_vm.item.description))]
-                      ),
-                  _vm._v(" "),
-                  _vm.showGraph
-                    ? _c("charts", { attrs: { "product-id": _vm.id } })
-                    : _vm._e()
-                ],
-                1
-              )
+                    ]
+                  )
+                : _c("div", { staticClass: "btn-buy disabled" }, [
+                    _vm._v(_vm._s(_vm.lng.not_in_stock))
+                  ])
             ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticStyle: { "margin-top": "15px" } },
+            [
+              _c("ul", { staticClass: "nav nav-tabs" }, [
+                _c(
+                  "li",
+                  {
+                    class: { active: _vm.show_specs },
+                    attrs: { role: "presentation" },
+                    on: {
+                      click: function($event) {
+                        _vm.show_specs = true
+                      }
+                    }
+                  },
+                  [_c("a", [_vm._v(_vm._s(_vm.lng.specs))])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    class: { active: !_vm.show_specs },
+                    attrs: { role: "presentation" },
+                    on: {
+                      click: function($event) {
+                        _vm.show_specs = false
+                      }
+                    }
+                  },
+                  [_c("a", [_vm._v(_vm._s(_vm.lng.descr))])]
+                )
+              ]),
+              _vm._v(" "),
+              _vm.show_specs && _vm.item
+                ? _c("table", { staticClass: "table border1" }, [
+                    _c(
+                      "tbody",
+                      { staticStyle: { "text-align": "center" } },
+                      _vm._l(_vm.item.specs, function(specs, i) {
+                        return _c("tr", { key: i }, [
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.lng[specs.name]
+                                  ? _vm.lng[specs.name]
+                                  : specs.name
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(specs.value) + " " + _vm._s(specs.val_type)
+                            )
+                          ])
+                        ])
+                      })
+                    )
+                  ])
+                : _c(
+                    "div",
+                    { staticClass: "border1", staticStyle: { padding: "4px" } },
+                    [_vm._v(_vm._s(_vm.item.description))]
+                  ),
+              _vm._v(" "),
+              _vm.showGraph
+                ? _c("charts", { attrs: { "product-id": _vm.id } })
+                : _vm._e()
+            ],
+            1
           )
-        : _vm._e(),
+        ]
+      ),
       _vm._v(" "),
-      _c("comments", { staticClass: "col-md-5" })
+      _c("comments", {
+        staticClass: "col-md-5",
+        attrs: { "product-id": _vm.id }
+      })
     ],
     1
   )

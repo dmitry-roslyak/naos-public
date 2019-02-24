@@ -46,14 +46,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 var self,
-    pid,
     _data = {
-    reply: null,
     comments: [],
     rating: 0,
     message: '',
@@ -73,16 +68,16 @@ var formatter = new Intl.DateTimeFormat([], {
     minute: "numeric"
 });
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['productId'],
     mounted: function mounted() {
         self = this;
-        pid = this.$parent.$props.id;
         this.lng = window.lng;
         this.paginator.func = this.show_comments;
         this.show_comments();
         window.socket.send(JSON.stringify({
             "event": "pusher:subscribe",
             "data": {
-                "channel": 'chat-product' + pid
+                "channel": 'chat-product' + this.productId
             } }));
         window.socket.onmessage = function (event) {
             var res = JSON.parse(event.data);
@@ -105,18 +100,19 @@ var formatter = new Intl.DateTimeFormat([], {
             $(el.getElementsByClassName('fa-angle-down')[0]).toggle();
         },
         comment_like: function comment_like(i, el) {
-            var like = el.classList.contains('like');
-            if (like || el.classList.contains('dislike')) {
-                el.getAttribute('data-check') > 0 ? el.setAttribute('data-check', '0') : el.setAttribute('data-check', '1');
-                axios.get('/comment_like?id=' + self.comments[i].id + '&x=' + (like ? 1 : -1)).then(function (response) {
-                    self.comments[i] = response.data;
-                    self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at + 'Z'));
-                    self.$forceUpdate();
-                });
-            }
+            axios.get('/comment_like', {
+                params: {
+                    id: this.comments[i].id,
+                    x: el.classList.contains('like') ? 1 : -1
+                }
+            }).then(function (response) {
+                self.comments[i] = response.data;
+                self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at + 'Z'));
+                self.$forceUpdate();
+            }).catch(function () {});
         },
         show_comments: function show_comments() {
-            axios.get('/all_comments?id=' + pid + '&skip=' + self.paginator.skip).then(function (response) {
+            axios.get('/all_comments?id=' + this.productId + '&skip=' + self.paginator.skip).then(function (response) {
                 self.paginator.total = response.data[0];
                 self.comments = response.data[1];
                 for (var i = 0; i < self.comments.length; i++) {
@@ -128,8 +124,7 @@ var formatter = new Intl.DateTimeFormat([], {
             axios.post('leave_comment', {
                 rating: self.rating,
                 message: self.message,
-                pid: pid,
-                cid: 0
+                pid: this.productId
             });
         }
     }
@@ -145,7 +140,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n#leaveMsg{\n    background-color: white;\n    display: none;\n    margin-top: -24px\n}\n.btn-add-comment{\n    width: 100%;\n    margin-bottom: 15px;\n}\n.like-tab {\n    position: absolute;\n    bottom: 15px;\n    right: 60px;\n}\n.like {\n    color: green;\n}\n.like:hover {\n    text-shadow: 0.1em 0.1em 0.5em lightgreen;\n}\n.dislike {\n    color: red;\n}\n.dislike:hover {\n    text-shadow: 0.1em 0.1em 0.5em lightcoral;\n}\n.like,.dislike[data-check=\"1\"]{\n    -webkit-animation: bounce1 0.35s;\n            animation: bounce1 0.35s;\n}\n.dislike,.like[data-check=\"0\"]{\n    -webkit-animation: bounce0 0.35s;\n            animation: bounce0 0.35s;\n}\n", ""]);
+exports.push([module.i, "\n#leaveMsg{\n    background-color: white;\n    display: none;\n    margin-top: -24px\n}\n.btn-add-comment{\n    width: 100%;\n    margin-bottom: 15px;\n}\n.like-tab {\n    float: right;\n}\n.like {\n    color: green;\n}\n.like:hover {\n    text-shadow: 0.1em 0.1em 0.5em lightgreen;\n}\n.dislike {\n    color: red;\n}\n.dislike:hover {\n    text-shadow: 0.1em 0.1em 0.5em lightcoral;\n}\n.like-tab > .fa[class*=\"fa-thumbs\"]{\n    -webkit-animation: bounce1 0.35s;\n            animation: bounce1 0.35s;\n}\n.like-tab > .fa[class*=\"fa-thumbs-o\"]{\n    -webkit-animation: bounce0 0.35s;\n            animation: bounce0 0.35s;\n}\n", ""]);
 
 // exports
 
@@ -221,51 +216,44 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "form-group",
-              staticStyle: { "margin-bottom": "0px" }
-            },
-            [
-              _c("label", [_vm._v(_vm._s(_vm.lng.comment))]),
-              _vm._v(" "),
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.message,
-                    expression: "message"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { rows: "3" },
-                domProps: { value: _vm.message },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.message = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "button",
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v(_vm._s(_vm.lng.comment))]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
                 {
-                  staticClass: "btn btn-default",
-                  staticStyle: { "margin-top": "6px", width: "100%" },
-                  on: {
-                    click: function($event) {
-                      _vm.leave_comment()
-                    }
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.message,
+                  expression: "message"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { rows: "3" },
+              domProps: { value: _vm.message },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                },
-                [_vm._v(_vm._s(_vm.lng.to_comment))]
-              )
-            ]
+                  _vm.message = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default",
+              staticStyle: { width: "100%" },
+              on: {
+                click: function($event) {
+                  _vm.leave_comment()
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.lng.to_comment))]
           )
         ])
       ]),
@@ -282,13 +270,20 @@ var render = function() {
                 staticStyle: { position: "relative" }
               },
               [
-                _c("span", { staticClass: "text-primary col-xs-12 col-sm-4" }, [
+                _c("span", { staticClass: "text-primary" }, [
                   _vm._v(_vm._s(comment.user.name))
                 ]),
                 _vm._v(" "),
-                comment.rating
-                  ? _c("star-rating", {
-                      staticClass: "col-xs-12 col-sm-3",
+                _c(
+                  "div",
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.lng.rating) +
+                        "  \n                "
+                    ),
+                    _c("star-rating", {
+                      staticStyle: { display: "inline-block" },
                       attrs: {
                         rating: +comment.rating,
                         "star-size": 16,
@@ -296,25 +291,25 @@ var render = function() {
                         "read-only": true
                       }
                     })
-                  : _vm._e(),
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c(
                   "span",
                   {
-                    staticClass: "pull-right",
-                    staticStyle: { "margin-right": "15px" }
+                    staticStyle: {
+                      top: "15px",
+                      right: "15px",
+                      position: "absolute"
+                    }
                   },
                   [_vm._v(_vm._s(comment.created_at))]
                 ),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-xs-12",
-                    staticStyle: { margin: "10px 0 30px" }
-                  },
-                  [_vm._v(_vm._s(comment.message))]
-                ),
+                _c("div", { staticStyle: { margin: "10px 0" } }, [
+                  _vm._v(_vm._s(comment.message))
+                ]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -327,44 +322,37 @@ var render = function() {
                     }
                   },
                   [
-                    (comment.vote
-                    ? comment.vote.is_liked > 0
-                    : false)
-                      ? _c("i", {
-                          staticClass: "fa fa-thumbs-up like",
-                          attrs: { "data-check": "1" }
-                        })
-                      : _c("i", {
-                          staticClass: "fa fa-thumbs-o-up like",
-                          attrs: { "data-check": "0" }
-                        }),
-                    _vm._v(" "),
-                    _c("i", [_vm._v(_vm._s(comment.like))]),
-                    _vm._v(" \n                "),
-                    (comment.vote
-                    ? comment.vote.is_liked < 0
-                    : false)
-                      ? _c("i", {
-                          staticClass: "fa fa-thumbs-down dislike",
-                          attrs: { "data-check": "1" }
-                        })
-                      : _c("i", {
-                          staticClass: "fa fa-thumbs-o-down dislike",
-                          attrs: { "data-check": "0" }
-                        }),
-                    _vm._v(" "),
-                    _c("i", [_vm._v(_vm._s(comment.dislike))])
+                    _c("i", {
+                      class:
+                        comment.vote && comment.vote.is_liked > 0
+                          ? "fa fa-thumbs-up like"
+                          : "fa fa-thumbs-o-up like"
+                    }),
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(comment.like) +
+                        "\n                "
+                    ),
+                    _c("i", {
+                      class:
+                        comment.vote && comment.vote.is_liked < 0
+                          ? "fa fa-thumbs-down dislike"
+                          : "fa fa-thumbs-o-down dislike"
+                    }),
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(comment.dislike) +
+                        "\n            "
+                    )
                   ]
                 )
-              ],
-              1
+              ]
             )
           ]
         )
       }),
       _vm._v(" "),
       _c("pagination", {
-        staticClass: "col-xs-12",
         model: {
           value: _vm.paginator,
           callback: function($$v) {

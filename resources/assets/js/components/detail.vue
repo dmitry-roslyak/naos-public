@@ -1,39 +1,20 @@
 <template>
     <div class="container-fluid" style="max-width: 80em;padding:0">
-        <div v-if="item" class="col-md-7" style="padding-right:0">
+        <div class="col-md-7" style="padding-right:0">
             <!-- <h4 style="padding-left:8px">{{item.name}}</h4> -->
             <div class="action-frm" style="border-color: white;border: 1px solid white;border-width: 0 0 1px 1px;background-color:inherit">
                 <a class="action-item fake-link" @click="to_wish()">
                     <span class="hidden-xs">{{lng.to_wishlist}}</span>
                     <i class="fa fa-heart heart-state" :data-check="item.isWish" aria-hidden="true"></i>
                 </a>
-                <a class="action-item fake-link">&nbsp;
-                    <i class="fa fa-share-alt heart-state" aria-hidden="true"></i>
-                    <div @click="fbshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></div>
-                </a>
             </div>
-            <!-- <div class="col-sm-1" style="padding:0 2px;margin-top:8px;">
-                <div class="col-md-12 col-sm-12" style="margin:0;padding:0;height:4.85em" v-for="(img,i) in img_list" v-if="i<4">
-                    <div class="thumbnail" style="border-width:0;background-color: inherit;">
-                        <img v-bind:src="'file/'+img.img" @mouseover="imgZoom=img.img" @mouseleave="imgZoom=-1" style="max-height:4.85em;max-width:4em">  
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="col-xs-7 thumbnail" style="border-width: 0;background-color: transparent">
-                <img v-bind:src="'file/'+item.img_src" style="max-height:28rem">
-            </div> -->
             <div id="carousel2" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators" v-if="item.gallery">
                     <li data-target="#carousel2" data-slide-to="0" class="active"></li>
                 </ol>
                 <div class="carousel-inner carousel-inner-bcolor" role="listbox" style="background-color: inherit;background-image: linear-gradient(141deg, #ffffff00 0%, #ffffff00 40%, #1484e3 100%);">
                     <div class="item active">
-                        <img class="carousel-img" :src="'file/'+item.img_src" alt="..." style="max-height:28rem">
-                        <!-- <div class="carousel-caption carousel-content">
-                            <h3>{{item.name}}</h3>
-                            <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                            <span>{{(currency * item.price).toFixed(1)+' '+lng.currency}}</span>
-                        </div> -->
+                        <img class="carousel-img" style="max-height:28rem" :src="item.img_src && 'file/'+item.img_src">
                         <div class="tb-offer" v-if="+offerTime > 0">
                             <span>{{lng.discount +' -'+item.discount.discount+'%'}}</span>
                             <span class="hidden-xs">{{
@@ -71,14 +52,13 @@
                 <charts v-if="showGraph" :product-id="id"></charts>
             </div>
         </div>
-        <comments class="col-md-5"></comments> 
+        <comments class="col-md-5" :product-id="id"></comments> 
     </div>
 </template>
 <script>
     var self, timerId, data = {
         show_specs: true,
-        item: null,
-        img_list: [],
+        item: {},
         lng: {},
         offerTime: null,
         showGraph: true
@@ -89,7 +69,7 @@
         computed: {
             currency: function () { return this.$store.state.currency }
         },
-        mounted(){
+        created(){
             self = this
             this.lng = window.lng;
             this.itemById();
@@ -106,12 +86,8 @@
             }
         },
         destroyed(){ if(timerId) clearInterval(timerId);},
-        methods:{
+        methods: {
             clientWidth(){ this.showGraph = document.documentElement.clientWidth > 620 },
-            fbshare(){
-                window.open('https://www.facebook.com/dialog/share?'+
-                "app_id=1358482950908486&display=popup&href="+location.host+'/#'+this.$route.path);
-            },
             buyItem(item){
                 this.$store.commit('cart', {id: item.id, count: 1});
             },

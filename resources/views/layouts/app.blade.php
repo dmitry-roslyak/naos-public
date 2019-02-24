@@ -10,7 +10,6 @@
     <title>{{ config('app.name') }}</title>
     <link rel="manifest" href="manifest.json">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="markup.js"></script>
     <script>
         window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
         window.lng = {};
