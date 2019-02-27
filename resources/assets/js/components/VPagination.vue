@@ -22,13 +22,13 @@
 </template>
 <script>
     export default {
+        props: { 
+            value: Object
+        },
         data: function () {
             return {
                 currentPage: 1
             };
-        },
-        props: { 
-            value: Object
         },
         computed: {
             pageCount() { return Math.ceil(this.value.total/this.value.take) || 1}

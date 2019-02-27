@@ -30,7 +30,7 @@
             </table>
         </div>
         <div class="col-sm-12 col-md-5">
-            <user-info ref="userInfo" style="padding:0"></user-info>
+            <app-user-info ref="userInfo" style="padding:0"></app-user-info>
             <hr>
             <!-- <div class="form-inline">
                 <span>Способ доставки:&nbsp;</span>
@@ -103,8 +103,8 @@
         card: { number: '' , expire: { month: '', year: '' },  cvv2: '' }
     };
     export default {
-        data: function () { return data },
         props: ['ids1'],
+        data: function () { return data },
         computed: {
             currency: function () { return this.$store.state.currency },
             total: function () {

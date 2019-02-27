@@ -49,10 +49,10 @@
                     </tbody>
                 </table>
                 <div v-else class="border1" style="padding:4px">{{item.description}}</div>
-                <charts v-if="showGraph" :product-id="id"></charts>
+                <app-detail-charts v-if="showGraph" :product-id="id"></app-detail-charts>
             </div>
         </div>
-        <comments class="col-md-5" :product-id="id"></comments> 
+        <app-comments class="col-md-5" :product-id="id"></app-comments> 
     </div>
 </template>
 <script>

@@ -14,13 +14,13 @@
 <script>
     var self;
     export default {
-        data: function () {return {isDraged: 0} },
         props: {
             value: {
                 type: Object,
                 default: null
             }
         },
+        data: function () {return {isDraged: 0} },
         mounted() {
             self = this
             this.init()

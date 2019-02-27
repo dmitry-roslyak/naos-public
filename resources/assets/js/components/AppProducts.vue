@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <sidebar class="col-sm-3 col-md-2" style="padding: 0"></sidebar>
+        <app-products-filters class="col-sm-3 col-md-2" style="padding: 0"></app-products-filters>
         <div class="col-sm-9 col-md-10" style="padding:0">
             <div class="row itmc">
                 {{lng.showed_items}}
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <pagination v-model="paginator" class="col-xs-12"></pagination>      
+        <v-pagination v-model="paginator" class="col-xs-12"></v-pagination>      
     </div>
 </template>
 <script>
@@ -91,8 +91,8 @@
         },
     };
     export default {
-        data: function () {return data;},
         props: ['category'],
+        data: function () {return data;},
         computed: {
             currency: function () { return this.$store.state.currency },
         },

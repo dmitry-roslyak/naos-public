@@ -1,6 +1,6 @@
 webpackJsonp([4],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Compare.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppComments.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46,95 +46,85 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
-var _data = {
+var self,
+    _data = {
+    comments: [],
+    rating: 0,
+    message: '',
     lng: {},
-    list: [],
-    show_graph: false,
-    diffType: 0
+    paginator: {
+        total: 0,
+        take: 30,
+        skip: 0,
+        func: null
+    }
 };
-var chartData = {
-    labels: [],
-    datasets: [{
-        data: [],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255,99,132,1)'
-    }]
-};
-var self, selfChart;
+var formatter = new Intl.DateTimeFormat([], {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric"
+});
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['productId'],
     data: function data() {
         return _data;
-    },
-    props: ['ids'],
-    watch: {
-        '$route.params.ids': function $routeParamsIds() {
-            this.get_prodsby_ids();
-        }
     },
     mounted: function mounted() {
         self = this;
         this.lng = window.lng;
-        this.get_prodsby_ids();
-        // selfChart = new Chart(document.getElementById('cmprGraph'), {
-        //     type: 'polarArea',
-        //     data: chartData,
-        //     options: {}//{ legend: { display: true} }
-        // });
-        // this.$forceUpdate();
+        this.paginator.func = this.show_comments;
+        this.show_comments();
+        window.socket.send(JSON.stringify({
+            "event": "pusher:subscribe",
+            "data": {
+                "channel": 'chat-product' + this.productId
+            } }));
+        window.socket.onmessage = function (event) {
+            var res = JSON.parse(event.data);
+            if (res.event == 'new-message') {
+                self.paginator.total++;
+                var comment = JSON.parse(res.data);
+                comment.created_at = formatter.format(new Date(comment.created_at + 'Z'));
+                self.comments.unshift(comment);
+            }
+        };
     },
 
     methods: {
-        ctg: function ctg(value) {
-            for (var key in window.Laravel.catalog) {
-                if (window.Laravel.catalog[key].id == value) {
-                    return key;
+        stt: function stt(el) {
+            $("#leaveMsg").slideToggle();
+            $(el.getElementsByClassName('fa-angle-up')[0]).toggle();
+            $(el.getElementsByClassName('fa-angle-down')[0]).toggle();
+        },
+        comment_like: function comment_like(i, el) {
+            axios.get('/comment_like', {
+                params: {
+                    id: this.comments[i].id,
+                    x: el.classList.contains('like') ? 1 : -1
                 }
-            }
+            }).then(function (response) {
+                self.comments[i] = response.data;
+                self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at + 'Z'));
+                self.$forceUpdate();
+            }).catch(function () {});
         },
-        removeItem: function removeItem(i) {
-            this.$store.commit('compare', this.list[i]);
-            this.list.splice(i, 1);
-        },
-        img404: function img404(e) {
-            e.src = "/images/404.png";
-        },
-        cmpr: function cmpr(x) {
-            for (var k = 0; k < this.list.length; k++) {
-                for (var j = 0; j < this.list[k].specs.length; j++) {
-                    for (var i = 0; i < this.list.length; i++) {
-                        if (i != x && this.list[k].specs[j].isComparable == 1) {
-                            this.list[i].specs[j].diff = (this.diffType == 0 ? Math.round(this.list[i].specs[j].value / this.list[x].specs[j].value * 100) - 100 : this.list[i].specs[j].value - this.list[x].specs[j].value).toFixed(1);
-                        } else this.list[i].specs[j].diff = 0;
-                    }
+        show_comments: function show_comments() {
+            axios.get('/all_comments?id=' + this.productId + '&skip=' + self.paginator.skip).then(function (response) {
+                self.paginator.total = response.data[0];
+                self.comments = response.data[1];
+                for (var i = 0; i < self.comments.length; i++) {
+                    self.comments[i].created_at = formatter.format(new Date(self.comments[i].created_at + 'Z'));
                 }
-            }
-            this.$forceUpdate();
+            });
         },
-        reGraph: function reGraph(val) {
-            return;
-            for (var i = 0; i < this.list.length; i++) {
-                for (var j = 0; j < this.list[i].specs.length; j++) {
-                    if (this.list[i].specs[j].name == val) chartData.datasets[0].data[i] = this.list[i].specs[j].value;
-                }
-            }
-            chartData.datasets[0].label = val;
-            selfChart.update();
-        },
-        get_prodsby_ids: function get_prodsby_ids() {
-            axios.get('/prodsby_ids', { params: { ids: JSON.parse(this.ids) } }).then(function (response) {
-                self.list = response.data;
-                for (var i = 0; i < self.list.length; i++) {
-                    self.list[i].specs.unshift({
-                        name: 'price',
-                        value: self.list[i].price,
-                        isComparable: true
-                    });
-                    chartData.labels.push(self.list[i].name);
-                }
+        leave_comment: function leave_comment() {
+            axios.post('leave_comment', {
+                rating: self.rating,
+                message: self.message,
+                pid: this.productId
             });
         }
     }
@@ -142,7 +132,7 @@ var self, selfChart;
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0077ed84\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Compare.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a03270e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppComments.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -150,296 +140,230 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.compare {\r\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\r\n        padding: 0;\n}\n}\n.t-name {\r\n    display: block;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\n}\n.table-item:hover {\r\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\r\n            box-shadow: 0 0 0.5rem #0049ce;\r\n    background-color: white;\n}\n.table-item td:first-child {\r\n    border: inherit !important\n}\n.table-item {\r\n    display:inline-block;\r\n    -webkit-transition: all 0.5s;\r\n    transition: all 0.5s;\r\n    width: 20rem;\n}\r\n", ""]);
+exports.push([module.i, "\n#leaveMsg{\n    background-color: white;\n    display: none;\n    margin-top: -24px\n}\n.btn-add-comment{\n    width: 100%;\n    margin-bottom: 15px;\n}\n.like-tab {\n    float: right;\n}\n.like {\n    color: green;\n}\n.like:hover {\n    text-shadow: 0.1em 0.1em 0.5em lightgreen;\n}\n.dislike {\n    color: red;\n}\n.dislike:hover {\n    text-shadow: 0.1em 0.1em 0.5em lightcoral;\n}\n.like-tab > .fa[class*=\"fa-thumbs\"]{\n    -webkit-animation: bounce1 0.35s;\n            animation: bounce1 0.35s;\n}\n.like-tab > .fa[class*=\"fa-thumbs-o\"]{\n    -webkit-animation: bounce0 0.35s;\n            animation: bounce0 0.35s;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0077ed84\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Compare.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4a03270e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppComments.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid compare" }, [
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: !_vm.list.length,
-            expression: "!list.length"
+  return _c(
+    "div",
+    { staticClass: "container-fluid" },
+    [
+      _c("h4", { staticStyle: { "padding-left": "8px" } }, [
+        _vm._v(_vm._s(_vm.lng.comments + " " + _vm.paginator.total))
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary btn-add-comment",
+          on: {
+            click: function($event) {
+              _vm.stt($event.currentTarget)
+            }
           }
-        ],
-        staticStyle: { "text-align": "center", padding: "12em" }
-      },
-      [_vm._v("\n        Add products to compare\n    ")]
-    ),
-    _vm._v(" "),
-    _vm.list.length > 0
-      ? _c(
-          "table",
-          { staticClass: "table", staticStyle: { "margin-top": "1rem" } },
+        },
+        [
+          _c("i", {
+            staticClass: "fa fa-angle-up font1 pull-right",
+            staticStyle: { display: "none" },
+            attrs: { "aria-hidden": "true" }
+          }),
+          _vm._v(" "),
+          _c("i", {
+            staticClass: "fa fa-angle-down font1 pull-right",
+            attrs: { "aria-hidden": "true" }
+          }),
+          _vm._v(" "),
+          _c("i", {
+            staticClass: "fa fa-comment-o font1",
+            attrs: { "aria-hidden": "true" }
+          }),
+          _vm._v(" " + _vm._s(_vm.lng.to_comment) + "\n    ")
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "thumbnail", attrs: { id: "leaveMsg" } }, [
+        _c("div", { staticClass: "caption" }, [
+          _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("label", [_vm._v(_vm._s(_vm.lng.to_rate))]),
+              _vm._v(" "),
+              _c("star-rating", {
+                attrs: {
+                  "star-size": 16,
+                  rating: _vm.rating,
+                  "show-rating": false
+                },
+                on: {
+                  "rating-selected": function($event) {
+                    _vm.rating = $event
+                  }
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v(_vm._s(_vm.lng.comment))]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.message,
+                  expression: "message"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { rows: "3" },
+              domProps: { value: _vm.message },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.message = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default",
+              staticStyle: { width: "100%" },
+              on: {
+                click: function($event) {
+                  _vm.leave_comment()
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.lng.to_comment))]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.comments, function(comment, i) {
+        return _c(
+          "div",
+          { key: comment.id, staticClass: "panel panel-default" },
           [
             _c(
-              "tbody",
-              { staticStyle: { "white-space": "nowrap" } },
+              "div",
+              {
+                staticClass: "panel-body",
+                staticStyle: { position: "relative" }
+              },
               [
+                _c("span", { staticClass: "text-primary" }, [
+                  _vm._v(_vm._s(comment.user.name))
+                ]),
+                _vm._v(" "),
                 _c(
-                  "tr",
-                  { staticStyle: { display: "inline-block" } },
+                  "div",
                   [
-                    _c(
-                      "td",
-                      {
-                        staticStyle: {
-                          padding: "25px",
-                          width: "12em",
-                          height: "12rem",
-                          "text-align": "center",
-                          border: "inherit"
-                        }
-                      },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary btn-sm",
-                            staticStyle: { width: "100%" },
-                            on: {
-                              click: function($event) {
-                                _vm.diffType
-                                  ? (_vm.diffType = 0)
-                                  : (_vm.diffType = 1)
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(_vm.diffType == 1 ? "%" : _vm.lng.value)
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          {
-                            staticStyle: {
-                              display: "block",
-                              "margin-top": "10px"
-                            },
-                            attrs: {
-                              to:
-                                "/products/" + _vm.ctg(_vm.list[0].category_id)
-                            }
-                          },
-                          [_vm._v("Add more products to compare")]
-                        )
-                      ],
-                      1
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.lng.rating) +
+                        "  \n                "
                     ),
-                    _vm._v(" "),
-                    _vm._l(_vm.list[0].specs, function(specs) {
-                      return _c(
-                        "td",
-                        {
-                          key: specs.name,
-                          staticClass: "td_name",
-                          staticStyle: {
-                            width: "12em",
-                            float: "left",
-                            clear: "both"
-                          },
-                          on: {
-                            mouseover: function($event) {
-                              _vm.reGraph(specs.name)
-                              _vm.show_graph = true
-                            },
-                            mouseleave: function($event) {
-                              _vm.show_graph = false
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(
-                                _vm.lng[specs.name]
-                                  ? _vm.lng[specs.name]
-                                  : specs.name
-                              ) +
-                              "\n                "
-                          )
-                        ]
-                      )
+                    _c("star-rating", {
+                      staticStyle: { display: "inline-block" },
+                      attrs: {
+                        rating: +comment.rating,
+                        "star-size": 16,
+                        "show-rating": false,
+                        "read-only": true
+                      }
                     })
                   ],
-                  2
+                  1
                 ),
                 _vm._v(" "),
-                _vm._l(_vm.list, function(temp, i) {
-                  return _c(
-                    "tr",
-                    {
-                      key: i,
-                      staticClass: "table-item t-name",
-                      on: {
-                        mouseover: function($event) {
-                          _vm.cmpr(i)
-                        }
+                _c(
+                  "span",
+                  {
+                    staticStyle: {
+                      top: "15px",
+                      right: "15px",
+                      position: "absolute"
+                    }
+                  },
+                  [_vm._v(_vm._s(comment.created_at))]
+                ),
+                _vm._v(" "),
+                _c("div", { staticStyle: { margin: "10px 0" } }, [
+                  _vm._v(_vm._s(comment.message))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "like-tab",
+                    on: {
+                      click: function($event) {
+                        _vm.comment_like(i, $event.target)
                       }
-                    },
-                    [
-                      _c(
-                        "td",
-                        {
-                          staticStyle: {
-                            float: "left",
-                            clear: "both",
-                            width: "100%",
-                            height: "12rem",
-                            position: "relative"
-                          }
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "action-frm",
-                              staticStyle: { top: "0" }
-                            },
-                            [
-                              _c(
-                                "a",
-                                {
-                                  staticClass: "action-item fake-link",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.removeItem(i)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("span", { staticClass: "hidden-xs" }, [
-                                    _vm._v(_vm._s(_vm.lng.remove))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("i", {
-                                    staticClass: "fa fa-trash",
-                                    attrs: { "aria-hidden": "true" }
-                                  })
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "thumbnail",
-                              staticStyle: { margin: "0", border: "0" }
-                            },
-                            [
-                              _c("img", {
-                                staticStyle: { "max-height": "4em" },
-                                attrs: { src: "file/" + temp.img_src },
-                                on: {
-                                  error: function($event) {
-                                    _vm.img404($event.target)
-                                  }
-                                }
-                              })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "t-name",
-                              attrs: {
-                                to: { name: "detail", params: { id: temp.id } }
-                              }
-                            },
-                            [_vm._v(_vm._s(temp.name))]
-                          ),
-                          _vm._v(" "),
-                          _c("star-rating", {
-                            attrs: {
-                              rating: +temp.rating,
-                              "star-size": 16,
-                              "show-rating": false,
-                              "read-only": true
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _vm._l(temp.specs, function(specs) {
-                        return _c(
-                          "td",
-                          {
-                            key: specs.name,
-                            staticStyle: {
-                              float: "left",
-                              clear: "both",
-                              width: "100%",
-                              overflow: "hidden",
-                              "text-overflow": "ellipsis"
-                            }
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(specs.value) + "\n                    "
-                            ),
-                            _c(
-                              "span",
-                              {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value: +specs.diff,
-                                    expression: "+specs.diff"
-                                  }
-                                ],
-                                style:
-                                  specs.diff < 0 ? "color:red" : "color:green"
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(
-                                      (specs.diff > 0 ? "(+" : "(") +
-                                        specs.diff +
-                                        (_vm.diffType == 0 ? "%) " : ") ")
-                                    ) +
-                                    "\n                    "
-                                )
-                              ]
-                            ),
-                            _vm._v(
-                              _vm._s(specs.val_type) + "\n                "
-                            )
-                          ]
-                        )
-                      })
-                    ],
-                    2
-                  )
-                })
-              ],
-              2
+                    }
+                  },
+                  [
+                    _c("i", {
+                      class:
+                        comment.vote && comment.vote.is_liked > 0
+                          ? "fa fa-thumbs-up like"
+                          : "fa fa-thumbs-o-up like"
+                    }),
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(comment.like) +
+                        "\n                "
+                    ),
+                    _c("i", {
+                      class:
+                        comment.vote && comment.vote.is_liked < 0
+                          ? "fa fa-thumbs-down dislike"
+                          : "fa fa-thumbs-o-down dislike"
+                    }),
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(comment.dislike) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ]
             )
           ]
         )
-      : _vm._e()
-  ])
+      }),
+      _vm._v(" "),
+      _c("v-pagination", {
+        model: {
+          value: _vm.paginator,
+          callback: function($$v) {
+            _vm.paginator = $$v
+          },
+          expression: "paginator"
+        }
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -447,29 +371,29 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0077ed84", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-4a03270e", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0077ed84\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Compare.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a03270e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppComments.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0077ed84\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Compare.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a03270e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppComments.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("341e8692", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1983cb01", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0077ed84\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Compare.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0077ed84\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Compare.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a03270e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppComments.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a03270e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppComments.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -480,19 +404,19 @@ if(false) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/Compare.vue":
+/***/ "./resources/assets/js/components/AppComments.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0077ed84\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/Compare.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a03270e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppComments.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Compare.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppComments.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0077ed84\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Compare.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4a03270e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppComments.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -509,7 +433,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\Compare.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AppComments.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -518,9 +442,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0077ed84", Component.options)
+    hotAPI.createRecord("data-v-4a03270e", Component.options)
   } else {
-    hotAPI.reload("data-v-0077ed84", Component.options)
+    hotAPI.reload("data-v-4a03270e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

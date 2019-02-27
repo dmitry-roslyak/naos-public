@@ -15,7 +15,7 @@
             </div>
         </div>
         <hr style="margin:8px 0">
-        <user-info></user-info> 
+        <app-user-info></app-user-info> 
         <!-- <hr>
         <div class="row">
             <span class="glyphicon glyphicon-lock"></span>

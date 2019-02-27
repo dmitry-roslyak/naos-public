@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <pagination v-model="paginator"></pagination>      
+        <v-pagination v-model="paginator"></v-pagination>      
     </div>
 </template>
 <script>
@@ -61,6 +61,7 @@
     });
     export default {
         props: ['productId'],
+        data: function() {return data},
         mounted() {
             self = this;
             this.lng = window.lng;
@@ -81,7 +82,6 @@
                 }
             }
         },
-        data: function() {return data},
         methods: {
             stt(el){
                 $("#leaveMsg").slideToggle();

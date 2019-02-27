@@ -1,6 +1,6 @@
 webpackJsonp([8],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Account.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppDetailCharts.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22,81 +22,82 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
-var self,
+var chart_data = {
+    datasets: [{
+        lineTension: 0,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255,99,132,1)'
+    }]
+};
+var options1 = {
+    legend: { display: false },
+    tooltips: {
+        displayColors: false
+    },
+    scales: {
+        xAxes: [{
+            type: 'time',
+            time: {
+                tooltipFormat: 'DD.MM.YY',
+                unitStepSize: 1,
+                unit: 'day',
+                displayFormats: {
+                    hour: 'MM.YY', // Sept 4, 5PM
+                    day: 'DD.MM.YY', // Sep 4 2015
+                    week: 'll', // Week 46, or maybe "[W]WW - YYYY" ?
+                    month: 'DD.MM.YYYY' // Sept 2015
+                }
+            }
+        }]
+
+    }
+};
+var chart_self,
+    self,
     _data = {
     lng: {},
-    pass_reset: false
+    ready: false
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['productId'],
     data: function data() {
         return _data;
     },
     mounted: function mounted() {
         self = this;
         this.lng = window.lng;
+        chart_self = new Chart(document.getElementById('graph'), {
+            type: 'line',
+            data: chart_data,
+            options: options1
+        });
+        this.show_hist(1);
     },
 
     methods: {
-        get_currency: function get_currency(val) {
-            axios.get('/set_currency?val=' + val).then(function (response) {
-                self.lng.currency = self.lng[response.data.name];
-                self.$store.commit('set_currency', response.data.rate);
+        show_hist: function show_hist(t) {
+            axios.get('/prod_history', { params: { id: this.productId, currency: window.Laravel.currency.name } }).then(function (response) {
+                var i = 0,
+                    l = response.data.length,
+                    l2 = chart_data.datasets[0].data.length;
+                if (l2 > 0 && l2 > l) chart_data.datasets[0].data.splice(0, l2);
+                if (t == 1) {
+                    for (; i < l; i++) {
+                        chart_data.datasets[0].data[i] = { x: response.data[i].date,
+                            y: response.data[i].price * response.data[i].currency.rate
+                        };
+                        chart_data.datasets[0].label = 'Price';
+                    }
+                } else if (t == 2) {
+                    for (; i < l; i++) {
+                        chart_data.datasets[0].data[i] = { x: response.data[i].date,
+                            y: response.data[i].sales
+                        };
+                        chart_data.datasets[0].label = 'Sold';
+                    }
+                }
+                chart_self.update();
             });
         }
     }
@@ -104,146 +105,111 @@ var self,
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4bf87286\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Account.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-739e71c0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppDetailCharts.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid", staticStyle: { "max-width": "80em" } },
-    [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("div", { staticClass: "dropdown" }, [
-          _c("i", { staticClass: "fa fa-money" }),
-          _vm._v(" "),
-          _c("label", [_vm._v(" " + _vm._s(_vm.lng.currency_type) + " :  ")]),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "dropdown-toggle",
-              attrs: { "data-toggle": "dropdown", "aria-haspopup": "true" }
-            },
-            [
-              _c("span", { staticStyle: { "vertical-align": "middle" } }, [
-                _vm._v(" " + _vm._s(_vm.lng.currency) + " ")
-              ]),
-              _c("span", { staticClass: "caret" })
-            ]
-          ),
-          _vm._v(" "),
-          _c("ul", { staticClass: "dropdown-menu" }, [
-            _c("li", [
-              _c(
-                "a",
-                {
-                  staticClass: "fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.get_currency("UAH")
-                    }
-                  }
-                },
-                [_c("span", [_vm._v("  " + _vm._s(_vm.lng.UAH))])]
-              )
-            ]),
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "panel panel-primary",
+        staticStyle: { margin: "15px 0 0", "border-width": "0" }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "panel-heading",
+            staticStyle: { padding: "6px 15px" }
+          },
+          [
+            _c("i", {
+              staticClass: "fa fa-bar-chart",
+              attrs: { "aria-hidden": "true" }
+            }),
             _vm._v(" "),
-            _c("li", [
-              _c(
-                "a",
-                {
-                  staticClass: "fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.get_currency("RUB")
-                    }
-                  }
-                },
-                [_c("span", [_vm._v("  " + _vm._s(_vm.lng.RUB))])]
-              )
-            ]),
+            _c("span", [_vm._v(_vm._s(_vm.lng.hist_graph) + " ")]),
             _vm._v(" "),
-            _c("li", [
-              _c(
-                "a",
-                {
-                  staticClass: "fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.get_currency("USD")
+            _c(
+              "div",
+              {
+                staticClass: "btn-group",
+                attrs: { role: "group", "aria-label": "..." }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default btn-sm",
+                    attrs: { id: "graph_btn1", type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.show_hist(1)
+                      }
                     }
-                  }
-                },
-                [_c("span", [_vm._v("  " + _vm._s(_vm.lng.USD))])]
-              )
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("hr", { staticStyle: { margin: "8px 0" } }),
-      _vm._v(" "),
-      _c("user-info"),
-      _vm._v(" "),
-      _c("hr", { staticStyle: { margin: "8px 0" } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("i", { staticClass: "fa fa-envelope" }),
+                  },
+                  [_vm._v(_vm._s(_vm.lng.price_hist))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default btn-sm",
+                    attrs: { id: "graph_btn2", type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.show_hist(2)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.lng.sales_hist))]
+                )
+              ]
+            )
+          ]
+        ),
         _vm._v(" "),
-        _c("label", [_vm._v(_vm._s(_vm.lng.email_me) + " :")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "container-fluid" }, [
-          _c("div", { staticClass: "checkbox disabled" }, [
-            _c("label", [
-              _c("input", { attrs: { type: "checkbox", disabled: "" } }),
-              _vm._v(
-                "\n                    " +
-                  _vm._s(_vm.lng.email_me_offers) +
-                  "\n                "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "checkbox" }, [
-            _c("label", [
-              _c("input", { attrs: { type: "checkbox", disabled: "" } }),
-              _vm._v(
-                "\n                    " +
-                  _vm._s(_vm.lng.email_me_wishlist) +
-                  "\n                "
-              )
-            ])
-          ])
-        ])
-      ])
-    ],
-    1
-  )
+        _vm._m(0)
+      ]
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "panel-body", staticStyle: { padding: "4px" } },
+      [_c("canvas", { attrs: { height: "70", id: "graph" } })]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4bf87286", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-739e71c0", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/Account.vue":
+/***/ "./resources/assets/js/components/AppDetailCharts.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Account.vue")
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AppDetailCharts.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-4bf87286\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Account.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-739e71c0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AppDetailCharts.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -260,7 +226,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\Account.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AppDetailCharts.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -269,9 +235,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4bf87286", Component.options)
+    hotAPI.createRecord("data-v-739e71c0", Component.options)
   } else {
-    hotAPI.reload("data-v-4bf87286", Component.options)
+    hotAPI.reload("data-v-739e71c0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

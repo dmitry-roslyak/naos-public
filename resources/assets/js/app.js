@@ -20,8 +20,8 @@ var data = {
     user: null
 };
 const app = new Vue({
-    router,
     el: '#app',
+    router,
     store,
     data: function () { return data; },
     created() {

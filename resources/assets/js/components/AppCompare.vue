@@ -59,12 +59,10 @@
     };
     var self, selfChart;
     export default {
-        data: function() { return data },
         props: ['ids'],
+        data: function() { return data },
         watch: {
-            '$route.params.ids': function () {
-                this.get_prodsby_ids()
-            }
+            '$route.params.ids': 'get_prodsby_ids'
         },
         mounted(){
             self = this;

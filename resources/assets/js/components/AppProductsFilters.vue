@@ -48,8 +48,8 @@
     </div>
 </template>
 <script>
-    const range = require('./Range.vue')
-    // import range from './Range.vue'
+    const range = require('./VRange.vue')
+    // import range from './VRange.vue'
     // var debounce = require('lodash.debounce');
     var throttle = require('lodash.throttle');
     var self, data = {
@@ -59,10 +59,10 @@
         price: {}
     };
     export default {
-        data: function () {return data;},
         components: {
             range
         },
+        data: function () {return data;},
         computed: {
             showClear: function () { return this.$store.state.flt_ids.length },
         },
