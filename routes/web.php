@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 Route::get('/', function (Request $data) {
@@ -21,7 +22,9 @@ Route::group(['middleware' => 'admin'], function() {
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
-    Route::post('/upload', 'DashboardController@imgUpload');
+    Route::get('/token', 'DashboardController@tokenRefresh');
+    
+    Route::post('/upload', 'DashboardController@productCreate');
     Route::get('/t1', 'DashboardController@tg');
     Route::get('/discount_list', function () {
         return App\Discount::get();

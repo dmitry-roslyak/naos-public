@@ -47,7 +47,7 @@
                             <a class="dropdown-toggle fake-link"
                                 data-toggle="dropdown" aria-haspopup="true">
                                 <i class="fa fa-globe"></i>
-                                <img style="max-height:1.8em;margin-top:-0.5em" :src="'images/'+lng.ISO_code+'.png'">
+                                <img style="max-height:1.8em;margin-top:-0.5em" :src="'images/'+lng.lang_name_ISO+'.png'">
                                 <span style="vertical-align:middle;text-transform: uppercase;">&nbsp;@{{lng.ISO_code}}&nbsp;</span><span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">

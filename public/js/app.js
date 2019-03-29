@@ -68043,9 +68043,9 @@ var app = new Vue({
         facebookLogIn: function facebookLogIn() {
             this.logIn(new __WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.auth.FacebookAuthProvider());
         },
-        logIn2: function logIn2(ie) {
+        auth: function auth(jwt) {
             axios.post('/auth', {
-                input: ie
+                input: jwt
             }).then(function (response) {
                 // app.user = response.data;
                 // this.$router.push('/');
@@ -68054,9 +68054,9 @@ var app = new Vue({
         },
         logIn: function logIn(provider) {
             __WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.auth().signInWithPopup(provider).then(function (result) {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                // var token = result.credential.accessToken;
-                app.logIn2(result.user.qa);
+                result.user.getIdToken().then(function (jwt) {
+                    return app.auth(jwt);
+                });
             }).catch(function (error) {
                 //different api error
                 // var errorCode = error.code;

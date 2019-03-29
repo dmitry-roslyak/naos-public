@@ -4,7 +4,7 @@ namespace App\Http\Traits;
 
 trait Utility
 {
-    public static function locale(Array $array = null) {
+    public static function locale(Array $array = []) {
         if(!empty($array)) {}
         else if(!empty($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
         else if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -29,7 +29,7 @@ trait Utility
         \App::setLocale($locale['language']);
         return [
             'langsAvailable' => \App\Lang::where('name', 'lang_name')->get(['text','lng'])->keyBy('lng'),
-            'user' =>  $user,
+            'user' => $user,
             'catalog' => \App\Category::get()->keyBy('name'),
             'lng' => \App\Lang::where('lng', $locale['language'])->get(['name','text']), 
             'currency' => \App\Currency::where('name', $locale['currency'])->orderBy('date','desc')->first()

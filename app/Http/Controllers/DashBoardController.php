@@ -18,11 +18,40 @@ class DashboardController extends Controller
      *
      * @return void
      */
-    public function tg(Request $data)
+    public function tg(Request $request)
     {
          return Product::with('ctg')->get();
     }
-    public function imgUpload(Request $data)
+    public function tokenRefresh(Request $request)
+    {
+        $token = Str::random(60);
+
+        $request->user()->forceFill([
+            'api_token' => hash('sha256', $token),
+        ])->save();
+
+        return ['token' => $token];
+    }
+    public function imgUpload(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'image' => 'required|mimes:jpeg,jpg,png,gif|max:8096'
+        ]);
+        if ($validator->fails()) {
+            return response($validator->errors(), 400);
+        }
+        $ext = 'png';
+        $img = Image1::make($request->file('image'));
+        $img->resize(1024, 1024, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $img->encode($ext);
+        $hash = md5($img->__toString());
+        \Storage::put($hash.'.'.$ext, $img);
+        return $hash.'.'.$ext;
+    }
+    public function productCreate(Request $data)
     {
         if($data->file('image')->isValid()){
             $ext = 'png';
@@ -57,7 +86,7 @@ class DashboardController extends Controller
             return $item;
         }else return '0';
     }
-    public function initFilters(Request $data) {
+    public function initFilters(Request $request) {
         $categories = Product::get(['id','category_id'])->groupBy('category_id');
     
         foreach ($categories as $category_id => $category) {
