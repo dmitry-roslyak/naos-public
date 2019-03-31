@@ -48,24 +48,30 @@ a:hover, a:focus
     background-color: $right-note-color
     & *
         color: white
-.action-item
+.action-item > span
     transition: all 0.25s
     font-size: 0
-    &:hover
-        font-size: $item-note-font-size
+.action-item:hover 
+    z-index: auto !important
+.action-item:hover > span
+    font-size: $item-note-font-size
+.btn-in-cart-i[data-check]
+    animation: bounce1 0.35s
 .compare-state[data-check]
     animation: bounce1 0.35s
     color: $compare-state-check1-color
 .heart-state[data-check]
     animation: bounce1 0.35s
     color: $heart-state-check1-color
-.compare-state,.heart-state
+.compare-state,.heart-state,.btn-in-cart-i
     animation: bounce0 0.35s
 .action-item .fa
-    font-size: 1.6rem
+    font-size: 1.9rem
 .fake-link:hover
     cursor: pointer
     text-decoration: none
+.btn-in-cart-i[data-check]
+    color: limegreen 
 .divider-or
     margin: 18px auto 8px
     position: relative

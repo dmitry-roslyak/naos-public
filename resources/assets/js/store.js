@@ -16,8 +16,10 @@ export default new Vuex.Store({
             localStorage.cart = ''
         },
         cart(state, item){
-            state.cart[item.id] ? state.cart[item.id] += item.count :  Vue.set(state.cart, item.id, item.count)
-            if(item.toRemove) delete state.cart[item.id]
+            if(item.toRemove) {
+                state.cart[item.id] = 0
+                delete state.cart[item.id]
+            } else Vue.set(state.cart, item.id, item.count)
             localStorage.cart = JSON.stringify(state.cart);
         },
         set_currency(state,value){
@@ -40,6 +42,16 @@ export default new Vuex.Store({
             !state.compare[categoryIndex].array.length && state.compare.splice(categoryIndex,1)
             
             localStorage.compare = JSON.stringify(state.compare);
+        }, 
+        loadFromLocalStorage(state, propery) {
+            if(localStorage[propery] && localStorage[propery].length) {
+                try {
+                    state[propery] = JSON.parse(localStorage[propery]);
+                } catch (error) {
+                    console.log(error)
+                    localStorage[propery] = ''
+                }
+            }
         }
     },
     getters: {
@@ -58,17 +70,6 @@ export default new Vuex.Store({
                 count += state.compare[key].array.length
             }
             return count
-        },        
-        loadFromLocalStorage(state) { return propery => {
-                if(localStorage[propery] && localStorage[propery].length) {
-                    try {
-                        state[propery] = JSON.parse(localStorage[propery]);
-                    } catch (error) {
-                        console.log(error)
-                        localStorage[propery] = ''
-                    }
-                }
-            }
         }
     }
 });

@@ -45,18 +45,25 @@
                     <img class="item-card-img" style="visibility: hidden" :src="'file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
                     <div class="caption" style="padding: 2px 6px">
                         <router-link class="item-card-name" :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
-                        <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                        <!-- <router-link  to="coms">{{item.vote_count>0?lng.comments+': '+item.vote_count:lng.leave_comment}}</router-link> -->
-                        <div class="row" style="padding:10px">
-                            <div class="product-state">
-                                <s v-if="item.discount&&item.available">{{(currency * item.price).toFixed(1)+' '+lng.currency}}</s>
+                        <div class="col-xs-12" style="padding: 3px 0">
+                            <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true" style="display:inline-block"></star-rating>
+                            <div class="product-state pull-right">
+                                <s v-if="item.discount&&item.available">{{currency * item.price}}</s>
                                 <span v-if="!item.available">{{lng.not_in_stock}}</span>
+                                <span v-else>
+                                    {{(item.discount?currency * item.price - currency * item.price/100*item.discount.discount : currency * item.price).toFixed(1)+' '+lng.currency}}                       
+                                </span>
                             </div>
-                            <button v-if="item.available" class="btn btn-primary btn-md pull-right" @click="buyItem(item)">
-                                <i class="fa fa-cart-plus" aria-hidden="true"></i>&nbsp;&nbsp;
-                                {{(item.discount?currency * item.price - currency * item.price/100*item.discount.discount : currency * item.price).toFixed(1)+' '+lng.currency}}                       
-                            </button>
-                        </div>                    
+                        </div>
+                        <div class="col-xs-12" style="padding: 0 0 8px">
+                            <div class="btn-group pull-right" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default action-item" @click="addToCart(i, item.id)">
+                                    <span>{{lng.addto_cart}}</span>
+                                    <i class="fa fa-cart-plus btn-in-cart-i" :data-check="item.isInCart" aria-hidden="true"></i>&nbsp;&nbsp;
+                                </button>
+                                <button type="button" class="btn btn-primary" @click="buy(item.id)">{{lng.buy}}</button>
+                            </div>
+                        </div>
                         <table class="item-spec">
                             <tbody >
                                 <tr v-for="(specs,i) in item.specs" :key="i">
@@ -127,6 +134,7 @@
                     var categoryIndex = self.$store.getters.compareCategoryIndex(window.Laravel.catalog[self.category].id)
                     var items = response.data[1];
                     for (var i = 0; i < items.length; i++) {
+                        items[i].isInCart = !!self.$store.state.cart[items[i].id];
                         items[i].isWish = !!items[i].wish;
                         items[i].is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, items[i].id) > -1;
                         items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
@@ -142,8 +150,12 @@
                     self.paginator.total = response.data[0]
                 });
             },
-            buyItem(item){
-                this.$store.commit('cart', {id: item.id, count: 1});
+            addToCart(i, id){
+                this.items[i].isInCart = !this.$store.state.cart[id];
+                this.$store.commit('cart', {id: id, count: 1, toRemove: !this.items[i].isInCart});
+            },
+            buy(id){
+                this.$router.push(`/cart/[${id}]`)
             },
             to_compare(i){
                 this.items[i].is_compare = !this.items[i].is_compare;

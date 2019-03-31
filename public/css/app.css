@@ -11478,14 +11478,23 @@ a:focus {
   color: white;
 }
 
-.action-item {
+.action-item > span {
   -webkit-transition: all 0.25s;
   transition: all 0.25s;
   font-size: 0;
 }
 
 .action-item:hover {
+  z-index: auto !important;
+}
+
+.action-item:hover > span {
   font-size: 1.4rem;
+}
+
+.btn-in-cart-i[data-check] {
+  -webkit-animation: bounce1 0.35s;
+          animation: bounce1 0.35s;
 }
 
 .compare-state[data-check] {
@@ -11501,18 +11510,23 @@ a:focus {
 }
 
 .compare-state,
-.heart-state {
+.heart-state,
+.btn-in-cart-i {
   -webkit-animation: bounce0 0.35s;
           animation: bounce0 0.35s;
 }
 
 .action-item .fa {
-  font-size: 1.6rem;
+  font-size: 1.9rem;
 }
 
 .fake-link:hover {
   cursor: pointer;
   text-decoration: none;
+}
+
+.btn-in-cart-i[data-check] {
+  color: limegreen;
 }
 
 .divider-or {

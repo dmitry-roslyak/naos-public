@@ -6200,8 +6200,8 @@ var self,
     created: function created() {
         self = this;
         this.lng = window.lng;
-        this.$store.getters.loadFromLocalStorage('compare');
-        this.$store.getters.loadFromLocalStorage('cart');
+        this.$store.commit("loadFromLocalStorage", 'compare');
+        this.$store.commit("loadFromLocalStorage", 'cart');
     },
 
     methods: {
@@ -68347,7 +68347,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('AppUserInfo', function (r
 });
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     // mode: 'history',
-    routes: [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids1?', component: cart, props: true }, { path: '/account', component: account }]
+    routes: [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids?', component: cart, props: true }, { path: '/account', component: account }]
 }));
 
 /***/ }),
@@ -68377,8 +68377,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
             localStorage.cart = '';
         },
         cart: function cart(state, item) {
-            state.cart[item.id] ? state.cart[item.id] += item.count : __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.cart, item.id, item.count);
-            if (item.toRemove) delete state.cart[item.id];
+            if (item.toRemove) {
+                state.cart[item.id] = 0;
+                delete state.cart[item.id];
+            } else __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.cart, item.id, item.count);
             localStorage.cart = JSON.stringify(state.cart);
         },
         set_currency: function set_currency(state, value) {
@@ -68400,6 +68402,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
             !state.compare[categoryIndex].array.length && state.compare.splice(categoryIndex, 1);
 
             localStorage.compare = JSON.stringify(state.compare);
+        },
+        loadFromLocalStorage: function loadFromLocalStorage(state, propery) {
+            if (localStorage[propery] && localStorage[propery].length) {
+                try {
+                    state[propery] = JSON.parse(localStorage[propery]);
+                } catch (error) {
+                    console.log(error);
+                    localStorage[propery] = '';
+                }
+            }
         }
     },
     getters: {
@@ -68428,18 +68440,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
                 count += state.compare[key].array.length;
             }
             return count;
-        },
-        loadFromLocalStorage: function loadFromLocalStorage(state) {
-            return function (propery) {
-                if (localStorage[propery] && localStorage[propery].length) {
-                    try {
-                        state[propery] = JSON.parse(localStorage[propery]);
-                    } catch (error) {
-                        console.log(error);
-                        localStorage[propery] = '';
-                    }
-                }
-            };
         }
     }
 }));

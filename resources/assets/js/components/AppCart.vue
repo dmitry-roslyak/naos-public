@@ -17,8 +17,9 @@
                     <tr v-for="item in products" :key="item.id">
                         <td><img v-bind:src="'file/'+item.img_src"></td>
                         <td><router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link></td>
-                        <td><input class="form-control" v-model="item.count" type="number"></td>
-                        <td>{{(currency * item.price).toFixed(1)+' '+ lng.currency}}</td>
+                        <td>{{item.count}}</td>
+                        <td><input class="form-control" v-model="item.count" @input="reCount(item.id ,$event.target.value)" type="number"></td>
+                        <td style="white-space: nowrap;">{{(currency * item.price).toFixed(1)+' '+ lng.currency}}</td>
                         <div class="action-frm">
                             <a class="action-item fake-link" @click="removeFromCart(item.id)">
                                 <span class="hidden-xs">{{lng.remove}}</span>
@@ -103,7 +104,7 @@
         card: { number: '' , expire: { month: '', year: '' },  cvv2: '' }
     };
     export default {
-        props: ['ids1'],
+        props: ['ids'],
         data: function () { return data },
         computed: {
             currency: function () { return this.$store.state.currency },
@@ -118,10 +119,18 @@
         created() {
             self = this
             this.lng = window.lng;
-            var requestIDs = this.ids1 && JSON.parse(this.ids1) || Object.keys(this.$store.state.cart)
+            try {
+                var parsed = this.ids && JSON.parse(this.ids)
+            } catch (error) {
+                console.log(error)
+            }
+            var requestIDs = parsed || Object.keys(this.$store.state.cart)
             if(requestIDs.length) this.get_prodsby_ids(requestIDs);
         },
         methods: {
+            reCount(id, count) {
+                this.ids || this.$store.commit('cart', {id, count: +count});
+            },
             removeFromCart(id) {
                 self.products.forEach((element,i) => {
                     if(element.id == id) self.products.splice(i, 1); 
@@ -129,10 +138,11 @@
                 this.$store.commit('cart', {id: id, toRemove: true});
             },
             get_prodsby_ids(ids) {
+                self.products.length = 0
                 axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
-                    self.products = response.data;
-                    self.products.forEach(function (element)  {
+                    response.data.forEach(function (element, i)  {
                         element.count = self.$store.state.cart[element.id] || 1
+                        self.products.push(element)
                     });
                 });
             },

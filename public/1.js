@@ -79,6 +79,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 var self,
     _data = {
@@ -139,6 +146,7 @@ var self,
                 var categoryIndex = self.$store.getters.compareCategoryIndex(window.Laravel.catalog[self.category].id);
                 var items = response.data[1];
                 for (var i = 0; i < items.length; i++) {
+                    items[i].isInCart = !!self.$store.state.cart[items[i].id];
                     items[i].isWish = !!items[i].wish;
                     items[i].is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, items[i].id) > -1;
                     items[i].isArriveSoon = new Date(items[i].arrive_date) > new Date();
@@ -154,8 +162,12 @@ var self,
                 self.paginator.total = response.data[0];
             });
         },
-        buyItem: function buyItem(item) {
-            this.$store.commit('cart', { id: item.id, count: 1 });
+        addToCart: function addToCart(i, id) {
+            this.items[i].isInCart = !this.$store.state.cart[id];
+            this.$store.commit('cart', { id: id, count: 1, toRemove: !this.items[i].isInCart });
+        },
+        buy: function buy(id) {
+            this.$router.push('/cart/[' + id + ']');
         },
         to_compare: function to_compare(i) {
             this.items[i].is_compare = !this.items[i].is_compare;
@@ -181,7 +193,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.1em;\n  line-height: 2em;\n}\n.itmc select {\n    height: 27px;\n    display: inline;\n}\n#sortby {\n  width: 180px;\n}\n.product-state {\n  display: inline-block;\n  border-radius: 5px;\n  font-weight: 900;\n  background-color: lightgray;\n  cursor: default;\n}\n.product-state > * {\n    display: inline-block;\n    margin: 7px;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n.ic-s:hover .item-spec {\n    font-size: 1.5rem;\n    width: 100%;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n", ""]);
+exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.1em;\n  line-height: 2em;\n}\n.itmc select {\n    height: 27px;\n    display: inline;\n}\n#sortby {\n  width: 180px;\n}\n.product-state > s {\n  padding: 7px 0 7px 7px;\n}\n.product-state > s + span {\n  color: coral;\n}\n.product-state > span {\n  padding: 7px;\n  font-weight: 900;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n.ic-s:hover .item-spec {\n    font-size: 1.5rem;\n    width: 100%;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n", ""]);
 
 // exports
 
@@ -473,77 +485,117 @@ var render = function() {
                         [_vm._v(_vm._s(item.name))]
                       ),
                       _vm._v(" "),
-                      _c("star-rating", {
-                        attrs: {
-                          rating: +item.rating,
-                          "star-size": 16,
-                          "show-rating": false,
-                          "read-only": true
-                        }
-                      }),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col-xs-12",
+                          staticStyle: { padding: "3px 0" }
+                        },
+                        [
+                          _c("star-rating", {
+                            staticStyle: { display: "inline-block" },
+                            attrs: {
+                              rating: +item.rating,
+                              "star-size": 16,
+                              "show-rating": false,
+                              "read-only": true
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "product-state pull-right" },
+                            [
+                              item.discount && item.available
+                                ? _c("s", [
+                                    _vm._v(_vm._s(_vm.currency * item.price))
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              !item.available
+                                ? _c("span", [
+                                    _vm._v(_vm._s(_vm.lng.not_in_stock))
+                                  ])
+                                : _c("span", [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(
+                                          (item.discount
+                                            ? _vm.currency * item.price -
+                                              ((_vm.currency * item.price) /
+                                                100) *
+                                                item.discount.discount
+                                            : _vm.currency * item.price
+                                          ).toFixed(1) +
+                                            " " +
+                                            _vm.lng.currency
+                                        ) +
+                                        "                       \n                            "
+                                    )
+                                  ])
+                            ]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c(
                         "div",
                         {
-                          staticClass: "row",
-                          staticStyle: { padding: "10px" }
+                          staticClass: "col-xs-12",
+                          staticStyle: { padding: "0 0 8px" }
                         },
                         [
-                          _c("div", { staticClass: "product-state" }, [
-                            item.discount && item.available
-                              ? _c("s", [
-                                  _vm._v(
-                                    _vm._s(
-                                      (_vm.currency * item.price).toFixed(1) +
-                                        " " +
-                                        _vm.lng.currency
-                                    )
-                                  )
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            !item.available
-                              ? _c("span", [
-                                  _vm._v(_vm._s(_vm.lng.not_in_stock))
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          item.available
-                            ? _c(
+                          _c(
+                            "div",
+                            {
+                              staticClass: "btn-group pull-right",
+                              attrs: { role: "group", "aria-label": "..." }
+                            },
+                            [
+                              _c(
                                 "button",
                                 {
-                                  staticClass:
-                                    "btn btn-primary btn-md pull-right",
+                                  staticClass: "btn btn-default action-item",
+                                  attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      _vm.buyItem(item)
+                                      _vm.addToCart(i, item.id)
                                     }
                                   }
                                 },
                                 [
+                                  _c("span", [
+                                    _vm._v(_vm._s(_vm.lng.addto_cart))
+                                  ]),
+                                  _vm._v(" "),
                                   _c("i", {
-                                    staticClass: "fa fa-cart-plus",
-                                    attrs: { "aria-hidden": "true" }
+                                    staticClass:
+                                      "fa fa-cart-plus btn-in-cart-i",
+                                    attrs: {
+                                      "data-check": item.isInCart,
+                                      "aria-hidden": "true"
+                                    }
                                   }),
-                                  _vm._v(
-                                    "  \n                            " +
-                                      _vm._s(
-                                        (item.discount
-                                          ? _vm.currency * item.price -
-                                            ((_vm.currency * item.price) /
-                                              100) *
-                                              item.discount.discount
-                                          : _vm.currency * item.price
-                                        ).toFixed(1) +
-                                          " " +
-                                          _vm.lng.currency
-                                      ) +
-                                      "                       \n                        "
-                                  )
+                                  _vm._v("  \n                            ")
                                 ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.buy(item.id)
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(_vm.lng.buy))]
                               )
-                            : _vm._e()
+                            ]
+                          )
                         ]
                       ),
                       _vm._v(" "),

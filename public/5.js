@@ -100,6 +100,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var self,
     _data = {
@@ -111,7 +112,7 @@ var self,
     card: { number: '', expire: { month: '', year: '' }, cvv2: '' }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['ids1'],
+    props: ['ids'],
     data: function data() {
         return _data;
     },
@@ -130,11 +131,19 @@ var self,
     created: function created() {
         self = this;
         this.lng = window.lng;
-        var requestIDs = this.ids1 && JSON.parse(this.ids1) || Object.keys(this.$store.state.cart);
+        try {
+            var parsed = this.ids && JSON.parse(this.ids);
+        } catch (error) {
+            console.log(error);
+        }
+        var requestIDs = parsed || Object.keys(this.$store.state.cart);
         if (requestIDs.length) this.get_prodsby_ids(requestIDs);
     },
 
     methods: {
+        reCount: function reCount(id, count) {
+            this.ids || this.$store.commit('cart', { id: id, count: +count });
+        },
         removeFromCart: function removeFromCart(id) {
             self.products.forEach(function (element, i) {
                 if (element.id == id) self.products.splice(i, 1);
@@ -142,10 +151,11 @@ var self,
             this.$store.commit('cart', { id: id, toRemove: true });
         },
         get_prodsby_ids: function get_prodsby_ids(ids) {
+            self.products.length = 0;
             axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
-                self.products = response.data;
-                self.products.forEach(function (element) {
+                response.data.forEach(function (element, i) {
                     element.count = self.$store.state.cart[element.id] || 1;
+                    self.products.push(element);
                 });
             });
         },
@@ -264,6 +274,8 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(item.count))]),
+                _vm._v(" "),
                 _c("td", [
                   _c("input", {
                     directives: [
@@ -278,17 +290,22 @@ var render = function() {
                     attrs: { type: "number" },
                     domProps: { value: item.count },
                     on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                      input: [
+                        function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(item, "count", $event.target.value)
+                        },
+                        function($event) {
+                          _vm.reCount(item.id, $event.target.value)
                         }
-                        _vm.$set(item, "count", $event.target.value)
-                      }
+                      ]
                     }
                   })
                 ]),
                 _vm._v(" "),
-                _c("td", [
+                _c("td", { staticStyle: { "white-space": "nowrap" } }, [
                   _vm._v(
                     _vm._s(
                       (_vm.currency * item.price).toFixed(1) +

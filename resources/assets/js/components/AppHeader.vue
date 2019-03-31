@@ -58,8 +58,8 @@
         created() {
             self = this;
             this.lng = window.lng;
-            this.$store.getters.loadFromLocalStorage('compare');
-            this.$store.getters.loadFromLocalStorage('cart');
+            this.$store.commit("loadFromLocalStorage",'compare');
+            this.$store.commit("loadFromLocalStorage",'cart');
         },
         methods: {
             toCompare(i){
