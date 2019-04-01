@@ -31,11 +31,15 @@ class ProductController extends Controller
     }
     public function show_many(Request $data)
     {
-        return Product::with('specs')->whereIn('id', $data->ids)->get();
+        return Product::with('discount','specs')->whereIn('id', $data->ids)->get();
+    }
+    public function withDiscountShowByIds(Request $data)
+    {
+        return Product::with('discount')->whereIn('id', $data->ids)->get();
     }
     public function search(Request $data)
     {
-        return Product::with('ctg')->where('name', 'like', '%'.$data->search . '%')
+        return Product::with('ctg','discount')->where('name', 'like', '%'.$data->search . '%')
             ->skip(0)->take(5)->orderBy('category_id','desc')->get();
     }
     public function history(Request $data) {

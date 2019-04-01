@@ -17,7 +17,7 @@
                                     <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
                                     <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
                                 </td>
-                                <td>{{(currency * item.price).toFixed(1) +' '+ lng.currency}}</td>
+                                <td>{{itemPriceResult(item)}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -53,7 +53,7 @@
         data: function () { return data; },
         computed: {
             compare() { return this.$store.state.compare },
-            currency: function () { return this.$store.state.currency }
+            itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created() {
             self = this;

@@ -50,9 +50,7 @@
                             <div class="product-state pull-right">
                                 <s v-if="item.discount&&item.available">{{currency * item.price}}</s>
                                 <span v-if="!item.available">{{lng.not_in_stock}}</span>
-                                <span v-else>
-                                    {{(item.discount?currency * item.price - currency * item.price/100*item.discount.discount : currency * item.price).toFixed(1)+' '+lng.currency}}                       
-                                </span>
+                                <span v-else>{{itemPriceResult(item)}}</span>
                             </div>
                         </div>
                         <div class="col-xs-12" style="padding: 0 0 8px">
@@ -101,7 +99,8 @@
         props: ['category'],
         data: function () {return data;},
         computed: {
-            currency: function () { return this.$store.state.currency },
+            currency() { return this.$store.state.currency },
+            itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         mounted() {
             self = this; 

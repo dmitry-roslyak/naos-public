@@ -84,8 +84,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 var self,
     _data = {
@@ -113,6 +111,13 @@ var self,
     computed: {
         currency: function currency() {
             return this.$store.state.currency;
+        },
+        itemPriceResult: function itemPriceResult() {
+            var _this = this;
+
+            return function (item) {
+                return _this.$root.itemPriceResult(item);
+            };
         }
     },
     mounted: function mounted() {
@@ -517,21 +522,7 @@ var render = function() {
                                     _vm._v(_vm._s(_vm.lng.not_in_stock))
                                   ])
                                 : _c("span", [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          (item.discount
-                                            ? _vm.currency * item.price -
-                                              ((_vm.currency * item.price) /
-                                                100) *
-                                                item.discount.discount
-                                            : _vm.currency * item.price
-                                          ).toFixed(1) +
-                                            " " +
-                                            _vm.lng.currency
-                                        ) +
-                                        "                       \n                            "
-                                    )
+                                    _vm._v(_vm._s(_vm.itemPriceResult(item)))
                                   ])
                             ]
                           )

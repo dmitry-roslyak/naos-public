@@ -32,7 +32,7 @@
                                     {{item.name}}
                                 </router-link>
                             </h3>
-                            <span style="font-style:italic;text-shadow:0 0 1rem black">{{(currency * item.price).toFixed(1)+' '+lng.currency}}</span>
+                            <span style="font-style:italic;text-shadow:0 0 1rem black">{{itemPriceResult(item)}}</span>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
     export default {
         data: function () { return data; },
         computed: {
-            currency: function () { return this.$store.state.currency }
+            itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         mounted() {
             self = this;

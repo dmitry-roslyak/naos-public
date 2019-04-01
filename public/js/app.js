@@ -6192,9 +6192,12 @@ var self,
         compare: function compare() {
             return this.$store.state.compare;
         },
+        itemPriceResult: function itemPriceResult() {
+            var _this = this;
 
-        currency: function currency() {
-            return this.$store.state.currency;
+            return function (item) {
+                return _this.$root.itemPriceResult(item);
+            };
         }
     },
     created: function created() {
@@ -6295,8 +6298,12 @@ var self,
         return _data;
     },
     computed: {
-        currency: function currency() {
-            return this.$store.state.currency;
+        itemPriceResult: function itemPriceResult() {
+            var _this = this;
+
+            return function (item) {
+                return _this.$root.itemPriceResult(item);
+            };
         }
     },
     mounted: function mounted() {
@@ -51961,15 +51968,7 @@ var render = function() {
                                   "text-shadow": "0 0 1rem black"
                                 }
                               },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    (_vm.currency * item.price).toFixed(1) +
-                                      " " +
-                                      _vm.lng.currency
-                                  )
-                                )
-                              ]
+                              [_vm._v(_vm._s(_vm.itemPriceResult(item)))]
                             )
                           ]
                         )
@@ -52346,15 +52345,7 @@ var render = function() {
                           1
                         ),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(
-                              (_vm.currency * item.price).toFixed(1) +
-                                " " +
-                                _vm.lng.currency
-                            )
-                          )
-                        ])
+                        _c("td", [_vm._v(_vm._s(_vm.itemPriceResult(item)))])
                       ]
                     )
                   })
@@ -68027,6 +68018,9 @@ var app = new Vue({
     },
 
     methods: {
+        itemPriceResult: function itemPriceResult(item) {
+            return (item.discount ? this.$store.state.currency * item.price - this.$store.state.currency * item.price / 100 * item.discount.discount : this.$store.state.currency * item.price).toFixed(1) + " " + this.lng.currency;
+        },
         get_locale: function get_locale(lng) {
             axios.get('lang/' + lng).then(function (response) {
                 response.data[0].map(function (t) {

@@ -117,15 +117,19 @@ var self,
         return _data;
     },
     computed: {
-        currency: function currency() {
-            return this.$store.state.currency;
-        },
         total: function total() {
             var res = 0;
             for (var i = 0; i < this.products.length; i++) {
                 res += this.products[i].price * this.$store.state.currency * this.products[i].count;
             }
             return res.toFixed(1);
+        },
+        itemPriceResult: function itemPriceResult() {
+            var _this = this;
+
+            return function (item) {
+                return _this.$root.itemPriceResult(item);
+            };
         }
     },
     created: function created() {
@@ -152,7 +156,7 @@ var self,
         },
         get_prodsby_ids: function get_prodsby_ids(ids) {
             self.products.length = 0;
-            axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
+            axios.get('/products_with_discount_by_ids', { params: { ids: ids } }).then(function (response) {
                 response.data.forEach(function (element, i) {
                     element.count = self.$store.state.cart[element.id] || 1;
                     self.products.push(element);
@@ -306,13 +310,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", { staticStyle: { "white-space": "nowrap" } }, [
-                  _vm._v(
-                    _vm._s(
-                      (_vm.currency * item.price).toFixed(1) +
-                        " " +
-                        _vm.lng.currency
-                    )
-                  )
+                  _vm._v(_vm._s(_vm.itemPriceResult(item)))
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "action-frm" }, [

@@ -31,6 +31,9 @@ const app = new Vue({
         if (window.Laravel.user) this.user = window.Laravel.user.name;
     },
     methods: {
+        itemPriceResult(item) {
+            return (item.discount ? this.$store.state.currency * item.price - this.$store.state.currency * item.price / 100 * item.discount.discount : this.$store.state.currency * item.price).toFixed(1) + " " + this.lng.currency;
+        },
         get_locale(lng) {
             axios.get('lang/' + lng).then(function (response) {
                 response.data[0].map(function (t) { window.lng[t.name] = t.text; });

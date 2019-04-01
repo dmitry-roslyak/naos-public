@@ -19,7 +19,7 @@
                         <td><router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link></td>
                         <td>{{item.count}}</td>
                         <td><input class="form-control" v-model="item.count" @input="reCount(item.id ,$event.target.value)" type="number"></td>
-                        <td style="white-space: nowrap;">{{(currency * item.price).toFixed(1)+' '+ lng.currency}}</td>
+                        <td style="white-space: nowrap;">{{itemPriceResult(item)}}</td>
                         <div class="action-frm">
                             <a class="action-item fake-link" @click="removeFromCart(item.id)">
                                 <span class="hidden-xs">{{lng.remove}}</span>
@@ -107,14 +107,14 @@
         props: ['ids'],
         data: function () { return data },
         computed: {
-            currency: function () { return this.$store.state.currency },
             total: function () {
                 var res = 0;
                 for (var i = 0; i < this.products.length; i++) {
                     res += this.products[i].price * this.$store.state.currency * this.products[i].count;
                 }
                 return res.toFixed(1);
-            }
+            },
+            itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created() {
             self = this
@@ -139,7 +139,7 @@
             },
             get_prodsby_ids(ids) {
                 self.products.length = 0
-                axios.get('/prodsby_ids', { params: { ids: ids } }).then(function (response) {
+                axios.get('/products_with_discount_by_ids', { params: { ids: ids } }).then(function (response) {
                     response.data.forEach(function (element, i)  {
                         element.count = self.$store.state.cart[element.id] || 1
                         self.products.push(element)

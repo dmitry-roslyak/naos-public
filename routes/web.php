@@ -44,6 +44,7 @@ Route::post('/search', 'ProductController@search');
 Route::get('/prod_filter', 'ProductController@filterBy');
 Route::get('/prod_by_id', 'ProductController@show_one');
 Route::get('/prodsby_ids', 'ProductController@show_many');
+Route::get('/products_with_discount_by_ids', 'ProductController@withDiscountShowByIds');
 Route::get('/prod_history', 'ProductController@history');
 Route::get('/prod_rnd', 'ProductController@rnd');
 

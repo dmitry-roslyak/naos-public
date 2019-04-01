@@ -31,7 +31,7 @@
                 </div>
                 <div class="btn-buy fake-link" v-if="item.available > 0" @click="buyItem(item)">
                     <i class="fa fa-cart-plus" aria-hidden="true"></i>&nbsp;&nbsp;
-                        {{(item.discount?currency * item.price - currency * item.price/100*item.discount.discount : currency * item.price).toFixed(1)+' '+lng.currency}}
+                    {{itemPriceResult(item)}}
                 </div>
                 <div class="btn-buy disabled" v-else>{{lng.not_in_stock}}</div>
             </div>
@@ -67,7 +67,7 @@
         props: ['id'],
         data: function() { return data },
         computed: {
-            currency: function () { return this.$store.state.currency }
+            itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created(){
             self = this

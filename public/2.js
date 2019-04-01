@@ -78,12 +78,16 @@ var self,
         return _data;
     },
     computed: {
-        currency: function currency() {
-            return this.$store.state.currency;
+        itemPriceResult: function itemPriceResult() {
+            var _this = this;
+
+            return function (item) {
+                return _this.$root.itemPriceResult(item);
+            };
         }
     },
     created: function created() {
-        var _this = this;
+        var _this2 = this;
 
         self = this;
         this.lng = window.lng;
@@ -93,12 +97,12 @@ var self,
             self.clientWidth();
         };
         window.onblur = function () {
-            if (_this.$route.path.indexOf("detail") > -1) clearInterval(timerId);
+            if (_this2.$route.path.indexOf("detail") > -1) clearInterval(timerId);
         };
         window.onfocus = function () {
-            if (_this.$route.path.indexOf("detail") > -1) {
+            if (_this2.$route.path.indexOf("detail") > -1) {
                 clearInterval(timerId);
-                _this.set_total_time();
+                _this2.set_total_time();
             }
         };
     },
@@ -321,17 +325,8 @@ var render = function() {
                         attrs: { "aria-hidden": "true" }
                       }),
                       _vm._v(
-                        "  \n                    " +
-                          _vm._s(
-                            (_vm.item.discount
-                              ? _vm.currency * _vm.item.price -
-                                ((_vm.currency * _vm.item.price) / 100) *
-                                  _vm.item.discount.discount
-                              : _vm.currency * _vm.item.price
-                            ).toFixed(1) +
-                              " " +
-                              _vm.lng.currency
-                          ) +
+                        "  \n                " +
+                          _vm._s(_vm.itemPriceResult(_vm.item)) +
                           "\n            "
                       )
                     ]

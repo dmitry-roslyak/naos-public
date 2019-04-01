@@ -16,6 +16,7 @@
                     <td class="td_name" v-for="specs in list[0].specs" :key="specs.name" @mouseover="reGraph(specs.name);show_graph=true" @mouseleave="show_graph=false" style="width: 12em;float:left;clear:both">
                         <!-- <i class="fa fa-bar-chart"  aria-hidden="true"></i> -->
                         {{lng[specs.name]?lng[specs.name]:specs.name}}
+                        {{specs.name == "price" ? lng.currency : ""}}
                     </td>
                 </tr>
                 <tr class="table-item t-name" @mouseover="cmpr(i)" v-for="(temp,i) in list" :key="i">
@@ -121,7 +122,7 @@
                     for (var i = 0; i < self.list.length; i++) {
                         self.list[i].specs.unshift({
                             name: 'price',
-                            value: self.list[i].price,
+                            value: self.$root.itemPriceResult(self.list[i]).split(" ")[0],
                             isComparable: true
                         })
                         chartData.labels.push(self.list[i].name); 

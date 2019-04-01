@@ -49,6 +49,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var _data = {
     lng: {},
@@ -128,7 +129,7 @@ var self, selfChart;
                 for (var i = 0; i < self.list.length; i++) {
                     self.list[i].specs.unshift({
                         name: 'price',
-                        value: self.list[i].price,
+                        value: self.$root.itemPriceResult(self.list[i]).split(" ")[0],
                         isComparable: true
                     });
                     chartData.labels.push(self.list[i].name);
@@ -270,6 +271,10 @@ var render = function() {
                                 _vm.lng[specs.name]
                                   ? _vm.lng[specs.name]
                                   : specs.name
+                              ) +
+                              "\n                    " +
+                              _vm._s(
+                                specs.name == "price" ? _vm.lng.currency : ""
                               ) +
                               "\n                "
                           )
