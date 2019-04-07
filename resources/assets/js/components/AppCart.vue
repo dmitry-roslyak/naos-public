@@ -14,11 +14,11 @@
                         <th>{{lng.count}}</th>
                         <th>{{lng.price}}</th>
                     </tr>
-                    <tr v-for="item in products" :key="item.id">
+                    <tr v-for="(item, i) in products" :key="item.id">
                         <td><img v-bind:src="'file/'+item.img_src"></td>
                         <td><router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link></td>
                         <td>{{item.count}}</td>
-                        <td><input class="form-control" v-model="item.count" @input="reCount(item.id ,$event.target.value)" type="number"></td>
+                        <td><input class="form-control" v-model="item.count" @input="reCount(item.id, i)" type="number"></td>
                         <td style="white-space: nowrap;">{{itemPriceResult(item)}}</td>
                         <div class="action-frm">
                             <a class="action-item fake-link" @click="removeFromCart(item.id)">
@@ -33,19 +33,6 @@
         <div class="col-sm-12 col-md-5">
             <app-user-info ref="userInfo" style="padding:0"></app-user-info>
             <hr>
-            <!-- <div class="form-inline">
-                <span>Способ доставки:&nbsp;</span>
-                <div class="radio">
-                    <label><input type="radio" value="standart"  name="optionsRadioso" checked>Курьер</label>
-                </div>
-            </div> -->
-            <!-- <table class="table">
-                <tr>
-                    <td>{{lng.address}}</td>
-                    <td v-if="edit"><input v-model="userInfo.adr" class="form-control myinput1"></td>
-                    <td v-else>{{userInfo.adr}}</td>
-                </tr>
-            </table> -->
             <label>{{lng.payment_type}}&nbsp;</label>
             <div class="col-xs-12">
                 <div class="radio">
@@ -64,26 +51,26 @@
                     <tbody>
                         <tr>
                             <td>{{lng.paycard_number}}</td>
-                            <td><input placeholder="4005520000011126" v-model="card.number" maxlength="19" @keyup.13="card.number = 4005520000011126;next_input(2)"
-                                    @input="chk_input(1)" class="form-control myinput1"></td>
-                            <td><i :class="cardValidate.number ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
+                            <td><input id="number" class="form-control myinput1" v-model="card.number" v-validate
+                                @keyup.13="card.number = 4005520000011126; next_input($event.target, 'month')" maxlength="19"></td>
+                            <td><i :class="validate['number'] ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                         </tr>
                         <tr>
                             <td>Exp Date</td>
                             <td>
                                 <div class="form-inline">
-                                    <input id="input2" maxlength="2" @keyup.13="next_input(3)" style="width:3em" @input="chk_input(2)"
-                                        v-model="card.expire.month" class="form-control myinput1">&nbsp;/
-                                    <input id="input3" maxlength="2" @keyup.13="next_input(4)" style="width:3em" @input="chk_input(3)" 
-                                        v-model="card.expire.year" class="form-control myinput1">
+                                    <input id="month" class="form-control myinput1" 
+                                        @keyup.13="next_input($event.target, 'year')" style="width:3em" v-model="card.expire.month" v-validate maxlength="2">&nbsp;/
+                                    <input id="year" class="form-control myinput1" 
+                                        @keyup.13="next_input($event.target, 'cvv2')" style="width:3em" v-model="card.expire.year" v-validate maxlength="2" >
                                 </div>
                             </td>
-                            <td><i :class="cardValidate.expire.month && cardValidate.expire.year ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
+                            <td><i :class="validate['month'] && validate['year'] ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                         </tr>
                         <tr>
                             <td>CVV2</td>
-                            <td><input id="input4" maxlength="4" v-model="card.cvv2" style="width:7em" @input="chk_input(4)" class="form-control myinput1"></td>
-                            <td><i :class="cardValidate.cvv2 ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
+                            <td><input id="cvv2" class="form-control myinput1" v-model="card.cvv2" v-validate style="width:7em" maxlength="4" ></td>
+                            <td><i :class="validate.cvv2 ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -95,14 +82,22 @@
 </template>
 
 <script>
-    var self, data = {
-        lng: {},
-        products: [],
-        payment: 'cash',
-        delivery: 'customer',
-        cardValidate: { number: false , expire: { month: false, year: false },  cvv2: false },
-        card: { number: '' , expire: { month: '', year: '' },  cvv2: '' }
-    };
+    var self,
+        data = {
+            lng: {},
+            products: [],
+            payment: 'cash',
+            delivery: 'customer',
+            card: { number: '', expire: { month: '', year: '' },  cvv2: '' },
+            validate: {}
+        }, 
+        validator = new Validator({
+            number: /^(\d{13,19})$/,
+            month: /^([0][1-9]|[1][0-2])$/,
+            year: /^(\d{2})$/,
+            cvv2: /^(\d{3,4})$/,
+        }, data.validate);
+
     export default {
         props: ['ids'],
         data: function () { return data },
@@ -128,8 +123,11 @@
             if(requestIDs.length) this.get_prodsby_ids(requestIDs);
         },
         methods: {
-            reCount(id, count) {
-                this.ids || this.$store.commit('cart', {id, count: +count});
+            reCount(id, i) {
+                if (!/^([1-9]\d{1,})$/.test(this.products[i].count)) {
+                    this.products[i].count = 1
+                }
+                this.ids || this.$store.commit('cart', {id, count: +this.products[i].count});
             },
             removeFromCart(id) {
                 self.products.forEach((element,i) => {
@@ -146,17 +144,11 @@
                     });
                 });
             },
-            chk_input(i) {
-                this.cardValidate.number = /^(\d{13,19})$/.test(this.card.number)
-                if((this.cardValidate.expire.month = /^([0][1-9]|[1][0-2])$/.test(this.card.expire.month)) && i==2) this.next_input(3);
-                if((this.cardValidate.expire.year = /^(\d{2})$/.test(this.card.expire.year)) && i==3) this.next_input(4);
-                this.cardValidate.cvv2 = /^(\d{3,4})$/.test(this.card.cvv2);                        
-            },
-            next_input(i) {
-                this.chk_input();
-                document.getElementById('input' + i).focus();
+            next_input(target, next) {
+                this.validate[target.id] && document.getElementById(next).focus()
             },
             to_order() {
+                if(this.payment=='pay_card' && !validator.isValid()) return;
                 axios.post('/order', {
                     products: this.products,
                     card: this.card,

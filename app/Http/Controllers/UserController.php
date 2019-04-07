@@ -61,13 +61,11 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $validation = Validator::make($data->all(), [
-            'user.fname' => 'required|min:1',
-            'user.lname' => 'required|min:1',
-            'user.tel' => 'required|numeric|min:5',
-            // 'user.adr' => 'required|min:5',
+            'user.name' => 'required|min:3',
+            'user.tel' => 'required|numeric|min:3'
         ]);
         if($validation->fails()) return response($validation->errors(), 422);
-        $user->update(collect($data->user)->only(['fname','lname', 'tel'])->all());
+        $user->update(collect($data->user)->only(['name', 'tel'])->all());
     }
     public function info(Request $data)
     {

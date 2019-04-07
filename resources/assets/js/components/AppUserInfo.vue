@@ -8,19 +8,16 @@
             <table class="table user-info-table">
                 <tbody>
                     <tr>
-                        <td>{{lng.fname}}</td>
-                        <td v-if="edit"><input v-model="userInfo.fname" class="form-control myinput1"></td>
-                        <td v-else>{{userInfo.fname}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{lng.lname}}</td>
-                        <td v-if="edit"><input v-model="userInfo.lname" class="form-control myinput1"></td>
-                        <td v-else>{{userInfo.lname}}</td>
+                        <td>{{lng.fname+', '+lng.lname}}</td>
+                        <td v-if="edit"><input v-model="userInfo.name" v-validate id="name" class="form-control myinput1"></td>
+                        <td v-else>{{userInfo.name}}</td>
+                        <td><i :class="validate.name ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                     </tr>
                     <tr>
                         <td>{{lng.tel_number}}</td>
-                        <td v-if="edit"><input v-model="userInfo.tel" class="form-control myinput1"></td>
+                        <td v-if="edit"><input v-model="userInfo.tel" v-validate id="tel" class="form-control myinput1" maxlength="11"></td>
                         <td v-else>{{userInfo.tel}}</td>
+                        <td><i :class="validate.tel ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                     </tr>
                 </tbody>
             </table>
@@ -29,12 +26,19 @@
 </template>
 
 <script>
-    var self, data = {
-        lng: {},
-        edit: true,
-        userInfo: {},
-        guest: false
-    };
+    var self,
+        data = {
+            lng: {},
+            edit: true,
+            userInfo: {},
+            guest: false,
+            validate: {}
+        },
+        validator = new Validator({
+            name: /(^\S{1,128}\s+\S{1,128}$)/,
+            tel: /^(\d{3,11})$/
+        }, data.validate);
+
     export default {
         data: function () { return data; },
         created() {
@@ -52,12 +56,14 @@
             usr_info() {
                 axios.get('/user_info').then(function (response) {
                     self.userInfo = response.data;
-                    if (self.userInfo.fname) self.edit = false;
+                    self.$nextTick(function (params) {
+                        self.edit =  !validator.isValid();
+                    })
                 });
             },
             upd_usr_info() {
                 if (!self.edit) self.edit = true;
-                else {
+                else if(validator.isValid()){
                     self.edit = false;
                     axios.post('/update_user_info', { user: self.userInfo, });
                 }

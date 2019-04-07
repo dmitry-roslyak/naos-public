@@ -32,17 +32,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 var self,
     _data = {
     lng: {},
     edit: true,
     userInfo: {},
-    guest: false
-};
+    guest: false,
+    validate: {}
+},
+    validator = new Validator({
+    name: /(^\S{1,128}\s+\S{1,128}$)/,
+    tel: /^(\d{3,11})$/
+}, _data.validate);
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return _data;
@@ -62,11 +65,13 @@ var self,
         usr_info: function usr_info() {
             axios.get('/user_info').then(function (response) {
                 self.userInfo = response.data;
-                if (self.userInfo.fname) self.edit = false;
+                self.$nextTick(function (params) {
+                    self.edit = !validator.isValid();
+                });
             });
         },
         upd_usr_info: function upd_usr_info() {
-            if (!self.edit) self.edit = true;else {
+            if (!self.edit) self.edit = true;else if (validator.isValid()) {
                 self.edit = false;
                 axios.post('/update_user_info', { user: self.userInfo });
             }
@@ -112,7 +117,7 @@ var render = function() {
       _c("table", { staticClass: "table user-info-table" }, [
         _c("tbody", [
           _c("tr", [
-            _c("td", [_vm._v(_vm._s(_vm.lng.fname))]),
+            _c("td", [_vm._v(_vm._s(_vm.lng.fname + ", " + _vm.lng.lname))]),
             _vm._v(" "),
             _vm.edit
               ? _c("td", [
@@ -121,52 +126,31 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.userInfo.fname,
-                        expression: "userInfo.fname"
-                      }
+                        value: _vm.userInfo.name,
+                        expression: "userInfo.name"
+                      },
+                      { name: "validate", rawName: "v-validate" }
                     ],
                     staticClass: "form-control myinput1",
-                    domProps: { value: _vm.userInfo.fname },
+                    attrs: { id: "name" },
+                    domProps: { value: _vm.userInfo.name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.userInfo, "fname", $event.target.value)
+                        _vm.$set(_vm.userInfo, "name", $event.target.value)
                       }
                     }
                   })
                 ])
-              : _c("td", [_vm._v(_vm._s(_vm.userInfo.fname))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("td", [_vm._v(_vm._s(_vm.lng.lname))]),
+              : _c("td", [_vm._v(_vm._s(_vm.userInfo.name))]),
             _vm._v(" "),
-            _vm.edit
-              ? _c("td", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.userInfo.lname,
-                        expression: "userInfo.lname"
-                      }
-                    ],
-                    staticClass: "form-control myinput1",
-                    domProps: { value: _vm.userInfo.lname },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.userInfo, "lname", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              : _c("td", [_vm._v(_vm._s(_vm.userInfo.lname))])
+            _c("td", [
+              _c("i", {
+                class: _vm.validate.name ? "fa fa-check-circle" : "fa fa-times"
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("tr", [
@@ -181,9 +165,11 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.userInfo.tel,
                         expression: "userInfo.tel"
-                      }
+                      },
+                      { name: "validate", rawName: "v-validate" }
                     ],
                     staticClass: "form-control myinput1",
+                    attrs: { id: "tel", maxlength: "11" },
                     domProps: { value: _vm.userInfo.tel },
                     on: {
                       input: function($event) {
@@ -195,7 +181,13 @@ var render = function() {
                     }
                   })
                 ])
-              : _c("td", [_vm._v(_vm._s(_vm.userInfo.tel))])
+              : _c("td", [_vm._v(_vm._s(_vm.userInfo.tel))]),
+            _vm._v(" "),
+            _c("td", [
+              _c("i", {
+                class: _vm.validate.tel ? "fa fa-check-circle" : "fa fa-times"
+              })
+            ])
           ])
         ])
       ])

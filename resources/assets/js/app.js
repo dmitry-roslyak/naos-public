@@ -4,15 +4,17 @@ import store from "./store";
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'chart.js';
+import Validator from './validate.js'
+window.Validator = Validator;
 
-firebase.initializeApp({
-    apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
-    authDomain: "dev-naos.firebaseapp.com",
-    databaseURL: "https://dev-naos.firebaseio.com",
-    projectId: "dev-naos",
-    storageBucket: "dev-naos.appspot.com",
-    messagingSenderId: "515353712594"
-});
+// firebase.initializeApp({
+//     apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
+//     authDomain: "dev-naos.firebaseapp.com",
+//     databaseURL: "https://dev-naos.firebaseio.com",
+//     projectId: "dev-naos",
+//     storageBucket: "dev-naos.appspot.com",
+//     messagingSenderId: "515353712594"
+// });
 
 var data = {
     lng: null,
@@ -31,6 +33,24 @@ const app = new Vue({
         if (window.Laravel.user) this.user = window.Laravel.user.name;
     },
     methods: {
+        Validator: function (rules, data) {
+            // this = arguments
+            return function(property) {
+                var error = [];
+                    console.log(property)
+
+                +function isValid(rule, data, key) {
+                    if(property && rule[property] && !rule[property].test(data[property])) {
+                        return error.push({field: property});
+                    } else if(typeof rule === 'object') {
+                        Object.keys(rule).forEach(key => isValid(rule[key], data[key], key))
+                    } else if(!rule.test(data)) {
+                        error.push({field: key});
+                    }
+                }(rules, data);
+                return error.length < 1;
+            }
+        },
         itemPriceResult(item) {
             return (item.discount ? this.$store.state.currency * item.price - this.$store.state.currency * item.price / 100 * item.discount.discount : this.$store.state.currency * item.price).toFixed(1) + " " + this.lng.currency;
         },

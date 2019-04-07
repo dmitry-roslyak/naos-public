@@ -88,19 +88,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var self,
     _data = {
@@ -108,9 +95,16 @@ var self,
     products: [],
     payment: 'cash',
     delivery: 'customer',
-    cardValidate: { number: false, expire: { month: false, year: false }, cvv2: false },
-    card: { number: '', expire: { month: '', year: '' }, cvv2: '' }
-};
+    card: { number: '', expire: { month: '', year: '' }, cvv2: '' },
+    validate: {}
+},
+    validator = new Validator({
+    number: /^(\d{13,19})$/,
+    month: /^([0][1-9]|[1][0-2])$/,
+    year: /^(\d{2})$/,
+    cvv2: /^(\d{3,4})$/
+}, _data.validate);
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['ids'],
     data: function data() {
@@ -145,8 +139,11 @@ var self,
     },
 
     methods: {
-        reCount: function reCount(id, count) {
-            this.ids || this.$store.commit('cart', { id: id, count: +count });
+        reCount: function reCount(id, i) {
+            if (!/^([1-9]\d{1,})$/.test(this.products[i].count)) {
+                this.products[i].count = 1;
+            }
+            this.ids || this.$store.commit('cart', { id: id, count: +this.products[i].count });
         },
         removeFromCart: function removeFromCart(id) {
             self.products.forEach(function (element, i) {
@@ -163,17 +160,11 @@ var self,
                 });
             });
         },
-        chk_input: function chk_input(i) {
-            this.cardValidate.number = /^(\d{13,19})$/.test(this.card.number);
-            if ((this.cardValidate.expire.month = /^([0][1-9]|[1][0-2])$/.test(this.card.expire.month)) && i == 2) this.next_input(3);
-            if ((this.cardValidate.expire.year = /^(\d{2})$/.test(this.card.expire.year)) && i == 3) this.next_input(4);
-            this.cardValidate.cvv2 = /^(\d{3,4})$/.test(this.card.cvv2);
-        },
-        next_input: function next_input(i) {
-            this.chk_input();
-            document.getElementById('input' + i).focus();
+        next_input: function next_input(target, next) {
+            this.validate[target.id] && document.getElementById(next).focus();
         },
         to_order: function to_order() {
+            if (this.payment == 'pay_card' && !validator.isValid()) return;
             axios.post('/order', {
                 products: this.products,
                 card: this.card,
@@ -256,7 +247,7 @@ var render = function() {
               _c("th", [_vm._v(_vm._s(_vm.lng.price))])
             ]),
             _vm._v(" "),
-            _vm._l(_vm.products, function(item) {
+            _vm._l(_vm.products, function(item, i) {
               return _c("tr", { key: item.id }, [
                 _c("td", [
                   _c("img", { attrs: { src: "file/" + item.img_src } })
@@ -302,7 +293,7 @@ var render = function() {
                           _vm.$set(item, "count", $event.target.value)
                         },
                         function($event) {
-                          _vm.reCount(item.id, $event.target.value)
+                          _vm.reCount(item.id, i)
                         }
                       ]
                     }
@@ -426,13 +417,11 @@ var render = function() {
                             rawName: "v-model",
                             value: _vm.card.number,
                             expression: "card.number"
-                          }
+                          },
+                          { name: "validate", rawName: "v-validate" }
                         ],
                         staticClass: "form-control myinput1",
-                        attrs: {
-                          placeholder: "4005520000011126",
-                          maxlength: "19"
-                        },
+                        attrs: { id: "number", maxlength: "19" },
                         domProps: { value: _vm.card.number },
                         on: {
                           keyup: function($event) {
@@ -443,26 +432,21 @@ var render = function() {
                               return null
                             }
                             _vm.card.number = 4005520000011126
-                            _vm.next_input(2)
+                            _vm.next_input($event.target, "month")
                           },
-                          input: [
-                            function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.card, "number", $event.target.value)
-                            },
-                            function($event) {
-                              _vm.chk_input(1)
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
                             }
-                          ]
+                            _vm.$set(_vm.card, "number", $event.target.value)
+                          }
                         }
                       })
                     ]),
                     _vm._v(" "),
                     _c("td", [
                       _c("i", {
-                        class: _vm.cardValidate.number
+                        class: _vm.validate["number"]
                           ? "fa fa-check-circle"
                           : "fa fa-times"
                       })
@@ -481,11 +465,12 @@ var render = function() {
                               rawName: "v-model",
                               value: _vm.card.expire.month,
                               expression: "card.expire.month"
-                            }
+                            },
+                            { name: "validate", rawName: "v-validate" }
                           ],
                           staticClass: "form-control myinput1",
                           staticStyle: { width: "3em" },
-                          attrs: { id: "input2", maxlength: "2" },
+                          attrs: { id: "month", maxlength: "2" },
                           domProps: { value: _vm.card.expire.month },
                           on: {
                             keyup: function($event) {
@@ -495,23 +480,18 @@ var render = function() {
                               ) {
                                 return null
                               }
-                              _vm.next_input(3)
+                              _vm.next_input($event.target, "year")
                             },
-                            input: [
-                              function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.card.expire,
-                                  "month",
-                                  $event.target.value
-                                )
-                              },
-                              function($event) {
-                                _vm.chk_input(2)
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
                               }
-                            ]
+                              _vm.$set(
+                                _vm.card.expire,
+                                "month",
+                                $event.target.value
+                              )
+                            }
                           }
                         }),
                         _vm._v(" /\n                                "),
@@ -522,11 +502,12 @@ var render = function() {
                               rawName: "v-model",
                               value: _vm.card.expire.year,
                               expression: "card.expire.year"
-                            }
+                            },
+                            { name: "validate", rawName: "v-validate" }
                           ],
                           staticClass: "form-control myinput1",
                           staticStyle: { width: "3em" },
-                          attrs: { id: "input3", maxlength: "2" },
+                          attrs: { id: "year", maxlength: "2" },
                           domProps: { value: _vm.card.expire.year },
                           on: {
                             keyup: function($event) {
@@ -536,23 +517,18 @@ var render = function() {
                               ) {
                                 return null
                               }
-                              _vm.next_input(4)
+                              _vm.next_input($event.target, "cvv2")
                             },
-                            input: [
-                              function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.card.expire,
-                                  "year",
-                                  $event.target.value
-                                )
-                              },
-                              function($event) {
-                                _vm.chk_input(3)
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
                               }
-                            ]
+                              _vm.$set(
+                                _vm.card.expire,
+                                "year",
+                                $event.target.value
+                              )
+                            }
                           }
                         })
                       ])
@@ -561,8 +537,7 @@ var render = function() {
                     _c("td", [
                       _c("i", {
                         class:
-                          _vm.cardValidate.expire.month &&
-                          _vm.cardValidate.expire.year
+                          _vm.validate["month"] && _vm.validate["year"]
                             ? "fa fa-check-circle"
                             : "fa fa-times"
                       })
@@ -580,31 +555,27 @@ var render = function() {
                             rawName: "v-model",
                             value: _vm.card.cvv2,
                             expression: "card.cvv2"
-                          }
+                          },
+                          { name: "validate", rawName: "v-validate" }
                         ],
                         staticClass: "form-control myinput1",
                         staticStyle: { width: "7em" },
-                        attrs: { id: "input4", maxlength: "4" },
+                        attrs: { id: "cvv2", maxlength: "4" },
                         domProps: { value: _vm.card.cvv2 },
                         on: {
-                          input: [
-                            function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.card, "cvv2", $event.target.value)
-                            },
-                            function($event) {
-                              _vm.chk_input(4)
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
                             }
-                          ]
+                            _vm.$set(_vm.card, "cvv2", $event.target.value)
+                          }
                         }
                       })
                     ]),
                     _vm._v(" "),
                     _c("td", [
                       _c("i", {
-                        class: _vm.cardValidate.cvv2
+                        class: _vm.validate.cvv2
                           ? "fa fa-check-circle"
                           : "fa fa-times"
                       })

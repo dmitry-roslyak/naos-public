@@ -67982,6 +67982,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase_auth__ = __webpack_require__("./node_modules/firebase/auth/dist/index.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js__ = __webpack_require__("./node_modules/chart.js/src/chart.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_chart_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__validate_js__ = __webpack_require__("./resources/assets/js/validate.js");
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 
 
@@ -67989,14 +67991,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-__WEBPACK_IMPORTED_MODULE_3_firebase_app___default.a.initializeApp({
-    apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
-    authDomain: "dev-naos.firebaseapp.com",
-    databaseURL: "https://dev-naos.firebaseio.com",
-    projectId: "dev-naos",
-    storageBucket: "dev-naos.appspot.com",
-    messagingSenderId: "515353712594"
-});
+
+window.Validator = __WEBPACK_IMPORTED_MODULE_6__validate_js__["a" /* default */];
+
+// firebase.initializeApp({
+//     apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
+//     authDomain: "dev-naos.firebaseapp.com",
+//     databaseURL: "https://dev-naos.firebaseio.com",
+//     projectId: "dev-naos",
+//     storageBucket: "dev-naos.appspot.com",
+//     messagingSenderId: "515353712594"
+// });
 
 var _data = {
     lng: null,
@@ -68018,6 +68023,24 @@ var app = new Vue({
     },
 
     methods: {
+        Validator: function Validator(rules, data) {
+            // this = arguments
+            return function (property) {
+                var error = [];
+                console.log(property) + function isValid(rule, data, key) {
+                    if (property && rule[property] && !rule[property].test(data[property])) {
+                        return error.push({ field: property });
+                    } else if ((typeof rule === "undefined" ? "undefined" : _typeof(rule)) === 'object') {
+                        Object.keys(rule).forEach(function (key) {
+                            return isValid(rule[key], data[key], key);
+                        });
+                    } else if (!rule.test(data)) {
+                        error.push({ field: key });
+                    }
+                }(rules, data);
+                return error.length < 1;
+            };
+        },
         itemPriceResult: function itemPriceResult(item) {
             return (item.discount ? this.$store.state.currency * item.price - this.$store.state.currency * item.price / 100 * item.discount.discount : this.$store.state.currency * item.price).toFixed(1) + " " + this.lng.currency;
         },
@@ -68437,6 +68460,39 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         }
     }
 }));
+
+/***/ }),
+
+/***/ "./resources/assets/js/validate.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var rulesHandlers = {};
+
+Vue.directive('validate', function (el, binding, vnode, oldVnode) {
+    rulesHandlers[el.getAttribute('id')] && oldVnode.data.domProps && vnode.data.domProps.value != oldVnode.data.domProps.value && rulesHandlers[el.getAttribute('id')](vnode.data.domProps.value);
+});
+
+function Validator(rules, state) {
+    var _loop = function _loop(ruleName) {
+        rulesHandlers[ruleName] = function (value) {
+            Vue.set(state, ruleName, rules[ruleName].test(value));
+        };
+    };
+
+    for (var ruleName in rules) {
+        _loop(ruleName);
+    }
+    function isValid() {
+        return Object.keys(state).length > 0 && Object.keys(state).filter(function (ruleName) {
+            return state[ruleName] == false;
+        }).length < 1;
+    }
+    return {
+        isValid: isValid
+    };
+}
+/* harmony default export */ __webpack_exports__["a"] = (Validator);
 
 /***/ }),
 
