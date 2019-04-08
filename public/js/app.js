@@ -68403,11 +68403,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         set_currency: function set_currency(state, value) {
             state.currency = value;
         },
-        setFilter: function setFilter(state, id) {
-            if (id) {
-                var i = state.flt_ids.indexOf(id);
-                i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
-            } else state.flt_ids.length = 0;
+        filterReset: function filterReset(state) {
+            state.flt_ids = [];
+        },
+        filter: function filter(state, id) {
+            var i = state.flt_ids.indexOf(id);
+            i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i, 1);
         },
         compare: function compare(state, item) {
             var categoryIndex = this.getters.compareCategoryIndex(item.category_id);

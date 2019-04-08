@@ -108,20 +108,20 @@ var self,
             for (var i = 0; i < checkList.length; i++) {
                 checkList[i].firstChild.firstChild.checked = false;
             }
-            this.$store.commit('setFilter');
+            this.$store.commit('filterReset');
+            self.$parent.getSelectedProd().then(function () {
+                return self.$refs.range && self.$refs.range.$emit('reset');
+            });
         },
         get_filters: function get_filters(name, id) {
             this.$router.push('/products/' + name);
             axios.get('/get_filters?id=' + id).then(function (response) {
                 self.filters = response.data;
-                self.$parent.getSelectedProd().then(function () {
-                    return self.$refs.range.$emit('reset');
-                });
             });
             this.flt_reset();
         },
         toFilter: function toFilter(e) {
-            this.$store.commit('setFilter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);
+            this.$store.commit('filter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);
             _.throttle(this.$parent.getSelectedProd, 750);
         }
     }

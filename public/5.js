@@ -87,7 +87,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var self,
     _data = {
@@ -268,8 +267,6 @@ var render = function() {
                   ],
                   1
                 ),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(item.count))]),
                 _vm._v(" "),
                 _c("td", [
                   _c("input", {

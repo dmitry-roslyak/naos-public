@@ -25,11 +25,12 @@ export default new Vuex.Store({
         set_currency(state,value){
             state.currency = value;
         },
-        setFilter(state, id) {
-            if(id) {
-                var i = state.flt_ids.indexOf(id)
-                i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i,1)
-            } else state.flt_ids.length = 0
+        filterReset(state) {
+            state.flt_ids = []
+        },
+        filter(state, id) {
+            var i = state.flt_ids.indexOf(id)
+            i < 0 ? state.flt_ids.push(id) : state.flt_ids.splice(i,1)
         },
         compare(state, item) {
             var categoryIndex = this.getters.compareCategoryIndex(item.category_id)

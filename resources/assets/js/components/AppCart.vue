@@ -17,7 +17,6 @@
                     <tr v-for="(item, i) in products" :key="item.id">
                         <td><img v-bind:src="'file/'+item.img_src"></td>
                         <td><router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link></td>
-                        <td>{{item.count}}</td>
                         <td><input class="form-control" v-model="item.count" @input="reCount(item.id, i)" type="number"></td>
                         <td style="white-space: nowrap;">{{itemPriceResult(item)}}</td>
                         <div class="action-frm">
