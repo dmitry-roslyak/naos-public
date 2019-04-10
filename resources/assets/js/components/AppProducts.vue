@@ -9,15 +9,15 @@
                         {{items.length}}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="fake-link" @click="paginator.take = 20;getSelectedProd();">20</a></li>
-                        <li><a class="fake-link" @click="paginator.take = 30;getSelectedProd();">30</a></li>
-                        <li><a class="fake-link" @click="paginator.take = 40;getSelectedProd();">40</a></li>
+                        <li><a class="fake-link" @click="paginator.take = 20">20</a></li>
+                        <li><a class="fake-link" @click="paginator.take = 30">30</a></li>
+                        <li><a class="fake-link" @click="paginator.take = 40">40</a></li>
                     </ul>
                 </div>
                 ({{paginator.total}})
                 <div class="pull-right">
                     {{lng.sortby}}
-                    <select v-model="ordby" class="form-control input-sm" id="sortby" @change="getSelectedProd()"> 
+                    <select v-model="ordby" class="form-control input-sm" id="sortby" @change="productsfetch()"> 
                         <option value="bydef">{{lng.bydef}}</option>
                         <option value="asc_price">{{lng.asc_price}}</option>
                         <option value="desc_price">{{lng.desc_price}}</option>
@@ -91,23 +91,25 @@
         paginator: {
             total: 0,
             take: 30,
-            skip: 0,
-            func: null
+            skip: 0
         },
     };
     export default {
         props: ['category'],
         data: function () {return data;},
+        watch: {
+            '$store.state.flt_ids': 'productsfetch',
+            'paginator.skip': 'productsfetch',
+            'paginator.take': 'productsfetch',
+            // 'price.range': 'productsfetch',
+        },
         computed: {
             currency() { return this.$store.state.currency },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
-        mounted() {
+        created() {
             self = this; 
             this.lng = window.lng;
-            this.paginator.func = this.getSelectedProd;
-            if(window.Laravel.catalog[this.category]) 
-                this.getSelectedProd();
         },
         methods: {
             imgReady(e){
@@ -118,7 +120,7 @@
                 e.style.visibility = 'initial';
                 e.style.padding = "4em";
             },
-            getSelectedProd: debounce(function() {
+            productsfetch: debounce(function() {
                 var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
                 axios.get('prod_filter', {
                     params: {
@@ -146,7 +148,7 @@
                     self.price.array = n.sort(function(t, e) {
                         return t - e
                     })
-                    self.paginator.total = response.data[0]
+                    self.paginator.total = response.data[0];
                 });
             }, 750),
             addToCart(i, id){

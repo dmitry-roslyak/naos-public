@@ -99,14 +99,19 @@ var self,
     paginator: {
         total: 0,
         take: 30,
-        skip: 0,
-        func: null
+        skip: 0
     }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['category'],
     data: function data() {
         return _data;
+    },
+    watch: {
+        '$store.state.flt_ids': 'productsfetch',
+        'paginator.skip': 'productsfetch',
+        'paginator.take': 'productsfetch'
+        // 'price.range': 'productsfetch',
     },
     computed: {
         currency: function currency() {
@@ -120,11 +125,9 @@ var self,
             };
         }
     },
-    mounted: function mounted() {
+    created: function created() {
         self = this;
         this.lng = window.lng;
-        this.paginator.func = this.getSelectedProd;
-        if (window.Laravel.catalog[this.category]) this.getSelectedProd();
     },
 
     methods: {
@@ -137,7 +140,7 @@ var self,
             e.style.padding = "4em";
         },
 
-        getSelectedProd: debounce(function () {
+        productsfetch: debounce(function () {
             var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
             axios.get('prod_filter', {
                 params: {
@@ -264,7 +267,6 @@ var render = function() {
                         on: {
                           click: function($event) {
                             _vm.paginator.take = 20
-                            _vm.getSelectedProd()
                           }
                         }
                       },
@@ -280,7 +282,6 @@ var render = function() {
                         on: {
                           click: function($event) {
                             _vm.paginator.take = 30
-                            _vm.getSelectedProd()
                           }
                         }
                       },
@@ -296,7 +297,6 @@ var render = function() {
                         on: {
                           click: function($event) {
                             _vm.paginator.take = 40
-                            _vm.getSelectedProd()
                           }
                         }
                       },
@@ -346,7 +346,7 @@ var render = function() {
                           : $$selectedVal[0]
                       },
                       function($event) {
-                        _vm.getSelectedProd()
+                        _vm.productsfetch()
                       }
                     ]
                   }

@@ -86,10 +86,7 @@ var self,
 
     methods: {
         rangeIndexReset: function rangeIndexReset() {
-            this.price.range = [this.price.array[this.price.indexFrom] * this.$store.state.currency, this.price.array[this.price.indexTo] * this.$store.state.currency];
-        },
-        priceRangeChange: function priceRangeChange() {
-            this.$parent.getSelectedProd();
+            if (this.price.array.length) this.price.range = [this.price.array[this.price.indexFrom] * this.$store.state.currency, this.price.array[this.price.indexTo] * this.$store.state.currency];
         },
 
         expand: throttle(function (el) {
@@ -101,13 +98,11 @@ var self,
             i ? $(".ctg-frm").slideDown() : $(".ctg-frm").slideUp();
         },
         flt_reset: function flt_reset() {
-            this.price.range = [null, null];
             var checkList = document.getElementsByClassName('checkbox');
             for (var i = 0; i < checkList.length; i++) {
                 checkList[i].firstChild.firstChild.checked = false;
             }
             this.$store.commit('filterReset');
-            // self.$parent.getSelectedProd().then(() => self.$refs.range && self.$refs.range.$emit('reset'))
         },
         get_filters: function get_filters(name, id) {
             this.$router.push('/products/' + name);
@@ -118,7 +113,6 @@ var self,
         },
         toFilter: function toFilter(e) {
             this.$store.commit('filter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);
-            this.$parent.getSelectedProd();
         }
     }
 });
@@ -158,7 +152,6 @@ var self;
     mounted: function mounted() {
         self = this;
         this.init();
-        this.$emit("ready");
     },
 
     methods: {
@@ -401,17 +394,12 @@ var render = function() {
                 attrs: { type: "number" },
                 domProps: { value: _vm.price.range[0] },
                 on: {
-                  input: [
-                    function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.price.range, 0, _vm._n($event.target.value))
-                    },
-                    function($event) {
-                      _vm.priceRangeChange()
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
                     }
-                  ],
+                    _vm.$set(_vm.price.range, 0, _vm._n($event.target.value))
+                  },
                   blur: function($event) {
                     _vm.$forceUpdate()
                   }
@@ -437,17 +425,12 @@ var render = function() {
                 attrs: { type: "number" },
                 domProps: { value: _vm.price.range[1] },
                 on: {
-                  input: [
-                    function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.price.range, 1, _vm._n($event.target.value))
-                    },
-                    function($event) {
-                      _vm.priceRangeChange()
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
                     }
-                  ],
+                    _vm.$set(_vm.price.range, 1, _vm._n($event.target.value))
+                  },
                   blur: function($event) {
                     _vm.$forceUpdate()
                   }
@@ -464,7 +447,6 @@ var render = function() {
               on: {
                 change: function($event) {
                   _vm.rangeIndexReset()
-                  _vm.priceRangeChange()
                 },
                 ready: function($event) {
                   _vm.rangeIndexReset()

@@ -19,9 +19,9 @@
                 <i class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
             </div>
             <div class="flip">
-                {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[0]" @input="priceRangeChange()"><span class="input-group-addon">{{lng.currency}}</span></div>
-                {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[1]" @input="priceRangeChange()"><span class="input-group-addon">{{lng.currency}}</span></div> 
-                <range v-model="price" ref="range" style="margin-top:8px" @change="rangeIndexReset();priceRangeChange()" @ready="rangeIndexReset()"></range>
+                {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[0]"><span class="input-group-addon">{{lng.currency}}</span></div>
+                {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[1]"><span class="input-group-addon">{{lng.currency}}</span></div> 
+                <range v-model="price" ref="range" style="margin-top:8px" @change="rangeIndexReset()" @ready="rangeIndexReset()"></range>
             </div>
         </div>
         <div class="thumbnail flt-grp" v-for="(filter,i1) in filters" :key="filter.id">
@@ -74,10 +74,8 @@
         },
         methods: {
             rangeIndexReset(){
-                this.price.range = [ this.price.array[this.price.indexFrom] * this.$store.state.currency , this.price.array[this.price.indexTo] * this.$store.state.currency ];
-            },
-            priceRangeChange() {
-                this.$parent.getSelectedProd()
+                if(this.price.array.length)
+                    this.price.range = [ this.price.array[this.price.indexFrom] * this.$store.state.currency , this.price.array[this.price.indexTo] * this.$store.state.currency ];
             },
             expand: throttle(function(el) {
                 $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();
@@ -88,13 +86,11 @@
                 i?$(".ctg-frm").slideDown():$(".ctg-frm").slideUp();
             },
             flt_reset(){
-                this.price.range = [null, null];
                 var checkList = document.getElementsByClassName('checkbox');
                 for (var i = 0; i < checkList.length; i++) {
                     checkList[i].firstChild.firstChild.checked = false;
                 }
                 this.$store.commit('filterReset')
-                // self.$parent.getSelectedProd().then(() => self.$refs.range && self.$refs.range.$emit('reset'))
             },
             get_filters(name, id) {
                 this.$router.push('/products/'+name);
@@ -105,7 +101,6 @@
             },
             toFilter(e){
                 this.$store.commit('filter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);
-                this.$parent.getSelectedProd()
             }
         }
     }

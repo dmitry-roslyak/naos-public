@@ -6366,15 +6366,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
-        skip: function skip() {
-            this.value.skip = (this.currentPage - 1) * this.value.take;
-            this.value.func();
-            window.scrollTo(0, 0);
-            // window.scrollY = 0;
-        },
         page: function page(i) {
             this.currentPage = i;
-            this.skip();
+            this.value.skip = (this.currentPage - 1) * this.value.take;
+            window.scrollTo(0, 0);
+            // window.scrollY = 0;
         }
     }
 });

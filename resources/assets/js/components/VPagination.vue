@@ -34,15 +34,11 @@
             pageCount() { return Math.ceil(this.value.total/this.value.take) || 1}
         },
         methods: {
-            skip(){
-                this.value.skip = (this.currentPage-1)*this.value.take;
-                this.value.func();
-                window.scrollTo(0,0)
-                // window.scrollY = 0;
-            },
             page(i){
                 this.currentPage = i;
-                this.skip()
+                this.value.skip = (this.currentPage-1)*this.value.take;
+                window.scrollTo(0,0)
+                // window.scrollY = 0;
             },
         }
     }

@@ -24,7 +24,6 @@
         mounted() {
             self = this
             this.init()
-            this.$emit("ready")
         },
         methods: {
             moveTo: function(circle, e, bar, filled, circles, offset) {

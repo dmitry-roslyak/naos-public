@@ -48,8 +48,7 @@
         paginator: {
             total: 0,
             take: 30,
-            skip: 0,
-            func: null
+            skip: 0
         },
     };
     var formatter = new Intl.DateTimeFormat([] , {
@@ -62,10 +61,12 @@
     export default {
         props: ['productId'],
         data: function() {return data},
+        watch: {
+            'paginator.skip': 'show_comments',
+        },
         mounted() {
             self = this;
             this.lng = window.lng;
-            this.paginator.func = this.show_comments
             this.show_comments();
             window.socket.send(JSON.stringify({
                 "event": "pusher:subscribe",
