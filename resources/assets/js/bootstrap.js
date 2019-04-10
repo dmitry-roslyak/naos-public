@@ -53,12 +53,26 @@ window.socket.send = function (){
     console.log('socket disabled')
 }
 // window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
-window._ = {};
 
-window._.throttle = function (func, timeout) {
-    if(this.throttle.id) clearTimeout(this.throttle.id);
+window.debounce = function (func, timeout) {
+    var id;
+    return function () {
+        f = func.bind(this, ...arguments)
+        
+        if(id) clearTimeout(id);
 
-    this.throttle.id = setTimeout(function () {
-        func();
-    }, timeout);
+        id = setTimeout(f, timeout);
+    }
+}
+
+window.throttle = function (func, timeout) {
+    var id;
+    return function () {
+        if(!id){ 
+            func.apply(this, arguments);
+            id = setTimeout(function () {
+                id = null;
+            }, timeout);
+        }
+    }
 }

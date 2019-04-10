@@ -50,8 +50,6 @@
 <script>
     const range = require('./VRange.vue')
     // import range from './VRange.vue'
-    // var debounce = require('lodash.debounce');
-    var throttle = require('lodash.throttle');
     var self, data = {
         lng: {},
         catalog: [],
@@ -79,7 +77,7 @@
                 this.price.range = [ this.price.array[this.price.indexFrom] * this.$store.state.currency , this.price.array[this.price.indexTo] * this.$store.state.currency ];
             },
             priceRangeChange() {
-                _.throttle(this.$parent.getSelectedProd, 750)
+                this.$parent.getSelectedProd()
             },
             expand: throttle(function(el) {
                 $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();
@@ -96,7 +94,7 @@
                     checkList[i].firstChild.firstChild.checked = false;
                 }
                 this.$store.commit('filterReset')
-                self.$parent.getSelectedProd().then(() => self.$refs.range && self.$refs.range.$emit('reset'))
+                // self.$parent.getSelectedProd().then(() => self.$refs.range && self.$refs.range.$emit('reset'))
             },
             get_filters(name, id) {
                 this.$router.push('/products/'+name);
@@ -107,7 +105,7 @@
             },
             toFilter(e){
                 this.$store.commit('filter', this.filters[e.target.dataset.i1].values[e.target.dataset.i2].id);
-                _.throttle(this.$parent.getSelectedProd, 750)
+                this.$parent.getSelectedProd()
             }
         }
     }

@@ -6181,8 +6181,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var self,
     _data = {
     lng: {},
-    search_result: null,
-    search_text: ''
+    search_result: null
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -6212,19 +6211,15 @@ var self,
             compare.blur();
             this.$router.push("/compare/" + JSON.stringify(this.$store.state.compare[i].array));
         },
-        toSearch: function toSearch() {
-            if (!this.search_text.length) {
-                self.search_result = null;
-                return;
-            }
-            _.throttle(function () {
-                axios.post('/search', {
-                    search: self.search_text
-                }).then(function (response) {
-                    self.search_result = response.data;
-                });
-            }, 500);
-        }
+
+        toSearch: debounce(function (text) {
+            self.search_result = null;
+            text.length && axios.post('/search', {
+                search: text
+            }).then(function (response) {
+                self.search_result = response.data;
+            });
+        }, 600)
     }
 });
 
@@ -52262,33 +52257,16 @@ var render = function() {
           { staticClass: "input-group", staticStyle: { "margin-top": "14px" } },
           [
             _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.search_text,
-                  expression: "search_text"
-                }
-              ],
               staticClass: "form-control search-input",
               attrs: {
                 type: "text",
                 placeholder: _vm.lng.search,
                 autofocus: ""
               },
-              domProps: { value: _vm.search_text },
               on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.search_text = $event.target.value
-                  },
-                  function($event) {
-                    _vm.toSearch()
-                  }
-                ]
+                input: function($event) {
+                  _vm.toSearch($event.target.value)
+                }
               }
             }),
             _vm._v(" "),
@@ -68156,14 +68134,28 @@ window.socket.send = function () {
     console.log('socket disabled');
 };
 // window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
-window._ = {};
 
-window._.throttle = function (func, timeout) {
-    if (this.throttle.id) clearTimeout(this.throttle.id);
+window.debounce = function (func, timeout) {
+    var id;
+    return function () {
+        f = func.bind.apply(func, [this].concat(Array.prototype.slice.call(arguments)));
 
-    this.throttle.id = setTimeout(function () {
-        func();
-    }, timeout);
+        if (id) clearTimeout(id);
+
+        id = setTimeout(f, timeout);
+    };
+};
+
+window.throttle = function (func, timeout) {
+    var id;
+    return function () {
+        if (!id) {
+            func.apply(this, arguments);
+            id = setTimeout(function () {
+                id = null;
+            }, timeout);
+        }
+    };
 };
 
 /***/ }),

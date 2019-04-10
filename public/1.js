@@ -136,9 +136,10 @@ var self,
             e.style.visibility = 'initial';
             e.style.padding = "4em";
         },
-        getSelectedProd: function getSelectedProd() {
+
+        getSelectedProd: debounce(function () {
             var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
-            return axios.get('prod_filter', {
+            axios.get('prod_filter', {
                 params: {
                     ctg_id: window.Laravel.catalog[this.category].id,
                     skip: this.paginator.skip,
@@ -166,7 +167,7 @@ var self,
                 });
                 self.paginator.total = response.data[0];
             });
-        },
+        }, 750),
         addToCart: function addToCart(i, id) {
             this.items[i].isInCart = !this.$store.state.cart[id];
             this.$store.commit('cart', { id: id, count: 1, toRemove: !this.items[i].isInCart });

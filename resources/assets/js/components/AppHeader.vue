@@ -5,7 +5,7 @@
         </router-link>
         <div class="col-sm-8 col-md-7">
             <div class="input-group" style="margin-top:14px">
-                <input type="text" class="form-control search-input" :placeholder="lng.search" v-model="search_text" @input="toSearch()" autofocus>
+                <input type="text" class="form-control search-input" :placeholder="lng.search" @input="toSearch($event.target.value)" autofocus>
                 <div class="search-list">
                     <table style="width:100%">
                         <tbody>
@@ -47,7 +47,6 @@
     var self, data = {
         lng: {},
         search_result: null,
-        search_text: '',
     };
     export default {
         data: function () { return data; },
@@ -66,19 +65,14 @@
                 compare.blur()
                 this.$router.push("/compare/" + JSON.stringify(this.$store.state.compare[i].array));
             },
-            toSearch() {
-                if (!this.search_text.length) { 
-                    self.search_result = null;
-                    return;
-                }
-                _.throttle(function(){
-                    axios.post('/search', {
-                        search: self.search_text
-                    }).then(function (response) {
-                        self.search_result = response.data;
-                    });
-                }, 500)
-            }
+            toSearch: debounce(function (text) {
+                self.search_result = null;
+                text.length && axios.post('/search', {
+                    search: text
+                }).then(function (response) {
+                    self.search_result = response.data;
+                });
+            }, 600)
         }
     }
 </script>
