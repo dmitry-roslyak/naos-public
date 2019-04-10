@@ -21,7 +21,7 @@
             <div class="flip">
                 {{lng.from}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[0]"><span class="input-group-addon">{{lng.currency}}</span></div>
                 {{lng.to}}<div class="input-group"><input type="number" class="form-control myinput1" v-model.number="price.range[1]"><span class="input-group-addon">{{lng.currency}}</span></div> 
-                <range v-model="price" ref="range" style="margin-top:8px" @change="rangeIndexReset()" @ready="rangeIndexReset()"></range>
+                <range v-model="vRangeSlidersPosition" ref="range" style="margin-top:8px" @change="rangeReset()"></range>
             </div>
         </div>
         <div class="thumbnail flt-grp" v-for="(filter,i1) in filters" :key="filter.id">
@@ -54,6 +54,7 @@
         lng: {},
         catalog: [],
         filters: [],
+        vRangeSlidersPosition: [0, 100],
         price: {}
     };
     export default {
@@ -73,9 +74,14 @@
                 this.get_filters(this.$parent.category,window.Laravel.catalog[this.$parent.category].id);
         },
         methods: {
-            rangeIndexReset(){
-                if(this.price.array.length)
-                    this.price.range = [ this.price.array[this.price.indexFrom] * this.$store.state.currency , this.price.array[this.price.indexTo] * this.$store.state.currency ];
+            rangeReset(){
+                if(!this.price.array.length) return;
+
+                var percentPerArrayItem = 100 / (this.price.array.length - 1),
+                    priceFrom = this.price.array[Math.round(this.vRangeSlidersPosition[0] / percentPerArrayItem)],
+                    priceTo = this.price.array[Math.round(this.vRangeSlidersPosition[1] / percentPerArrayItem)];
+                
+                this.price.range = [ priceFrom * this.$store.state.currency , priceTo * this.$store.state.currency ];
             },
             expand: throttle(function(el) {
                 $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();

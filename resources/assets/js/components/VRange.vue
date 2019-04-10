@@ -16,8 +16,13 @@
     export default {
         props: {
             value: {
-                type: Object,
-                default: null
+                type: Array,
+                default: function () {
+                    return [0, 100]
+                },
+                validator: function (array) {
+                    return array.length == 2 && array[0] >= 0 && array[1] <= 100;
+                }
             }
         },
         data: function () {return {isDraged: 0} },
@@ -28,14 +33,13 @@
         methods: {
             moveTo: function(circle, e, bar, filled, circles, offset) {
                 var pxPerPercent = bar.offsetWidth / 100,
-                    step = (e.x - bar.offsetLeft + offset ) / pxPerPercent,
-                    percentPerArrayItem = 100 / (self.value.array.length - 1);
+                    step = (e.x - bar.offsetLeft + offset ) / pxPerPercent;
 
                 if(
                     (parseInt(circle.style.left) < parseInt(circles[1].style.left) 
                     ? parseInt(circles[1].style.left) - step 
                     :  step - parseInt(circles[0].style.left))
-                    <  8 * percentPerArrayItem
+                    <  16
                 ) return;
                 if(step < 0)
                     circle.style.left = '0%'
@@ -47,8 +51,8 @@
                 filled.style.left =  circles[0].style.left
                 filled.style.width =  parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%'
 
-                this.value.indexFrom = Math.round((parseInt(circles[0].style.left)) / percentPerArrayItem );
-                this.value.indexTo = Math.round((parseInt(circles[1].style.left)) / percentPerArrayItem );
+                this.value[0] = parseInt(circles[0].style.left);
+                this.value[1] = parseInt(circles[1].style.left);
                 this.$emit("change")
             },
             init: function() {
@@ -90,14 +94,12 @@
                     self.isDraged = 0
                     range.onmousemove = null;
                 }
-                this.$on('reset', function() {
-                    filled.style.left = circles[0].style.left = "0%";
-                    filled.style.width = circles[1].style.left = '100%';
-                    this.value.indexFrom = 0;
-                    this.value.indexTo = this.value.array.length - 1;
-                    this.$emit("ready")
-                })
-                this.$emit("reset")
+                filled.style.left = circles[0].style.left = this.value[0] + "%";
+                filled.style.width = circles[1].style.left = this.value[1] + "%" ;
+                this.$emit("ready")
+
+                // this.$on('reset', function() {
+                // })
             }
         }
     }

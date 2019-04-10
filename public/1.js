@@ -92,9 +92,7 @@ var self,
     items: [],
     price: {
         array: [],
-        range: [null, null],
-        indexFrom: 0,
-        indexTo: 0
+        range: [null, null]
     },
     paginator: {
         total: 0,
@@ -110,8 +108,10 @@ var self,
     watch: {
         '$store.state.flt_ids': 'productsfetch',
         'paginator.skip': 'productsfetch',
-        'paginator.take': 'productsfetch'
-        // 'price.range': 'productsfetch',
+        'paginator.take': 'productsfetch',
+        'price.range': function priceRange(array) {
+            array.length == 2 && this.productsfetch();
+        }
     },
     computed: {
         currency: function currency() {
@@ -168,6 +168,9 @@ var self,
                 self.price.array = n.sort(function (t, e) {
                     return t - e;
                 });
+                if (!self.price.range[0] && !self.price.range[1]) {
+                    self.price.range = [self.price.array[0], self.price.array[self.price.array.length - 1], { doNotFetch: true }];
+                }
                 self.paginator.total = response.data[0];
             });
         }, 750),

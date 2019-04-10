@@ -62,6 +62,7 @@ var self,
     lng: {},
     catalog: [],
     filters: [],
+    vRangeSlidersPosition: [0, 100],
     price: {}
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -85,8 +86,14 @@ var self,
     },
 
     methods: {
-        rangeIndexReset: function rangeIndexReset() {
-            if (this.price.array.length) this.price.range = [this.price.array[this.price.indexFrom] * this.$store.state.currency, this.price.array[this.price.indexTo] * this.$store.state.currency];
+        rangeReset: function rangeReset() {
+            if (!this.price.array.length) return;
+
+            var percentPerArrayItem = 100 / (this.price.array.length - 1),
+                priceFrom = this.price.array[Math.round(this.vRangeSlidersPosition[0] / percentPerArrayItem)],
+                priceTo = this.price.array[Math.round(this.vRangeSlidersPosition[1] / percentPerArrayItem)];
+
+            this.price.range = [priceFrom * this.$store.state.currency, priceTo * this.$store.state.currency];
         },
 
         expand: throttle(function (el) {
@@ -142,8 +149,13 @@ var self;
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         value: {
-            type: Object,
-            default: null
+            type: Array,
+            default: function _default() {
+                return [0, 100];
+            },
+            validator: function validator(array) {
+                return array.length == 2 && array[0] >= 0 && array[1] <= 100;
+            }
         }
     },
     data: function data() {
@@ -157,17 +169,16 @@ var self;
     methods: {
         moveTo: function moveTo(circle, e, bar, filled, circles, offset) {
             var pxPerPercent = bar.offsetWidth / 100,
-                step = (e.x - bar.offsetLeft + offset) / pxPerPercent,
-                percentPerArrayItem = 100 / (self.value.array.length - 1);
+                step = (e.x - bar.offsetLeft + offset) / pxPerPercent;
 
-            if ((parseInt(circle.style.left) < parseInt(circles[1].style.left) ? parseInt(circles[1].style.left) - step : step - parseInt(circles[0].style.left)) < 8 * percentPerArrayItem) return;
+            if ((parseInt(circle.style.left) < parseInt(circles[1].style.left) ? parseInt(circles[1].style.left) - step : step - parseInt(circles[0].style.left)) < 16) return;
             if (step < 0) circle.style.left = '0%';else if (step > 100) circle.style.left = '100%';else circle.style.left = step + '%';
 
             filled.style.left = circles[0].style.left;
             filled.style.width = parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%';
 
-            this.value.indexFrom = Math.round(parseInt(circles[0].style.left) / percentPerArrayItem);
-            this.value.indexTo = Math.round(parseInt(circles[1].style.left) / percentPerArrayItem);
+            this.value[0] = parseInt(circles[0].style.left);
+            this.value[1] = parseInt(circles[1].style.left);
             this.$emit("change");
         },
         init: function init() {
@@ -213,14 +224,12 @@ var self;
                 self.isDraged = 0;
                 range.onmousemove = null;
             };
-            this.$on('reset', function () {
-                filled.style.left = circles[0].style.left = "0%";
-                filled.style.width = circles[1].style.left = '100%';
-                this.value.indexFrom = 0;
-                this.value.indexTo = this.value.array.length - 1;
-                this.$emit("ready");
-            });
-            this.$emit("reset");
+            filled.style.left = circles[0].style.left = this.value[0] + "%";
+            filled.style.width = circles[1].style.left = this.value[1] + "%";
+            this.$emit("ready");
+
+            // this.$on('reset', function() {
+            // })
         }
     }
 });
@@ -446,18 +455,15 @@ var render = function() {
               staticStyle: { "margin-top": "8px" },
               on: {
                 change: function($event) {
-                  _vm.rangeIndexReset()
-                },
-                ready: function($event) {
-                  _vm.rangeIndexReset()
+                  _vm.rangeReset()
                 }
               },
               model: {
-                value: _vm.price,
+                value: _vm.vRangeSlidersPosition,
                 callback: function($$v) {
-                  _vm.price = $$v
+                  _vm.vRangeSlidersPosition = $$v
                 },
-                expression: "price"
+                expression: "vRangeSlidersPosition"
               }
             })
           ],
