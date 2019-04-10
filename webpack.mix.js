@@ -13,3 +13,13 @@ let mix = require('laravel-mix');
 mix.disableSuccessNotifications();
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css').version();
+
+mix.webpackConfig(webpack => {
+   return {
+      plugins: [
+        new webpack.DefinePlugin({
+            __NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        })
+      ]
+   }
+});

@@ -67972,14 +67972,24 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 window.Validator = __WEBPACK_IMPORTED_MODULE_6__validate_js__["a" /* default */];
 
-// firebase.initializeApp({
-//     apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
-//     authDomain: "dev-naos.firebaseapp.com",
-//     databaseURL: "https://dev-naos.firebaseio.com",
-//     projectId: "dev-naos",
-//     storageBucket: "dev-naos.appspot.com",
-//     messagingSenderId: "515353712594"
-// });
+if (false) {
+
+    firebase.initializeApp({
+        apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
+        authDomain: "dev-naos.firebaseapp.com",
+        databaseURL: "https://dev-naos.firebaseio.com",
+        projectId: "dev-naos",
+        storageBucket: "dev-naos.appspot.com",
+        messagingSenderId: "515353712594"
+    });
+
+    window.socket = new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
+} else {
+    window.socket = {};
+    window.socket.send = function () {
+        console.log('socket disabled');
+    };
+}
 
 var _data = {
     lng: null,
@@ -68129,11 +68139,6 @@ window.axios.defaults.headers.common = {
 // channel.bind('my-event', function(data) {
 //   alert(data.message);
 // });
-window.socket = {};
-window.socket.send = function () {
-    console.log('socket disabled');
-};
-// window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
 
 window.debounce = function (func, timeout) {
     var id;
