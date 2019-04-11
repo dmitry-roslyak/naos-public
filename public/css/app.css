@@ -11989,7 +11989,11 @@ a:focus {
   top: -1px;
 }
 
-.search-list {
+.search {
+  padding: 14px 0;
+}
+
+.search > table {
   position: absolute;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -11998,7 +12002,7 @@ a:focus {
   -webkit-transform-origin: top;
           transform-origin: top;
   width: 100%;
-  top: 4.2rem;
+  top: 5.5rem;
   -webkit-box-shadow: 0 0 0.5em #909090;
           box-shadow: 0 0 0.5em #909090;
   background-color: white;
@@ -12007,19 +12011,13 @@ a:focus {
   z-index: 3;
 }
 
-.search-input:focus + .search-list {
+.search:hover > table {
   -webkit-transform: scale(1);
           transform: scale(1);
   opacity: 1;
 }
 
-.search-list:hover {
-  -webkit-transform: scale(1);
-          transform: scale(1);
-  opacity: 1;
-}
-
-.search-itm:hover {
+.search tr:hover {
   background-color: whitesmoke;
   /* border-radius: 0.3em; */
 }
