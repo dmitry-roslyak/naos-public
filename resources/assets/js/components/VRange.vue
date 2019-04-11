@@ -12,7 +12,6 @@
     </div>
 </template>
 <script>
-    var self;
     export default {
         props: {
             value: {
@@ -27,85 +26,81 @@
         },
         data: function () {return {isDraged: 0} },
         mounted() {
-            self = this
-            this.init()
-        },
-        methods: {
-            moveTo: function(circle, e, bar, filled, circles, offset) {
-                var pxPerPercent = bar.offsetWidth / 100,
-                    step = (e.x - bar.offsetLeft + offset ) / pxPerPercent;
+            var self = this;
+            var range = this.$el
+                , circles = range.getElementsByClassName("circle")
+                , filled = range.getElementsByClassName("filled")[0]
+                , bar = range.getElementsByClassName("bar")[0]
+                , offset = circles[0].offsetLeft
+                , firstTouch = true
+                , pxPerPercent = bar.offsetWidth / 100
+                , minWidthBetweenCirclesPercents = circles[0].offsetWidth / pxPerPercent;
 
-                if(
-                    (parseInt(circle.style.left) < parseInt(circles[1].style.left) 
-                    ? parseInt(circles[1].style.left) - step 
-                    :  step - parseInt(circles[0].style.left))
-                    <  16
-                ) return;
-                if(step < 0)
-                    circle.style.left = '0%'
-                else if (step > 100)
-                    circle.style.left = '100%'
-                else
-                    circle.style.left = step + '%'
+            bar.onclick = function(e) {
+                var i = Math.abs(e.offsetX - circles[0].offsetLeft) < Math.abs(e.offsetX - circles[1].offsetLeft) ? 0 : 1;
+                var step = (e.x - bar.offsetLeft + offset ) / pxPerPercent;
 
-                filled.style.left =  circles[0].style.left
-                filled.style.width =  parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%'
-
-                this.value[0] = parseInt(circles[0].style.left);
-                this.value[1] = parseInt(circles[1].style.left);
-                this.$emit("change")
-            },
-            init: function() {
-                var circles = document.getElementsByClassName("circle")
-                    , filled = document.getElementsByClassName("filled")[0]
-                    , bar = document.getElementsByClassName("bar")[0]
-                    , range = document.getElementsByClassName("range")[0]
-                    , offset = circles[0].offsetLeft
-                    , firstTouch = true;
-
-                bar.onclick = function(i) {
-                    self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1],
-                      i, bar, filled, circles, offset)
-                };
-                for (var i = 0; i < circles.length; i++){
-                    let circle = circles[i];
-                    let index = i
-                    circles[i].ontouchmove = function (params) {
-                        if(firstTouch) {
-                            offset = circles[0].offsetLeft
-                            firstTouch = false
-                        }
-                        self.isDraged = index+1
-                        self.moveTo(this, { x: params.touches[0].clientX }, bar, filled, circles, offset)
+                moveTo(i, step);
+            };
+            for (let i = 0; i < circles.length; i++){
+                circles[i].ontouchmove = function (params) {
+                    if(firstTouch) {
+                        offset = circles[0].offsetLeft;
+                        firstTouch = false;
+                        pxPerPercent = bar.offsetWidth / 100;
+                        minWidthBetweenCirclesPercents = circles[0].offsetWidth / pxPerPercent;
                     }
-                    circle.ontouchend = function() {
-                        self.isDraged = 0
-                    }
-                    circles[i].onmousedown = function(e) {
-                        e = e || window.event;
-                        e.preventDefault() 
-                        self.isDraged = index+1
-                        range.onmousemove = function (move) {
-                            self.moveTo(circle, move, bar, filled, circles, offset)
-                        }
-                    }
+                    self.isDraged = i + 1
+                    var step = (params.touches[0].clientX - bar.offsetLeft + offset ) / pxPerPercent;
+                    moveTo(i, step);
                 }
-                range.onmouseleave = range.onmouseup = function() {
+                circles[i].ontouchend = function() {
                     self.isDraged = 0
-                    range.onmousemove = null;
                 }
-                filled.style.left = circles[0].style.left = this.value[0] + "%";
-                filled.style.width = circles[1].style.left = this.value[1] + "%" ;
-                this.$emit("ready")
+                circles[i].onmousedown = function(e) {
+                    e = e || window.event;
+                    e.preventDefault() 
+                    self.isDraged = i + 1
+                    range.onmousemove = function (move) {
+                        var step = (move.x - bar.offsetLeft + offset ) / pxPerPercent;
 
-                // this.$on('reset', function() {
-                // })
+                        moveTo(i, step);
+                    }
+                }
+            }
+            range.onmouseleave = range.onmouseup = function() {
+                self.isDraged = 0
+                range.onmousemove = null;
+            }
+            
+            filled.style.left = circles[0].style.left = this.value[0] + "%";
+            filled.style.width = circles[1].style.left = this.value[1] + "%" ;
+
+            this.$emit("ready")
+
+            function moveTo(index, step) {
+                var betweenCircles = index ? step - self.value[0] : self.value[1] - step;
+                
+                if(betweenCircles < minWidthBetweenCirclesPercents) return;
+
+                if(step < 0)
+                    step = 0;
+                else if (step > 100)
+                    step = 100;
+
+                self.value[index] = step;
+                circles[index].style.left = step + '%';
+
+                filled.style.left = circles[0].style.left;
+                filled.style.width = self.value[1] - self.value[0] + '%';
+
+                self.$emit("change")
             }
         }
     }
 </script>
 
-<style>
+<style scoped>
 .range {
     padding: 1px 0;
 }

@@ -145,7 +145,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var self;
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         value: {
@@ -162,74 +161,77 @@ var self;
         return { isDraged: 0 };
     },
     mounted: function mounted() {
-        self = this;
-        this.init();
-    },
+        var self = this;
+        var range = this.$el,
+            circles = range.getElementsByClassName("circle"),
+            filled = range.getElementsByClassName("filled")[0],
+            bar = range.getElementsByClassName("bar")[0],
+            offset = circles[0].offsetLeft,
+            firstTouch = true,
+            pxPerPercent = bar.offsetWidth / 100,
+            minWidthBetweenCirclesPercents = circles[0].offsetWidth / pxPerPercent;
 
-    methods: {
-        moveTo: function moveTo(circle, e, bar, filled, circles, offset) {
-            var pxPerPercent = bar.offsetWidth / 100,
-                step = (e.x - bar.offsetLeft + offset) / pxPerPercent;
+        bar.onclick = function (e) {
+            var i = Math.abs(e.offsetX - circles[0].offsetLeft) < Math.abs(e.offsetX - circles[1].offsetLeft) ? 0 : 1;
+            var step = (e.x - bar.offsetLeft + offset) / pxPerPercent;
 
-            if ((parseInt(circle.style.left) < parseInt(circles[1].style.left) ? parseInt(circles[1].style.left) - step : step - parseInt(circles[0].style.left)) < 16) return;
-            if (step < 0) circle.style.left = '0%';else if (step > 100) circle.style.left = '100%';else circle.style.left = step + '%';
+            moveTo(i, step);
+        };
+
+        var _loop = function _loop(i) {
+            circles[i].ontouchmove = function (params) {
+                if (firstTouch) {
+                    offset = circles[0].offsetLeft;
+                    firstTouch = false;
+                    pxPerPercent = bar.offsetWidth / 100;
+                    minWidthBetweenCirclesPercents = circles[0].offsetWidth / pxPerPercent;
+                }
+                self.isDraged = i + 1;
+                var step = (params.touches[0].clientX - bar.offsetLeft + offset) / pxPerPercent;
+                moveTo(i, step);
+            };
+            circles[i].ontouchend = function () {
+                self.isDraged = 0;
+            };
+            circles[i].onmousedown = function (e) {
+                e = e || window.event;
+                e.preventDefault();
+                self.isDraged = i + 1;
+                range.onmousemove = function (move) {
+                    var step = (move.x - bar.offsetLeft + offset) / pxPerPercent;
+
+                    moveTo(i, step);
+                };
+            };
+        };
+
+        for (var i = 0; i < circles.length; i++) {
+            _loop(i);
+        }
+        range.onmouseleave = range.onmouseup = function () {
+            self.isDraged = 0;
+            range.onmousemove = null;
+        };
+
+        filled.style.left = circles[0].style.left = this.value[0] + "%";
+        filled.style.width = circles[1].style.left = this.value[1] + "%";
+
+        this.$emit("ready");
+
+        function moveTo(index, step) {
+            var betweenCircles = index ? step - self.value[0] : self.value[1] - step;
+
+            if (betweenCircles < minWidthBetweenCirclesPercents) return;
+
+            if (step < 0) step = 0;else if (step > 100) step = 100;
+
+            self.value[index] = step;
+            circles[index].style.left = step + '%';
 
             filled.style.left = circles[0].style.left;
-            filled.style.width = parseInt(circles[1].style.left) - parseInt(circles[0].style.left) + '%';
+            filled.style.width = self.value[1] - self.value[0] + '%';
 
-            this.value[0] = parseInt(circles[0].style.left);
-            this.value[1] = parseInt(circles[1].style.left);
-            this.$emit("change");
-        },
-        init: function init() {
-            var circles = document.getElementsByClassName("circle"),
-                filled = document.getElementsByClassName("filled")[0],
-                bar = document.getElementsByClassName("bar")[0],
-                range = document.getElementsByClassName("range")[0],
-                offset = circles[0].offsetLeft,
-                firstTouch = true;
-
-            bar.onclick = function (i) {
-                self.moveTo(Math.abs(i.offsetX - circles[0].offsetLeft) < Math.abs(i.offsetX - circles[1].offsetLeft) ? circles[0] : circles[1], i, bar, filled, circles, offset);
-            };
-
-            var _loop = function _loop() {
-                var circle = circles[i];
-                var index = i;
-                circles[i].ontouchmove = function (params) {
-                    if (firstTouch) {
-                        offset = circles[0].offsetLeft;
-                        firstTouch = false;
-                    }
-                    self.isDraged = index + 1;
-                    self.moveTo(this, { x: params.touches[0].clientX }, bar, filled, circles, offset);
-                };
-                circle.ontouchend = function () {
-                    self.isDraged = 0;
-                };
-                circles[i].onmousedown = function (e) {
-                    e = e || window.event;
-                    e.preventDefault();
-                    self.isDraged = index + 1;
-                    range.onmousemove = function (move) {
-                        self.moveTo(circle, move, bar, filled, circles, offset);
-                    };
-                };
-            };
-
-            for (var i = 0; i < circles.length; i++) {
-                _loop();
-            }
-            range.onmouseleave = range.onmouseup = function () {
-                self.isDraged = 0;
-                range.onmousemove = null;
-            };
-            filled.style.left = circles[0].style.left = this.value[0] + "%";
-            filled.style.width = circles[1].style.left = this.value[1] + "%";
-            this.$emit("ready");
-
-            // this.$on('reset', function() {
-            // })
+            self.$emit("change");
         }
     }
 });
@@ -251,7 +253,7 @@ exports.push([module.i, "\n.flt-grp {\n  margin: 2px 0;\n}\n.flt-btn {\n  -webki
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -259,7 +261,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.range {\r\n    padding: 1px 0;\n}\n.bar,.filled {\r\n    position:relative\n}\n.bar {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.2em 1.4em;\r\n    border-radius: 0.3em;\r\n    background-color: whitesmoke;\r\n    -webkit-box-shadow: 0 0 0.2em;\r\n            box-shadow: 0 0 0.2em;\n}\n.filled {\r\n    height: 1rem;\r\n    background-color:rgb(136, 184, 255);\n}\n.circle {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius: 50%;\r\n    background-color:#fff;\r\n    -webkit-box-shadow: 0 0 0.5rem #868686;\r\n            box-shadow: 0 0 0.5rem #868686;\n}\n.circle:hover {\r\n    background-color:#f5f5f5\n}\n.t {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
+exports.push([module.i, "\n.range[data-v-eb3dadc4] {\r\n    padding: 1px 0;\n}\n.bar[data-v-eb3dadc4],.filled[data-v-eb3dadc4] {\r\n    position:relative\n}\n.bar[data-v-eb3dadc4] {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.2em 1.4em;\r\n    border-radius: 0.3em;\r\n    background-color: whitesmoke;\r\n    -webkit-box-shadow: 0 0 0.2em;\r\n            box-shadow: 0 0 0.2em;\n}\n.filled[data-v-eb3dadc4] {\r\n    height: 1rem;\r\n    background-color:rgb(136, 184, 255);\n}\n.circle[data-v-eb3dadc4] {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius: 50%;\r\n    background-color:#fff;\r\n    -webkit-box-shadow: 0 0 0.5rem #868686;\r\n            box-shadow: 0 0 0.5rem #868686;\n}\n.circle[data-v-eb3dadc4]:hover {\r\n    background-color:#f5f5f5\n}\n.t[data-v-eb3dadc4] {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag[data-v-eb3dadc4]{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
 
 // exports
 
@@ -570,7 +572,7 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb3dadc4\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/VRange.vue":
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb3dadc4\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/VRange.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -630,23 +632,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("6b5538bd", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("671445b8", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VRange.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VRange.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VRange.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VRange.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -715,19 +717,19 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-eb3dadc4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/VRange.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/VRange.vue")
 /* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb3dadc4\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/VRange.vue")
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb3dadc4\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/VRange.vue")
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-eb3dadc4"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
