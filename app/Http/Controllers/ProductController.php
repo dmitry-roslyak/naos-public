@@ -86,14 +86,17 @@ class ProductController extends Controller
                 $query->whereBetween('price', [$data->price[0]-1, $data->price[1]+1]);
             }
             $temp = Product::where('category_id',$data->ctg_id)->get(['price']);
+
+            if($query->count() < $data->skip) $data->skip = 0;
+
             switch ($data->ordby) {
                 case 'asc_price':$val ='price';$order ='asc';break;
                 case 'desc_price':$val ='price';$order ='desc';break;
                 case 'byrating':$val ='rating';$order ='desc'; break;
                 case 'bynewest':$val ='arrive_date';$order ='desc'; break;
-                default: return [$query->count(),$query->skip($data->skip)->take($data->take)->get(),$temp];
+                default: return [$query->count(), $query->skip($data->skip)->take($data->take)->get(), $temp];
             }
-            return [$query->count(),$query->orderBy($val,$order)->skip($data->skip)->take($data->take)->get()];
+            return [$query->count(), $query->orderBy($val,$order)->skip($data->skip)->take($data->take)->get(), $temp];
         }
     }
     public function toWish(Request $data)
