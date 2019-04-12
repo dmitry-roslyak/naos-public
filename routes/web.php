@@ -52,10 +52,6 @@ Route::get('/all_comments', 'CommentController@show');
 Route::post('/order', 'OrderController@store');
 Route::post('/auth', 'UserController@auth');
 
-Route::get('/file/{filename}', function ($filename) {
-    return Storage::get($filename);
-})->where('filename', '^[^/]+$');
-
 Route::get('/ctg_spec', function (Request $data) {
     return App\Product::with('specs')->where('category_id', $data->id)->get()->first();
 });
