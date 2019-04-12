@@ -61,7 +61,7 @@
         methods: {
             toCompare(i){
                 compare.blur()
-                this.$router.push("/compare/" + JSON.stringify(this.$store.state.compare[i].array));
+                this.$router.push(`/compare/${this.$store.state.compare[i].category}/${JSON.stringify(this.$store.state.compare[i].array)}`);
             },
             toSearch: debounce(function (text) {
                 self.search_result = null;

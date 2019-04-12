@@ -87,8 +87,6 @@ class ProductController extends Controller
             }
             $temp = Product::where('category_id',$data->ctg_id)->get(['price']);
 
-            if($query->count() < $data->skip) $data->skip = 0;
-
             switch ($data->ordby) {
                 case 'asc_price':$val ='price';$order ='asc';break;
                 case 'desc_price':$val ='price';$order ='desc';break;

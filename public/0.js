@@ -109,6 +109,7 @@ var self,
             for (var i = 0; i < checkList.length; i++) {
                 checkList[i].firstChild.firstChild.checked = false;
             }
+            this.price.range = [null, null];
             this.$store.commit('filterReset');
         },
         get_filters: function get_filters(name, id) {

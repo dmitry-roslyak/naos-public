@@ -67,7 +67,7 @@ var chartData = {
 };
 var self, selfChart;
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['ids'],
+    props: ['ids', 'category'],
     data: function data() {
         return _data;
     },
@@ -87,13 +87,6 @@ var self, selfChart;
     },
 
     methods: {
-        ctg: function ctg(value) {
-            for (var key in window.Laravel.catalog) {
-                if (window.Laravel.catalog[key].id == value) {
-                    return key;
-                }
-            }
-        },
         removeItem: function removeItem(i) {
             this.$store.commit('compare', this.list[i]);
             this.list.splice(i, 1);
@@ -177,7 +170,17 @@ var render = function() {
         ],
         staticStyle: { "text-align": "center", padding: "12em" }
       },
-      [_vm._v("\n        Add products to compare\n    ")]
+      [
+        _c(
+          "router-link",
+          {
+            staticStyle: { display: "block", "margin-top": "10px" },
+            attrs: { to: "/products/" + _vm.category }
+          },
+          [_vm._v(_vm._s(_vm.lng.compareAddMore))]
+        )
+      ],
+      1
     ),
     _vm._v(" "),
     _vm.list.length > 0
@@ -232,12 +235,9 @@ var render = function() {
                               display: "block",
                               "margin-top": "10px"
                             },
-                            attrs: {
-                              to:
-                                "/products/" + _vm.ctg(_vm.list[0].category_id)
-                            }
+                            attrs: { to: "/products/" + _vm.category }
                           },
-                          [_vm._v("Add more products to compare")]
+                          [_vm._v(_vm._s(_vm.lng.compareAddMore))]
                         )
                       ],
                       1

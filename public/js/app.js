@@ -6207,7 +6207,7 @@ var self,
     methods: {
         toCompare: function toCompare(i) {
             compare.blur();
-            this.$router.push("/compare/" + JSON.stringify(this.$store.state.compare[i].array));
+            this.$router.push("/compare/" + this.$store.state.compare[i].category + "/" + JSON.stringify(this.$store.state.compare[i].array));
         },
 
         toSearch: debounce(function (text) {
@@ -68337,7 +68337,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('AppUserInfo', function (r
 });
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     // mode: 'history',
-    routes: [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:ids', component: compare, props: true }, { path: '/cart/:ids?', component: cart, props: true }, { path: '/account', component: account }]
+    routes: [{ path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:category/:ids', component: compare, props: true }, { path: '/cart/:ids?', component: cart, props: true }, { path: '/account', component: account }]
 }));
 
 /***/ }),

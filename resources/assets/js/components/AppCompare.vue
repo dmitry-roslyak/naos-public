@@ -4,14 +4,14 @@
             <canvas id="cmprGraph"></canvas>
         </div> -->
         <div v-show="!list.length" style="text-align: center;padding: 12em;">
-            Add products to compare
+            <router-link :to="'/products/'+category" style="display:block;margin-top:10px">{{lng.compareAddMore}}</router-link>
         </div>
         <table class="table" v-if="list.length>0" style="margin-top: 1rem;"> 
             <tbody style="white-space: nowrap;">
                 <tr style="display:inline-block">
                     <td style="padding: 25px;width: 12em;height: 12rem;text-align:center;border: inherit">
                         <button class="btn btn-primary btn-sm" style="width: 100%;" @click="diffType?diffType=0:diffType=1">{{diffType == 1 ? '%' : lng.value}}</button>
-                        <router-link :to="'/products/'+ctg(list[0].category_id)" style="display:block;margin-top:10px">Add more products to compare</router-link>
+                        <router-link :to="'/products/'+category" style="display:block;margin-top:10px">{{lng.compareAddMore}}</router-link>
                     </td>
                     <td class="td_name" v-for="specs in list[0].specs" :key="specs.name" @mouseover="reGraph(specs.name);show_graph=true" @mouseleave="show_graph=false" style="width: 12em;float:left;clear:both">
                         <!-- <i class="fa fa-bar-chart"  aria-hidden="true"></i> -->
@@ -60,7 +60,7 @@
     };
     var self, selfChart;
     export default {
-        props: ['ids'],
+        props: ['ids', 'category'],
         data: function() { return data },
         watch: {
             '$route.params.ids': 'get_prodsby_ids'
@@ -77,13 +77,6 @@
             // this.$forceUpdate();
         },
         methods: {
-            ctg(value){
-                for (const key in window.Laravel.catalog) {
-                    if (window.Laravel.catalog[key].id == value) {
-                        return key;
-                    }
-                }
-            },
             removeItem(i){
                 this.$store.commit('compare', this.list[i]);
                 this.list.splice(i,1)
