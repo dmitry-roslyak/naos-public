@@ -47,15 +47,16 @@ var options1 = {
     }
 };
 var chart_self, self, data = {
-    lng: {},
     ready: false
 };
 export default {
     props: ['productId'],
     data: function () {return data;},
+    computed: {
+        lng(){ return this.$root.lng },
+    },
     mounted(){
         self = this;
-        this.lng = window.lng;
         chart_self = new Chart(document.getElementById('graph'), {
             type: 'line',
             data: chart_data,

@@ -35,7 +35,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var self,
     _data = {
-    lng: {},
     edit: true,
     userInfo: {},
     guest: false,
@@ -50,9 +49,13 @@ var self,
     data: function data() {
         return _data;
     },
+    computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        }
+    },
     created: function created() {
         self = this;
-        this.lng = window.lng;
         if (window.Laravel.user) {
             this.usr_info();
         } else {

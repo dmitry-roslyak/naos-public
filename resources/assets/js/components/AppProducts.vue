@@ -79,7 +79,6 @@
 </template>
 <script>
     var self, data = {
-        lng: {},
         ordby: 'bydef',
         items: [],
         price: {
@@ -104,12 +103,12 @@
             }
         },
         computed: {
+            lng(){ return this.$root.lng },
             currency() { return this.$store.state.currency },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created() {
             self = this; 
-            this.lng = window.lng;
         },
         methods: {
             imgReady(e){
@@ -150,8 +149,8 @@
                     })
                     if(!self.price.range[0] && !self.price.range[1]) {
                         self.price.range = [
-                            self.price.array[0],
-                            self.price.array[self.price.array.length-1],
+                            self.price.array[0] * self.currency,
+                            self.price.array[self.price.array.length-1] * self.currency,
                             { doNotFetch: true }
                         ]
                     }

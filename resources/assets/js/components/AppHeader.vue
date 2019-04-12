@@ -43,18 +43,17 @@
 </template>
 <script>
     var self, data = {
-        lng: {},
         search_result: null,
     };
     export default {
         data: function () { return data; },
         computed: {
+            lng(){ return this.$root.lng },
             compare() { return this.$store.state.compare },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created() {
             self = this;
-            this.lng = window.lng;
             this.$store.commit("loadFromLocalStorage",'compare');
             this.$store.commit("loadFromLocalStorage",'cart');
         },

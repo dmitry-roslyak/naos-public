@@ -55,7 +55,12 @@ class UserController extends Controller
             $user = Utility::locale([ 0 => $data->lng ]);
             \Cookie::queue('lang', $user['language'], 86400 * 60);
         }
-        return [\App\Lang::where('lng', $user['language'])->get(['name','text']), Currency::where('name', $user['currency'])->orderBy('date','desc')->first()];
+        return [
+            \App\Lang::where('lng', $user['language'])->get(['name','text'])->mapWithKeys(function ($item) {
+                return [$item['name'] => $item['text']];
+            }), 
+            Currency::where('name', $user['currency'])->orderBy('date','desc')->first()
+        ];
     }
     public function updinfo(Request $data)
     {

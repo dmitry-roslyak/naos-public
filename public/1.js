@@ -87,7 +87,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var self,
     _data = {
-    lng: {},
     ordby: 'bydef',
     items: [],
     price: {
@@ -114,6 +113,9 @@ var self,
         }
     },
     computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        },
         currency: function currency() {
             return this.$store.state.currency;
         },
@@ -127,7 +129,6 @@ var self,
     },
     created: function created() {
         self = this;
-        this.lng = window.lng;
     },
 
     methods: {
@@ -169,7 +170,7 @@ var self,
                     return t - e;
                 });
                 if (!self.price.range[0] && !self.price.range[1]) {
-                    self.price.range = [self.price.array[0], self.price.array[self.price.array.length - 1], { doNotFetch: true }];
+                    self.price.range = [self.price.array[0] * self.currency, self.price.array[self.price.array.length - 1] * self.currency, { doNotFetch: true }];
                 }
                 self.paginator.total = response.data[0];
             });

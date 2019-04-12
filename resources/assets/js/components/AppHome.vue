@@ -14,7 +14,7 @@
                 </ul>
             </div>
         </div>
-        <div v-if="items.length" class="col-sm-9 col-md-10">
+        <div class="col-sm-9 col-md-10">
             <div id="carousel1" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -50,7 +50,6 @@
 </template>
 <script>
     var self, data = {
-        lng: {},
         catalog: [],
         items: [],
         dummyCategory: []
@@ -58,14 +57,14 @@
     export default {
         data: function () { return data; },
         computed: {
+            lng(){ return this.$root.lng },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         mounted() {
             self = this;
+            this.catalog = window.Laravel.catalog;
             this.dummyCategory.length = 8;
             this.get_random_products();
-            this.lng = window.lng;
-            this.catalog = window.Laravel.catalog;
         },
         methods: {
             category(name, id) {

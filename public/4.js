@@ -52,7 +52,6 @@ var self,
     comments: [],
     rating: 0,
     message: '',
-    lng: {},
     paginator: {
         total: 0,
         take: 30,
@@ -74,9 +73,13 @@ var formatter = new Intl.DateTimeFormat([], {
     watch: {
         'paginator.skip': 'show_comments'
     },
+    computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        }
+    },
     mounted: function mounted() {
         self = this;
-        this.lng = window.lng;
         this.show_comments();
         window.socket.send(JSON.stringify({
             "event": "pusher:subscribe",

@@ -12,9 +12,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script>
         window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
-        window.lng = {};
-        window.Laravel.lng.map(function (t) { window.lng[t.name] = t.text; });
-        window.lng.currency = window.lng[window.Laravel.currency.name];
+        window.Laravel.lng.currency = window.Laravel.lng[window.Laravel.currency.name];
         window.onload = function(){
             site_loading.style='display:none';
         };

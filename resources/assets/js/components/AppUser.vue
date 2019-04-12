@@ -71,21 +71,15 @@
 </template>
 
 <script>
-    var self, data = {
-        lng: {},
-        pass_reset: false
-    };
     export default {
-        data: function () {return data;},
-        mounted() {
-            self = this;
-            this.lng = window.lng;
+        computed: {
+            lng(){ return this.$root.lng },
         },
         methods: {
             get_currency(val){
-                axios.get('/set_currency?val='+val).then(function (response) {
-                    self.lng.currency = self.lng[response.data.name];
-                    self.$store.commit('set_currency', response.data.rate);
+                axios.get('/set_currency?val='+val).then((response) => {
+                    this.lng.currency = this.lng[response.data.name];
+                    this.$store.commit('set_currency', response.data.rate);
                 }); 
             }
         }

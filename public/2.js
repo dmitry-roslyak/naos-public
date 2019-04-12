@@ -68,7 +68,6 @@ var self,
     _data = {
     show_specs: true,
     item: {},
-    lng: {},
     offerTime: null,
     showGraph: true
 };
@@ -78,6 +77,9 @@ var self,
         return _data;
     },
     computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        },
         itemPriceResult: function itemPriceResult() {
             var _this = this;
 
@@ -90,7 +92,6 @@ var self,
         var _this2 = this;
 
         self = this;
-        this.lng = window.lng;
         this.itemById();
         this.clientWidth();
         window.onresize = function () {

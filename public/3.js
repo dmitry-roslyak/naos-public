@@ -52,7 +52,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 var _data = {
-    lng: {},
     list: [],
     show_graph: false,
     diffType: 0
@@ -74,9 +73,13 @@ var self, selfChart;
     watch: {
         '$route.params.ids': 'get_prodsby_ids'
     },
+    computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        }
+    },
     mounted: function mounted() {
         self = this;
-        this.lng = window.lng;
         this.get_prodsby_ids();
         // selfChart = new Chart(document.getElementById('cmprGraph'), {
         //     type: 'polarArea',

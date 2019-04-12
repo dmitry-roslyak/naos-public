@@ -44,7 +44,6 @@
         comments: [],
         rating: 0,
         message: '',
-        lng: {},
         paginator: {
             total: 0,
             take: 30,
@@ -64,9 +63,11 @@
         watch: {
             'paginator.skip': 'show_comments',
         },
+        computed: {
+            lng(){ return this.$root.lng },
+        },
         mounted() {
             self = this;
-            this.lng = window.lng;
             this.show_comments();
             window.socket.send(JSON.stringify({
                 "event": "pusher:subscribe",

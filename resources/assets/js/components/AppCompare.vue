@@ -45,7 +45,6 @@
 </template>
 <script>
     var data ={
-        lng: {},
         list:[],
         show_graph:false,
         diffType:0,
@@ -65,9 +64,11 @@
         watch: {
             '$route.params.ids': 'get_prodsby_ids'
         },
+        computed: {
+            lng(){ return this.$root.lng },
+        },
         mounted(){
             self = this;
-            this.lng = window.lng;
             this.get_prodsby_ids();
             // selfChart = new Chart(document.getElementById('cmprGraph'), {
             //     type: 'polarArea',

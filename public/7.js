@@ -78,25 +78,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var self,
-    _data = {
-    lng: {},
-    pass_reset: false
-};
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return _data;
+    computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        }
     },
-    mounted: function mounted() {
-        self = this;
-        this.lng = window.lng;
-    },
-
     methods: {
         get_currency: function get_currency(val) {
+            var _this = this;
+
             axios.get('/set_currency?val=' + val).then(function (response) {
-                self.lng.currency = self.lng[response.data.name];
-                self.$store.commit('set_currency', response.data.rate);
+                _this.lng.currency = _this.lng[response.data.name];
+                _this.$store.commit('set_currency', response.data.rate);
             });
         }
     }

@@ -90,7 +90,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var self,
     _data = {
-    lng: {},
     products: [],
     payment: 'cash',
     delivery: 'customer',
@@ -110,6 +109,10 @@ var self,
         return _data;
     },
     computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        },
+
         total: function total() {
             var res = 0;
             for (var i = 0; i < this.products.length; i++) {
@@ -127,7 +130,6 @@ var self,
     },
     created: function created() {
         self = this;
-        this.lng = window.lng;
         try {
             var parsed = this.ids && JSON.parse(this.ids);
         } catch (error) {

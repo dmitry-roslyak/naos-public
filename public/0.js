@@ -59,7 +59,6 @@ var range = __webpack_require__("./resources/assets/js/components/VRange.vue");
 // import range from './VRange.vue'
 var self,
     _data = {
-    lng: {},
     catalog: [],
     filters: [],
     vRangeSlidersPosition: [0, 100],
@@ -73,6 +72,10 @@ var self,
         return _data;
     },
     computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        },
+
         showClear: function showClear() {
             return this.$store.state.flt_ids.length;
         }
@@ -80,7 +83,6 @@ var self,
     created: function created() {
         self = this;
         this.catalog = window.Laravel.catalog;
-        this.lng = window.lng;
         this.price = this.$parent.price;
         if (window.Laravel.catalog[this.$parent.category]) this.get_filters(this.$parent.category, window.Laravel.catalog[this.$parent.category].id);
     },

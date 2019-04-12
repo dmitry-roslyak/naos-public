@@ -51,7 +51,6 @@
     const range = require('./VRange.vue')
     // import range from './VRange.vue'
     var self, data = {
-        lng: {},
         catalog: [],
         filters: [],
         vRangeSlidersPosition: [0, 100],
@@ -63,12 +62,12 @@
         },
         data: function () {return data;},
         computed: {
+            lng(){ return this.$root.lng },
             showClear: function () { return this.$store.state.flt_ids.length },
         },
         created() {
             self = this;
             this.catalog = window.Laravel.catalog;
-            this.lng = window.lng;
             this.price = this.$parent.price;
             if(window.Laravel.catalog[this.$parent.category]) 
                 this.get_filters(this.$parent.category,window.Laravel.catalog[this.$parent.category].id);

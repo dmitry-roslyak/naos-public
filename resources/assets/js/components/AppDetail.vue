@@ -59,7 +59,6 @@
     var self, timerId, data = {
         show_specs: true,
         item: {},
-        lng: {},
         offerTime: null,
         showGraph: true
     };
@@ -67,11 +66,11 @@
         props: ['id'],
         data: function() { return data },
         computed: {
+            lng(){ return this.$root.lng },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created(){
             self = this
-            this.lng = window.lng;
             this.itemById();
             this.clientWidth();
             window.onresize = function(){self.clientWidth();}; 

@@ -28,7 +28,6 @@
 <script>
     var self,
         data = {
-            lng: {},
             edit: true,
             userInfo: {},
             guest: false,
@@ -41,9 +40,11 @@
 
     export default {
         data: function () { return data; },
+        computed: {
+            lng(){ return this.$root.lng },
+        },
         created() {
             self = this; 
-            this.lng = window.lng;
             if (window.Laravel.user) {
                 this.usr_info();
             }

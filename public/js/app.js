@@ -6178,7 +6178,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var self,
     _data = {
-    lng: {},
     search_result: null
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6186,6 +6185,9 @@ var self,
         return _data;
     },
     computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        },
         compare: function compare() {
             return this.$store.state.compare;
         },
@@ -6199,7 +6201,6 @@ var self,
     },
     created: function created() {
         self = this;
-        this.lng = window.lng;
         this.$store.commit("loadFromLocalStorage", 'compare');
         this.$store.commit("loadFromLocalStorage", 'cart');
     },
@@ -6281,7 +6282,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var self,
     _data = {
-    lng: {},
     catalog: [],
     items: [],
     dummyCategory: []
@@ -6291,6 +6291,9 @@ var self,
         return _data;
     },
     computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        },
         itemPriceResult: function itemPriceResult() {
             var _this = this;
 
@@ -6301,10 +6304,9 @@ var self,
     },
     mounted: function mounted() {
         self = this;
+        this.catalog = window.Laravel.catalog;
         this.dummyCategory.length = 8;
         this.get_random_products();
-        this.lng = window.lng;
-        this.catalog = window.Laravel.catalog;
     },
 
     methods: {
@@ -51883,96 +51885,94 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _vm.items.length
-        ? _c("div", { staticClass: "col-sm-9 col-md-10" }, [
+      _c("div", { staticClass: "col-sm-9 col-md-10" }, [
+        _c(
+          "div",
+          {
+            staticClass: "carousel slide",
+            attrs: { id: "carousel1", "data-ride": "carousel" }
+          },
+          [
+            _c(
+              "ol",
+              { staticClass: "carousel-indicators" },
+              _vm._l(_vm.items, function(item, i) {
+                return _c("li", {
+                  key: item.id,
+                  class: { active: !i },
+                  attrs: { "data-target": "#carousel1", "data-slide-to": i }
+                })
+              })
+            ),
+            _vm._v(" "),
             _c(
               "div",
               {
-                staticClass: "carousel slide",
-                attrs: { id: "carousel1", "data-ride": "carousel" }
+                staticClass: "carousel-inner carousel-inner-bcolor",
+                attrs: { role: "listbox" }
               },
-              [
-                _c(
-                  "ol",
-                  { staticClass: "carousel-indicators" },
-                  _vm._l(_vm.items, function(item, i) {
-                    return _c("li", {
-                      key: item.id,
-                      class: { active: !i },
-                      attrs: { "data-target": "#carousel1", "data-slide-to": i }
-                    })
-                  })
-                ),
-                _vm._v(" "),
-                _c(
+              _vm._l(_vm.items, function(item, i) {
+                return _c(
                   "div",
-                  {
-                    staticClass: "carousel-inner carousel-inner-bcolor",
-                    attrs: { role: "listbox" }
-                  },
-                  _vm._l(_vm.items, function(item, i) {
-                    return _c(
+                  { key: item.id, class: { item: true, active: !i } },
+                  [
+                    _c("img", {
+                      staticClass: "carousel-img",
+                      attrs: { src: "file/" + item.img_src, alt: "..." }
+                    }),
+                    _vm._v(" "),
+                    _c(
                       "div",
-                      { key: item.id, class: { item: true, active: !i } },
+                      { staticClass: "carousel-caption carousel-content" },
                       [
-                        _c("img", {
-                          staticClass: "carousel-img",
-                          attrs: { src: "file/" + item.img_src, alt: "..." }
-                        }),
-                        _vm._v(" "),
                         _c(
-                          "div",
-                          { staticClass: "carousel-caption carousel-content" },
+                          "h3",
                           [
                             _c(
-                              "h3",
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    attrs: {
-                                      to: {
-                                        name: "detail",
-                                        params: { id: item.id }
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(item.name) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "span",
+                              "router-link",
                               {
-                                staticStyle: {
-                                  "font-style": "italic",
-                                  "text-shadow": "0 0 1rem black"
+                                attrs: {
+                                  to: {
+                                    name: "detail",
+                                    params: { id: item.id }
+                                  }
                                 }
                               },
-                              [_vm._v(_vm._s(_vm.itemPriceResult(item)))]
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(item.name) +
+                                    "\n                            "
+                                )
+                              ]
                             )
-                          ]
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticStyle: {
+                              "font-style": "italic",
+                              "text-shadow": "0 0 1rem black"
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.itemPriceResult(item)))]
                         )
                       ]
                     )
-                  })
-                ),
-                _vm._v(" "),
-                _vm._m(0),
-                _vm._v(" "),
-                _vm._m(1)
-              ]
-            )
-          ])
-        : _vm._e()
+                  ]
+                )
+              })
+            ),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1)
+          ]
+        )
+      ])
     ]
   )
 }
@@ -67937,8 +67937,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js__ = __webpack_require__("./node_modules/chart.js/src/chart.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_chart_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__validate_js__ = __webpack_require__("./resources/assets/js/validate.js");
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 
 
 
@@ -67981,41 +67979,20 @@ var app = new Vue({
     },
     created: function created() {
         this.langs = window.Laravel.langsAvailable;
-        this.lng = window.lng;
+        this.lng = window.Laravel.lng;
         this.$store.commit('set_currency', window.Laravel.currency.rate);
         if (window.Laravel.user) this.user = window.Laravel.user.name;
     },
 
     methods: {
-        Validator: function Validator(rules, data) {
-            // this = arguments
-            return function (property) {
-                var error = [];
-                console.log(property) + function isValid(rule, data, key) {
-                    if (property && rule[property] && !rule[property].test(data[property])) {
-                        return error.push({ field: property });
-                    } else if ((typeof rule === "undefined" ? "undefined" : _typeof(rule)) === 'object') {
-                        Object.keys(rule).forEach(function (key) {
-                            return isValid(rule[key], data[key], key);
-                        });
-                    } else if (!rule.test(data)) {
-                        error.push({ field: key });
-                    }
-                }(rules, data);
-                return error.length < 1;
-            };
-        },
         itemPriceResult: function itemPriceResult(item) {
             return (item.discount ? this.$store.state.currency * item.price - this.$store.state.currency * item.price / 100 * item.discount.discount : this.$store.state.currency * item.price).toFixed(1) + " " + this.lng.currency;
         },
         get_locale: function get_locale(lng) {
             axios.get('lang/' + lng).then(function (response) {
-                response.data[0].map(function (t) {
-                    window.lng[t.name] = t.text;
-                });
-                window.lng.currency = window.lng[response.data[1].name];
+                response.data[0].currency = response.data[0][response.data[1].name];
+                app.lng = window.Laravel.lng = response.data[0];
                 app.$store.commit('set_currency', response.data[1].rate);
-                app.$forceUpdate();
             }).catch(function (error) {});
         },
         googleIn: function googleIn() {
