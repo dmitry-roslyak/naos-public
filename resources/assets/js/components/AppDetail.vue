@@ -2,10 +2,10 @@
     <div class="container-fluid" style="max-width: 80em;padding:0">
         <div class="col-md-7" style="padding-right:0">
             <!-- <h4 style="padding-left:8px">{{item.name}}</h4> -->
-            <div class="action-frm" style="border-color: white;border: 1px solid white;border-width: 0 0 1px 1px;background-color:inherit">
+            <div class="action-frm" style="border-color: white;border: 1px solid white;border-width: 0 0 1px 1px;background-color:inherit;z-index:1">
                 <a class="action-item fake-link" @click="to_wish()">
                     <span class="hidden-xs">{{lng.to_wishlist}}</span>
-                    <i class="fa fa-heart heart-state" :data-check="item.isWish" aria-hidden="true"></i>
+                    <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
                 </a>
             </div>
             <div id="carousel2" class="carousel slide" data-ride="carousel">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="btn-buy fake-link" v-if="item.available > 0" @click="buyItem(item)">
-                    <i class="fa fa-cart-plus" aria-hidden="true"></i>&nbsp;&nbsp;
+                    <i class="fa fa-cart-plus anm-bounce-scale" aria-hidden="true"></i>&nbsp;&nbsp;
                     {{itemPriceResult(item)}}
                 </div>
                 <div class="btn-buy disabled" v-else>{{lng.not_in_stock}}</div>
@@ -59,7 +59,6 @@
     var self, timerId, data = {
         show_specs: true,
         item: {},
-        lng: {},
         offerTime: null,
         showGraph: true
     };
@@ -67,11 +66,11 @@
         props: ['id'],
         data: function() { return data },
         computed: {
+            lng(){ return this.$root.lng },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created(){
             self = this
-            this.lng = window.lng;
             this.itemById();
             this.clientWidth();
             window.onresize = function(){self.clientWidth();}; 

@@ -12,9 +12,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script>
         window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
-        window.lng = {};
-        window.Laravel.lng.map(function (t) { window.lng[t.name] = t.text; });
-        window.lng.currency = window.lng[window.Laravel.currency.name];
+        window.Laravel.lng.currency = window.Laravel.lng[window.Laravel.currency.name];
         window.onload = function(){
             site_loading.style='display:none';
         };
@@ -61,7 +59,8 @@
                         <li v-if="!user"><a href="{{ route('login') }}">@{{lng.login}}</a></li>
                         <li v-if="!user"><a href="{{ route('register') }}">@{{lng.register}}</a></li>
                         <li v-if="user" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" 
+                                style="width: 16rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                 @{{user}} <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">

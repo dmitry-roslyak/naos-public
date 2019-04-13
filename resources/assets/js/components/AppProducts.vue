@@ -31,19 +31,19 @@
                 <div class="item-note new" v-else-if="item.isNew">{{lng.new}}</div>
                 <div class="item-note offer" v-else-if="item.discount">{{lng.offer}}</div>
                 <div class="item-note hot" v-else-if="item.is_bestseller==1">{{lng.hot}}</div>
-                <div class="action-frm" style="right:4px">
+                <div class="action-frm">
                     <a class="action-item fake-link" @click="to_compare(i)">
                         <span class="hidden-xs">{{lng.to_compare}}</span>
-                        <i class="fa fa-balance-scale compare-state" :data-check="item.is_compare" aria-hidden="true"></i>
+                        <i class="fa fa-balance-scale compare-state anm-bounce-scale" :data-check="item.is_compare" aria-hidden="true"></i>
                     </a>&nbsp;
                     <a class="action-item fake-link" @click="to_wish(i)">
                         <span class="hidden-xs">{{lng.to_wishlist}}</span>
-                        <i class="fa fa-heart heart-state" :data-check="item.isWish" aria-hidden="true"></i>
+                        <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
                     </a>
                 </div>
                 <div class="thumbnail ic-s">
                     <img class="item-card-img" style="visibility: hidden" :src="'file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
-                    <div class="caption" style="padding: 2px 6px">
+                    <div class="caption">
                         <router-link class="item-card-name" :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
                         <div class="col-xs-12" style="padding: 3px 0">
                             <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true" style="display:inline-block"></star-rating>
@@ -57,7 +57,7 @@
                             <div class="btn-group pull-right" role="group" aria-label="...">
                                 <button type="button" class="btn btn-default action-item" @click="addToCart(i, item.id)">
                                     <span>{{lng.addto_cart}}</span>
-                                    <i class="fa fa-cart-plus btn-in-cart-i" :data-check="item.isInCart" aria-hidden="true"></i>&nbsp;&nbsp;
+                                    <i class="fa fa-cart-plus btn-in-cart-i anm-bounce-scale" :data-check="item.isInCart" aria-hidden="true"></i>&nbsp;&nbsp;
                                 </button>
                                 <button type="button" class="btn btn-primary" @click="buy(item.id)">{{lng.buy}}</button>
                             </div>
@@ -66,7 +66,7 @@
                             <tbody >
                                 <tr v-for="(specs,i) in item.specs" :key="i">
                                     <td>{{lng[specs.name]?lng[specs.name]:specs.name}}</td>
-                                    <td style="padding-left:10px;width:55%">{{specs.value}}&nbsp;{{specs.val_type}}</td>
+                                    <td>{{specs.value}}&nbsp;{{specs.val_type}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -79,7 +79,6 @@
 </template>
 <script>
     var self, data = {
-        lng: {},
         ordby: 'bydef',
         items: [],
         price: {
@@ -89,7 +88,8 @@
         paginator: {
             total: 0,
             take: 30,
-            skip: 0
+            skip: 0,
+            page: 1
         },
     };
     export default {
@@ -97,19 +97,21 @@
         data: function () {return data;},
         watch: {
             '$store.state.flt_ids': 'productsfetch',
-            'paginator.skip': 'productsfetch',
             'paginator.take': 'productsfetch',
+            'paginator.skip': function () {
+                this.productsfetch('withSkip');
+             },
             'price.range': function (array) {
-                array.length == 2 && this.productsfetch()
+                array.length == 2 && this.productsfetch();
             }
         },
         computed: {
+            lng(){ return this.$root.lng },
             currency() { return this.$store.state.currency },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created() {
             self = this; 
-            this.lng = window.lng;
         },
         methods: {
             imgReady(e){
@@ -120,7 +122,11 @@
                 e.style.visibility = 'initial';
                 e.style.padding = "4em";
             },
-            productsfetch: debounce(function() {
+            productsfetch: debounce(function(arg) {
+                if(arg != "withSkip") {
+                    this.paginator.skip = 0;
+                    this.paginator.page = 1;
+                }
                 var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
                 axios.get('prod_filter', {
                     params: {
@@ -150,8 +156,8 @@
                     })
                     if(!self.price.range[0] && !self.price.range[1]) {
                         self.price.range = [
-                            self.price.array[0],
-                            self.price.array[self.price.array.length-1],
+                            self.price.array[0] * self.currency,
+                            self.price.array[self.price.array.length-1] * self.currency,
                             { doNotFetch: true }
                         ]
                     }
@@ -180,4 +186,4 @@
     }
 </script>
 
-<style lang="sass" src="../../sass/product.sass"></style>
+<style lang="scss" src="../../sass/AppProducts.scss"></style>

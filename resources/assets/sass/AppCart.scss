@@ -1,19 +1,13 @@
 .cart-caption {
-    background-color: cornflowerblue;
     padding: 10px;
-    color: white;
     border-radius: 0.3rem 0.3rem 0 0;
+    color: white;
+    background-color: cornflowerblue;
 }
 .cart-item {
+    padding: 15px;
     border: 1px solid cornflowerblue;
     background-color: white;
-    padding: 15px;
-}
-td > .fa-check-circle {
-    color: green;
-}
-td > .fa-times {
-    color: red;
 }
 .cart-products {
     padding: 0px;

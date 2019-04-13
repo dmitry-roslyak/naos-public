@@ -19,9 +19,6 @@ Route::get('/', function (Request $data) {
 Route::get('/lang/{lng}', 'UserController@lang');
 
 Route::group(['middleware' => 'admin'], function() {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
     Route::get('/token', 'DashboardController@tokenRefresh');
     
     Route::post('/upload', 'DashboardController@productCreate');
@@ -52,10 +49,6 @@ Route::get('/all_comments', 'CommentController@show');
 Route::post('/order', 'OrderController@store');
 Route::post('/auth', 'UserController@auth');
 
-Route::get('/file/{filename}', function ($filename) {
-    return Storage::get($filename);
-})->where('filename', '^[^/]+$');
-
 Route::get('/ctg_spec', function (Request $data) {
     return App\Product::with('specs')->where('category_id', $data->id)->get()->first();
 });
@@ -68,7 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/leave_comment', 'CommentController@store');
     Route::get('/comment_like', 'CommentController@like');
     Route::get('/user_info', 'UserController@info');
-    Route::post('/update_user_info', 'UserController@updinfo');
+    Route::post('/update_user_info', 'UserController@update');
     Route::post('/user_comments_like', 'UserController@likes');
 });
 Route::get('/set_currency', 'UserController@currency');

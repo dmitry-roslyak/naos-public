@@ -54,9 +54,7 @@ var options1 = {
     }
 };
 var chart_self,
-    self,
     _data = {
-    lng: {},
     ready: false
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -64,9 +62,12 @@ var chart_self,
     data: function data() {
         return _data;
     },
+    computed: {
+        lng: function lng() {
+            return this.$root.lng;
+        }
+    },
     mounted: function mounted() {
-        self = this;
-        this.lng = window.lng;
         chart_self = new Chart(document.getElementById('graph'), {
             type: 'line',
             data: chart_data,

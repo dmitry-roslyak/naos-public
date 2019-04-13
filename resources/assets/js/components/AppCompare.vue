@@ -4,14 +4,14 @@
             <canvas id="cmprGraph"></canvas>
         </div> -->
         <div v-show="!list.length" style="text-align: center;padding: 12em;">
-            Add products to compare
+            <router-link :to="'/products/'+category" style="display:block;margin-top:10px">{{lng.compareAddMore}}</router-link>
         </div>
         <table class="table" v-if="list.length>0" style="margin-top: 1rem;"> 
             <tbody style="white-space: nowrap;">
                 <tr style="display:inline-block">
                     <td style="padding: 25px;width: 12em;height: 12rem;text-align:center;border: inherit">
                         <button class="btn btn-primary btn-sm" style="width: 100%;" @click="diffType?diffType=0:diffType=1">{{diffType == 1 ? '%' : lng.value}}</button>
-                        <router-link :to="'/products/'+ctg(list[0].category_id)" style="display:block;margin-top:10px">Add more products to compare</router-link>
+                        <router-link :to="'/products/'+category" style="display:block;margin-top:10px">{{lng.compareAddMore}}</router-link>
                     </td>
                     <td class="td_name" v-for="specs in list[0].specs" :key="specs.name" @mouseover="reGraph(specs.name);show_graph=true" @mouseleave="show_graph=false" style="width: 12em;float:left;clear:both">
                         <!-- <i class="fa fa-bar-chart"  aria-hidden="true"></i> -->
@@ -45,12 +45,11 @@
 </template>
 <script>
     var data ={
-        lng: {},
         list:[],
         show_graph:false,
         diffType:0,
     };
-    var chartData = {
+    var selfChart, chartData = {
         labels: [],
         datasets: [{
             data: [],
@@ -58,16 +57,16 @@
             borderColor: 'rgba(255,99,132,1)'
         }]
     };
-    var self, selfChart;
     export default {
-        props: ['ids'],
+        props: ['ids', 'category'],
         data: function() { return data },
         watch: {
             '$route.params.ids': 'get_prodsby_ids'
         },
+        computed: {
+            lng(){ return this.$root.lng },
+        },
         mounted(){
-            self = this;
-            this.lng = window.lng;
             this.get_prodsby_ids();
             // selfChart = new Chart(document.getElementById('cmprGraph'), {
             //     type: 'polarArea',
@@ -77,13 +76,6 @@
             // this.$forceUpdate();
         },
         methods: {
-            ctg(value){
-                for (const key in window.Laravel.catalog) {
-                    if (window.Laravel.catalog[key].id == value) {
-                        return key;
-                    }
-                }
-            },
             removeItem(i){
                 this.$store.commit('compare', this.list[i]);
                 this.list.splice(i,1)
@@ -117,46 +109,20 @@
                 selfChart.update();
             },
             get_prodsby_ids(){
-                axios.get('/prodsby_ids', {params:{ids:JSON.parse(this.ids)}}).then(function (response) {
-                    self.list = response.data;
-                    for (var i = 0; i < self.list.length; i++) {
-                        self.list[i].specs.unshift({
+                axios.get('/prodsby_ids', {params:{ids:JSON.parse(this.ids)}}).then((response) => {
+                    this.list = response.data;
+                    for (var i = 0; i < this.list.length; i++) {
+                        this.list[i].specs.unshift({
                             name: 'price',
-                            value: self.$root.itemPriceResult(self.list[i]).split(" ")[0],
+                            value: this.$root.itemPriceResult(this.list[i]).split(" ")[0],
                             isComparable: true
                         })
-                        chartData.labels.push(self.list[i].name); 
+                        chartData.labels.push(this.list[i].name); 
                     }
                 });
             }
         }
     }
 </script>
-<style>
-.compare {
-    overflow: overlay
-}
-@media (max-width: 768px){
-    .compare {
-        padding: 0;
-    }
-}
-.t-name {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.table-item:hover {
-    box-shadow: 0 0 0.5rem #0049ce;
-    background-color: white;
-}
-.table-item td:first-child {
-    border: inherit !important
-}
-.table-item {
-    display:inline-block;
-    transition: all 0.5s;
-    width: 20rem;
-}
-</style>
+
+<style lang="scss" src="../../sass/AppCompare.scss"></style>

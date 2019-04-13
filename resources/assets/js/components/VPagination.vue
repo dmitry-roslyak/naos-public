@@ -1,22 +1,21 @@
 <template>
     <div>
         <ul class="pagination fake-link" style="position:relative;left:50%;z-index:1;transform: translateX(-50%);">
-            <li :class="{'disabled': currentPage == 1}"><a @click="currentPage > 1 && page(currentPage-1)">&laquo;</a></li>
-            <li v-show="currentPage!=1"><a @click="page(1)">1</a></li>
+            <li :class="{'disabled': value.page == 1}"><a @click="value.page > 1 && goTo(value.page-1)">&laquo;</a></li>
+            <li v-show="value.page!=1"><a @click="goTo(1)">1</a></li>
             <li>
-                <a v-show="currentPage>2&&currentPage-2!=1&&currentPage<4" @click="page(currentPage-2)">{{currentPage-2}}</a>
-                <a v-show="currentPage>3">...</a>
+                <a v-show="value.page>2&&value.page-2!=1&&value.page<4" @click="goTo(value.page-2)">{{value.page-2}}</a>
+                <a v-show="value.page>3">...</a>
             </li>
-            <li v-show="currentPage>1&&currentPage-1!=1"><a @click="page(currentPage-1)">{{currentPage-1}}</a></li>
-            <li class="active"><a>{{currentPage}}</a></li>
-            <li v-show="currentPage+1<pageCount"><a @click="page(currentPage+1)">{{currentPage+1}}</a></li>
-            <!--<li v-show="currentPage+2<pageCount"><a>{{currentPage+2}}</a></li>-->
+            <li v-show="value.page>1&&value.page-1!=1"><a @click="goTo(value.page-1)">{{value.page-1}}</a></li>
+            <li class="active"><a>{{value.page}}</a></li>
+            <li v-show="value.page+1<pageCount"><a @click="goTo(value.page+1)">{{value.page+1}}</a></li>
             <li>
-                <a a @click="page(currentPage+2)" v-show="currentPage+2<pageCount">{{currentPage+2}}</a>
-                <a v-show="currentPage<pageCount-3">...</a>
+                <a a @click="goTo(value.page+2)" v-show="value.page+2<pageCount">{{value.page+2}}</a>
+                <a v-show="value.page<pageCount-3">...</a>
             </li>
-            <li v-show="currentPage!=pageCount"><a @click="page(pageCount)">{{pageCount}}</a></li>
-            <li :class="{'disabled': currentPage == pageCount}"><a @click="currentPage < pageCount && page(currentPage+1)">&raquo;</a></li>
+            <li v-show="value.page!=pageCount"><a @click="goTo(pageCount)">{{pageCount}}</a></li>
+            <li :class="{'disabled': value.page == pageCount}"><a @click="value.page < pageCount && goTo(value.page+1)">&raquo;</a></li>
         </ul>
     </div>
 </template>
@@ -25,18 +24,13 @@
         props: { 
             value: Object
         },
-        data: function () {
-            return {
-                currentPage: 1
-            };
-        },
         computed: {
             pageCount() { return Math.ceil(this.value.total/this.value.take) || 1}
         },
         methods: {
-            page(i){
-                this.currentPage = i;
-                this.value.skip = (this.currentPage-1)*this.value.take;
+            goTo(page){
+                this.value.page = page;
+                this.value.skip = (this.value.page-1)*this.value.take;
                 window.scrollTo(0,0)
                 // window.scrollY = 0;
             },

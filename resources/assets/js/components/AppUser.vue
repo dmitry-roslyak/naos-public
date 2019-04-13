@@ -33,7 +33,6 @@
         <hr style="margin:8px 0">
         <div class="container-fluid">
             <i class="fa fa-envelope"></i>
-            <!--<span class="glyphicon glyphicon-envelope"></span>-->
             <label>{{lng.email_me}} :</label>
             <div class="container-fluid">
                 <div class="checkbox disabled">
@@ -52,40 +51,19 @@
                 </div>
             </div>
         </div>
-        <!--<span>Разрешить хранение: </span>
-        <div class="form-inline" style="padding:8px 0 0 16px">
-            <span>личной информации:&nbsp;</span>
-            <div class="radio">
-                <label><input type="radio" name="r1" checked>&nbsp;Да</label>
-                <label><input type="radio" name="r1">&nbsp;Нет</label>
-            </div>
-        </div> 
-        <div class="form-inline" style="padding:8px 0 0 16px">
-            <span>номера платежной карты (PAN):&nbsp;</span>
-            <div class="radio">
-                <label><input type="radio" name="r2" checked>&nbsp;Да</label>
-                <label><input type="radio" name="r2">&nbsp;Нет</label>
-            </div>
-        </div>  -->
     </div>
 </template>
 
 <script>
-    var self, data = {
-        lng: {},
-        pass_reset: false
-    };
     export default {
-        data: function () {return data;},
-        mounted() {
-            self = this;
-            this.lng = window.lng;
+        computed: {
+            lng(){ return this.$root.lng },
         },
         methods: {
             get_currency(val){
-                axios.get('/set_currency?val='+val).then(function (response) {
-                    self.lng.currency = self.lng[response.data.name];
-                    self.$store.commit('set_currency', response.data.rate);
+                axios.get('/set_currency?val='+val).then((response) => {
+                    this.lng.currency = this.lng[response.data.name];
+                    this.$store.commit('set_currency', response.data.rate);
                 }); 
             }
         }

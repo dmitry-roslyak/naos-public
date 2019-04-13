@@ -83,7 +83,6 @@
 <script>
     var self,
         data = {
-            lng: {},
             products: [],
             payment: 'cash',
             delivery: 'customer',
@@ -101,6 +100,7 @@
         props: ['ids'],
         data: function () { return data },
         computed: {
+            lng(){ return this.$root.lng },
             total: function () {
                 var res = 0;
                 for (var i = 0; i < this.products.length; i++) {
@@ -112,7 +112,6 @@
         },
         created() {
             self = this
-            this.lng = window.lng;
             try {
                 var parsed = this.ids && JSON.parse(this.ids)
             } catch (error) {
@@ -168,4 +167,4 @@
     }
 </script>
 
-<style lang="scss" src="../../sass/cart.scss"></style>
+<style lang="scss" src="../../sass/AppCart.scss"></style>

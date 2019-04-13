@@ -55,14 +55,19 @@ class UserController extends Controller
             $user = Utility::locale([ 0 => $data->lng ]);
             \Cookie::queue('lang', $user['language'], 86400 * 60);
         }
-        return [\App\Lang::where('lng', $user['language'])->get(['name','text']), Currency::where('name', $user['currency'])->orderBy('date','desc')->first()];
+        return [
+            \App\Lang::where('lng', $user['language'])->get(['name','text'])->mapWithKeys(function ($item) {
+                return [$item['name'] => $item['text']];
+            }), 
+            Currency::where('name', $user['currency'])->orderBy('date','desc')->first()
+        ];
     }
-    public function updinfo(Request $data)
+    public function update(Request $data)
     {
         $user = Auth::user();
         $validation = Validator::make($data->all(), [
-            'user.name' => 'required|min:3',
-            'user.tel' => 'required|numeric|min:3'
+            'user.name' => 'required|min:3|max:255',
+            'user.tel' => 'required|min:3|max:11'
         ]);
         if($validation->fails()) return response($validation->errors(), 422);
         $user->update(collect($data->user)->only(['name', 'tel'])->all());
