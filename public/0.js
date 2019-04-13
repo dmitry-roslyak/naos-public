@@ -54,11 +54,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 var range = __webpack_require__("./resources/assets/js/components/VRange.vue");
 // import range from './VRange.vue'
-var self,
-    _data = {
+var _data = {
     catalog: [],
     filters: [],
     vRangeSlidersPosition: [0, 100],
@@ -81,7 +83,6 @@ var self,
         }
     },
     created: function created() {
-        self = this;
         this.catalog = window.Laravel.catalog;
         this.price = this.$parent.price;
         if (window.Laravel.catalog[this.$parent.category]) this.get_filters(this.$parent.category, window.Laravel.catalog[this.$parent.category].id);
@@ -115,9 +116,11 @@ var self,
             this.$store.commit('filterReset');
         },
         get_filters: function get_filters(name, id) {
+            var _this = this;
+
             this.$router.push('/products/' + name);
             axios.get('/get_filters?id=' + id).then(function (response) {
-                self.filters = response.data;
+                _this.filters = response.data;
             });
             this.flt_reset();
         },
@@ -241,7 +244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/sidebar.sass":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProductsFilters.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -249,7 +252,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.flt-grp {\n  margin: 2px 0;\n}\n.flt-btn {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  color: white;\n  background-color: cornflowerblue;\n  border-radius: 5px;\n  padding: 5px 8px;\n}\n.flt-btn:hover {\n    background-color: royalblue;\n}\n@media screen and (max-width: 767px) {\n.flip {\n    display: none;\n}\n}\n", ""]);
+exports.push([module.i, "\n.flt-grp {\n  margin: 2px 0;\n  padding: 0 1rem;\n}\n.flt-grp .checkbox {\n  margin-top: 2px;\n  margin-bottom: 2px;\n  padding: 0 2rem;\n}\n.flt-btn {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  padding: 0.5rem 0;\n  font-weight: bold;\n}\n.flt-btn:hover {\n    color: dodgerblue;\n}\n@media screen and (max-width: 767px) {\n.flip {\n    display: none;\n}\n}\n", ""]);
 
 // exports
 
@@ -264,7 +267,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.range[data-v-eb3dadc4] {\r\n    padding: 1px 0;\n}\n.bar[data-v-eb3dadc4],.filled[data-v-eb3dadc4] {\r\n    position:relative\n}\n.bar[data-v-eb3dadc4] {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.2em 1.4em;\r\n    border-radius: 0.3em;\r\n    background-color: whitesmoke;\r\n    -webkit-box-shadow: 0 0 0.2em;\r\n            box-shadow: 0 0 0.2em;\n}\n.filled[data-v-eb3dadc4] {\r\n    height: 1rem;\r\n    background-color:rgb(136, 184, 255);\n}\n.circle[data-v-eb3dadc4] {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius: 50%;\r\n    background-color:#fff;\r\n    -webkit-box-shadow: 0 0 0.5rem #868686;\r\n            box-shadow: 0 0 0.5rem #868686;\n}\n.circle[data-v-eb3dadc4]:hover {\r\n    background-color:#f5f5f5\n}\n.t[data-v-eb3dadc4] {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag[data-v-eb3dadc4]{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
+exports.push([module.i, "\n.range[data-v-eb3dadc4] {\r\n    padding: 1px 0;\n}\n.bar[data-v-eb3dadc4],.filled[data-v-eb3dadc4] {\r\n    position:relative\n}\n.bar[data-v-eb3dadc4] {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    margin: 1.2em 1.1em;\r\n    border-radius: 0.3em;\r\n    background-color: whitesmoke;\r\n    -webkit-box-shadow: 0 0 0.2em;\r\n            box-shadow: 0 0 0.2em;\n}\n.filled[data-v-eb3dadc4] {\r\n    height: 1rem;\r\n    background-color: lightslategray;\r\n    /* background-color:rgb(136, 184, 255); */\n}\n.circle[data-v-eb3dadc4] {\r\n    position:absolute;\r\n    top:-1rem;\r\n    margin-left:-1em;\r\n    width: 2em;\r\n    height: 2em;\r\n    border-radius: 50%;\r\n    background-color:#fff;\r\n    -webkit-box-shadow: 0 0 0.5rem #868686;\r\n            box-shadow: 0 0 0.5rem #868686;\n}\n.circle[data-v-eb3dadc4]:hover {\r\n    background-color:#f5f5f5\n}\n.t[data-v-eb3dadc4] {\r\n    -webkit-transition: all 0.25s;\r\n    transition: all 0.25s;\r\n    position: absolute;\r\n    top: -0.5em;\r\n    left: -0.5em;\r\n    border-radius: 50%;\r\n    background: radial-gradient( #008cff34 50%,rgb(0, 101, 253));\r\n    width: 3em;\r\n    height: 3em;\r\n    -webkit-transform: scale(0);\r\n            transform: scale(0);\r\n    z-index: -1;\n}\n.circle-drag[data-v-eb3dadc4]{\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\n}\r\n", ""]);
 
 // exports
 
@@ -285,7 +288,7 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "ctg-btn fake-link",
+          staticClass: "btn-primary fake-link",
           attrs: {
             tabindex: "0",
             type: "button",
@@ -303,10 +306,7 @@ var render = function() {
         },
         [
           _c("div", { staticStyle: { padding: "9px 10px 6px" } }, [
-            _c("i", {
-              staticClass: "fa fa-list",
-              staticStyle: { "font-size": "1.2em" }
-            }),
+            _c("i", { staticClass: "fa fa-list" }),
             _vm._v("\n            " + _vm._s(_vm.lng.catalog) + "\n        ")
           ]),
           _vm._v(" "),
@@ -321,7 +321,7 @@ var render = function() {
                 "div",
                 {
                   key: item.id,
-                  staticClass: "ctg-itm fake-link",
+                  staticClass: "btn-default fake-link",
                   on: {
                     click: function($event) {
                       _vm.get_filters(name, item.id)
@@ -341,26 +341,36 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.showClear,
-              expression: "showClear"
+      _c("div", { staticStyle: { "font-weight": "bold", padding: "1rem" } }, [
+        _c("i", { staticClass: "fa fa-filter" }),
+        _vm._v("\n        " + _vm._s(_vm.lng.filters) + "\n        "),
+        _c(
+          "span",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showClear,
+                expression: "showClear"
+              }
+            ],
+            staticClass: "flt-btn fake-link",
+            staticStyle: { "font-weight": "500", padding: "0 1rem" },
+            on: {
+              click: function($event) {
+                _vm.flt_reset()
+              }
             }
-          ],
-          staticClass: "form-control",
-          on: {
-            click: function($event) {
-              _vm.flt_reset()
-            }
-          }
-        },
-        [_vm._v(_vm._s(_vm.lng.flt_reset))]
-      ),
+          },
+          [
+            _vm._v(
+              "\n            " + _vm._s(_vm.lng.filtersReset) + "\n            "
+            ),
+            _c("i", { staticClass: "fa fa-times" })
+          ]
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "thumbnail flt-grp" }, [
         _c(
@@ -489,9 +499,6 @@ var render = function() {
               }
             },
             [
-              _c("span", { attrs: { title: filter.desc } }, [
-                _c("i", { staticClass: "fa fa-info-circle" })
-              ]),
               _vm._v(
                 "\n            " +
                   _vm._s(
@@ -500,13 +507,13 @@ var render = function() {
                   "\n            "
               ),
               _c("i", {
-                staticClass: "fa fa-angle-down font1 pull-right",
+                staticClass: "fa fa-angle-down pull-right",
                 staticStyle: { display: "none" },
                 attrs: { "aria-hidden": "true" }
               }),
               _vm._v(" "),
               _c("i", {
-                staticClass: "fa fa-angle-up font1 pull-right",
+                staticClass: "fa fa-angle-up pull-right",
                 attrs: { "aria-hidden": "true" }
               })
             ]
@@ -516,42 +523,25 @@ var render = function() {
             "div",
             { staticClass: "flip" },
             _vm._l(filter.values, function(value, i2) {
-              return _c("div", { key: value.id, staticClass: "row" }, [
-                _c("div", { staticClass: "col-xs-2" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-xs-10" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "checkbox",
-                      staticStyle: {
-                        "margin-top": "2px",
-                        "margin-bottom": "2px"
-                      }
+              return _c("div", { key: value.id, staticClass: "checkbox" }, [
+                _c("label", [
+                  _c("input", {
+                    attrs: {
+                      type: "checkbox",
+                      "data-id": value.id,
+                      "data-i1": i1,
+                      "data-i2": i2
                     },
-                    [
-                      _c("label", [
-                        _c("input", {
-                          staticStyle: { height: "1em" },
-                          attrs: {
-                            "data-id": value.id,
-                            "data-i1": i1,
-                            "data-i2": i2,
-                            type: "checkbox"
-                          },
-                          on: {
-                            click: function($event) {
-                              _vm.toFilter($event)
-                            }
-                          }
-                        }),
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(value.value) +
-                            "\n                            "
-                        )
-                      ])
-                    ]
+                    on: {
+                      click: function($event) {
+                        _vm.toFilter($event)
+                      }
+                    }
+                  }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(value.value) +
+                      "\n                    "
                   )
                 ])
               ])
@@ -608,23 +598,23 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/sidebar.sass":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProductsFilters.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/sidebar.sass");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProductsFilters.scss");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1c564d0c", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("b0aa8f26", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!./sidebar.sass", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!./sidebar.sass");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppProductsFilters.scss", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppProductsFilters.scss");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -668,7 +658,7 @@ if(false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/sidebar.sass")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69caca4d\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProductsFilters.scss")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */

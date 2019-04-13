@@ -167,4 +167,4 @@
     }
 </script>
 
-<style lang="scss" src="../../sass/cart.scss"></style>
+<style lang="scss" src="../../sass/AppCart.scss"></style>

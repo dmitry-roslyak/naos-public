@@ -2,9 +2,9 @@
     <div class="container-fluid">
         <h4 style="padding-left:8px">{{lng.comments+" "+paginator.total}}</h4>
         <button @click="stt($event.currentTarget)" class="btn btn-primary btn-add-comment">
-            <i class="fa fa-angle-up font1 pull-right" style="display:none" aria-hidden="true"></i>
-            <i class="fa fa-angle-down font1 pull-right" aria-hidden="true"></i>
-            <i class="fa fa-comment-o font1" aria-hidden="true"></i>&nbsp;{{lng.to_comment}}
+            <i class="fa fa-angle-up pull-right" style="display:none" aria-hidden="true"></i>
+            <i class="fa fa-angle-down pull-right" aria-hidden="true"></i>
+            <i class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;{{lng.to_comment}}
         </button>
         <div id="leaveMsg" class="thumbnail">
             <div class="caption">

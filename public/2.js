@@ -202,7 +202,8 @@ var render = function() {
                 "border-color": "white",
                 border: "1px solid white",
                 "border-width": "0 0 1px 1px",
-                "background-color": "inherit"
+                "background-color": "inherit",
+                "z-index": "1"
               }
             },
             [
@@ -222,7 +223,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("i", {
-                    staticClass: "fa fa-heart heart-state",
+                    staticClass: "fa fa-heart heart-state anm-bounce-scale",
                     attrs: {
                       "data-check": _vm.item.isWish,
                       "aria-hidden": "true"
@@ -322,7 +323,7 @@ var render = function() {
                     },
                     [
                       _c("i", {
-                        staticClass: "fa fa-cart-plus",
+                        staticClass: "fa fa-cart-plus anm-bounce-scale",
                         attrs: { "aria-hidden": "true" }
                       }),
                       _vm._v(

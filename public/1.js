@@ -96,7 +96,8 @@ var self,
     paginator: {
         total: 0,
         take: 30,
-        skip: 0
+        skip: 0,
+        page: 1
     }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -106,8 +107,10 @@ var self,
     },
     watch: {
         '$store.state.flt_ids': 'productsfetch',
-        'paginator.skip': 'productsfetch',
         'paginator.take': 'productsfetch',
+        'paginator.skip': function paginatorSkip() {
+            this.productsfetch('withSkip');
+        },
         'price.range': function priceRange(array) {
             array.length == 2 && this.productsfetch();
         }
@@ -141,7 +144,11 @@ var self,
             e.style.padding = "4em";
         },
 
-        productsfetch: debounce(function () {
+        productsfetch: debounce(function (arg) {
+            if (arg != "withSkip") {
+                this.paginator.skip = 0;
+                this.paginator.page = 1;
+            }
             var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
             axios.get('prod_filter', {
                 params: {
@@ -198,7 +205,7 @@ var self,
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/product.sass":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProducts.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -206,7 +213,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.1em;\n  line-height: 2em;\n}\n.itmc select {\n    height: 27px;\n    display: inline;\n}\n#sortby {\n  width: 180px;\n}\n.product-state > s {\n  padding: 7px 0 7px 7px;\n}\n.product-state > s + span {\n  color: coral;\n}\n.product-state > span {\n  padding: 7px;\n  font-weight: 900;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n.ic-s:hover .item-spec {\n    font-size: 1.5rem;\n    width: 100%;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n", ""]);
+exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.5rem;\n  line-height: 2em;\n}\n.itmc select {\n    display: inline-block;\n    height: 27px;\n}\n#sortby {\n  width: 180px;\n}\n.product-state > s {\n  padding: 7px 0 7px 7px;\n}\n.product-state > s + span {\n  color: coral;\n}\n.product-state > span {\n  padding: 7px;\n  font-weight: 900;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n  background-color: white;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card:hover .item-spec {\n    font-size: inherit;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    width: 55%;\n    padding-left: 10px;\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.item-card > .thumbnail > .caption {\n  padding: 2px 6px;\n}\n.item-card > .action-frm {\n  right: 4px;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n", ""]);
 
 // exports
 
@@ -406,61 +413,58 @@ var render = function() {
                           ])
                         : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "action-frm", staticStyle: { right: "4px" } },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "action-item fake-link",
-                        on: {
-                          click: function($event) {
-                            _vm.to_compare(i)
-                          }
+                _c("div", { staticClass: "action-frm" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "action-item fake-link",
+                      on: {
+                        click: function($event) {
+                          _vm.to_compare(i)
                         }
-                      },
-                      [
-                        _c("span", { staticClass: "hidden-xs" }, [
-                          _vm._v(_vm._s(_vm.lng.to_compare))
-                        ]),
-                        _vm._v(" "),
-                        _c("i", {
-                          staticClass: "fa fa-balance-scale compare-state",
-                          attrs: {
-                            "data-check": item.is_compare,
-                            "aria-hidden": "true"
-                          }
-                        })
-                      ]
-                    ),
-                    _vm._v(" \n                "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "action-item fake-link",
-                        on: {
-                          click: function($event) {
-                            _vm.to_wish(i)
-                          }
+                      }
+                    },
+                    [
+                      _c("span", { staticClass: "hidden-xs" }, [
+                        _vm._v(_vm._s(_vm.lng.to_compare))
+                      ]),
+                      _vm._v(" "),
+                      _c("i", {
+                        staticClass:
+                          "fa fa-balance-scale compare-state anm-bounce-scale",
+                        attrs: {
+                          "data-check": item.is_compare,
+                          "aria-hidden": "true"
                         }
-                      },
-                      [
-                        _c("span", { staticClass: "hidden-xs" }, [
-                          _vm._v(_vm._s(_vm.lng.to_wishlist))
-                        ]),
-                        _vm._v(" "),
-                        _c("i", {
-                          staticClass: "fa fa-heart heart-state",
-                          attrs: {
-                            "data-check": item.isWish,
-                            "aria-hidden": "true"
-                          }
-                        })
-                      ]
-                    )
-                  ]
-                ),
+                      })
+                    ]
+                  ),
+                  _vm._v(" \n                "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "action-item fake-link",
+                      on: {
+                        click: function($event) {
+                          _vm.to_wish(i)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { staticClass: "hidden-xs" }, [
+                        _vm._v(_vm._s(_vm.lng.to_wishlist))
+                      ]),
+                      _vm._v(" "),
+                      _c("i", {
+                        staticClass: "fa fa-heart heart-state anm-bounce-scale",
+                        attrs: {
+                          "data-check": item.isWish,
+                          "aria-hidden": "true"
+                        }
+                      })
+                    ]
+                  )
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thumbnail ic-s" }, [
                   _c("img", {
@@ -479,10 +483,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    {
-                      staticClass: "caption",
-                      staticStyle: { padding: "2px 6px" }
-                    },
+                    { staticClass: "caption" },
                     [
                       _c(
                         "router-link",
@@ -567,7 +568,7 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("i", {
                                     staticClass:
-                                      "fa fa-cart-plus btn-in-cart-i",
+                                      "fa fa-cart-plus btn-in-cart-i anm-bounce-scale",
                                     attrs: {
                                       "data-check": item.isInCart,
                                       "aria-hidden": "true"
@@ -610,22 +611,13 @@ var render = function() {
                                 )
                               ]),
                               _vm._v(" "),
-                              _c(
-                                "td",
-                                {
-                                  staticStyle: {
-                                    "padding-left": "10px",
-                                    width: "55%"
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(specs.value) +
-                                      " " +
-                                      _vm._s(specs.val_type)
-                                  )
-                                ]
-                              )
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(specs.value) +
+                                    " " +
+                                    _vm._s(specs.val_type)
+                                )
+                              ])
                             ])
                           })
                         )
@@ -667,23 +659,23 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/product.sass":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProducts.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/product.sass");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProducts.scss");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("ebcd2e60", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3b4eab96", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!./product.sass", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!./product.sass");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppProducts.scss", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppProducts.scss");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -700,7 +692,7 @@ if(false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js?indentedSyntax!./resources/assets/sass/product.sass")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-570fe27e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppProducts.scss")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */

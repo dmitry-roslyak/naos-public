@@ -6176,8 +6176,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var self,
-    _data = {
+var _data = {
     search_result: null
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6200,7 +6199,6 @@ var self,
         }
     },
     created: function created() {
-        self = this;
         this.$store.commit("loadFromLocalStorage", 'compare');
         this.$store.commit("loadFromLocalStorage", 'cart');
     },
@@ -6212,11 +6210,13 @@ var self,
         },
 
         toSearch: debounce(function (text) {
-            self.search_result = null;
+            var _this2 = this;
+
+            this.search_result = null;
             text.length && axios.post('/search', {
                 search: text
             }).then(function (response) {
-                self.search_result = response.data;
+                _this2.search_result = response.data;
             });
         }, 400)
     }
@@ -6280,8 +6280,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var self,
-    _data = {
+var _data = {
     catalog: [],
     items: [],
     dummyCategory: []
@@ -6303,7 +6302,6 @@ var self,
         }
     },
     mounted: function mounted() {
-        self = this;
         this.catalog = window.Laravel.catalog;
         this.dummyCategory.length = 8;
         this.get_random_products();
@@ -6311,11 +6309,13 @@ var self,
 
     methods: {
         category: function category(name, id) {
-            self.$router.push('products/' + name);
+            this.$router.push('products/' + name);
         },
         get_random_products: function get_random_products() {
+            var _this2 = this;
+
             axios.get('/prod_rnd').then(function (response) {
-                self.items = response.data;
+                _this2.items = response.data;
             });
         }
     }
@@ -6349,16 +6349,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         value: Object
-    },
-    data: function data() {
-        return {
-            currentPage: 1
-        };
     },
     computed: {
         pageCount: function pageCount() {
@@ -6366,9 +6360,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
-        page: function page(i) {
-            this.currentPage = i;
-            this.value.skip = (this.currentPage - 1) * this.value.take;
+        goTo: function goTo(page) {
+            this.value.page = page;
+            this.value.skip = (this.value.page - 1) * this.value.take;
             window.scrollTo(0, 0);
             // window.scrollY = 0;
         }
@@ -51583,13 +51577,13 @@ var render = function() {
         }
       },
       [
-        _c("li", { class: { disabled: _vm.currentPage == 1 } }, [
+        _c("li", { class: { disabled: _vm.value.page == 1 } }, [
           _c(
             "a",
             {
               on: {
                 click: function($event) {
-                  _vm.currentPage > 1 && _vm.page(_vm.currentPage - 1)
+                  _vm.value.page > 1 && _vm.goTo(_vm.value.page - 1)
                 }
               }
             },
@@ -51604,8 +51598,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.currentPage != 1,
-                expression: "currentPage!=1"
+                value: _vm.value.page != 1,
+                expression: "value.page!=1"
               }
             ]
           },
@@ -51615,7 +51609,7 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.page(1)
+                    _vm.goTo(1)
                   }
                 }
               },
@@ -51633,19 +51627,19 @@ var render = function() {
                   name: "show",
                   rawName: "v-show",
                   value:
-                    _vm.currentPage > 2 &&
-                    _vm.currentPage - 2 != 1 &&
-                    _vm.currentPage < 4,
-                  expression: "currentPage>2&&currentPage-2!=1&&currentPage<4"
+                    _vm.value.page > 2 &&
+                    _vm.value.page - 2 != 1 &&
+                    _vm.value.page < 4,
+                  expression: "value.page>2&&value.page-2!=1&&value.page<4"
                 }
               ],
               on: {
                 click: function($event) {
-                  _vm.page(_vm.currentPage - 2)
+                  _vm.goTo(_vm.value.page - 2)
                 }
               }
             },
-            [_vm._v(_vm._s(_vm.currentPage - 2))]
+            [_vm._v(_vm._s(_vm.value.page - 2))]
           ),
           _vm._v(" "),
           _c(
@@ -51655,8 +51649,8 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.currentPage > 3,
-                  expression: "currentPage>3"
+                  value: _vm.value.page > 3,
+                  expression: "value.page>3"
                 }
               ]
             },
@@ -51671,8 +51665,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.currentPage > 1 && _vm.currentPage - 1 != 1,
-                expression: "currentPage>1&&currentPage-1!=1"
+                value: _vm.value.page > 1 && _vm.value.page - 1 != 1,
+                expression: "value.page>1&&value.page-1!=1"
               }
             ]
           },
@@ -51682,17 +51676,17 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.page(_vm.currentPage - 1)
+                    _vm.goTo(_vm.value.page - 1)
                   }
                 }
               },
-              [_vm._v(_vm._s(_vm.currentPage - 1))]
+              [_vm._v(_vm._s(_vm.value.page - 1))]
             )
           ]
         ),
         _vm._v(" "),
         _c("li", { staticClass: "active" }, [
-          _c("a", [_vm._v(_vm._s(_vm.currentPage))])
+          _c("a", [_vm._v(_vm._s(_vm.value.page))])
         ]),
         _vm._v(" "),
         _c(
@@ -51702,8 +51696,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.currentPage + 1 < _vm.pageCount,
-                expression: "currentPage+1<pageCount"
+                value: _vm.value.page + 1 < _vm.pageCount,
+                expression: "value.page+1<pageCount"
               }
             ]
           },
@@ -51713,11 +51707,11 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.page(_vm.currentPage + 1)
+                    _vm.goTo(_vm.value.page + 1)
                   }
                 }
               },
-              [_vm._v(_vm._s(_vm.currentPage + 1))]
+              [_vm._v(_vm._s(_vm.value.page + 1))]
             )
           ]
         ),
@@ -51730,18 +51724,18 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.currentPage + 2 < _vm.pageCount,
-                  expression: "currentPage+2<pageCount"
+                  value: _vm.value.page + 2 < _vm.pageCount,
+                  expression: "value.page+2<pageCount"
                 }
               ],
               attrs: { a: "" },
               on: {
                 click: function($event) {
-                  _vm.page(_vm.currentPage + 2)
+                  _vm.goTo(_vm.value.page + 2)
                 }
               }
             },
-            [_vm._v(_vm._s(_vm.currentPage + 2))]
+            [_vm._v(_vm._s(_vm.value.page + 2))]
           ),
           _vm._v(" "),
           _c(
@@ -51751,8 +51745,8 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.currentPage < _vm.pageCount - 3,
-                  expression: "currentPage<pageCount-3"
+                  value: _vm.value.page < _vm.pageCount - 3,
+                  expression: "value.page<pageCount-3"
                 }
               ]
             },
@@ -51767,8 +51761,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.currentPage != _vm.pageCount,
-                expression: "currentPage!=pageCount"
+                value: _vm.value.page != _vm.pageCount,
+                expression: "value.page!=pageCount"
               }
             ]
           },
@@ -51778,7 +51772,7 @@ var render = function() {
               {
                 on: {
                   click: function($event) {
-                    _vm.page(_vm.pageCount)
+                    _vm.goTo(_vm.pageCount)
                   }
                 }
               },
@@ -51787,14 +51781,13 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _c("li", { class: { disabled: _vm.currentPage == _vm.pageCount } }, [
+        _c("li", { class: { disabled: _vm.value.page == _vm.pageCount } }, [
           _c(
             "a",
             {
               on: {
                 click: function($event) {
-                  _vm.currentPage < _vm.pageCount &&
-                    _vm.page(_vm.currentPage + 1)
+                  _vm.value.page < _vm.pageCount && _vm.goTo(_vm.value.page + 1)
                 }
               }
             },
@@ -51832,12 +51825,9 @@ var render = function() {
         "div",
         { staticClass: "col-sm-3 col-md-2", staticStyle: { padding: "0px" } },
         [
-          _c("div", { staticClass: "ctg-btn fake-link" }, [
+          _c("div", { staticClass: "btn-primary fake-link" }, [
             _c("div", { staticStyle: { padding: "9px 10px 6px" } }, [
-              _c("i", {
-                staticClass: "fa fa-list",
-                staticStyle: { "font-size": "1.2em" }
-              }),
+              _c("i", { staticClass: "fa fa-list" }),
               _vm._v(
                 "\n                " +
                   _vm._s(_vm.lng.catalog) +
@@ -51854,7 +51844,7 @@ var render = function() {
                     "div",
                     {
                       key: item.id,
-                      staticClass: "ctg-itm fake-link",
+                      staticClass: "btn-default fake-link",
                       on: {
                         click: function($event) {
                           _vm.category(name, item.id)
@@ -51874,7 +51864,7 @@ var render = function() {
                 _vm._l(_vm.dummyCategory, function(i) {
                   return _c(
                     "div",
-                    { key: i, staticClass: "ctg-itm fake-link" },
+                    { key: i, staticClass: "btn-default fake-link" },
                     [_vm._v(" ")]
                   )
                 })
@@ -52262,16 +52252,9 @@ var render = function() {
               "tbody",
               _vm._l(_vm.search_result, function(item) {
                 return _c("tr", { key: item.id }, [
-                  _c(
-                    "td",
-                    { staticStyle: { padding: "4px", "text-align": "center" } },
-                    [
-                      _c("img", {
-                        staticStyle: { height: "5rem" },
-                        attrs: { src: "file/" + item.img_src }
-                      })
-                    ]
-                  ),
+                  _c("td", { staticClass: "search-img-cell" }, [
+                    _c("img", { attrs: { src: "file/" + item.img_src } })
+                  ]),
                   _vm._v(" "),
                   _c(
                     "td",
@@ -52324,7 +52307,7 @@ var render = function() {
             },
             [
               _c("i", {
-                staticClass: "fa fa-shopping-cart font1",
+                staticClass: "fa fa-shopping-cart",
                 attrs: { "aria-hidden": "true" }
               }),
               _vm._v(" "),
@@ -52350,7 +52333,7 @@ var render = function() {
             },
             [
               _c("i", {
-                staticClass: "fa fa-balance-scale font1",
+                staticClass: "fa fa-balance-scale",
                 attrs: { "aria-hidden": "true" }
               }),
               _c("div", [_c("nobr", [_vm._v(_vm._s(_vm.lng.compare))])], 1),

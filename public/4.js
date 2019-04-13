@@ -55,7 +55,8 @@ var self,
     paginator: {
         total: 0,
         take: 30,
-        skip: 0
+        skip: 0,
+        page: 1
     }
 };
 var formatter = new Intl.DateTimeFormat([], {
@@ -178,18 +179,18 @@ var render = function() {
         },
         [
           _c("i", {
-            staticClass: "fa fa-angle-up font1 pull-right",
+            staticClass: "fa fa-angle-up pull-right",
             staticStyle: { display: "none" },
             attrs: { "aria-hidden": "true" }
           }),
           _vm._v(" "),
           _c("i", {
-            staticClass: "fa fa-angle-down font1 pull-right",
+            staticClass: "fa fa-angle-down pull-right",
             attrs: { "aria-hidden": "true" }
           }),
           _vm._v(" "),
           _c("i", {
-            staticClass: "fa fa-comment-o font1",
+            staticClass: "fa fa-comment-o",
             attrs: { "aria-hidden": "true" }
           }),
           _vm._v(" " + _vm._s(_vm.lng.to_comment) + "\n    ")

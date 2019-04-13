@@ -124,31 +124,5 @@
         }
     }
 </script>
-<style>
-.compare {
-    overflow: overlay
-}
-@media (max-width: 768px){
-    .compare {
-        padding: 0;
-    }
-}
-.t-name {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.table-item:hover {
-    box-shadow: 0 0 0.5rem #0049ce;
-    background-color: white;
-}
-.table-item td:first-child {
-    border: inherit !important
-}
-.table-item {
-    display:inline-block;
-    transition: all 0.5s;
-    width: 20rem;
-}
-</style>
+
+<style lang="scss" src="../../sass/AppCompare.scss"></style>

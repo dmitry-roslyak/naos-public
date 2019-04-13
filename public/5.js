@@ -187,7 +187,7 @@ var self,
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCart.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -195,7 +195,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.cart-caption {\n  background-color: cornflowerblue;\n  padding: 10px;\n  color: white;\n  border-radius: 0.3rem 0.3rem 0 0;\n}\n.cart-item {\n  border: 1px solid cornflowerblue;\n  background-color: white;\n  padding: 15px;\n}\ntd > .fa-check-circle {\n  color: green;\n}\ntd > .fa-times {\n  color: red;\n}\n.cart-products {\n  padding: 0px;\n  margin: 0;\n  border-radius: 0.3rem;\n  background-color: white;\n  -webkit-box-shadow: 0 0 0.4rem #ddd;\n          box-shadow: 0 0 0.4rem #ddd;\n}\n.cart-products > .table {\n  margin: 0;\n}\n.cart-products tr td:first-child {\n  text-align: center !important;\n}\n.cart-products tr td > img {\n  height: 6rem;\n}\n.cart-products td {\n  vertical-align: initial !important;\n}\n", ""]);
+exports.push([module.i, "\n.cart-caption {\n  padding: 10px;\n  border-radius: 0.3rem 0.3rem 0 0;\n  color: white;\n  background-color: cornflowerblue;\n}\n.cart-item {\n  padding: 15px;\n  border: 1px solid cornflowerblue;\n  background-color: white;\n}\n.cart-products {\n  padding: 0px;\n  margin: 0;\n  border-radius: 0.3rem;\n  background-color: white;\n  -webkit-box-shadow: 0 0 0.4rem #ddd;\n          box-shadow: 0 0 0.4rem #ddd;\n}\n.cart-products > .table {\n  margin: 0;\n}\n.cart-products tr td:first-child {\n  text-align: center !important;\n}\n.cart-products tr td > img {\n  height: 6rem;\n}\n.cart-products td {\n  vertical-align: initial !important;\n}\n", ""]);
 
 // exports
 
@@ -609,23 +609,23 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCart.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCart.scss");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1ebe3a85", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("7823ce76", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./cart.scss", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./cart.scss");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppCart.scss", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppCart.scss");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -642,7 +642,7 @@ if(false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/cart.scss")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454fdf3a\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCart.scss")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */

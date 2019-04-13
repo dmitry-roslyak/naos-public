@@ -109,14 +109,15 @@
 }
 .bar {
     transition: all 0.25s;
-    margin: 1.2em 1.4em;
+    margin: 1.2em 1.1em;
     border-radius: 0.3em;
     background-color: whitesmoke;
     box-shadow: 0 0 0.2em;
 }
 .filled {
     height: 1rem;
-    background-color:rgb(136, 184, 255);
+    background-color: lightslategray;
+    /* background-color:rgb(136, 184, 255); */
 }
 .circle {
     position:absolute;

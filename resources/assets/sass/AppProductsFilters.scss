@@ -1,0 +1,22 @@
+.flt-grp {
+    margin: 2px 0;
+    padding: 0 1rem;
+}
+.flt-grp .checkbox {
+    margin-top:2px;
+    margin-bottom:2px;
+    padding:0 2rem
+}
+.flt-btn {
+    transition: all 0.3s;
+    padding: 0.5rem 0;
+    font-weight: bold;
+    &:hover {
+        color: dodgerblue;
+    }
+}
+@media screen and (max-width: 767px) {
+    .flip {
+        display: none;
+    }
+}

@@ -1,17 +1,25 @@
 <template>
-    <div class="container-fluid">
-        <div class="ctg-btn fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @focus="catalog_btn_toggle(1)" type="button" id="dropdownMenu1" aria-haspopup="true">
+    <div class="container-fluid" >
+        <div class="btn-primary fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @focus="catalog_btn_toggle(1)" type="button" id="dropdownMenu1" aria-haspopup="true">
             <div style="padding: 9px 10px 6px">
-                <i class="fa fa-list" style="font-size:1.2em"></i>
+                <i class="fa fa-list"></i>
                 {{lng.catalog}}
             </div>
             <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
-                <div class="ctg-itm fake-link" v-for="(item, name) in catalog" @click="get_filters(name, item.id)" :key="item.id">
+                <div class="btn-default fake-link" v-for="(item, name) in catalog" @click="get_filters(name, item.id)" :key="item.id">
                     {{lng[name]?lng[name]:name}}
                 </div>
             </ul>
         </div>
-        <button class="form-control" v-show="showClear" @click="flt_reset()">{{lng.flt_reset}}</button>
+        <div style="font-weight:bold;padding: 1rem">
+            <i class="fa fa-filter"></i>
+            {{lng.filters}}
+            <span class="flt-btn fake-link" style="font-weight: 500;padding: 0 1rem" v-show="showClear" @click="flt_reset()">
+                {{lng.filtersReset}}
+                <i class="fa fa-times"></i>
+            </span>
+        </div>
+
         <div class="thumbnail flt-grp">
             <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
                 {{lng.price}}
@@ -26,22 +34,17 @@
         </div>
         <div class="thumbnail flt-grp" v-for="(filter,i1) in filters" :key="filter.id">
             <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
-                <span :title="filter.desc"><i class="fa fa-info-circle"></i></span>
+                <!-- <span :title="filter.desc"><i class="fa fa-info-circle"></i></span> -->
                 {{lng[filter.name]?lng[filter.name]:filter.name}}
-                <i class="fa fa-angle-down font1 pull-right" style="display:none" aria-hidden="true"></i>
-                <i class="fa fa-angle-up font1 pull-right" aria-hidden="true"></i>
+                <i class="fa fa-angle-down pull-right" style="display:none" aria-hidden="true"></i>
+                <i class="fa fa-angle-up pull-right" aria-hidden="true"></i>
             </div>
             <div class="flip">
-                <div class="row" v-for="(value,i2) in filter.values" :key="value.id">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-10">
-                        <div class="checkbox" style="margin-top:2px;margin-bottom:2px">
-                            <label><input style="height:1em" :data-id="value.id" :data-i1="i1" :data-i2="i2" type="checkbox" @click="toFilter($event)">
-                                {{value.value}}
-                                <!-- {{value.value+' ('+value.count+')'}} -->
-                            </label>
-                        </div>
-                    </div>
+                <div class="checkbox" v-for="(value,i2) in filter.values" :key="value.id">
+                    <label><input type="checkbox" :data-id="value.id" :data-i1="i1" :data-i2="i2"  @click="toFilter($event)">
+                        {{value.value}}
+                        <!-- {{value.value+' ('+value.count+')'}} -->
+                    </label>
                 </div>
             </div>
         </div>
@@ -111,4 +114,4 @@
     }
 </script>
 
-<style lang="sass" src="../../sass/sidebar.sass"></style>
+<style lang="scss" src="../../sass/AppProductsFilters.scss"></style>

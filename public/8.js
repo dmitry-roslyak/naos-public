@@ -54,7 +54,6 @@ var options1 = {
     }
 };
 var chart_self,
-    self,
     _data = {
     ready: false
 };
@@ -69,7 +68,6 @@ var chart_self,
         }
     },
     mounted: function mounted() {
-        self = this;
         chart_self = new Chart(document.getElementById('graph'), {
             type: 'line',
             data: chart_data,

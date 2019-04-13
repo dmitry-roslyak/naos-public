@@ -56,7 +56,8 @@ var _data = {
     show_graph: false,
     diffType: 0
 };
-var chartData = {
+var selfChart,
+    chartData = {
     labels: [],
     datasets: [{
         data: [],
@@ -64,7 +65,6 @@ var chartData = {
         borderColor: 'rgba(255,99,132,1)'
     }]
 };
-var self, selfChart;
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['ids', 'category'],
     data: function data() {
@@ -79,7 +79,6 @@ var self, selfChart;
         }
     },
     mounted: function mounted() {
-        self = this;
         this.get_prodsby_ids();
         // selfChart = new Chart(document.getElementById('cmprGraph'), {
         //     type: 'polarArea',
@@ -120,15 +119,17 @@ var self, selfChart;
             selfChart.update();
         },
         get_prodsby_ids: function get_prodsby_ids() {
+            var _this = this;
+
             axios.get('/prodsby_ids', { params: { ids: JSON.parse(this.ids) } }).then(function (response) {
-                self.list = response.data;
-                for (var i = 0; i < self.list.length; i++) {
-                    self.list[i].specs.unshift({
+                _this.list = response.data;
+                for (var i = 0; i < _this.list.length; i++) {
+                    _this.list[i].specs.unshift({
                         name: 'price',
-                        value: self.$root.itemPriceResult(self.list[i]).split(" ")[0],
+                        value: _this.$root.itemPriceResult(_this.list[i]).split(" ")[0],
                         isComparable: true
                     });
-                    chartData.labels.push(self.list[i].name);
+                    chartData.labels.push(_this.list[i].name);
                 }
             });
         }
@@ -137,7 +138,7 @@ var self, selfChart;
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppCompare.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCompare.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -145,7 +146,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.compare {\r\n    overflow: overlay\n}\n@media (max-width: 768px){\n.compare {\r\n        padding: 0;\n}\n}\n.t-name {\r\n    display: block;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\n}\n.table-item:hover {\r\n    -webkit-box-shadow: 0 0 0.5rem #0049ce;\r\n            box-shadow: 0 0 0.5rem #0049ce;\r\n    background-color: white;\n}\n.table-item td:first-child {\r\n    border: inherit !important\n}\n.table-item {\r\n    display:inline-block;\r\n    -webkit-transition: all 0.5s;\r\n    transition: all 0.5s;\r\n    width: 20rem;\n}\r\n", ""]);
+exports.push([module.i, "\n.compare {\n  overflow: overlay;\n}\n@media (max-width: 768px) {\n.compare {\n    padding: 0;\n}\n}\n.t-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.table-item:hover {\n  -webkit-box-shadow: 0 0 0.5rem #0049ce;\n          box-shadow: 0 0 0.5rem #0049ce;\n  background-color: white;\n}\n.table-item td:first-child {\n  border: inherit !important;\n}\n.table-item {\n  display: inline-block;\n  -webkit-transition: all 0.5s;\n  transition: all 0.5s;\n  width: 20rem;\n}\n", ""]);
 
 // exports
 
@@ -459,23 +460,23 @@ if (false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppCompare.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCompare.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppCompare.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCompare.scss");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("9865560e", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("11a423dc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppCompare.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppCompare.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppCompare.scss", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!./AppCompare.scss");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -492,7 +493,7 @@ if(false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/AppCompare.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43052c3b\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./resources/assets/sass/AppCompare.scss")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */

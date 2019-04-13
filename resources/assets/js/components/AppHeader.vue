@@ -9,8 +9,8 @@
                 <table>
                     <tbody>
                         <tr v-for="item in search_result" :key="item.id">
-                            <td style="padding:4px;text-align:center">
-                                <img v-bind:src="'file/'+item.img_src" style="height:5rem">
+                            <td class="search-img-cell">
+                                <img v-bind:src="'file/'+item.img_src">
                             </td>
                             <td>
                                 <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
@@ -27,12 +27,12 @@
         </div>
         <div class="col-xs-12 col-sm-4 col-md-3">
             <router-link to="/cart" class="dr-btn fake-link pull-right">
-                <i class="fa fa-shopping-cart font1" aria-hidden="true"></i>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 <div><nobr>{{lng.cart}}</nobr></div>
                 <span class="badge badge-offset" >{{this.$store.getters.cartItemsCount}}</span>
             </router-link>
             <a id="compare" href="#" class="dr-btn pull-right" @click.prevent="$store.state.compare.length == 1 && toCompare(0)">
-                <i class="fa fa-balance-scale font1" aria-hidden="true"></i><div><nobr>{{lng.compare}}</nobr></div>
+                <i class="fa fa-balance-scale" aria-hidden="true"></i><div><nobr>{{lng.compare}}</nobr></div>
                 <span class="badge badge-offset">{{this.$store.getters.compareItemsCount}}</span>
                 <div v-show="this.$store.state.compare.length > 1" class="compare-drop">
                     <div v-for="(item, key) in compare" :key="key" @click="toCompare(key)">{{lng[item.category] + ': ' + item.array.length}}</div>
