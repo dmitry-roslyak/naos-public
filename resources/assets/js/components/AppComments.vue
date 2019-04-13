@@ -47,7 +47,8 @@
         paginator: {
             total: 0,
             take: 30,
-            skip: 0
+            skip: 0,
+            page: 1
         },
     };
     var formatter = new Intl.DateTimeFormat([] , {

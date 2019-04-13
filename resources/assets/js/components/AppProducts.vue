@@ -88,7 +88,8 @@
         paginator: {
             total: 0,
             take: 30,
-            skip: 0
+            skip: 0,
+            page: 1
         },
     };
     export default {
@@ -96,10 +97,12 @@
         data: function () {return data;},
         watch: {
             '$store.state.flt_ids': 'productsfetch',
-            'paginator.skip': 'productsfetch',
             'paginator.take': 'productsfetch',
+            'paginator.skip': function () {
+                this.productsfetch('withSkip');
+             },
             'price.range': function (array) {
-                array.length == 2 && this.productsfetch()
+                array.length == 2 && this.productsfetch();
             }
         },
         computed: {
@@ -119,7 +122,11 @@
                 e.style.visibility = 'initial';
                 e.style.padding = "4em";
             },
-            productsfetch: debounce(function() {
+            productsfetch: debounce(function(arg) {
+                if(arg != "withSkip") {
+                    this.paginator.skip = 0;
+                    this.paginator.page = 1;
+                }
                 var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
                 axios.get('prod_filter', {
                     params: {
