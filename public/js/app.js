@@ -6175,8 +6175,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 var self,
     _data = {
@@ -6219,7 +6217,7 @@ var self,
             }).then(function (response) {
                 self.search_result = response.data;
             });
-        }, 600)
+        }, 400)
     }
 });
 
@@ -52248,88 +52246,70 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "col-sm-8 col-md-7" }, [
-        _c(
-          "div",
-          { staticClass: "input-group", staticStyle: { "margin-top": "14px" } },
-          [
-            _c("input", {
-              staticClass: "form-control search-input",
-              attrs: {
-                type: "text",
-                placeholder: _vm.lng.search,
-                autofocus: ""
-              },
-              on: {
-                input: function($event) {
-                  _vm.toSearch($event.target.value)
-                }
+        _c("div", { staticClass: "input-group search" }, [
+          _c("input", {
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: _vm.lng.search, autofocus: "" },
+            on: {
+              input: function($event) {
+                _vm.toSearch($event.target.value)
               }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "search-list" }, [
-              _c("table", { staticStyle: { width: "100%" } }, [
-                _c(
-                  "tbody",
-                  _vm._l(_vm.search_result, function(item) {
-                    return _c(
-                      "tr",
-                      { key: item.id, staticClass: "search-itm" },
-                      [
-                        _c(
-                          "td",
-                          {
-                            staticStyle: {
-                              padding: "4px",
-                              "text-align": "center"
-                            }
-                          },
-                          [
-                            _c("img", {
-                              staticStyle: { height: "5rem" },
-                              attrs: { src: "file/" + item.img_src }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                attrs: {
-                                  to: {
-                                    name: "detail",
-                                    params: { id: item.id }
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(item.name))]
-                            ),
-                            _vm._v(" "),
-                            _c("star-rating", {
-                              attrs: {
-                                rating: +item.rating,
-                                "star-size": 16,
-                                "show-rating": false,
-                                "read-only": true
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.itemPriceResult(item)))])
-                      ]
-                    )
-                  })
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(0)
-          ]
-        )
+            }
+          }),
+          _vm._v(" "),
+          _c("table", [
+            _c(
+              "tbody",
+              _vm._l(_vm.search_result, function(item) {
+                return _c("tr", { key: item.id }, [
+                  _c(
+                    "td",
+                    { staticStyle: { padding: "4px", "text-align": "center" } },
+                    [
+                      _c("img", {
+                        staticStyle: { height: "5rem" },
+                        attrs: { src: "file/" + item.img_src }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: { name: "detail", params: { id: item.id } }
+                          }
+                        },
+                        [_vm._v(_vm._s(item.name))]
+                      ),
+                      _vm._v(" "),
+                      _c("star-rating", {
+                        attrs: {
+                          rating: +item.rating,
+                          "star-size": 16,
+                          "show-rating": false,
+                          "read-only": true
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [_c("nobr", [_vm._v(_vm._s(_vm.itemPriceResult(item)))])],
+                    1
+                  )
+                ])
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
       ]),
       _vm._v(" "),
       _c(

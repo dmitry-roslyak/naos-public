@@ -4,24 +4,22 @@
             <span>N<span class="vflip">V</span>OS</span>
         </router-link>
         <div class="col-sm-8 col-md-7">
-            <div class="input-group" style="margin-top:14px">
-                <input type="text" class="form-control search-input" :placeholder="lng.search" @input="toSearch($event.target.value)" autofocus>
-                <div class="search-list">
-                    <table style="width:100%">
-                        <tbody>
-                            <tr class="search-itm" v-for="item in search_result" :key="item.id">
-                                <td style="padding:4px;text-align:center">
-                                    <img v-bind:src="'file/'+item.img_src" style="height:5rem">
-                                </td>
-                                <td>
-                                    <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
-                                    <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                                </td>
-                                <td>{{itemPriceResult(item)}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="input-group search">
+                <input type="text" class="form-control" :placeholder="lng.search" @input="toSearch($event.target.value)" autofocus>
+                <table>
+                    <tbody>
+                        <tr v-for="item in search_result" :key="item.id">
+                            <td style="padding:4px;text-align:center">
+                                <img v-bind:src="'file/'+item.img_src" style="height:5rem">
+                            </td>
+                            <td>
+                                <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
+                                <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+                            </td>
+                            <td><nobr>{{itemPriceResult(item)}}</nobr></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <span class="input-group-btn" >
                     <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
                 </span>
@@ -72,7 +70,7 @@
                 }).then(function (response) {
                     self.search_result = response.data;
                 });
-            }, 600)
+            }, 400)
         }
     }
 </script>
