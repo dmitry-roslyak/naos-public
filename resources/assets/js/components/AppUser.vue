@@ -33,7 +33,6 @@
         <hr style="margin:8px 0">
         <div class="container-fluid">
             <i class="fa fa-envelope"></i>
-            <!--<span class="glyphicon glyphicon-envelope"></span>-->
             <label>{{lng.email_me}} :</label>
             <div class="container-fluid">
                 <div class="checkbox disabled">
@@ -52,21 +51,6 @@
                 </div>
             </div>
         </div>
-        <!--<span>Разрешить хранение: </span>
-        <div class="form-inline" style="padding:8px 0 0 16px">
-            <span>личной информации:&nbsp;</span>
-            <div class="radio">
-                <label><input type="radio" name="r1" checked>&nbsp;Да</label>
-                <label><input type="radio" name="r1">&nbsp;Нет</label>
-            </div>
-        </div> 
-        <div class="form-inline" style="padding:8px 0 0 16px">
-            <span>номера платежной карты (PAN):&nbsp;</span>
-            <div class="radio">
-                <label><input type="radio" name="r2" checked>&nbsp;Да</label>
-                <label><input type="radio" name="r2">&nbsp;Нет</label>
-            </div>
-        </div>  -->
     </div>
 </template>
 

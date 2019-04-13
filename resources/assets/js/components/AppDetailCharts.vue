@@ -46,7 +46,7 @@ var options1 = {
 
     }
 };
-var chart_self, self, data = {
+var chart_self, data = {
     ready: false
 };
 export default {
@@ -56,7 +56,6 @@ export default {
         lng(){ return this.$root.lng },
     },
     mounted(){
-        self = this;
         chart_self = new Chart(document.getElementById('graph'), {
             type: 'line',
             data: chart_data,

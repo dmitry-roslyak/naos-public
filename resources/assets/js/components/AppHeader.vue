@@ -42,7 +42,7 @@
     </div>
 </template>
 <script>
-    var self, data = {
+    var data = {
         search_result: null,
     };
     export default {
@@ -53,7 +53,6 @@
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         created() {
-            self = this;
             this.$store.commit("loadFromLocalStorage",'compare');
             this.$store.commit("loadFromLocalStorage",'cart');
         },
@@ -63,11 +62,11 @@
                 this.$router.push(`/compare/${this.$store.state.compare[i].category}/${JSON.stringify(this.$store.state.compare[i].array)}`);
             },
             toSearch: debounce(function (text) {
-                self.search_result = null;
+                this.search_result = null;
                 text.length && axios.post('/search', {
                     search: text
-                }).then(function (response) {
-                    self.search_result = response.data;
+                }).then((response) => {
+                    this.search_result = response.data;
                 });
             }, 400)
         }

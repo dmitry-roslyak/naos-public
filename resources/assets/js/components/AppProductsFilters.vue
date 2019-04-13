@@ -50,7 +50,7 @@
 <script>
     const range = require('./VRange.vue')
     // import range from './VRange.vue'
-    var self, data = {
+    var data = {
         catalog: [],
         filters: [],
         vRangeSlidersPosition: [0, 100],
@@ -66,7 +66,6 @@
             showClear: function () { return this.$store.state.flt_ids.length },
         },
         created() {
-            self = this;
             this.catalog = window.Laravel.catalog;
             this.price = this.$parent.price;
             if(window.Laravel.catalog[this.$parent.category]) 
@@ -100,8 +99,8 @@
             },
             get_filters(name, id) {
                 this.$router.push('/products/'+name);
-                axios.get('/get_filters?id='+id).then(function (response) {
-                    self.filters = response.data;
+                axios.get('/get_filters?id='+id).then((response) => {
+                    this.filters = response.data;
                 })  
                 this.flt_reset();
             },

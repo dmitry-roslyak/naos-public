@@ -49,7 +49,7 @@
     </div>
 </template>
 <script>
-    var self, data = {
+    var data = {
         catalog: [],
         items: [],
         dummyCategory: []
@@ -61,18 +61,17 @@
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
         mounted() {
-            self = this;
             this.catalog = window.Laravel.catalog;
             this.dummyCategory.length = 8;
             this.get_random_products();
         },
         methods: {
             category(name, id) {
-                self.$router.push('products/'+name);
+                this.$router.push('products/'+name);
             },
             get_random_products() {
-                axios.get('/prod_rnd').then(function (response) {
-                    self.items = response.data;
+                axios.get('/prod_rnd').then((response) => {
+                    this.items = response.data;
                 });
             }
         }

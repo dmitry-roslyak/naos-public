@@ -49,7 +49,7 @@
         show_graph:false,
         diffType:0,
     };
-    var chartData = {
+    var selfChart, chartData = {
         labels: [],
         datasets: [{
             data: [],
@@ -57,7 +57,6 @@
             borderColor: 'rgba(255,99,132,1)'
         }]
     };
-    var self, selfChart;
     export default {
         props: ['ids', 'category'],
         data: function() { return data },
@@ -68,7 +67,6 @@
             lng(){ return this.$root.lng },
         },
         mounted(){
-            self = this;
             this.get_prodsby_ids();
             // selfChart = new Chart(document.getElementById('cmprGraph'), {
             //     type: 'polarArea',
@@ -111,15 +109,15 @@
                 selfChart.update();
             },
             get_prodsby_ids(){
-                axios.get('/prodsby_ids', {params:{ids:JSON.parse(this.ids)}}).then(function (response) {
-                    self.list = response.data;
-                    for (var i = 0; i < self.list.length; i++) {
-                        self.list[i].specs.unshift({
+                axios.get('/prodsby_ids', {params:{ids:JSON.parse(this.ids)}}).then((response) => {
+                    this.list = response.data;
+                    for (var i = 0; i < this.list.length; i++) {
+                        this.list[i].specs.unshift({
                             name: 'price',
-                            value: self.$root.itemPriceResult(self.list[i]).split(" ")[0],
+                            value: this.$root.itemPriceResult(this.list[i]).split(" ")[0],
                             isComparable: true
                         })
-                        chartData.labels.push(self.list[i].name); 
+                        chartData.labels.push(this.list[i].name); 
                     }
                 });
             }
