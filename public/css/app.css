@@ -11974,7 +11974,8 @@ td > .fa-times {
 .ctg-frm {
   display: none;
   padding: 0;
-  border: 0.7px solid cornflowerblue;
+  border: 1px solid cornflowerblue;
+  border-left-width: 0.5px;
 }
 
 .ctg-frm > .fake-link {
@@ -12166,7 +12167,7 @@ td > .fa-times {
 .carousel-img {
   padding: 35px 0;
   margin: 0 auto;
-  height: 36rem !important;
+  height: 35.2rem !important;
 }
 
 .carousel-inner-bcolor {
@@ -12283,6 +12284,10 @@ td > .fa-times {
   -webkit-box-shadow: 0 0 0.3em;
           box-shadow: 0 0 0.3em;
   color: whitesmoke;
+}
+
+.footer h5 > a .fa {
+  font-size: inherit;
 }
 
 .footer h5 > a:hover {
