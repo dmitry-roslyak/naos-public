@@ -34,7 +34,7 @@
             validate: {}
         },
         validator = new Validator({
-            name: /(^\S{1,128}\s+\S{1,128}$)/,
+            name: /(^\S{1,120}\s{1,5}\S{1,120}$)/,
             tel: /^(\d{3,11})$/
         }, data.validate);
 
@@ -66,7 +66,9 @@
                 if (!self.edit) self.edit = true;
                 else if(validator.isValid()){
                     self.edit = false;
-                    axios.post('/update_user_info', { user: self.userInfo, });
+                    axios.post('/update_user_info', { user: self.userInfo, }).then(function () {
+                        self.$root.$data.user = self.userInfo.name;
+                    });
                 }
             }
         }

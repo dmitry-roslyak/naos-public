@@ -62,12 +62,12 @@ class UserController extends Controller
             Currency::where('name', $user['currency'])->orderBy('date','desc')->first()
         ];
     }
-    public function updinfo(Request $data)
+    public function update(Request $data)
     {
         $user = Auth::user();
         $validation = Validator::make($data->all(), [
-            'user.name' => 'required|min:3',
-            'user.tel' => 'required|numeric|min:3'
+            'user.name' => 'required|min:3|max:255',
+            'user.tel' => 'required|min:3|max:11'
         ]);
         if($validation->fails()) return response($validation->errors(), 422);
         $user->update(collect($data->user)->only(['name', 'tel'])->all());

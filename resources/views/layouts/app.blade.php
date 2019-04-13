@@ -59,7 +59,8 @@
                         <li v-if="!user"><a href="{{ route('login') }}">@{{lng.login}}</a></li>
                         <li v-if="!user"><a href="{{ route('register') }}">@{{lng.register}}</a></li>
                         <li v-if="user" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" 
+                                style="width: 16rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                 @{{user}} <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
