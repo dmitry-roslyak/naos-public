@@ -3,6 +3,10 @@
         <div class="col-md-7" style="padding-right:0">
             <!-- <h4 style="padding-left:8px">{{item.name}}</h4> -->
             <div class="action-frm" style="border-color: white;border: 1px solid white;border-width: 0 0 1px 1px;background-color:inherit;z-index:1">
+                <a class="action-item fake-link" @click="to_compare()">
+                    <span class="hidden-xs">{{lng.to_compare}}</span>
+                    <i class="fa fa-balance-scale compare-state anm-bounce-scale" :data-check="item.is_compare" aria-hidden="true"></i>
+                </a>&nbsp;
                 <a class="action-item fake-link" @click="to_wish()">
                     <span class="hidden-xs">{{lng.to_wishlist}}</span>
                     <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
@@ -66,6 +70,9 @@
         props: ['id'],
         data: function() { return data },
         computed: {
+            category() { 
+                return Object.keys(window.Laravel.catalog).filter(key => window.Laravel.catalog[key].id == this.item.category_id)[0];
+            },
             lng(){ return this.$root.lng },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
@@ -90,23 +97,27 @@
             buyItem(item){
                 this.$store.commit('cart', {id: item.id, count: 1});
             },
-            to_compare(i){
-                this.item.is_compare = !this.item.is_compare
-                this.$store.commit('compare', this.item.id);
-                this.$forceUpdate();
+            to_compare(){
+                this.item.is_compare = !this.item.is_compare;
+                this.$store.commit('compare', {id: this.item.id, category_id: this.item.category_id, category: this.category});
             },
             to_wish(){
+                self.item.isWish = !self.item.isWish;
                 axios.post('/to_wish',{
                     id: self.item.id
-                }).then(function (response) {
-                    self.item.isWish = !!response.data;
-                    self.$forceUpdate();
+                }).catch(function () {
+                    self.item.isWish = !self.item.isWish;
                 });
             },
             itemById(){
                 axios.get('prod_by_id?id='+self.id).then(function (response) {
+                    response.data.isWish = !!response.data.wish;
+                    response.data.is_compare = false;
                     self.item = response.data;
-                    self.item.isWish = !!response.data.is_wish;
+                    self.$nextTick(() => {
+                        var categoryIndex = self.$store.getters.compareCategoryIndex(window.Laravel.catalog[self.category].id)
+                        self.item.is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, response.data.id) > -1;
+                    })
                     self.set_total_time();
                 });    
             },
