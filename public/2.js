@@ -62,6 +62,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 var self,
     timerId,
@@ -77,19 +81,26 @@ var self,
         return _data;
     },
     computed: {
+        category: function category() {
+            var _this = this;
+
+            return Object.keys(window.Laravel.catalog).filter(function (key) {
+                return window.Laravel.catalog[key].id == _this.item.category_id;
+            })[0];
+        },
         lng: function lng() {
             return this.$root.lng;
         },
         itemPriceResult: function itemPriceResult() {
-            var _this = this;
+            var _this2 = this;
 
             return function (item) {
-                return _this.$root.itemPriceResult(item);
+                return _this2.$root.itemPriceResult(item);
             };
         }
     },
     created: function created() {
-        var _this2 = this;
+        var _this3 = this;
 
         self = this;
         this.itemById();
@@ -98,12 +109,12 @@ var self,
             self.clientWidth();
         };
         window.onblur = function () {
-            if (_this2.$route.path.indexOf("detail") > -1) clearInterval(timerId);
+            if (_this3.$route.path.indexOf("detail") > -1) clearInterval(timerId);
         };
         window.onfocus = function () {
-            if (_this2.$route.path.indexOf("detail") > -1) {
+            if (_this3.$route.path.indexOf("detail") > -1) {
                 clearInterval(timerId);
-                _this2.set_total_time();
+                _this3.set_total_time();
             }
         };
     },
@@ -118,23 +129,27 @@ var self,
         buyItem: function buyItem(item) {
             this.$store.commit('cart', { id: item.id, count: 1 });
         },
-        to_compare: function to_compare(i) {
+        to_compare: function to_compare() {
             this.item.is_compare = !this.item.is_compare;
-            this.$store.commit('compare', this.item.id);
-            this.$forceUpdate();
+            this.$store.commit('compare', { id: this.item.id, category_id: this.item.category_id, category: this.category });
         },
         to_wish: function to_wish() {
+            self.item.isWish = !self.item.isWish;
             axios.post('/to_wish', {
                 id: self.item.id
-            }).then(function (response) {
-                self.item.isWish = !!response.data;
-                self.$forceUpdate();
+            }).catch(function () {
+                self.item.isWish = !self.item.isWish;
             });
         },
         itemById: function itemById() {
             axios.get('prod_by_id?id=' + self.id).then(function (response) {
+                response.data.isWish = !!response.data.wish;
+                response.data.is_compare = false;
                 self.item = response.data;
-                self.item.isWish = !!response.data.is_wish;
+                self.$nextTick(function () {
+                    var categoryIndex = self.$store.getters.compareCategoryIndex(window.Laravel.catalog[self.category].id);
+                    self.item.is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, response.data.id) > -1;
+                });
                 self.set_total_time();
             });
         },
@@ -169,7 +184,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.tb-offer {\n  position: absolute;\n  top: 0;\n  text-align: center;\n  border: 1px solid tomato;\n  border-width: 0 0 1px;\n  border-radius: 0 0 8px 0;\n  -webkit-box-shadow: 0 0 8px red;\n          box-shadow: 0 0 8px red;\n}\n.tb-offer span:nth-child(1) {\n    display: inline-block;\n    padding: 0.15em 0.6em;\n    background-color: tomato;\n    color: white;\n}\n.tb-offer span:nth-child(2) {\n    padding: 0 0.4em;\n    color: tomato;\n}\n.btn-buy {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  position: absolute;\n  padding: 0.6em 1em;\n  border: 0px solid white;\n  border-width: 1px 0 0 1px;\n  border-radius: 0.8rem 0;\n  right: 0;\n  bottom: 0;\n  width: 10em;\n  color: white;\n}\n.btn-buy:hover {\n    background-color: royalblue;\n}\n.border1 {\n  background-color: white;\n  border: 1px solid lightgray;\n  border-top-width: 0;\n}\n.border1 tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.nav-tabs li.active a {\n  background-color: white;\n}\n", ""]);
+exports.push([module.i, "\n.tb-offer {\n  position: absolute;\n  top: 0;\n  text-align: center;\n  border: thin solid tomato;\n  border-width: 0 0 thin;\n  border-radius: 0 0 8px 0;\n  -webkit-box-shadow: 0 0 8px red;\n          box-shadow: 0 0 8px red;\n}\n.tb-offer span:nth-child(1) {\n    display: inline-block;\n    padding: 0.15em 0.6em;\n    background-color: tomato;\n    color: white;\n}\n.tb-offer span:nth-child(2) {\n    padding: 0 0.4em;\n    color: tomato;\n}\n.btn-buy {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  position: absolute;\n  padding: 0.6em 1em;\n  border: 0px solid white;\n  border-width: thin 0 0 thin;\n  border-radius: 0.8rem 0;\n  right: 0;\n  bottom: 0;\n  width: 10em;\n  color: white;\n}\n.btn-buy:hover {\n    background-color: royalblue;\n}\n.border1 {\n  background-color: white;\n  border: thin solid lightgray;\n  border-top-width: 0;\n}\n.border1 tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.nav-tabs li.active a {\n  background-color: white;\n}\n", ""]);
 
 // exports
 
@@ -207,6 +222,32 @@ var render = function() {
               }
             },
             [
+              _c(
+                "a",
+                {
+                  staticClass: "action-item fake-link",
+                  on: {
+                    click: function($event) {
+                      _vm.to_compare()
+                    }
+                  }
+                },
+                [
+                  _c("span", { staticClass: "hidden-xs" }, [
+                    _vm._v(_vm._s(_vm.lng.to_compare))
+                  ]),
+                  _vm._v(" "),
+                  _c("i", {
+                    staticClass:
+                      "fa fa-balance-scale compare-state anm-bounce-scale",
+                    attrs: {
+                      "data-check": _vm.item.is_compare,
+                      "aria-hidden": "true"
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" \n            "),
               _c(
                 "a",
                 {

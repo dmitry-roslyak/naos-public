@@ -11516,7 +11516,7 @@ button.close {
   -webkit-box-shadow: 0 1px 0.3em cornflowerblue;
           box-shadow: 0 1px 0.3em cornflowerblue;
   z-index: 5;
-  border-top: 1px solid cornflowerblue;
+  border-top: thin solid cornflowerblue;
   white-space: nowrap;
   text-align: left;
   opacity: 0;
@@ -11941,7 +11941,7 @@ td > .fa-times {
   display: inline-block;
   width: 43%;
   top: 0.5em;
-  border-top: 1px solid #333;
+  border-top: thin solid #333;
   text-align: initial;
   content: " ";
 }
@@ -11974,8 +11974,7 @@ td > .fa-times {
 .ctg-frm {
   display: none;
   padding: 0;
-  border: 1px solid cornflowerblue;
-  border-left-width: 0.5px;
+  border: thin solid cornflowerblue;
 }
 
 .ctg-frm > .fake-link {

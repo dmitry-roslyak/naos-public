@@ -52326,7 +52326,6 @@ var render = function() {
               attrs: { id: "compare", href: "#" },
               on: {
                 click: function($event) {
-                  $event.preventDefault()
                   _vm.$store.state.compare.length == 1 && _vm.toCompare(0)
                 }
               }
@@ -67919,18 +67918,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase_auth__ = __webpack_require__("./node_modules/firebase/auth/dist/index.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js__ = __webpack_require__("./node_modules/chart.js/src/chart.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chart_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_chart_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__validate_js__ = __webpack_require__("./resources/assets/js/validate.js");
 
 
 
 
 
 
-
-window.Validator = __WEBPACK_IMPORTED_MODULE_6__validate_js__["a" /* default */];
 
 if (false) {
-
     firebase.initializeApp({
         apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
         authDomain: "dev-naos.firebaseapp.com",
@@ -67939,13 +67934,6 @@ if (false) {
         storageBucket: "dev-naos.appspot.com",
         messagingSenderId: "515353712594"
     });
-
-    window.socket = new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
-} else {
-    window.socket = {};
-    window.socket.send = function () {
-        console.log('socket disabled');
-    };
 }
 
 var _data = {
@@ -68075,6 +68063,36 @@ window.axios.defaults.headers.common = {
 // channel.bind('my-event', function(data) {
 //   alert(data.message);
 // });
+window.Validator = __webpack_require__("./resources/assets/js/validate.js");
+
+var webSocketPromise,
+    developmentModeMsg = "WebSocket disabled in development mode";
+
+if (false) {
+
+    webSocketPromise = new Promise(function (resolve, reject) {
+        var webSocket = new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
+        webSocket.onopen = function () {
+            return resolve(webSocket);
+        };
+        webSocket.onerror = function (event) {
+            return reject(event);
+        };
+    });
+} else {
+    webSocketPromise = new Promise(function (resolve, reject) {
+        return reject(developmentModeMsg);
+    });
+}
+
+webSocketPromise.catch(function (e) {
+    if (developmentModeMsg == e) {
+        console.warn(developmentModeMsg);
+        return;
+    }
+    console.error(e);
+});
+window.webSocketPromise = webSocketPromise;
 
 window.debounce = function (func, timeout) {
     var id;
@@ -68401,6 +68419,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var rulesHandlers = {};
 
 Vue.directive('validate', function (el, binding, vnode, oldVnode) {
@@ -68426,7 +68445,7 @@ function Validator(rules, state) {
         isValid: isValid
     };
 }
-/* harmony default export */ __webpack_exports__["a"] = (Validator);
+/* harmony default export */ __webpack_exports__["default"] = (Validator);
 
 /***/ }),
 

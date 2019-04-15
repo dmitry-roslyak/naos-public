@@ -194,9 +194,10 @@ var self,
             this.$store.commit('compare', { id: this.items[i].id, category_id: this.items[i].category_id, category: this.category });
         },
         to_wish: function to_wish(i) {
+            self.items[i].isWish = !!response.data;
             axios.post('/to_wish', {
                 id: self.items[i].id
-            }).then(function (response) {
+            }).catch(function () {
                 self.items[i].isWish = !!response.data;
             });
         }
@@ -213,7 +214,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: 1px solid cornflowerblue;\n  border-width: 1px 0;\n  font-size: 1.5rem;\n  line-height: 2em;\n}\n.itmc select {\n    display: inline-block;\n    height: 27px;\n}\n#sortby {\n  width: 180px;\n}\n.product-state > s {\n  padding: 7px 0 7px 7px;\n}\n.product-state > s + span {\n  color: coral;\n}\n.product-state > span {\n  padding: 7px;\n  font-weight: 900;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n  background-color: white;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card:hover .item-spec {\n    font-size: inherit;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    width: 55%;\n    padding-left: 10px;\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.item-card > .thumbnail > .caption {\n  padding: 2px 6px;\n}\n.item-card > .action-frm {\n  right: 4px;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n", ""]);
+exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: thin solid cornflowerblue;\n  border-width: thin 0;\n  font-size: 1.5rem;\n  line-height: 2em;\n}\n.itmc select {\n    display: inline-block;\n    height: 27px;\n}\n#sortby {\n  width: 180px;\n}\n.product-state > s {\n  padding: 7px 0 7px 7px;\n}\n.product-state > s + span {\n  color: coral;\n}\n.product-state > span {\n  padding: 7px;\n  font-weight: 900;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n  background-color: white;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card:hover .item-spec {\n    font-size: inherit;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n}\n.item-spec tr td:last-child {\n    width: 55%;\n    padding-left: 10px;\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.item-card > .thumbnail > .caption {\n  padding: 2px 6px;\n}\n.item-card > .action-frm {\n  right: 4px;\n}\n.item-card-img {\n  height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n", ""]);
 
 // exports
 

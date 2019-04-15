@@ -4,11 +4,8 @@ import store from "./store";
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'chart.js';
-import Validator from './validate.js'
-window.Validator = Validator;
 
 if(__NODE_ENV === 'production'){
-
     firebase.initializeApp({
         apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
         authDomain: "dev-naos.firebaseapp.com",
@@ -17,14 +14,6 @@ if(__NODE_ENV === 'production'){
         storageBucket: "dev-naos.appspot.com",
         messagingSenderId: "515353712594"
     });
-
-    window.socket =  new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
-
-} else {
-    window.socket = {}
-    window.socket.send = function (){
-        console.log('socket disabled')
-    }
 }
 
 var data = {

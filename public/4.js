@@ -79,23 +79,29 @@ var formatter = new Intl.DateTimeFormat([], {
             return this.$root.lng;
         }
     },
-    mounted: function mounted() {
+    created: function created() {
+        var _this = this;
+
         self = this;
+        window.webSocketPromise.then(function (webSocket) {
+            webSocket.send(JSON.stringify({
+                "event": "pusher:subscribe",
+                "data": {
+                    "channel": 'chat-product' + _this.productId
+                } }));
+            webSocket.onmessage = function (event) {
+                var res = JSON.parse(event.data);
+                if (res.event == 'new-message') {
+                    self.paginator.total++;
+                    var comment = JSON.parse(res.data);
+                    comment.created_at = formatter.format(new Date(comment.created_at + 'Z'));
+                    self.comments.unshift(comment);
+                }
+            };
+        }).catch(function (event) {
+            console.error(event);
+        });
         this.show_comments();
-        window.socket.send(JSON.stringify({
-            "event": "pusher:subscribe",
-            "data": {
-                "channel": 'chat-product' + this.productId
-            } }));
-        window.socket.onmessage = function (event) {
-            var res = JSON.parse(event.data);
-            if (res.event == 'new-message') {
-                self.paginator.total++;
-                var comment = JSON.parse(res.data);
-                comment.created_at = formatter.format(new Date(comment.created_at + 'Z'));
-                self.comments.unshift(comment);
-            }
-        };
     },
 
     methods: {

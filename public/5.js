@@ -195,7 +195,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.cart-caption {\n  padding: 10px;\n  border-radius: 0.3rem 0.3rem 0 0;\n  color: white;\n  background-color: cornflowerblue;\n}\n.cart-item {\n  padding: 15px;\n  border: 1px solid cornflowerblue;\n  background-color: white;\n}\n.cart-products {\n  padding: 0px;\n  margin: 0;\n  border-radius: 0.3rem;\n  background-color: white;\n  -webkit-box-shadow: 0 0 0.4rem #ddd;\n          box-shadow: 0 0 0.4rem #ddd;\n}\n.cart-products > .table {\n  margin: 0;\n}\n.cart-products tr td:first-child {\n  text-align: center !important;\n}\n.cart-products tr td > img {\n  height: 6rem;\n}\n.cart-products td {\n  vertical-align: initial !important;\n}\n", ""]);
+exports.push([module.i, "\n.cart-caption {\n  padding: 10px;\n  border-radius: 0.3rem 0.3rem 0 0;\n  color: white;\n  background-color: cornflowerblue;\n}\n.cart-item {\n  padding: 15px;\n  border: thin solid cornflowerblue;\n  background-color: white;\n}\n.cart-products {\n  padding: 0px;\n  margin: 0;\n  border-radius: 0.3rem;\n  background-color: white;\n  -webkit-box-shadow: 0 0 0.4rem #ddd;\n          box-shadow: 0 0 0.4rem #ddd;\n}\n.cart-products > .table {\n  margin: 0;\n}\n.cart-products tr td:first-child {\n  text-align: center !important;\n}\n.cart-products tr td > img {\n  height: 6rem;\n}\n.cart-products td {\n  vertical-align: initial !important;\n}\n", ""]);
 
 // exports
 
