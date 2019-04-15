@@ -325,7 +325,7 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "like-tab",
+                    staticClass: "like-tab fake-link",
                     on: {
                       click: function($event) {
                         _vm.comment_like(i, $event.target)

@@ -48,7 +48,7 @@ window.axios.defaults.headers.common = {
 // channel.bind('my-event', function(data) {
 //   alert(data.message);
 // });
-window.Validator = require('./validate.js')
+window.Validator = require('./validate.js').default;
 
 var webSocketPromise, developmentModeMsg = "WebSocket disabled in development mode";
 

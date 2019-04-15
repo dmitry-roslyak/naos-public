@@ -52326,6 +52326,7 @@ var render = function() {
               attrs: { id: "compare", href: "#" },
               on: {
                 click: function($event) {
+                  $event.preventDefault()
                   _vm.$store.state.compare.length == 1 && _vm.toCompare(0)
                 }
               }
@@ -68063,7 +68064,7 @@ window.axios.defaults.headers.common = {
 // channel.bind('my-event', function(data) {
 //   alert(data.message);
 // });
-window.Validator = __webpack_require__("./resources/assets/js/validate.js");
+window.Validator = __webpack_require__("./resources/assets/js/validate.js").default;
 
 var webSocketPromise,
     developmentModeMsg = "WebSocket disabled in development mode";
