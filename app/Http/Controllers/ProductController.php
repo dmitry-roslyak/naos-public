@@ -59,16 +59,15 @@ class ProductController extends Controller
             if($data->ctg_id>0) $query->where('category_id',$data->ctg_id);
 
             if(!empty($data->f)){
-                $filters = Filter::with('values')->whereHas('values', function ($q) use($data) {
-                    $q->whereIn('id', $data->f);
-                })->get()->load(['values' => function ($query) use($data) {
+                $filters = Filter::with(['values' => function ($query) use($data) {
                     $query->whereIn('id',$data->f)->increment('popularity');
-                }]);
+                }])->whereHas('values', function ($q) use($data) {
+                    $q->whereIn('id', $data->f);
+                })->get();
+               
                 foreach ($filters as $filter) {
-                    $values = [];$name = $filter->name;
-                    foreach ($filter->values as $value) {
-                        $values[] = $value->value;
-                    }
+                    $name = $filter->name;
+                    $values = $filter->values->pluck('value');
                     $query->whereHas('specs', function ($q) use($name, $values) {
                         $q->where('name', $name)->whereIn('value', $values);
                     });
@@ -104,12 +103,10 @@ class ProductController extends Controller
             $query->where('user_id',$user_id);
         }])->where('id',$data->id)->first();
 
-        if(isset($prod->wish))
-        {
-            UserWishes::where('product_id',$data->id)->where('user_id',$user_id)->delete();
+        if(!empty($prod->wish)) {
+            $prod->wish->delete();
             return 0;
-        }
-        else{
+        } else {
             $date = new \DateTime;
             $user_wish =  new UserWishes;
             $user_wish->user_id = $user_id;

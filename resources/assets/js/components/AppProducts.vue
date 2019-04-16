@@ -176,11 +176,11 @@
                 this.$store.commit('compare', {id: this.items[i].id, category_id: this.items[i].category_id, category: this.category});
             },
             to_wish(i){
-                self.items[i].isWish = !!response.data;
+                self.items[i].isWish = !self.items[i].isWish ;
                 axios.post('/to_wish',{
                     id: self.items[i].id
                 }).catch(function () {
-                    self.items[i].isWish = !!response.data;
+                    self.items[i].isWish = !self.items[i].isWish ;
                 });
             }
         }

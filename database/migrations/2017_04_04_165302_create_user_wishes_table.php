@@ -14,6 +14,7 @@ class CreateUserWishesTable extends Migration
     public function up()
     {
         Schema::create('user_wishes', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('product_id',false,true);
             $table->integer('user_id',false,true);
             $table->float('price',false,true);

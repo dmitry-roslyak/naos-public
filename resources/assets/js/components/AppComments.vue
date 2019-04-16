@@ -29,10 +29,12 @@
                 <span style="top: 15px;right: 15px;position: absolute;">{{comment.created_at}}</span>
                 <div style="margin: 10px 0">{{comment.message}}</div>
                 <div class="like-tab fake-link" @click="comment_like(i,$event.target)">
-                    <i :class="comment.vote && comment.vote.is_liked > 0 ? 'fa fa-thumbs-up like' : 'fa fa-thumbs-o-up like'"></i>
+                    <i :class="comment.vote && comment.vote.action == 'like' ? 'fa fa-thumbs-up like' : 'fa fa-thumbs-o-up like'">
                         {{comment.like}}
-                    <i :class="comment.vote && comment.vote.is_liked < 0 ? 'fa fa-thumbs-down dislike' : 'fa fa-thumbs-o-down dislike'"></i>
+                    </i>
+                    <i :class="comment.vote && comment.vote.action == 'dislike' ? 'fa fa-thumbs-up dislike' : 'fa fa-thumbs-o-up dislike'">
                         {{comment.dislike}}
+                    </i>
                 </div>
             </div>
         </div>
@@ -99,7 +101,7 @@
                 axios.get('/comment_like', { 
                     params: {
                         id: this.comments[i].id,
-                        x: el.classList.contains('like') ? 1 : -1
+                        action: el.classList.contains('like') ? 'like' : 'dislike'
                     }
                 }).then(function(response) {
                     self.comments[i] = response.data;

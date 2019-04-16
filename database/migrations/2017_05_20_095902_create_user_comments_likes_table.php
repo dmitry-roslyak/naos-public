@@ -17,7 +17,7 @@ class CreateUserCommentsLikesTable extends Migration
             $table->increments('id');
             $table->integer('comment_id',false,true);
             $table->integer('user_id',false,true);
-            $table->boolean('is_liked');
+            $table->string('action');
         });
     }
 

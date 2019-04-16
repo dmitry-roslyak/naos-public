@@ -31,66 +31,42 @@ class CommentController extends Controller
     public function like(Request $data)
     {
         $user_id = Auth::id();
-        $comment_id = $data->id;
-        if($comment_id>0) {
-            $comment = Comment::where('id',$comment_id)->first();
-            if($comment->user_id == $user_id) return response(null,403);
-            $user_comment_like = UserCommentsLike::where('comment_id',$comment_id)->where('user_id',$user_id)->first();
-            switch ($user_comment_like['is_liked']) {
-                case 1:
-                    if($data->x==-1)
-                    {
-                        $comment->increment('dislike');
-                        $comment->decrement('like');
-                        $user_comment_like->update(['is_liked'=>-1]);
-                    }
-                    else 
-                    {
-                        $comment->decrement('like');
-                        $user_comment_like->delete();
-                    }
-                    break;
-                case -1:
-                    if($data->x==1)
-                    {
-                        $comment->increment('like');
-                        $comment->decrement('dislike');
-                        $user_comment_like->update(['is_liked'=>1]);
-                    }
-                    else 
-                    {
-                        $comment->decrement('dislike');
-                        $user_comment_like->delete();
-                    }
-                    break;
-                default:
-                    if($data->x==1) 
-                    {
-                        $comment->increment('like');
-                        UserCommentsLike::insert(['user_id' =>$user_id,'comment_id' =>$comment_id,'is_liked' =>1]);
-                    }
-                    else if($data->x==-1) 
-                    {
-                        $comment->increment('dislike');
-                        UserCommentsLike::insert(['user_id' =>$user_id,'comment_id' =>$comment_id,'is_liked' =>-1]);
-                    }
-                    break;       
+        if($data['id'] < 1 || !($data['action'] == 'like' || $data['action'] == 'dislike')) return response(null,400);
+
+        $comment = Comment::with('user')->where('id', $data['id'])->with(['vote' => function ($query) use ($user_id) {
+            $query->where('user_id',$user_id);
+        }])->first();
+
+        if(!empty($comment->vote)) {
+            switch($comment->vote->action) {
+                case 'like':
+                    $comment->decrement('like');
+                break;
+                case 'dislike':
+                    $comment->decrement('dislike');
+                break;
             }
-            return Comment::with('user')->where('id',$comment_id)->with(['vote' => function ($query) use ($user_id) {
-                $query->where('user_id',$user_id);
-            }])->first();
+            if($data['action'] != $comment->vote->action) {
+                $comment->increment($data['action']);
+                $comment->vote()->update(['action' => $data['action']]);
+            } else $comment->vote()->delete();
+        } else {
+            $comment->increment($data['action']);
+            $comment->vote()->insert(['user_id' => $user_id, 'comment_id' => $data['id'], 'action' => $data['action']]);
         }
+        
+        return $comment->load(['vote' => function ($query) use ($user_id) {
+            $query->where('user_id',$user_id);
+        }]);
     }
     public function store(Request $data)
     {
         $user_id = Auth::id();
-        $prod = Product::find($data->pid);
-        if($prod->id&&$data->rating>=0&&$data->rating<=5)
-        {
-            if($data->rating>0){
+        $product = Product::find($data->pid);
+        if($product->id && $data->rating >=0 && $data->rating<=5) {
+            if($data->rating>0) {
                 if(Comment::where('user_id',$user_id)->where('product_id',$data->pid)->where('rating','>',0)->value('id')) 
                     return response(null,400);
-                $product = Product::where('id',$data->pid)->first();
                 $product->rating = ($product->vote_count*$product->rating+$data->rating)/($product->vote_count+1);
                 $product->vote_count = $product->vote_count+1;
                 $product->save();
@@ -104,15 +80,10 @@ class CommentController extends Controller
             $comment->dislike = 0;
             $comment->reply_id = 0;
             $comment->save();
-            $res = $comment->toArray();
-            $res['user'] = array('name'=> Auth::user()->name);
-
-            $prod->rating = ($prod->rating * $prod->vote_count + $data->rating) / ($prod->vote_count + 1);
-            $prod->vote_count = $prod->vote_count+1;
-            $prod->save(); 
-
+            $comment->load('user');
+            
             try { 
-                event(new \App\Events\SomeEvent($data->pid,$res));
+                event(new \App\Events\SomeEvent($data->pid, $comment->toArray()));
             } catch(Exception $e){
 
             }
