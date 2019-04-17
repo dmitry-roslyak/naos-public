@@ -1,92 +1,78 @@
 .itmc {
-  background-color: ghostwhite;
-  padding: 3px 30px;
-  margin-left: 0;
-  border: thin solid cornflowerblue;
-  border-width: thin 0;
-  font-size: 1.5rem;
-  line-height: 2em;
+    background-color: ghostwhite;
+    padding: 3px 30px;
+    margin-left: 0;
+    border: thin solid cornflowerblue;
+    border-width: thin 0;
+    font-size: 1.5rem;
+    line-height: 2em;
 
-  // margin: 0 5px 5px
-  & select {
-    display: inline-block;
-    height: 27px;
-  }
+    // margin: 0 5px 5px
+    & select {
+        display: inline-block;
+        height: 27px;
+    }
 }
 
 #sortby {
-  width: 180px;
-}
-
-.product-state {
-  & > s {
-    padding: 7px 0 7px 7px;
-  }
-
-  & > s + span {
-    color: coral;
-  }
-
-  & > span {
-    padding: 7px;
-    font-weight: 900;
-  }
+    width: 180px;
 }
 
 .item-card {
-  transition: all 0.35s;
-  height: 24.5em;
-  padding: 6px 4px;
-  background-color: white;
+    transition: all 0.35s;
+    height: 24.5em;
+    padding: 6px 4px;
+    background-color: white;
 
-  &:hover {
-    z-index: 3;
-  }
+    &:hover {
+        z-index: 3;
+    }
 
-  &:hover .item-spec {
-    font-size: inherit;
-  }
+    &:hover .item-spec {
+        font-size: inherit;
+    }
 }
 
 .item-spec {
-  transition: all 0.3s;
-  font-size: 0;
+    transition: all 0.3s;
+    font-size: 0;
+    width: 100%;
 
-  & tr td:last-child {
-    width: 55%;
-    padding-left: 10px;
-    font-weight: bolder;
-  }
+    & tr td:last-child {
+        width: 55%;
+        padding-left: 10px;
+        font-weight: bolder;
+    }
 
-  & tr:nth-child(even) {
-    background-color: whitesmoke;
-  }
+    & tr:nth-child(even) {
+        background-color: whitesmoke;
+    }
 }
 
-.item-card > .thumbnail > .caption {
-  padding: 2px 6px;
+.item-card>.thumbnail>.caption {
+    padding: 2px 6px;
 }
 
-.item-card > .action-frm {
-  right: 4px;
+.item-card>.action-frm {
+    right: 4px;
 }
 
-.item-card-img {
-  height: 19.5rem !important;
-  margin-top: 20px !important;
+.item-card>.caption>img {
+    max-height: 19.5rem !important;
+    margin-top: 20px !important;
 }
 
 .item-card-name {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ic-s {
-  transition: all 0.3s;
+    transition: all 0.3s;
 
-  &:hover {
-    box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
-  }
+    &:hover {
+        box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+    }
 }

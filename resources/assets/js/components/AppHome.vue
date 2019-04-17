@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="col-sm-9 col-md-10">
-            <div id="carousel1" class="carousel slide" data-ride="carousel">
+            <div id="carousel1" class="carousel slide carousel-background-color" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
                     <li  data-target="#carousel1"
@@ -23,9 +23,9 @@
                     </li>
                 </ol>
                 <!-- Wrapper for slides -->
-                <div class="carousel-inner carousel-inner-bcolor" role="listbox">
+                <div class="carousel-inner" role="listbox">
                     <div v-for="(item,i) in items" :class="{'item': true, 'active': !i}" :key="item.id">
-                        <img class="carousel-img" :src="'file/'+item.img_src" alt="...">
+                        <img :src="'file/'+item.img_src" alt="...">
                         <div class="carousel-caption carousel-content">
                             <h3>
                                 <router-link :to="{ name: 'detail', params: { id: item.id }}">

@@ -1,24 +1,26 @@
 <template>
-    <div class="container-fluid" style="max-width: 80em;padding:0">
-        <div class="col-md-7" style="padding-right:0">
+    <div class="container-fluid app-detail">
+        <div class="col-md-7">
             <!-- <h4 style="padding-left:8px">{{item.name}}</h4> -->
-            <div class="action-frm" style="border-color: white;border: 1px solid white;border-width: 0 0 1px 1px;background-color:inherit;z-index:1">
-                <a class="action-item fake-link" @click="to_compare()">
-                    <span class="hidden-xs">{{lng.to_compare}}</span>
-                    <i class="fa fa-balance-scale compare-state anm-bounce-scale" :data-check="item.is_compare" aria-hidden="true"></i>
-                </a>&nbsp;
-                <a class="action-item fake-link" @click="to_wish()">
-                    <span class="hidden-xs">{{lng.to_wishlist}}</span>
-                    <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
-                </a>
+            <div class="action-frm-wrapper">
+                <div class="action-frm">
+                    <a class="action-item fake-link" @click="to_compare()">
+                        <span class="hidden-xs">{{lng.to_compare}}</span>
+                        <i class="fa fa-balance-scale compare-state anm-bounce-scale" :data-check="item.is_compare" aria-hidden="true"></i>
+                    </a>&nbsp;
+                    <a class="action-item fake-link" @click="to_wish()">
+                        <span class="hidden-xs">{{lng.to_wishlist}}</span>
+                        <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
-            <div id="carousel2" class="carousel slide" data-ride="carousel">
+            <div id="carousel2" class="carousel slide carousel-background-color" data-ride="carousel">
                 <ol class="carousel-indicators" v-if="item.gallery">
                     <li data-target="#carousel2" data-slide-to="0" class="active"></li>
                 </ol>
-                <div class="carousel-inner carousel-inner-bcolor" role="listbox" style="background-color: inherit;background-image: linear-gradient(141deg, #ffffff00 0%, #ffffff00 40%, #1484e3 100%);">
+                <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                        <img class="carousel-img" style="max-height:28rem" :src="item.img_src && 'file/'+item.img_src">
+                        <img :src="item.img_src && 'file/'+item.img_src">
                         <div class="tb-offer" v-if="+offerTime > 0">
                             <span>{{lng.discount +' -'+item.discount.discount+'%'}}</span>
                             <span class="hidden-xs">{{
@@ -33,28 +35,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-buy fake-link" v-if="item.available > 0" @click="buyItem(item)">
-                    <i class="fa fa-cart-plus anm-bounce-scale" aria-hidden="true"></i>&nbsp;&nbsp;
-                    {{itemPriceResult(item)}}
+                <div class="col-xs-9" style="position: absolute;bottom: 0;">
+                    <div class="product-state">
+                        <s v-if="item.discount&&item.available">{{currency * item.price}}</s>
+                        <span>{{itemPriceResult(item)}}</span>
+                    </div>
+                    <star-rating :rating="+item.rating" :star-size="21" :show-rating="false"></star-rating>
+                    {{item.vote_count}}
                 </div>
-                <div class="btn-buy disabled" v-else>{{lng.not_in_stock}}</div>
+                <div class="app-detail-btn-group">
+                    <div v-if="item.available > 0" class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default action-item" @click="addToCart()">
+                            <span>{{lng.addto_cart}}</span>
+                            <i class="fa fa-cart-plus btn-in-cart-i anm-bounce-scale" :data-check="item.isInCart" aria-hidden="true"></i>&nbsp;&nbsp;
+                        </button>
+                        <button type="button" class="btn btn-primary" @click="buy()">{{lng.buy}}</button>
+                    </div>
+                    <button v-else type="button" class="btn btn-primary disabled">{{lng.not_in_stock}}</button>
+                </div>
             </div>
-            <div style="margin-top:15px">
-                <ul class="nav nav-tabs" >
-                    <li role="presentation" :class="{ active: show_specs}" @click="show_specs=true"><a>{{lng.specs}}</a></li>
-                    <li role="presentation" :class="{ active: !show_specs}" @click="show_specs=false"><a>{{lng.descr}}</a></li>
-                </ul>
-                <table v-if="show_specs&&item"  class="table border1">
-                    <tbody style="text-align:center">
-                        <tr v-for="(specs,i) in item.specs" :key="i">
-                            <td>{{lng[specs.name]?lng[specs.name]:specs.name}}</td>
-                            <td>{{specs.value}}&nbsp;{{specs.val_type}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div v-else class="border1" style="padding:4px">{{item.description}}</div>
-                <app-detail-charts v-if="showGraph" :product-id="id"></app-detail-charts>
-            </div>
+            <ul class="nav nav-tabs">
+                <li role="presentation" :class="{ active: show_specs}" @click="show_specs=true"><a>{{lng.specs}}</a></li>
+                <li role="presentation" :class="{ active: !show_specs}" @click="show_specs=false"><a>{{lng.descr}}</a></li>
+            </ul>
+            <table v-if="show_specs&&item" class="table border1">
+                <tbody>
+                    <tr v-for="(specs,i) in item.specs" :key="i">
+                        <td>{{lng[specs.name]?lng[specs.name]:specs.name}}</td>
+                        <td>{{specs.value}}&nbsp;{{specs.val_type}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div v-else class="border1">{{item.description}}</div>
+            <app-detail-charts v-if="showGraph" :product-id="id"></app-detail-charts>
         </div>
         <app-comments class="col-md-5" :product-id="id"></app-comments> 
     </div>
@@ -70,6 +83,7 @@
         props: ['id'],
         data: function() { return data },
         computed: {
+            currency() { return this.$store.state.currency },
             category() { 
                 return Object.keys(window.Laravel.catalog).filter(key => window.Laravel.catalog[key].id == this.item.category_id)[0];
             },
@@ -94,8 +108,12 @@
         destroyed(){ if(timerId) clearInterval(timerId);},
         methods: {
             clientWidth(){ this.showGraph = document.documentElement.clientWidth > 620 },
-            buyItem(item){
-                this.$store.commit('cart', {id: item.id, count: 1});
+            addToCart(){
+                this.item.isInCart = !this.$store.state.cart[this.item.id];
+                this.$store.commit('cart', {id: this.item.id, count: 1, toRemove: !this.item.isInCart});
+            },
+            buy(){
+                this.$router.push(`/cart/[${this.item.id}]`)
             },
             to_compare(){
                 this.item.is_compare = !this.item.is_compare;
@@ -113,6 +131,7 @@
                 axios.get('prod_by_id?id='+self.id).then(function (response) {
                     response.data.isWish = !!response.data.wish;
                     response.data.is_compare = false;
+                    response.data.isInCart = !!self.$store.state.cart[response.data.id];
                     self.item = response.data;
                     self.$nextTick(() => {
                         var categoryIndex = self.$store.getters.compareCategoryIndex(window.Laravel.catalog[self.category].id)
@@ -141,4 +160,4 @@
     }
 </script>
 
-<style lang="sass" src="../../sass/detail.sass"></style>
+<style lang="scss" src="../../sass/AppDetail.scss"></style>
