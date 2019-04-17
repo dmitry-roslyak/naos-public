@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }}</title>
     <link rel="manifest" href="manifest.json">
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="{{mix('/css/app.css')}}" rel="stylesheet">
     <script>
         window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
         window.Laravel.lng.currency = window.Laravel.lng[window.Laravel.currency.name];
@@ -83,5 +83,5 @@
         @yield('content')
     </div>
 </body>
-<script src="/js/app.js" async defer></script>
+<script src="{{mix('/js/app.js')}}" async defer></script>
 </html>

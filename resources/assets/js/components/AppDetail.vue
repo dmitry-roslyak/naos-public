@@ -84,9 +84,6 @@
         data: function() { return data },
         computed: {
             currency() { return this.$store.state.currency },
-            category() { 
-                return Object.keys(window.Laravel.catalog).filter(key => window.Laravel.catalog[key].id == this.item.category_id)[0];
-            },
             lng(){ return this.$root.lng },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
         },
@@ -132,11 +129,9 @@
                     response.data.isWish = !!response.data.wish;
                     response.data.is_compare = false;
                     response.data.isInCart = !!self.$store.state.cart[response.data.id];
+                    var categoryIndex = self.$store.getters.compareCategoryIndex(response.data.category_id)
+                    response.data.is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, response.data.id) > -1;
                     self.item = response.data;
-                    self.$nextTick(() => {
-                        var categoryIndex = self.$store.getters.compareCategoryIndex(window.Laravel.catalog[self.category].id)
-                        self.item.is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, response.data.id) > -1;
-                    })
                     self.set_total_time();
                 });    
             },

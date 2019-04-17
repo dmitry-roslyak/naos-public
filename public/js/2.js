@@ -97,26 +97,19 @@ var self,
         currency: function currency() {
             return this.$store.state.currency;
         },
-        category: function category() {
-            var _this = this;
-
-            return Object.keys(window.Laravel.catalog).filter(function (key) {
-                return window.Laravel.catalog[key].id == _this.item.category_id;
-            })[0];
-        },
         lng: function lng() {
             return this.$root.lng;
         },
         itemPriceResult: function itemPriceResult() {
-            var _this2 = this;
+            var _this = this;
 
             return function (item) {
-                return _this2.$root.itemPriceResult(item);
+                return _this.$root.itemPriceResult(item);
             };
         }
     },
     created: function created() {
-        var _this3 = this;
+        var _this2 = this;
 
         self = this;
         this.itemById();
@@ -125,12 +118,12 @@ var self,
             self.clientWidth();
         };
         window.onblur = function () {
-            if (_this3.$route.path.indexOf("detail") > -1) clearInterval(timerId);
+            if (_this2.$route.path.indexOf("detail") > -1) clearInterval(timerId);
         };
         window.onfocus = function () {
-            if (_this3.$route.path.indexOf("detail") > -1) {
+            if (_this2.$route.path.indexOf("detail") > -1) {
                 clearInterval(timerId);
-                _this3.set_total_time();
+                _this2.set_total_time();
             }
         };
     },
@@ -166,11 +159,9 @@ var self,
                 response.data.isWish = !!response.data.wish;
                 response.data.is_compare = false;
                 response.data.isInCart = !!self.$store.state.cart[response.data.id];
+                var categoryIndex = self.$store.getters.compareCategoryIndex(response.data.category_id);
+                response.data.is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, response.data.id) > -1;
                 self.item = response.data;
-                self.$nextTick(function () {
-                    var categoryIndex = self.$store.getters.compareCategoryIndex(window.Laravel.catalog[self.category].id);
-                    self.item.is_compare = categoryIndex > -1 && self.$store.getters.isCompare(categoryIndex, response.data.id) > -1;
-                });
                 self.set_total_time();
             });
         },
