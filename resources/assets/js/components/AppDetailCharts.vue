@@ -65,14 +65,14 @@ export default {
     },
     methods:{
         show_hist(t) {
-            axios.get('/prod_history', { params: { id: this.productId , currency:  window.Laravel.currency.name} }) 
+            axios.get('/prod_history', { params: { id: this.productId } }) 
                 .then(function(response) {
                     var i = 0,l=response.data.length,l2=chart_data.datasets[0].data.length;
                     if(l2>0&&l2>l) chart_data.datasets[0].data.splice(0,l2);
                     if(t==1){
                         for (; i < l; i++) {   
                             chart_data.datasets[0].data[i] = { x: response.data[i].date, 
-                                y: response.data[i].price * response.data[i].currency.rate
+                                y: (response.data[i].price * response.data[i].currency.rate).toFixed(2)
                             };
                             chart_data.datasets[0].label = 'Price';
                         }

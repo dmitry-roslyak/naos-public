@@ -40,7 +40,7 @@ $factory->define(App\Product::class, function (Faker\Generator $faker) {
         'vote_count' => $faker->randomDigit,
         'available' => $faker->randomDigit,
         'is_bestseller' => $faker->boolean,
-        'price' => $faker->randomFloat(1,100,900),
+        'price' => $faker->randomFloat(2,100,900),
         'is_visible' => $faker->boolean,
         'arrive_date' => $faker->dateTimeBetween($startDate = '-72 days', $endDate = '12 days')
     ];
@@ -73,8 +73,7 @@ $factory->define(App\Prices_history::class, function (Faker\Generator $faker) {
         'product_id'=> App\Product::all()->random()->id,
         'date' => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
         'price' =>$faker->randomFloat(1,1,1799),
-        'sales' => $faker->randomDigit,
-        'currency_type' => 'USD'
+        'sales' => $faker->randomDigit
     ];
 });
 $factory->define(App\Currency::class, function (Faker\Generator $faker) {

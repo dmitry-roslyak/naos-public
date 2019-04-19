@@ -16,8 +16,7 @@ class CreatePricesHistoriesTable extends Migration
         Schema::create('prices_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id',false,true);
-            $table->float('price');
-            $table->string('currency_type');
+            $table->decimal('price', 13, 2);
             $table->integer('sales');
             $table->date('date');
             //$table->timestamps();

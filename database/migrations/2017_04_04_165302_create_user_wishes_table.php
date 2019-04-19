@@ -17,7 +17,7 @@ class CreateUserWishesTable extends Migration
             $table->increments('id');
             $table->integer('product_id',false,true);
             $table->integer('user_id',false,true);
-            $table->float('price',false,true);
+            $table->decimal('price', 13, 2);
             $table->boolean('isAvailable');
             $table->date('date');
         });

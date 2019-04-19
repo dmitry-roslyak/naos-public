@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->integer('user_id',false,true);
             $table->uuid('cart_uuid');
-            $table->float('price');
+            $table->decimal('price', 13, 2);
             $table->integer('visa_an');
             $table->string('visa_rrn');
             $table->string('name');

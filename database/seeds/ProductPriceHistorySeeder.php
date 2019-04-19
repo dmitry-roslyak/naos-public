@@ -24,8 +24,7 @@ class ProductPriceHistorySeeder extends Seeder
                     'product_id'=> $product->id,
                     'date' => $date,
                     'price' => $product->price * $faker->randomFloat(3, 0.5, 2),
-                    'sales' => $faker->randomDigit,
-                    'currency_type' => 'USD'
+                    'sales' => $faker->randomDigit
                 ]);
             }
         }

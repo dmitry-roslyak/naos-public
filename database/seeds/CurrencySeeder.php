@@ -35,13 +35,13 @@ class CurrencySeeder extends Seeder
                 $currency[] = collect($value)->all();
             }
         } else {
-            array_push($currency, [
-                'rate' => 1,
-                'name' => 'USD',
-                'date' => '2019-01-01'
-            ]);
             for ($j=0; $j < 20; $j++) { 
                 $date = $datE_now->format('Y-m-d');
+                array_push($currency, [
+                    'rate' => 1,
+                    'name' => 'USD',
+                    'date' => $date
+                ]);
                 $value = file_get_contents("https://openexchangerates.org/api/historical/{$date}.json?app_id=9d63c3fdce5f4b218824682ec539a810&symbols=UAH%2CRUB&prettyprint=false");
                 $value = json_decode($value);
                 if(!empty($value->rates)) {

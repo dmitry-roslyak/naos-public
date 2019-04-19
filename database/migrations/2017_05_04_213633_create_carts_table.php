@@ -17,7 +17,7 @@ class CreateCartsTable extends Migration
             $table->increments('id');
             $table->uuid('cart_uuid');
             $table->integer('prod_id',false,true);
-            $table->float('prod_price');
+            $table->decimal('prod_price', 13, 2);
             $table->integer('prod_count');
             $table->integer('discount');
             $table->timestamps();

@@ -20,7 +20,7 @@ class ProductsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('img_src');
-            $table->float('price');
+            $table->decimal('price', 13, 2);
             // $table->float('price_provider');
             $table->float('rating');
             $table->integer('vote_count');

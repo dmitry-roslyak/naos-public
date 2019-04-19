@@ -9,6 +9,7 @@ use App\Filter;
 use App\Spec;
 use Auth;
 use App\UserWishes;
+use App\Http\Traits\Utility;
 
 class ProductController extends Controller
 {
@@ -43,8 +44,11 @@ class ProductController extends Controller
             ->skip(0)->take(5)->orderBy('category_id','desc')->get();
     }
     public function history(Request $data) {
-        return \App\Prices_history::with(['currency' => function ($query) use ($data) {
-            $query->where('name', $data->currency);
+        $user = \Auth::user();
+        $currency = ($user ? $user : Utility::locale())['currency'];
+        
+        return \App\Prices_history::with(['currency' => function ($query) use ($currency) {
+            $query->where('name', $currency);
         }])->where('product_id',$data->id)->orderBy('date','desc')->skip(0)->take(20)->orderBy('date','asc')->get();
     }
     public function rnd(Request $data) {
