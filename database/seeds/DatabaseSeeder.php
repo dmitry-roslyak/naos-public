@@ -16,12 +16,9 @@ class DatabaseSeeder extends Seeder
             LangsSeeder::class,
             UsersSeeder::class,
             CategoryProductSpecSeeder::class,
+            FilterSeeder::class,
             ProductPriceHistorySeeder::class, // run only after CurrencySeeder::class, CategoryProductSpecSeeder::class
         ]);
-        // return null;
         factory('App\Comment',500)->create();
-        // factory(App\Prices_history::class, 50)->create()->each(function ($u) {
-        //     $u->currency()->save(factory(App\Currency::class)->make(['name'=>'USD','rate'=>1]));
-        // });
     }
 }

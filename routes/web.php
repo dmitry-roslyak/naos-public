@@ -27,7 +27,6 @@ Route::group(['middleware' => 'admin'], function() {
         return App\Discount::get();
     });
     Route::get('/mail_user_test', 'UserController@mail');
-    Route::get('/init_filters', 'DashboardController@initFilters'); 
 });
 
 Route::post('/search', 'ProductController@search');
