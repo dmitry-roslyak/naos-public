@@ -26,14 +26,7 @@ Route::group(['middleware' => 'admin'], function() {
     Route::get('/discount_list', function () {
         return App\Discount::get();
     });
-    Route::get('/ex', function (Request $data) {
-        // $encrypted = Crypt::encryptString('Hello world.');
-        // return Crypt::decryptString($encrypted);
-        // return bcrypt(env('KEY1', false).'4895142232120006');
-        return $value = file_get_contents('https://openexchangerates.org/api/latest.json?app_id=9d63c3fdce5f4b218824682ec539a810');
-        //   return json_decode($value)->rates->UAH;
-    });
-    Route::get('/test', 'UserController@mail');
+    Route::get('/mail_user_test', 'UserController@mail');
     Route::get('/init_filters', 'DashboardController@initFilters'); 
 });
 

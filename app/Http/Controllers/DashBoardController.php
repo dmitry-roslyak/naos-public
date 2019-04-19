@@ -20,7 +20,10 @@ class DashboardController extends Controller
      */
     public function tg(Request $request)
     {
-         return Product::with('ctg')->get();
+        // $encrypted = Crypt::encryptString('Hello world.');
+        // return Crypt::decryptString($encrypted);
+        // return bcrypt(env('KEY1', false).'4895142232120006');
+        return Product::with('ctg')->get();
     }
     public function tokenRefresh(Request $request)
     {
@@ -114,23 +117,26 @@ class DashboardController extends Controller
                     $filter_value = \App\FilterValue::with('prod_ids')->where('filter_id',$temp->id)->where('value',$v2[0]['value'])->first();
     
                     if($filter_value){
-                        if(count($filter_value->prod_ids)){
-                            foreach ($v2[1] as $value) {
-                                if(!$filter_value->prod_ids->contains('product_id', $value['product_id'])){
-                                    \App\FilterValueProduct::create([
-                                        'filter_value_id' => $filter_value->id,
-                                        'product_id' => $value['product_id']
-                                    ]);
-                                }
-                            }
-                        }
-                        else $filter_value->prod_ids()->createMany($v2[1]);
+                        //** Disable for postgres ID primary key error*/
+                        // if(count($filter_value->prod_ids)){
+                        //     foreach ($v2[1] as $value) {
+                        //         if(!$filter_value->prod_ids->contains('product_id', $value['product_id'])){
+                        //             \App\FilterValueProduct::create([
+                        //                 'filter_value_id' => $filter_value->id,
+                        //                 'product_id' => $value['product_id']
+                        //             ]);
+                        //         }
+                        //     }
+                        // }
+                        // else $filter_value->prod_ids()->createMany($v2[1]);
                     }
                     else{
                         \App\FilterValue::create((function($temp,$v3){
                             return ['filter_id'=>$temp->id,'priority'=>$v3['priority'],
                             'popularity'=> $v3['popularity'],'value'=>$v3['value']];
-                        })($temp,$v2[0]))->prod_ids()->createMany($v2[1]);
+                        })($temp,$v2[0]));
+                        // ->prod_ids()->createMany($v2[1]);
+                        //** Disable for postgres */
                     }
                 }
             }

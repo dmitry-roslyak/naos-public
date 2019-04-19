@@ -1,0 +1,1650 @@
+{
+	"table": "langs",
+	"rows":
+	[
+		{
+			"id": 1,
+			"lng": "en",
+			"name": "cart",
+			"text": "Cart"
+		},
+		{
+			"id": 2,
+			"lng": "en",
+			"name": "lang_name",
+			"text": "English"
+		},
+		{
+			"id": 3,
+			"lng": "en",
+			"name": "lang_name_ISO",
+			"text": "EN"
+		},
+		{
+			"id": 4,
+			"lng": "en",
+			"name": "language",
+			"text": "Language"
+		},
+		{
+			"id": 5,
+			"lng": "en",
+			"name": "buy",
+			"text": "Buy"
+		},
+		{
+			"id": 6,
+			"lng": "en",
+			"name": "price",
+			"text": "Price"
+		},
+		{
+			"id": 7,
+			"lng": "en",
+			"name": "from",
+			"text": "From"
+		},
+		{
+			"id": 8,
+			"lng": "en",
+			"name": "to",
+			"text": "To"
+		},
+		{
+			"id": 10,
+			"lng": "en",
+			"name": "new",
+			"text": "New"
+		},
+		{
+			"id": 11,
+			"lng": "en",
+			"name": "hot",
+			"text": "Hot"
+		},
+		{
+			"id": 12,
+			"lng": "en",
+			"name": "not_in_stock",
+			"text": "Not in stock"
+		},
+		{
+			"id": 13,
+			"lng": "en",
+			"name": "asc_price",
+			"text": "by ascrising price"
+		},
+		{
+			"id": 14,
+			"lng": "en",
+			"name": "desc_price",
+			"text": "by descrising price"
+		},
+		{
+			"id": 15,
+			"lng": "en",
+			"name": "byrating",
+			"text": "by rating"
+		},
+		{
+			"id": 16,
+			"lng": "en",
+			"name": "bynewest",
+			"text": "by newest"
+		},
+		{
+			"id": 17,
+			"lng": "en",
+			"name": "sortby",
+			"text": "Sort by: "
+		},
+		{
+			"id": 18,
+			"lng": "en",
+			"name": "catalog",
+			"text": "Catalog"
+		},
+		{
+			"id": 19,
+			"lng": "en",
+			"name": "discount",
+			"text": "Discount"
+		},
+		{
+			"id": 20,
+			"lng": "en",
+			"name": "offer",
+			"text": "Offer"
+		},
+		{
+			"id": 21,
+			"lng": "en",
+			"name": "rm_from_list",
+			"text": "Remove"
+		},
+		{
+			"id": 22,
+			"lng": "en",
+			"name": "total_sum",
+			"text": "Total price"
+		},
+		{
+			"id": 23,
+			"lng": "en",
+			"name": "remove",
+			"text": "Remove"
+		},
+		{
+			"id": 24,
+			"lng": "en",
+			"name": "to_order",
+			"text": "Order"
+		},
+		{
+			"id": 25,
+			"lng": "en",
+			"name": "addto_cart",
+			"text": "Add to cart"
+		},
+		{
+			"id": 26,
+			"lng": "en",
+			"name": "remind_me",
+			"text": "Remind me "
+		},
+		{
+			"id": 27,
+			"lng": "en",
+			"name": "bydef",
+			"text": "by default"
+		},
+		{
+			"id": 28,
+			"lng": "en",
+			"name": "hist_graph",
+			"text": "History"
+		},
+		{
+			"id": 29,
+			"lng": "en",
+			"name": "sales_hist",
+			"text": "Sales"
+		},
+		{
+			"id": 30,
+			"lng": "en",
+			"name": "price_hist",
+			"text": "Prices"
+		},
+		{
+			"id": 31,
+			"lng": "en",
+			"name": "offer_end_at",
+			"text": "Offer end's at:"
+		},
+		{
+			"id": 32,
+			"lng": "en",
+			"name": "offer_d",
+			"text": "Day"
+		},
+		{
+			"id": 33,
+			"lng": "en",
+			"name": "offer_h",
+			"text": "H"
+		},
+		{
+			"id": 34,
+			"lng": "en",
+			"name": "offer_m",
+			"text": "M"
+		},
+		{
+			"id": 35,
+			"lng": "en",
+			"name": "offer_s",
+			"text": "S."
+		},
+		{
+			"id": 36,
+			"lng": "en",
+			"name": "register",
+			"text": "Register"
+		},
+		{
+			"id": 37,
+			"lng": "en",
+			"name": "login",
+			"text": "Login"
+		},
+		{
+			"id": 38,
+			"lng": "en",
+			"name": "logout",
+			"text": "Logout"
+		},
+		{
+			"id": 39,
+			"lng": "en",
+			"name": "myprofile",
+			"text": "Myprofile"
+		},
+		{
+			"id": 40,
+			"lng": "en",
+			"name": "search",
+			"text": "Search"
+		},
+		{
+			"id": 43,
+			"lng": "en",
+			"name": "comments",
+			"text": "Reviews"
+		},
+		{
+			"id": 45,
+			"lng": "en",
+			"name": "to_compare",
+			"text": "Compare it"
+		},
+		{
+			"id": 46,
+			"lng": "en",
+			"name": "compare",
+			"text": "Compare"
+		},
+		{
+			"id": 47,
+			"lng": "en",
+			"name": "to_wishlist",
+			"text": "To wish"
+		},
+		{
+			"id": 48,
+			"lng": "en",
+			"name": "to_rate",
+			"text": "Rating"
+		},
+		{
+			"id": 49,
+			"lng": "en",
+			"name": "comment",
+			"text": "Comment"
+		},
+		{
+			"id": 50,
+			"lng": "en",
+			"name": "to_comment",
+			"text": "Comment it"
+		},
+		{
+			"id": 51,
+			"lng": "en",
+			"name": "to_reply",
+			"text": "Reply"
+		},
+		{
+			"id": 52,
+			"lng": "en",
+			"name": "descr",
+			"text": "Description"
+		},
+		{
+			"id": 53,
+			"lng": "en",
+			"name": "specs",
+			"text": "Specifications"
+		},
+		{
+			"id": 54,
+			"lng": "en",
+			"name": "soon",
+			"text": "Soon available"
+		},
+		{
+			"id": 55,
+			"lng": "en",
+			"name": "RUB",
+			"text": "₽"
+		},
+		{
+			"id": 56,
+			"lng": "en",
+			"name": "UAH",
+			"text": "₴"
+		},
+		{
+			"id": 57,
+			"lng": "en",
+			"name": "USD",
+			"text": "$"
+		},
+		{
+			"id": 58,
+			"lng": "en",
+			"name": "display_size",
+			"text": "Diagonal "
+		},
+		{
+			"id": 59,
+			"lng": "en",
+			"name": "display_resolution",
+			"text": "Resolution"
+		},
+		{
+			"id": 60,
+			"lng": "en",
+			"name": "display_type",
+			"text": "Matrix "
+		},
+		{
+			"id": 61,
+			"lng": "en",
+			"name": "CPU_name",
+			"text": "CPU"
+		},
+		{
+			"id": 62,
+			"lng": "en",
+			"name": "CPU_cores",
+			"text": "Cores"
+		},
+		{
+			"id": 63,
+			"lng": "en",
+			"name": "CPU_freq",
+			"text": "Frequency"
+		},
+		{
+			"id": 64,
+			"lng": "en",
+			"name": "frontal_camera",
+			"text": "Frontal camera"
+		},
+		{
+			"id": 65,
+			"lng": "en",
+			"name": "backend_camera",
+			"text": "Rear camera"
+		},
+		{
+			"id": 66,
+			"lng": "en",
+			"name": "ram",
+			"text": "RAM"
+		},
+		{
+			"id": 67,
+			"lng": "en",
+			"name": "mem",
+			"text": "Memory"
+		},
+		{
+			"id": 68,
+			"lng": "en",
+			"name": "personal_info",
+			"text": "Personal info"
+		},
+		{
+			"id": 69,
+			"lng": "en",
+			"name": "confirm",
+			"text": "confirm"
+		},
+		{
+			"id": 70,
+			"lng": "en",
+			"name": "edit",
+			"text": "edit"
+		},
+		{
+			"id": 71,
+			"lng": "en",
+			"name": "fname",
+			"text": "First name"
+		},
+		{
+			"id": 72,
+			"lng": "en",
+			"name": "lname",
+			"text": "Last name"
+		},
+		{
+			"id": 73,
+			"lng": "en",
+			"name": "tel_number",
+			"text": "Mobile tel."
+		},
+		{
+			"id": 74,
+			"lng": "en",
+			"name": "address",
+			"text": "Delivery adr."
+		},
+		{
+			"id": 75,
+			"lng": "en",
+			"name": "filtersReset",
+			"text": "reset all"
+		},
+		{
+			"id": 77,
+			"lng": "en",
+			"name": "confirm_order",
+			"text": "Confirm order"
+		},
+		{
+			"id": 78,
+			"lng": "en",
+			"name": "paycard_number",
+			"text": "Card number"
+		},
+		{
+			"id": 79,
+			"lng": "en",
+			"name": "paycard_info",
+			"text": "Paycard info"
+		},
+		{
+			"id": 80,
+			"lng": "en",
+			"name": "payment_type",
+			"text": "Payment type"
+		},
+		{
+			"id": 81,
+			"lng": "en",
+			"name": "paycard",
+			"text": "Paycard"
+		},
+		{
+			"id": 82,
+			"lng": "en",
+			"name": "cash",
+			"text": "Cash"
+		},
+		{
+			"id": 83,
+			"lng": "en",
+			"name": "count",
+			"text": "Count"
+		},
+		{
+			"id": 84,
+			"lng": "en",
+			"name": "currency_type",
+			"text": "Currency type"
+		},
+		{
+			"id": 85,
+			"lng": "en",
+			"name": "email_me",
+			"text": "Email me"
+		},
+		{
+			"id": 86,
+			"lng": "en",
+			"name": "email_me_offers",
+			"text": "offers"
+		},
+		{
+			"id": 87,
+			"lng": "en",
+			"name": "email_me_wishlist",
+			"text": "Changes in wishlist"
+		},
+		{
+			"id": 88,
+			"lng": "en",
+			"name": "showed_items",
+			"text": "Showed items"
+		},
+		{
+			"id": 89,
+			"lng": "en",
+			"name": "share",
+			"text": "Share on"
+		},
+		{
+			"id": 90,
+			"lng": "en",
+			"name": "laptops",
+			"text": "Laptops"
+		},
+		{
+			"id": 91,
+			"lng": "en",
+			"name": "smartphones",
+			"text": "Smartphones"
+		},
+		{
+			"id": 92,
+			"lng": "en",
+			"name": "tablets",
+			"text": "Tablets"
+		},
+		{
+			"id": 93,
+			"lng": "en",
+			"name": "order_done",
+			"text": "Thank you for your purchase"
+		},
+		{
+			"id": 128,
+			"lng": "ru",
+			"name": "cart",
+			"text": "Корзина"
+		},
+		{
+			"id": 129,
+			"lng": "ru",
+			"name": "lang_name",
+			"text": "Русский"
+		},
+		{
+			"id": 130,
+			"lng": "ru",
+			"name": "lang_name_ISO",
+			"text": "RU"
+		},
+		{
+			"id": 131,
+			"lng": "ru",
+			"name": "language",
+			"text": "Язык"
+		},
+		{
+			"id": 132,
+			"lng": "ru",
+			"name": "buy",
+			"text": "Купить"
+		},
+		{
+			"id": 133,
+			"lng": "ru",
+			"name": "price",
+			"text": "Цена"
+		},
+		{
+			"id": 134,
+			"lng": "ru",
+			"name": "price_add",
+			"text": "$"
+		},
+		{
+			"id": 135,
+			"lng": "ru",
+			"name": "from",
+			"text": "От"
+		},
+		{
+			"id": 136,
+			"lng": "ru",
+			"name": "to",
+			"text": "До"
+		},
+		{
+			"id": 138,
+			"lng": "ru",
+			"name": "new",
+			"text": "Новый"
+		},
+		{
+			"id": 139,
+			"lng": "ru",
+			"name": "hot",
+			"text": "Топ продаж"
+		},
+		{
+			"id": 140,
+			"lng": "ru",
+			"name": "not_in_stock",
+			"text": "Нет в наличии"
+		},
+		{
+			"id": 141,
+			"lng": "ru",
+			"name": "asc_price",
+			"text": "по возрастанию цены"
+		},
+		{
+			"id": 142,
+			"lng": "ru",
+			"name": "desc_price",
+			"text": "по снижению цены"
+		},
+		{
+			"id": 143,
+			"lng": "ru",
+			"name": "byrating",
+			"text": "по рейтингу"
+		},
+		{
+			"id": 144,
+			"lng": "ru",
+			"name": "bynewest",
+			"text": "по новизне"
+		},
+		{
+			"id": 145,
+			"lng": "ru",
+			"name": "sortby",
+			"text": "Сортировать : "
+		},
+		{
+			"id": 146,
+			"lng": "ru",
+			"name": "catalog",
+			"text": "Каталог"
+		},
+		{
+			"id": 147,
+			"lng": "ru",
+			"name": "discount",
+			"text": "Скидка"
+		},
+		{
+			"id": 148,
+			"lng": "ru",
+			"name": "offer",
+			"text": "Акция"
+		},
+		{
+			"id": 149,
+			"lng": "ru",
+			"name": "rm_from_list",
+			"text": "Удалить из списка"
+		},
+		{
+			"id": 150,
+			"lng": "ru",
+			"name": "total_sum",
+			"text": "Сумма всего"
+		},
+		{
+			"id": 151,
+			"lng": "ru",
+			"name": "remove",
+			"text": "Убрать"
+		},
+		{
+			"id": 152,
+			"lng": "ru",
+			"name": "to_order",
+			"text": "Оформить заказ"
+		},
+		{
+			"id": 153,
+			"lng": "ru",
+			"name": "addto_cart",
+			"text": "В корзину"
+		},
+		{
+			"id": 154,
+			"lng": "ru",
+			"name": "remind_me",
+			"text": "Сообщить мне когда появится"
+		},
+		{
+			"id": 155,
+			"lng": "ru",
+			"name": "bydef",
+			"text": "по умолчанию"
+		},
+		{
+			"id": 156,
+			"lng": "ru",
+			"name": "hist_graph",
+			"text": "История"
+		},
+		{
+			"id": 157,
+			"lng": "ru",
+			"name": "sales_hist",
+			"text": "Продаж"
+		},
+		{
+			"id": 158,
+			"lng": "ru",
+			"name": "price_hist",
+			"text": "Цен"
+		},
+		{
+			"id": 159,
+			"lng": "ru",
+			"name": "offer_end_at",
+			"text": "До конца акции:"
+		},
+		{
+			"id": 160,
+			"lng": "ru",
+			"name": "offer_d",
+			"text": "Дни"
+		},
+		{
+			"id": 161,
+			"lng": "ru",
+			"name": "offer_h",
+			"text": "Час."
+		},
+		{
+			"id": 162,
+			"lng": "ru",
+			"name": "offer_m",
+			"text": "Мин."
+		},
+		{
+			"id": 163,
+			"lng": "ru",
+			"name": "offer_s",
+			"text": "Сек."
+		},
+		{
+			"id": 164,
+			"lng": "ru",
+			"name": "register",
+			"text": "Зарегистрироваться"
+		},
+		{
+			"id": 165,
+			"lng": "ru",
+			"name": "login",
+			"text": "Войти"
+		},
+		{
+			"id": 166,
+			"lng": "ru",
+			"name": "logout",
+			"text": "Выйти"
+		},
+		{
+			"id": 167,
+			"lng": "ru",
+			"name": "myprofile",
+			"text": "Мой профиль"
+		},
+		{
+			"id": 168,
+			"lng": "ru",
+			"name": "search",
+			"text": "Поиск"
+		},
+		{
+			"id": 171,
+			"lng": "ru",
+			"name": "comments",
+			"text": "Отзывы"
+		},
+		{
+			"id": 173,
+			"lng": "ru",
+			"name": "to_compare",
+			"text": "К сравнению"
+		},
+		{
+			"id": 174,
+			"lng": "ru",
+			"name": "compare",
+			"text": "Сравнить"
+		},
+		{
+			"id": 175,
+			"lng": "ru",
+			"name": "to_wishlist",
+			"text": "В желания"
+		},
+		{
+			"id": 176,
+			"lng": "ru",
+			"name": "to_rate",
+			"text": "Оценить товар"
+		},
+		{
+			"id": 177,
+			"lng": "ru",
+			"name": "comment",
+			"text": "Комментарий"
+		},
+		{
+			"id": 178,
+			"lng": "ru",
+			"name": "to_comment",
+			"text": "Оставить отзыв"
+		},
+		{
+			"id": 179,
+			"lng": "ru",
+			"name": "to_reply",
+			"text": "Ответить"
+		},
+		{
+			"id": 180,
+			"lng": "ru",
+			"name": "descr",
+			"text": "Описание"
+		},
+		{
+			"id": 181,
+			"lng": "ru",
+			"name": "specs",
+			"text": "Характеристики"
+		},
+		{
+			"id": 182,
+			"lng": "ru",
+			"name": "soon",
+			"text": "Скоро в продаже"
+		},
+		{
+			"id": 183,
+			"lng": "ru",
+			"name": "RUB",
+			"text": "₽"
+		},
+		{
+			"id": 184,
+			"lng": "ru",
+			"name": "UAH",
+			"text": "₴"
+		},
+		{
+			"id": 185,
+			"lng": "ru",
+			"name": "USD",
+			"text": "$"
+		},
+		{
+			"id": 186,
+			"lng": "ru",
+			"name": "display_size",
+			"text": "Диагональ"
+		},
+		{
+			"id": 187,
+			"lng": "ru",
+			"name": "display_resolution",
+			"text": "Разрешение"
+		},
+		{
+			"id": 188,
+			"lng": "ru",
+			"name": "display_type",
+			"text": " Матрица"
+		},
+		{
+			"id": 189,
+			"lng": "ru",
+			"name": "CPU_name",
+			"text": "ЦПУ"
+		},
+		{
+			"id": 190,
+			"lng": "ru",
+			"name": "CPU_cores",
+			"text": "Ядер"
+		},
+		{
+			"id": 191,
+			"lng": "ru",
+			"name": "CPU_freq",
+			"text": "Частота"
+		},
+		{
+			"id": 192,
+			"lng": "ru",
+			"name": "frontal_camera",
+			"text": "Фронтальная камера"
+		},
+		{
+			"id": 193,
+			"lng": "ru",
+			"name": "backend_camera",
+			"text": "Основная камера"
+		},
+		{
+			"id": 194,
+			"lng": "ru",
+			"name": "ram",
+			"text": "ОЗУ"
+		},
+		{
+			"id": 195,
+			"lng": "ru",
+			"name": "mem",
+			"text": "Память"
+		},
+		{
+			"id": 196,
+			"lng": "ru",
+			"name": "personal_info",
+			"text": "Контактная информация"
+		},
+		{
+			"id": 197,
+			"lng": "ru",
+			"name": "confirm",
+			"text": "Подтвердить"
+		},
+		{
+			"id": 198,
+			"lng": "ru",
+			"name": "edit",
+			"text": "Изменить"
+		},
+		{
+			"id": 199,
+			"lng": "ru",
+			"name": "fname",
+			"text": "Имя"
+		},
+		{
+			"id": 200,
+			"lng": "ru",
+			"name": "lname",
+			"text": "Фамилия"
+		},
+		{
+			"id": 201,
+			"lng": "ru",
+			"name": "tel_number",
+			"text": "Мобильный телефон"
+		},
+		{
+			"id": 202,
+			"lng": "ru",
+			"name": "address",
+			"text": "Адрес доставки"
+		},
+		{
+			"id": 203,
+			"lng": "ru",
+			"name": "filtersReset",
+			"text": "Сбросить все"
+		},
+		{
+			"id": 205,
+			"lng": "ru",
+			"name": "confirm_order",
+			"text": "Подтвердить заказ"
+		},
+		{
+			"id": 206,
+			"lng": "ru",
+			"name": "paycard_number",
+			"text": "Номер карты"
+		},
+		{
+			"id": 207,
+			"lng": "ru",
+			"name": "paycard_info",
+			"text": "Данные платежной карты"
+		},
+		{
+			"id": 208,
+			"lng": "ru",
+			"name": "payment_type",
+			"text": "Способ оплаты"
+		},
+		{
+			"id": 209,
+			"lng": "ru",
+			"name": "cash",
+			"text": "Наличными"
+		},
+		{
+			"id": 210,
+			"lng": "ru",
+			"name": "paycard",
+			"text": "Безналичный"
+		},
+		{
+			"id": 211,
+			"lng": "ru",
+			"name": "count",
+			"text": "Количество"
+		},
+		{
+			"id": 212,
+			"lng": "ru",
+			"name": "currency_type",
+			"text": "Денежная еденица"
+		},
+		{
+			"id": 213,
+			"lng": "ru",
+			"name": "email_me",
+			"text": "Присылать мне уведомления"
+		},
+		{
+			"id": 214,
+			"lng": "ru",
+			"name": "email_me_offers",
+			"text": "Акции"
+		},
+		{
+			"id": 215,
+			"lng": "ru",
+			"name": "email_me_wishlist",
+			"text": "Изменения в списке желаний"
+		},
+		{
+			"id": 216,
+			"lng": "ru",
+			"name": "showed_items",
+			"text": "Показано товаров"
+		},
+		{
+			"id": 217,
+			"lng": "ru",
+			"name": "share",
+			"text": "Поделится"
+		},
+		{
+			"id": 218,
+			"lng": "ru",
+			"name": "laptops",
+			"text": "Ноутбуки"
+		},
+		{
+			"id": 219,
+			"lng": "ru",
+			"name": "smartphones",
+			"text": "Смартфоны"
+		},
+		{
+			"id": 220,
+			"lng": "ru",
+			"name": "tablets",
+			"text": "Планшеты"
+		},
+		{
+			"id": 221,
+			"lng": "ru",
+			"name": "order_done",
+			"text": "Спасибо за покупку"
+		},
+		{
+			"id": 255,
+			"lng": "uk",
+			"name": "cart",
+			"text": "Кошик"
+		},
+		{
+			"id": 256,
+			"lng": "uk",
+			"name": "lang_name",
+			"text": "Українська"
+		},
+		{
+			"id": 257,
+			"lng": "uk",
+			"name": "lang_name_ISO",
+			"text": "UK"
+		},
+		{
+			"id": 258,
+			"lng": "uk",
+			"name": "language",
+			"text": "Мова"
+		},
+		{
+			"id": 259,
+			"lng": "uk",
+			"name": "buy",
+			"text": "Придбати"
+		},
+		{
+			"id": 260,
+			"lng": "uk",
+			"name": "price",
+			"text": "Ціна"
+		},
+		{
+			"id": 261,
+			"lng": "uk",
+			"name": "from",
+			"text": "Від"
+		},
+		{
+			"id": 262,
+			"lng": "uk",
+			"name": "to",
+			"text": "До"
+		},
+		{
+			"id": 264,
+			"lng": "uk",
+			"name": "new",
+			"text": "Новий"
+		},
+		{
+			"id": 265,
+			"lng": "uk",
+			"name": "hot",
+			"text": "Топ"
+		},
+		{
+			"id": 266,
+			"lng": "uk",
+			"name": "not_in_stock",
+			"text": "Немає у наявності"
+		},
+		{
+			"id": 267,
+			"lng": "uk",
+			"name": "asc_price",
+			"text": "за зростання ціни"
+		},
+		{
+			"id": 268,
+			"lng": "uk",
+			"name": "desc_price",
+			"text": "за зниженням ціни"
+		},
+		{
+			"id": 269,
+			"lng": "uk",
+			"name": "byrating",
+			"text": "за рейтингом"
+		},
+		{
+			"id": 270,
+			"lng": "uk",
+			"name": "bynewest",
+			"text": "за новизною"
+		},
+		{
+			"id": 271,
+			"lng": "uk",
+			"name": "bydef",
+			"text": "за замовчуванням"
+		},
+		{
+			"id": 272,
+			"lng": "uk",
+			"name": "sortby",
+			"text": "Сортувати "
+		},
+		{
+			"id": 273,
+			"lng": "uk",
+			"name": "catalog",
+			"text": "Каталог"
+		},
+		{
+			"id": 274,
+			"lng": "uk",
+			"name": "discount",
+			"text": "Знижка"
+		},
+		{
+			"id": 275,
+			"lng": "uk",
+			"name": "offer",
+			"text": "Акцiя"
+		},
+		{
+			"id": 276,
+			"lng": "uk",
+			"name": "rm_from_list",
+			"text": "Видалити"
+		},
+		{
+			"id": 277,
+			"lng": "uk",
+			"name": "total_sum",
+			"text": "Сума усього"
+		},
+		{
+			"id": 278,
+			"lng": "uk",
+			"name": "remove",
+			"text": "Видалити"
+		},
+		{
+			"id": 279,
+			"lng": "uk",
+			"name": "to_order",
+			"text": "Замовити"
+		},
+		{
+			"id": 280,
+			"lng": "uk",
+			"name": "addto_cart",
+			"text": "У кошик"
+		},
+		{
+			"id": 281,
+			"lng": "uk",
+			"name": "remind_me",
+			"text": "Повідомити мене"
+		},
+		{
+			"id": 282,
+			"lng": "uk",
+			"name": "hist_graph",
+			"text": "Історія"
+		},
+		{
+			"id": 283,
+			"lng": "uk",
+			"name": "sales_hist",
+			"text": "Продажів"
+		},
+		{
+			"id": 284,
+			"lng": "uk",
+			"name": "price_hist",
+			"text": "Цін"
+		},
+		{
+			"id": 285,
+			"lng": "uk",
+			"name": "offer_end_at",
+			"text": "Кінець акції:"
+		},
+		{
+			"id": 286,
+			"lng": "uk",
+			"name": "offer_d",
+			"text": "День"
+		},
+		{
+			"id": 287,
+			"lng": "uk",
+			"name": "offer_h",
+			"text": "Г."
+		},
+		{
+			"id": 288,
+			"lng": "uk",
+			"name": "offer_m",
+			"text": "Х."
+		},
+		{
+			"id": 289,
+			"lng": "uk",
+			"name": "offer_s",
+			"text": "С."
+		},
+		{
+			"id": 290,
+			"lng": "uk",
+			"name": "register",
+			"text": "Зареєструватися"
+		},
+		{
+			"id": 291,
+			"lng": "uk",
+			"name": "login",
+			"text": "Вхід"
+		},
+		{
+			"id": 292,
+			"lng": "uk",
+			"name": "logout",
+			"text": "Вихід"
+		},
+		{
+			"id": 293,
+			"lng": "uk",
+			"name": "myprofile",
+			"text": "Мій профіль"
+		},
+		{
+			"id": 294,
+			"lng": "uk",
+			"name": "search",
+			"text": "Шукати"
+		},
+		{
+			"id": 297,
+			"lng": "uk",
+			"name": "comments",
+			"text": "Коментарі"
+		},
+		{
+			"id": 299,
+			"lng": "uk",
+			"name": "to_compare",
+			"text": "Порівняти"
+		},
+		{
+			"id": 300,
+			"lng": "uk",
+			"name": "compare",
+			"text": "Порівняти"
+		},
+		{
+			"id": 301,
+			"lng": "uk",
+			"name": "to_wishlist",
+			"text": "У бажання"
+		},
+		{
+			"id": 302,
+			"lng": "uk",
+			"name": "to_rate",
+			"text": "Оцінити"
+		},
+		{
+			"id": 303,
+			"lng": "uk",
+			"name": "comment",
+			"text": "Коментар"
+		},
+		{
+			"id": 304,
+			"lng": "uk",
+			"name": "to_comment",
+			"text": "Коментувати"
+		},
+		{
+			"id": 305,
+			"lng": "uk",
+			"name": "to_reply",
+			"text": "Відповісти"
+		},
+		{
+			"id": 306,
+			"lng": "uk",
+			"name": "descr",
+			"text": "Опис"
+		},
+		{
+			"id": 307,
+			"lng": "uk",
+			"name": "specs",
+			"text": "Характеристики"
+		},
+		{
+			"id": 308,
+			"lng": "uk",
+			"name": "soon",
+			"text": "Скоро у продажу"
+		},
+		{
+			"id": 309,
+			"lng": "uk",
+			"name": "RUB",
+			"text": "₽"
+		},
+		{
+			"id": 310,
+			"lng": "uk",
+			"name": "UAH",
+			"text": "₴"
+		},
+		{
+			"id": 311,
+			"lng": "uk",
+			"name": "USD",
+			"text": "$"
+		},
+		{
+			"id": 312,
+			"lng": "uk",
+			"name": "display_size",
+			"text": "Діагональ"
+		},
+		{
+			"id": 313,
+			"lng": "uk",
+			"name": "display_resolution",
+			"text": "Роздільна здатність"
+		},
+		{
+			"id": 314,
+			"lng": "uk",
+			"name": "display_type",
+			"text": "Матриця "
+		},
+		{
+			"id": 315,
+			"lng": "uk",
+			"name": "CPU_name",
+			"text": "ЦП"
+		},
+		{
+			"id": 316,
+			"lng": "uk",
+			"name": "CPU_cores",
+			"text": "Ядер"
+		},
+		{
+			"id": 317,
+			"lng": "uk",
+			"name": "CPU_freq",
+			"text": "Частота"
+		},
+		{
+			"id": 318,
+			"lng": "uk",
+			"name": "frontal_camera",
+			"text": "Фронтальна камера"
+		},
+		{
+			"id": 319,
+			"lng": "uk",
+			"name": "backend_camera",
+			"text": "Основна камера"
+		},
+		{
+			"id": 320,
+			"lng": "uk",
+			"name": "ram",
+			"text": "ОЗП"
+		},
+		{
+			"id": 321,
+			"lng": "uk",
+			"name": "mem",
+			"text": "Пам'ять"
+		},
+		{
+			"id": 322,
+			"lng": "uk",
+			"name": "personal_info",
+			"text": "Контактна інформація"
+		},
+		{
+			"id": 323,
+			"lng": "uk",
+			"name": "confirm",
+			"text": "Підтвердити"
+		},
+		{
+			"id": 324,
+			"lng": "uk",
+			"name": "edit",
+			"text": "Редагувати"
+		},
+		{
+			"id": 325,
+			"lng": "uk",
+			"name": "fname",
+			"text": "Ім'я"
+		},
+		{
+			"id": 326,
+			"lng": "uk",
+			"name": "lname",
+			"text": "Прізвище"
+		},
+		{
+			"id": 327,
+			"lng": "uk",
+			"name": "tel_number",
+			"text": "Мобільний телефон"
+		},
+		{
+			"id": 328,
+			"lng": "uk",
+			"name": "address",
+			"text": "Адреса доставки"
+		},
+		{
+			"id": 329,
+			"lng": "uk",
+			"name": "filtersReset",
+			"text": "Скинути все"
+		},
+		{
+			"id": 331,
+			"lng": "uk",
+			"name": "confirm_order",
+			"text": "Підтвердити замовлення"
+		},
+		{
+			"id": 332,
+			"lng": "uk",
+			"name": "paycard_number",
+			"text": "Номер карти"
+		},
+		{
+			"id": 333,
+			"lng": "uk",
+			"name": "paycard_info",
+			"text": "Информація платіжної карти"
+		},
+		{
+			"id": 334,
+			"lng": "uk",
+			"name": "payment_type",
+			"text": "Тип платежу"
+		},
+		{
+			"id": 335,
+			"lng": "uk",
+			"name": "paycard",
+			"text": "Платіжна карта"
+		},
+		{
+			"id": 336,
+			"lng": "uk",
+			"name": "cash",
+			"text": "Готiвкою"
+		},
+		{
+			"id": 337,
+			"lng": "uk",
+			"name": "count",
+			"text": "Кількість"
+		},
+		{
+			"id": 338,
+			"lng": "uk",
+			"name": "currency_type",
+			"text": "Валюта"
+		},
+		{
+			"id": 339,
+			"lng": "uk",
+			"name": "email_me",
+			"text": "Надсилати повідомлення на email"
+		},
+		{
+			"id": 340,
+			"lng": "uk",
+			"name": "email_me_offers",
+			"text": "Акції"
+		},
+		{
+			"id": 341,
+			"lng": "uk",
+			"name": "email_me_wishlist",
+			"text": "Зміни у списку бажаннь"
+		},
+		{
+			"id": 342,
+			"lng": "uk",
+			"name": "showed_items",
+			"text": "Відображено товарів"
+		},
+		{
+			"id": 343,
+			"lng": "uk",
+			"name": "share",
+			"text": "Поділитися"
+		},
+		{
+			"id": 344,
+			"lng": "uk",
+			"name": "laptops",
+			"text": "Ноутбуки"
+		},
+		{
+			"id": 345,
+			"lng": "uk",
+			"name": "smartphones",
+			"text": "Смартфони"
+		},
+		{
+			"id": 346,
+			"lng": "uk",
+			"name": "tablets",
+			"text": "Планшети"
+		},
+		{
+			"id": 347,
+			"lng": "uk",
+			"name": "order_done",
+			"text": "Дякуємо за покупку"
+		},
+		{
+			"id": 348,
+			"lng": "uk",
+			"name": "value",
+			"text": "Значення"
+		},
+		{
+			"id": 349,
+			"lng": "en",
+			"name": "value",
+			"text": "Values"
+		},
+		{
+			"id": 350,
+			"lng": "ru",
+			"name": "value",
+			"text": "Значения"
+		},
+		{
+			"id": 351,
+			"lng": "uk",
+			"name": "compareAddMore",
+			"text": "Додати до порівняння"
+		},
+		{
+			"id": 354,
+			"lng": "ru",
+			"name": "compareAddMore",
+			"text": "Добавить к сравнению"
+		},
+		{
+			"id": 355,
+			"lng": "en",
+			"name": "compareAddMore",
+			"text": "Add to compare"
+		},
+		{
+			"id": 356,
+			"lng": "en",
+			"name": "filters",
+			"text": "Filters"
+		},
+		{
+			"id": 357,
+			"lng": "uk",
+			"name": "filters",
+			"text": "Фільтри"
+		},
+		{
+			"id": 358,
+			"lng": "ru",
+			"name": "filters",
+			"text": "Фильтры"
+		}
+	]
+}

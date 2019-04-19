@@ -45,7 +45,7 @@ class ProductController extends Controller
     public function history(Request $data) {
         return \App\Prices_history::with(['currency' => function ($query) use ($data) {
             $query->where('name', $data->currency);
-        }])->where('product_id',$data->id)->orderBy('date','desc')->skip(0)->take(30)->orderBy('date','asc')->get();
+        }])->where('product_id',$data->id)->orderBy('date','desc')->skip(0)->take(20)->orderBy('date','asc')->get();
     }
     public function rnd(Request $data) {
         return Product::where('available','>',0)->inRandomOrder()->skip(0)->take(5)->get();

@@ -13,7 +13,6 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
-    static $password;
 
     return [
         'name' => $faker->name,
@@ -21,28 +20,27 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'fname' => $faker->name,
         'lname' => $faker->name,
         'currency' => 'USD',
-        'language' => 'EN',
+        'language' => 'en',
         'tel' => $faker->numberBetween(100000000,900000000),
         'adr' => $faker->name,
         'pan' => Crypt::encryptString('4895142232120006'),
         'bstate' => 1,
-        'password' => $password ?: $password = bcrypt('secret'),
+        'password' => bcrypt('secret'),
         'remember_token' => str_random(10),
     ];
 });
 $factory->define(App\Product::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'category_id'=>App\Product_Category::all()->random()->id,
+        'category_id'=> 1,
         'discount_id'=> $faker->numberBetween(0,1),
-        'img_src'=>'radeon.png',//$faker->imageUrl(640, 480,'technics'), //'radeon.png',//
+        'img_src'=>'404.png',//$faker->imageUrl(640, 480,'technics'),
         'description'=>$faker->text,
         'rating' => $faker->randomFloat(2,0,5),
         'vote_count' => $faker->randomDigit,
         'available' => $faker->randomDigit,
         'is_bestseller' => $faker->boolean,
-        'price' => $faker->randomFloat(1,1,1799),
-        'price_provider' => $faker->randomFloat(1,1,1799),
+        'price' => $faker->randomFloat(1,100,900),
         'is_visible' => $faker->boolean,
         'arrive_date' => $faker->dateTimeBetween($startDate = '-72 days', $endDate = '12 days')
     ];
@@ -53,6 +51,8 @@ $factory->define(App\Spec::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'value' => $faker->randomDigit,
         'val_type' => 'unit',
+        'isComparable' => 1,
+        'isFilterable' => 1,
         'category' => 'basic'
     ];
 });
@@ -60,7 +60,7 @@ $factory->define(App\Spec::class, function (Faker\Generator $faker) {
 $factory->define(App\Comment::class, function (Faker\Generator $faker) {
     return [
         'product_id'=> App\Product::all()->random()->id,
-        'user_id' => App\User::all()->random()->id,
+        'user_id' => App\User::where('bstate', '!=', 255)->get()->random()->id,
         'reply_id' =>0,
         'rating' => $faker->numberBetween(0,5),
         'message' => $faker->text,
@@ -82,5 +82,19 @@ $factory->define(App\Currency::class, function (Faker\Generator $faker) {
         'rate' =>$faker->randomFloat(1,1,30),
         'name' => 'USD',
         'date'=> App\Prices_history::all()->random()->date
+    ];
+});
+$factory->define(App\Category::class, function (Faker\Generator $faker) {
+    return [
+        'name' => 'test',
+    ];
+});
+$factory->define(App\Discount::class, function (Faker\Generator $faker) {
+    $date = new \DateTime();
+    return [
+        'promo_code' => '$faker->$sha1',
+        'discount' => mt_rand(1,15),
+        'begin_at' => $date,
+        'end_at' => date_modify($date, '+28 day')
     ];
 });
