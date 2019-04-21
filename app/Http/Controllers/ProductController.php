@@ -40,7 +40,7 @@ class ProductController extends Controller
     }
     public function search(Request $data)
     {
-        return Product::with('ctg','discount')->where('name', 'like', '%'.$data->search . '%')
+        return Product::with('ctg','discount')->where('name', 'ilike', '%'.$data->search . '%')
             ->skip(0)->take(5)->orderBy('category_id','desc')->get();
     }
     public function history(Request $data) {

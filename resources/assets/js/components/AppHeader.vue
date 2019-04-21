@@ -5,7 +5,8 @@
         </router-link>
         <div class="col-sm-8 col-md-7">
             <div class="input-group search">
-                <input type="text" class="form-control" :placeholder="lng.search" @input="toSearch($event.target.value)" autofocus>
+                <input type="search" class="form-control" :placeholder="lng.search" 
+                    @focus="search_result || toSearch()" @input="toSearch()" autofocus>
                 <table>
                     <tbody>
                         <tr v-for="item in search_result" :key="item.id">
@@ -21,7 +22,7 @@
                     </tbody>
                 </table>
                 <span class="input-group-btn" >
-                    <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-default" type="button" @click="toSearch()"><i class="fa fa-search"></i></button>
                 </span>
             </div>
         </div>
@@ -55,6 +56,9 @@
         created() {
             this.$store.commit("loadFromLocalStorage",'compare');
             this.$store.commit("loadFromLocalStorage",'cart');
+            this.$router.afterEach((to, from, next) => {
+                this.search_result = null;
+            });
         },
         methods: {
             toCompare(i){
@@ -62,6 +66,7 @@
                 this.$router.push(`/compare/${this.$store.state.compare[i].category}/${JSON.stringify(this.$store.state.compare[i].array)}`);
             },
             toSearch: debounce(function (text) {
+                var text = document.querySelector(".search > input").value;
                 this.search_result = null;
                 text.length && axios.post('/search', {
                     search: text
