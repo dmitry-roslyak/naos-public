@@ -42,7 +42,9 @@
                     </a>
                 </div>
                 <div class="thumbnail ic-s">
-                    <img style="visibility: hidden" :src="'file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
+                    <div class="image-wrapper">
+                        <img :src="'file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
+                    </div>
                     <div class="caption">
                         <router-link class="item-card-name" :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
                         <div class="col-xs-12" style="padding: 3px 0">

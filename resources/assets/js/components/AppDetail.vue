@@ -19,7 +19,7 @@
                     <li data-target="#carousel2" data-slide-to="0" class="active"></li>
                 </ol>
                 <div class="carousel-inner" role="listbox">
-                    <div class="item active">
+                    <div class="item active image-wrapper">
                         <img :src="item.img_src && 'file/'+item.img_src">
                         <div class="tb-offer" v-if="+offerTime > 0">
                             <span>{{lng.discount +' -'+item.discount.discount+'%'}}</span>

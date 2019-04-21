@@ -24,7 +24,7 @@
                 </ol>
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
-                    <div v-for="(item,i) in items" :class="{'item': true, 'active': !i}" :key="item.id">
+                    <div v-for="(item,i) in items" :class="{'item image-wrapper': true, 'active': !i}" :key="item.id">
                         <img :src="'file/'+item.img_src" alt="...">
                         <div class="carousel-caption carousel-content">
                             <h3>

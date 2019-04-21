@@ -45,6 +45,10 @@
 }
 .search {
     padding: 14px 0;
+    & > input:focus + table, &:hover > table{
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 .search > table {
     position: absolute;
@@ -58,10 +62,6 @@
     opacity: 0;
     /* border-radius: 0.3em; */
     z-index: 3;
-}
-.search:hover > table {
-    transform: scale(1);
-    opacity: 1;
 }
 .search tr:hover {
     background-color: whitesmoke;

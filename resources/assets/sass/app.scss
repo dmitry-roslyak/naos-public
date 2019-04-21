@@ -276,17 +276,20 @@ td > .fa-times {
         transform: scale(1);
     }
 }
-.carousel .item {
+.image-wrapper > img {
+    position: absolute;
+    margin: auto;
+    max-width: 100%;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+.carousel .image-wrapper {
     height: 35.2rem !important;
     & > img {
-        position: absolute;
-        margin: auto;
-        bottom: 0;
-        top: 0;
-        right: 0;
-        left: 0;
         max-height: 35.2rem !important;
-        padding: 25px;
+        padding: 2.5rem;
     }
 }
 .carousel-content {

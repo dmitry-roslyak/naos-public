@@ -11466,6 +11466,13 @@ button.close {
   padding: 14px 0;
 }
 
+.search > input:focus + table,
+.search:hover > table {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  opacity: 1;
+}
+
 .search > table {
   position: absolute;
   -webkit-transition: all 0.3s;
@@ -11482,12 +11489,6 @@ button.close {
   opacity: 0;
   /* border-radius: 0.3em; */
   z-index: 3;
-}
-
-.search:hover > table {
-  -webkit-transform: scale(1);
-          transform: scale(1);
-  opacity: 1;
 }
 
 .search tr:hover {
@@ -12155,19 +12156,23 @@ td > .fa-times {
   }
 }
 
-.carousel .item {
-  height: 35.2rem !important;
-}
-
-.carousel .item > img {
+.image-wrapper > img {
   position: absolute;
   margin: auto;
+  max-width: 100%;
   bottom: 0;
   top: 0;
   right: 0;
   left: 0;
+}
+
+.carousel .image-wrapper {
+  height: 35.2rem !important;
+}
+
+.carousel .image-wrapper > img {
   max-height: 35.2rem !important;
-  padding: 25px;
+  padding: 2.5rem;
 }
 
 .carousel-content {
