@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 const home = Vue.component('AppHome', require('./components/AppHome.vue'));
+const App404 = Vue.component('App404', require('./components/App404.vue'));
 // const products = Vue.component('products', require('./components/Products.vue'));
 // const detail = Vue.component('detail', require('./components/detail.vue'));
 // const comments = Vue.component('comments', require('./components/comm1.vue'));
@@ -44,6 +45,8 @@ Vue.component('AppUserInfo', function (resolve) {
 export default new VueRouter({
     // mode: 'history',
     routes: [
+        { path: '/404', component: App404 },
+        { path: '*', redirect: '/404' },
         { path: '/', component: home },
         { path: '/products/:category', component: products, props: true  },
         { name: 'detail', path: '/detail/:id', component: detail, props: true },
