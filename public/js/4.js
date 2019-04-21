@@ -74,7 +74,8 @@ var formatter = new Intl.DateTimeFormat([], {
         return _data;
     },
     watch: {
-        'paginator.skip': 'show_comments'
+        'paginator.skip': 'show_comments',
+        'productId': 'show_comments'
     },
     computed: {
         lng: function lng() {

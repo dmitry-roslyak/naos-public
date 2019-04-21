@@ -82,7 +82,7 @@
                     priceFrom = this.price.array[Math.round(this.vRangeSlidersPosition[0] / percentPerArrayItem)],
                     priceTo = this.price.array[Math.round(this.vRangeSlidersPosition[1] / percentPerArrayItem)];
                 
-                this.price.range = [ priceFrom * this.$store.state.currency , priceTo * this.$store.state.currency ];
+                this.price.range = [ (priceFrom * this.$store.state.currency).toFixed(1) , (priceTo * this.$store.state.currency).toFixed(1) ];
             },
             expand: throttle(function(el) {
                 $(el.parentElement.getElementsByClassName('flip')[0]).slideToggle();

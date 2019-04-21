@@ -93,6 +93,9 @@ var self,
     data: function data() {
         return _data;
     },
+    watch: {
+        'id': 'itemById'
+    },
     computed: {
         currency: function currency() {
             return this.$store.state.currency;
@@ -140,7 +143,7 @@ var self,
             this.$store.commit('cart', { id: this.item.id, count: 1, toRemove: !this.item.isInCart });
         },
         buy: function buy() {
-            this.$router.push("/cart/[" + this.item.id + "]");
+            this.$router.push('/cart/[' + this.item.id + ']');
         },
         to_compare: function to_compare() {
             this.item.is_compare = !this.item.is_compare;
@@ -296,7 +299,7 @@ var render = function() {
                 "div",
                 { staticClass: "carousel-inner", attrs: { role: "listbox" } },
                 [
-                  _c("div", { staticClass: "item active" }, [
+                  _c("div", { staticClass: "item active image-wrapper" }, [
                     _c("img", {
                       attrs: {
                         src: _vm.item.img_src && "file/" + _vm.item.img_src

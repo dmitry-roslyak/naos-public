@@ -65,6 +65,7 @@
         data: function() {return data},
         watch: {
             'paginator.skip': 'show_comments',
+            'productId': 'show_comments',
         },
         computed: {
             lng(){ return this.$root.lng },

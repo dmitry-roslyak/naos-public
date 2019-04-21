@@ -158,8 +158,8 @@
                     })
                     if(!self.price.range[0] && !self.price.range[1]) {
                         self.price.range = [
-                            self.price.array[0] * self.currency,
-                            self.price.array[self.price.array.length-1] * self.currency,
+                            (self.price.array[0] * self.currency).toFixed(1),
+                            (self.price.array[self.price.array.length-1] * self.currency).toFixed(1),
                             { doNotFetch: true }
                         ]
                     }

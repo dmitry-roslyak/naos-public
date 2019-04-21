@@ -86,7 +86,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"1f226bfcc03944b54a34","1":"761db721affd1523ee41","2":"86e6829a910903ed1970","3":"eff41b1fc4af91a2fe25","4":"ed03bebac3b787389108","5":"f0e297e18604f9f7037a","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"b3ea94a6926b55ac3a35"}[chunkId] + "";
+/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"1f226bfcc03944b54a34","1":"92aa7e24e3b060b1df15","2":"99cf520d6df542bf5d78","3":"eff41b1fc4af91a2fe25","4":"c19c56840ce275646e7f","5":"f0e297e18604f9f7037a","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"46054dd0a91c27c959f8"}[chunkId] + "";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -6175,6 +6175,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var _data = {
     search_result: null
@@ -6199,8 +6200,13 @@ var _data = {
         }
     },
     created: function created() {
+        var _this2 = this;
+
         this.$store.commit("loadFromLocalStorage", 'compare');
         this.$store.commit("loadFromLocalStorage", 'cart');
+        this.$router.afterEach(function (to, from, next) {
+            _this2.search_result = null;
+        });
     },
 
     methods: {
@@ -6210,13 +6216,14 @@ var _data = {
         },
 
         toSearch: debounce(function (text) {
-            var _this2 = this;
+            var _this3 = this;
 
+            var text = document.querySelector(".search > input").value;
             this.search_result = null;
             text.length && axios.post('/search', {
                 search: text
             }).then(function (response) {
-                _this2.search_result = response.data;
+                _this3.search_result = response.data;
             });
         }, 400)
     }
@@ -51901,7 +51908,10 @@ var render = function() {
               _vm._l(_vm.items, function(item, i) {
                 return _c(
                   "div",
-                  { key: item.id, class: { item: true, active: !i } },
+                  {
+                    key: item.id,
+                    class: { "item image-wrapper": true, active: !i }
+                  },
                   [
                     _c("img", {
                       attrs: { src: "file/" + item.img_src, alt: "..." }
@@ -52235,10 +52245,17 @@ var render = function() {
         _c("div", { staticClass: "input-group search" }, [
           _c("input", {
             staticClass: "form-control",
-            attrs: { type: "text", placeholder: _vm.lng.search, autofocus: "" },
+            attrs: {
+              type: "search",
+              placeholder: _vm.lng.search,
+              autofocus: ""
+            },
             on: {
+              focus: function($event) {
+                _vm.search_result || _vm.toSearch()
+              },
               input: function($event) {
-                _vm.toSearch($event.target.value)
+                _vm.toSearch()
               }
             }
           }),
@@ -52287,7 +52304,21 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _c("span", { staticClass: "input-group-btn" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-default",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.toSearch()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fa fa-search" })]
+            )
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -52381,20 +52412,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "input-group-btn" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-default", attrs: { type: "button" } },
-        [_c("i", { staticClass: "fa fa-search" })]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

@@ -82,6 +82,9 @@
     export default {
         props: ['id'],
         data: function() { return data },
+        watch: {
+            'id': 'itemById',
+        },
         computed: {
             currency() { return this.$store.state.currency },
             lng(){ return this.$root.lng },

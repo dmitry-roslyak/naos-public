@@ -52,6 +52,11 @@ var chart_self, data = {
 export default {
     props: ['productId'],
     data: function () {return data;},
+    watch: {
+        'productId': function () {
+            this.show_hist(1);
+        },
+    },
     computed: {
         lng(){ return this.$root.lng },
     },

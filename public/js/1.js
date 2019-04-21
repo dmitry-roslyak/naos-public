@@ -84,6 +84,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var self,
     _data = {
@@ -177,7 +179,7 @@ var self,
                     return t - e;
                 });
                 if (!self.price.range[0] && !self.price.range[1]) {
-                    self.price.range = [self.price.array[0] * self.currency, self.price.array[self.price.array.length - 1] * self.currency, { doNotFetch: true }];
+                    self.price.range = [(self.price.array[0] * self.currency).toFixed(1), (self.price.array[self.price.array.length - 1] * self.currency).toFixed(1), { doNotFetch: true }];
                 }
                 self.paginator.total = response.data[0];
             });
@@ -214,7 +216,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: thin solid cornflowerblue;\n  border-width: thin 0;\n  font-size: 1.5rem;\n  line-height: 2em;\n}\n.itmc select {\n    display: inline-block;\n    height: 27px;\n}\n#sortby {\n  width: 180px;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 24.5em;\n  padding: 6px 4px;\n  background-color: white;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card:hover .item-spec {\n    font-size: inherit;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n  width: 100%;\n}\n.item-spec tr td:last-child {\n    width: 55%;\n    padding-left: 10px;\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.item-card > .thumbnail > .caption {\n  padding: 2px 6px;\n}\n.item-card > .action-frm {\n  right: 4px;\n}\n.item-card > .thumbnail > img {\n  max-height: 19.5rem !important;\n  margin-top: 20px !important;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n", ""]);
+exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: thin solid cornflowerblue;\n  border-width: thin 0;\n  font-size: 1.5rem;\n  line-height: 2em;\n}\n.itmc select {\n    display: inline-block;\n    height: 27px;\n}\n#sortby {\n  width: 180px;\n}\n.item-card {\n  -webkit-transition: all 0.35s;\n  transition: all 0.35s;\n  height: 26em;\n  padding: 6px 4px;\n  background-color: white;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card:hover .item-spec {\n    font-size: inherit;\n}\n.item-spec {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  font-size: 0;\n  width: 100%;\n}\n.item-spec tr td:last-child {\n    width: 55%;\n    padding-left: 10px;\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.item-card > .action-frm {\n  right: 4px;\n}\n.item-card .image-wrapper {\n  position: relative;\n  margin: 3rem 2rem 0;\n  height: 19.5rem;\n}\n.item-card .image-wrapper > img {\n    max-height: 19.5rem;\n    visibility: hidden;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n", ""]);
 
 // exports
 
@@ -468,18 +470,19 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "thumbnail ic-s" }, [
-                  _c("img", {
-                    staticStyle: { visibility: "hidden" },
-                    attrs: { src: "file/" + item.img_src },
-                    on: {
-                      load: function($event) {
-                        _vm.imgReady($event.target)
-                      },
-                      error: function($event) {
-                        _vm.img404($event.target)
+                  _c("div", { staticClass: "image-wrapper" }, [
+                    _c("img", {
+                      attrs: { src: "file/" + item.img_src },
+                      on: {
+                        load: function($event) {
+                          _vm.imgReady($event.target)
+                        },
+                        error: function($event) {
+                          _vm.img404($event.target)
+                        }
                       }
-                    }
-                  }),
+                    })
+                  ]),
                   _vm._v(" "),
                   _c(
                     "div",

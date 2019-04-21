@@ -62,6 +62,11 @@ var chart_self,
     data: function data() {
         return _data;
     },
+    watch: {
+        'productId': function productId() {
+            this.show_hist(1);
+        }
+    },
     computed: {
         lng: function lng() {
             return this.$root.lng;
