@@ -51,7 +51,7 @@
                         <tr>
                             <td>{{lng.paycard_number}}</td>
                             <td><input id="number" class="form-control myinput1" v-model="card.number" v-validate
-                                @keyup.13="card.number = 4005520000011126; next_input($event.target, 'month')" maxlength="19"></td>
+                                @keyup.13="card.number = '4005520000011126'; next_input($event.target, 'month')" maxlength="19"></td>
                             <td><i :class="validate['number'] ? 'fa fa-check-circle' : 'fa fa-times'"></i></td>
                         </tr>
                         <tr>
@@ -122,7 +122,7 @@
         },
         methods: {
             reCount(id, i) {
-                if (!/^([1-9]\d{1,})$/.test(this.products[i].count)) {
+                if (!/^([1-9]\d{0,})$/.test(this.products[i].count)) {
                     this.products[i].count = 1
                 }
                 this.ids || this.$store.commit('cart', {id, count: +this.products[i].count});
@@ -151,7 +151,7 @@
                     products: this.products,
                     card: this.card,
                     user_info: self.$refs.userInfo.userInfo,
-                    payment: this.payment,
+                    payment: this.payment=='pay_card' ? 'visa' : this.payment,
                     delivery: this.delivery,
                     delivery_adr: 'somewhere',
                 }).then(function (response) {

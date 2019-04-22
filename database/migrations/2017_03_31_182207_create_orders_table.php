@@ -15,19 +15,20 @@ class CreateOrdersTable extends Migration
     {	
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id',false,true);
+            $table->integer('user_id',false,true)->nullable()->default(0);
             $table->uuid('cart_uuid');
             $table->decimal('price', 13, 2);
-            $table->integer('visa_an');
-            $table->string('visa_rrn');
+            $table->string('currency_type')->default('UAH');
+            $table->integer('visa_an')->default(0);
+            $table->string('visa_rrn')->default('0');
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->default('');
             $table->string('phone');
             $table->string('deliver_type');
             $table->string('deliver_adr');
             $table->string('payment_type');
-            $table->string('payment_state');
-            $table->string('order_state');
+            $table->string('payment_state')->default('pending');
+            $table->string('order_state')->default('pending');
             $table->timestamps();
         });
     }

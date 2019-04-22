@@ -141,7 +141,7 @@ var self,
 
     methods: {
         reCount: function reCount(id, i) {
-            if (!/^([1-9]\d{1,})$/.test(this.products[i].count)) {
+            if (!/^([1-9]\d{0,})$/.test(this.products[i].count)) {
                 this.products[i].count = 1;
             }
             this.ids || this.$store.commit('cart', { id: id, count: +this.products[i].count });
@@ -170,7 +170,7 @@ var self,
                 products: this.products,
                 card: this.card,
                 user_info: self.$refs.userInfo.userInfo,
-                payment: this.payment,
+                payment: this.payment == 'pay_card' ? 'visa' : this.payment,
                 delivery: this.delivery,
                 delivery_adr: 'somewhere'
             }).then(function (response) {
@@ -430,7 +430,7 @@ var render = function() {
                             ) {
                               return null
                             }
-                            _vm.card.number = 4005520000011126
+                            _vm.card.number = "4005520000011126"
                             _vm.next_input($event.target, "month")
                           },
                           input: function($event) {
