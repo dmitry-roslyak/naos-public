@@ -31,4 +31,8 @@ class Product extends Model
     {
         return $this->hasOne('App\Category','id', 'category_id' );
     }
+    public function user_rating()
+    {
+        return $this->hasOne('App\UserProductRating','product_id', 'id' );
+    }
 }

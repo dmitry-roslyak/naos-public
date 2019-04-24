@@ -81,6 +81,51 @@ class UserController extends Controller
         $comm_id = Comment::where('product_id',$data->id)->get(['id']);
         return UserCommentsLike::whereIn('comment_id',$comm_id)->where('user_id', Auth::id())->get();
     }
+    public function toWish(Request $data)
+    {
+        $user_id = Auth::id();
+        $prod = Product::with(['wish' => function ($query) use ($user_id) {
+            $query->where('user_id',$user_id);
+        }])->where('id',$data->id)->first();
+
+        if(!empty($prod->wish)) {
+            $prod->wish->delete();
+            return 0;
+        } else {
+            $date = new \DateTime;
+            $user_wish =  new UserWishes;
+            $user_wish->user_id = $user_id;
+            $user_wish->product_id = $data->id;
+            $user_wish->price = $prod->price;
+            $user_wish->isAvailable = $prod->available>0?1:0;
+            $user_wish->date = $date->format("Y-m-d");
+            $user_wish->save();
+            return 1;
+        }
+    }
+    public function rate(Request $request){
+        $request->validate([
+            'id' => 'required|exists:products,id',
+            'rating' => 'required|numeric|min:0|max:5'
+        ]);
+        $user_id = Auth::id();
+        $product = Product::find($request->id);
+        $userProductRating = \App\UserProductRating::where('user_id', $user_id)->where( 'product_id', $request->id)->first();
+        if(empty($userProductRating)) {
+            $userProductRating = new \App\UserProductRating;
+            $product->vote_count++;
+        }
+        $product->rating = (($product->vote_count-1) * $product->rating + $request->rating) / $product->vote_count;
+        $product->save();
+        $userProductRating->user_id = $user_id; 
+        $userProductRating->product_id = $request->id; 
+        $userProductRating->rating = $request->rating; 
+        $userProductRating->save();
+        // \App\UserProductRating::updateOrCreate(
+        //     ['user_id' => $user_id, 'product_id' => $request->id],
+        //     ['user_id' => $user_id, 'product_id' => $request->id, 'rating' => $request->rating]
+        // );
+    }
     public function auth(Request $data)
     {
             // $jwk_set = JWKFactory::createFromX5U('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com');

@@ -9,10 +9,6 @@
         <div id="leaveMsg" class="thumbnail">
             <div class="caption">
                 <div class="form-group">
-                    <label>{{lng.to_rate}}</label>
-                    <star-rating :star-size="16" @rating-selected="rating = $event" :rating="rating" :show-rating="false"></star-rating>
-                </div>
-                <div class="form-group">
                     <label>{{lng.comment}}</label>
                     <textarea class="form-control" v-model="message" rows="3"></textarea>
                 </div>
@@ -22,10 +18,6 @@
         <div v-for="(comment,i) in comments" :key="comment.id" class="panel panel-default">
             <div class="panel-body" style="position:relative">
                 <span class="text-primary">{{comment.user.name}}</span>
-                <div>
-                    {{lng.rating}} &nbsp;
-                    <star-rating style="display:inline-block" :rating="+comment.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                </div>
                 <span style="top: 15px;right: 15px;position: absolute;">{{comment.created_at}}</span>
                 <div style="margin: 10px 0">{{comment.message}}</div>
                 <div class="like-tab fake-link" @click="comment_like(i,$event.target)">
@@ -44,7 +36,6 @@
 <script>
     var self, data = {
         comments: [],
-        rating: 0,
         message: '',
         paginator: {
             total: 0,
@@ -121,7 +112,6 @@
             },
             leave_comment() {
                 axios.post('leave_comment', {
-                    rating: self.rating,
                     message: self.message,
                     pid: this.productId
                 });

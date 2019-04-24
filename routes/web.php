@@ -49,9 +49,10 @@ Route::get('/get_filters', function (Request $data) {
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::post('/to_wish', 'ProductController@toWish');
     Route::post('/leave_comment', 'CommentController@store');
     Route::get('/comment_like', 'CommentController@like');
+    Route::post('/to_wish', 'UserController@toWish');
+    Route::get('/product_rate', 'UserController@rate');
     Route::get('/user_info', 'UserController@info');
     Route::post('/update_user_info', 'UserController@update');
     Route::post('/user_comments_like', 'UserController@likes');

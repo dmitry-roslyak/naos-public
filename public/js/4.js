@@ -40,19 +40,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 var self,
     _data = {
     comments: [],
-    rating: 0,
     message: '',
     paginator: {
         total: 0,
@@ -136,7 +127,6 @@ var formatter = new Intl.DateTimeFormat([], {
         },
         leave_comment: function leave_comment() {
             axios.post('leave_comment', {
-                rating: self.rating,
                 message: self.message,
                 pid: this.productId
             });
@@ -208,28 +198,6 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "thumbnail", attrs: { id: "leaveMsg" } }, [
         _c("div", { staticClass: "caption" }, [
-          _c(
-            "div",
-            { staticClass: "form-group" },
-            [
-              _c("label", [_vm._v(_vm._s(_vm.lng.to_rate))]),
-              _vm._v(" "),
-              _c("star-rating", {
-                attrs: {
-                  "star-size": 16,
-                  rating: _vm.rating,
-                  "show-rating": false
-                },
-                on: {
-                  "rating-selected": function($event) {
-                    _vm.rating = $event
-                  }
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", [_vm._v(_vm._s(_vm.lng.comment))]),
             _vm._v(" "),
@@ -287,27 +255,6 @@ var render = function() {
                 _c("span", { staticClass: "text-primary" }, [
                   _vm._v(_vm._s(comment.user.name))
                 ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.lng.rating) +
-                        "  \n                "
-                    ),
-                    _c("star-rating", {
-                      staticStyle: { display: "inline-block" },
-                      attrs: {
-                        rating: +comment.rating,
-                        "star-size": 16,
-                        "show-rating": false,
-                        "read-only": true
-                      }
-                    })
-                  ],
-                  1
-                ),
                 _vm._v(" "),
                 _c(
                   "span",

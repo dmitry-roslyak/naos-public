@@ -40,7 +40,10 @@
                         <s v-if="item.discount&&item.available">{{currency * item.price}}</s>
                         <span>{{itemPriceResult(item)}}</span>
                     </div>
-                    <star-rating :rating="+item.rating" :star-size="21" :show-rating="false"></star-rating>
+                    <star-rating :rating="item.user_rating ? item.user_rating.rating : +item.rating" 
+                        @rating-selected="product_rate($event)" :star-size="21" :show-rating="false" 
+                        :active-color="item.user_rating ? 'orangered' : '#ffd055'">
+                    </star-rating>
                     {{item.vote_count}}
                 </div>
                 <div class="app-detail-btn-group">
@@ -118,6 +121,12 @@
             to_compare(){
                 this.item.is_compare = !this.item.is_compare;
                 this.$store.commit('compare', {id: this.item.id, category_id: this.item.category_id, category: this.category});
+            },
+            product_rate(value){
+                axios.get('/product_rate',{ params: {
+                    id: this.item.id,
+                    rating: value
+                }});
             },
             to_wish(){
                 self.item.isWish = !self.item.isWish;

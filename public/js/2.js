@@ -79,6 +79,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 var self,
     timerId,
@@ -148,6 +151,12 @@ var self,
         to_compare: function to_compare() {
             this.item.is_compare = !this.item.is_compare;
             this.$store.commit('compare', { id: this.item.id, category_id: this.item.category_id, category: this.category });
+        },
+        product_rate: function product_rate(value) {
+            axios.get('/product_rate', { params: {
+                    id: this.item.id,
+                    rating: value
+                } });
         },
         to_wish: function to_wish() {
             self.item.isWish = !self.item.isWish;
@@ -359,9 +368,19 @@ var render = function() {
                   _vm._v(" "),
                   _c("star-rating", {
                     attrs: {
-                      rating: +_vm.item.rating,
+                      rating: _vm.item.user_rating
+                        ? _vm.item.user_rating.rating
+                        : +_vm.item.rating,
                       "star-size": 21,
-                      "show-rating": false
+                      "show-rating": false,
+                      "active-color": _vm.item.user_rating
+                        ? "orangered"
+                        : "#ffd055"
+                    },
+                    on: {
+                      "rating-selected": function($event) {
+                        _vm.product_rate($event)
+                      }
                     }
                   }),
                   _vm._v(

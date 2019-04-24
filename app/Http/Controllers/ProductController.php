@@ -21,7 +21,7 @@ class ProductController extends Controller
     public function show_one(Request $data)
     {
         $user_id = Auth::id();
-        $query = Product::with('specs')->with('discount');
+        $query = Product::with('specs', 'discount', 'user_rating');
         if($user_id)
         {
             $query->with(['wish' => function ($query) use ($user_id) {
@@ -98,28 +98,6 @@ class ProductController extends Controller
                 default: return [$query->count(), $query->skip($data->skip)->take($data->take)->get(), $temp];
             }
             return [$query->count(), $query->orderBy($val,$order)->skip($data->skip)->take($data->take)->get(), $temp];
-        }
-    }
-    public function toWish(Request $data)
-    {
-        $user_id = Auth::id();
-        $prod = Product::with(['wish' => function ($query) use ($user_id) {
-            $query->where('user_id',$user_id);
-        }])->where('id',$data->id)->first();
-
-        if(!empty($prod->wish)) {
-            $prod->wish->delete();
-            return 0;
-        } else {
-            $date = new \DateTime;
-            $user_wish =  new UserWishes;
-            $user_wish->user_id = $user_id;
-            $user_wish->product_id = $data->id;
-            $user_wish->price = $prod->price;
-            $user_wish->isAvailable = $prod->available>0?1:0;
-            $user_wish->date = $date->format("Y-m-d");
-            $user_wish->save();
-            return 1;
         }
     }
 }

@@ -62,7 +62,6 @@ $factory->define(App\Comment::class, function (Faker\Generator $faker) {
         'product_id'=> App\Product::all()->random()->id,
         'user_id' => App\User::where('bstate', '!=', 255)->get()->random()->id,
         'reply_id' =>0,
-        'rating' => $faker->numberBetween(0,5),
         'message' => $faker->text,
         'like' => $faker->randomDigit,
         'dislike' => $faker->randomDigit
