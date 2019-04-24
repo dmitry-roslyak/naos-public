@@ -2,7 +2,7 @@
 
  namespace App\Http\Controllers;
 //  namespace App;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Product;
 use App\WishProduct;

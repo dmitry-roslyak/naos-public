@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 Route::get('/', function (Request $data) {
