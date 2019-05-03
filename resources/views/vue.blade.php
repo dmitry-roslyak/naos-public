@@ -42,7 +42,7 @@
             </tbody>
         </table>
         <h5>
-            <a href="mailto:formulaone.forever@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a>
+            <a href="mailto:dmitri.roslyak@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a>
             <a href="https://t.me/dmitry_roslyak" target="_blank"><i class="fa fa-telegram"></i></a>
             <a href="skype:f1-forever?chat" target="_blank"><i class="fa fa-skype"></i></a>
         </h5>
