@@ -19,7 +19,6 @@
 }
 
 .item-card {
-    transition: all 0.35s;
     height: 26em;
     padding: 6px 4px;
     background-color: white;
@@ -29,13 +28,16 @@
     }
 
     &:hover .item-spec {
-        font-size: inherit;
+        transform: scale(1);
+        visibility: visible;
     }
 }
 
 .item-spec {
-    transition: all 0.3s;
-    font-size: 0;
+    transition: all 0.2s;
+    transform: scale(0);
+    visibility: collapse;
+    transform-origin: top;
     width: 100%;
 
     & tr td:last-child {

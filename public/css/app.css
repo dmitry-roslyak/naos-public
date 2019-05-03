@@ -11888,11 +11888,23 @@ td > .fa-times {
 .action-item > span {
   -webkit-transition: all 0.25s;
   transition: all 0.25s;
-  font-size: 0;
+  display: inline-block;
+  width: 0;
+  white-space: nowrap;
+  text-align: center;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  -webkit-transform-origin: right;
+          transform-origin: right;
+  visibility: collapse;
 }
 
 .action-item:hover > span {
-  font-size: 1.4rem;
+  width: 8rem;
+  margin-left: 0;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  visibility: visible;
 }
 
 .product-state > s {
