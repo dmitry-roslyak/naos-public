@@ -50,7 +50,7 @@
                         <div class="col-xs-12" style="padding: 3px 0">
                             <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true" style="display:inline-block"></star-rating>
                             <div class="product-state pull-right">
-                                <s v-if="item.discount&&item.available">{{currency * item.price}}</s>
+                                <s v-if="item.discount&&item.available">{{(currency * item.price).toFixed(1)}}</s>
                                 <span v-if="!item.available">{{lng.not_in_stock}}</span>
                                 <span v-else>{{itemPriceResult(item)}}</span>
                             </div>

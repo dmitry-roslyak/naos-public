@@ -360,7 +360,11 @@ var render = function() {
                 [
                   _c("div", { staticClass: "product-state" }, [
                     _vm.item.discount && _vm.item.available
-                      ? _c("s", [_vm._v(_vm._s(_vm.currency * _vm.item.price))])
+                      ? _c("s", [
+                          _vm._v(
+                            _vm._s((_vm.currency * _vm.item.price).toFixed(1))
+                          )
+                        ])
                       : _vm._e(),
                     _vm._v(" "),
                     _c("span", [_vm._v(_vm._s(_vm.itemPriceResult(_vm.item)))])

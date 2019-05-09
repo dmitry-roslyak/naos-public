@@ -522,7 +522,11 @@ var render = function() {
                             [
                               item.discount && item.available
                                 ? _c("s", [
-                                    _vm._v(_vm._s(_vm.currency * item.price))
+                                    _vm._v(
+                                      _vm._s(
+                                        (_vm.currency * item.price).toFixed(1)
+                                      )
+                                    )
                                   ])
                                 : _vm._e(),
                               _vm._v(" "),

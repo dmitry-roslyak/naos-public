@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
             ProductPriceHistorySeeder::class, // run only after CurrencySeeder::class, CategoryProductSpecSeeder::class
         ]);
         factory('App\Comment',500)->create();
+        factory('App\Discount', 2)->create();
     }
 }

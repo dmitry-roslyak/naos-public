@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-xs-9" style="position: absolute;bottom: 0;">
                     <div class="product-state">
-                        <s v-if="item.discount&&item.available">{{currency * item.price}}</s>
+                        <s v-if="item.discount&&item.available">{{(currency * item.price).toFixed(1)}}</s>
                         <span>{{itemPriceResult(item)}}</span>
                     </div>
                     <star-rating :rating="item.user_rating ? item.user_rating.rating : +item.rating" 
