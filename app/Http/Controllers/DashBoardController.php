@@ -51,7 +51,7 @@ class DashboardController extends Controller
         });
         $img->encode($ext);
         $hash = md5($img->__toString());
-        \Storage::put($hash.'.'.$ext, $img);
+        \Storage::disk('public')->put($hash.'.'.$ext, $img);
         return $hash.'.'.$ext;
     }
     public function productCreate(Request $data)
