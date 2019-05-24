@@ -18,7 +18,7 @@
         };
     </script>
 </head>
-<body lang="{{ config('app.locale') }}">
+<body>
     <div id='app'>
         <div id="site_loading" class="overlay-view">
             <i class="fa fa-cog fa-spin"></i>  
