@@ -48,7 +48,7 @@ export default new VueRouter({
         { path: '/404', component: App404 },
         { path: '*', redirect: '/404' },
         { path: '/', component: home },
-        { path: '/products/:category', component: products, props: true  },
+        { name: 'products', path: '/products/:category', component: products, props: true  },
         { name: 'detail', path: '/detail/:id', component: detail, props: true },
         { path: '/compare/:category/:ids', component: compare, props: true },
         { path: '/cart/:ids?', component: cart, props: true },

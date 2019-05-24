@@ -1,16 +1,15 @@
 .itmc {
-    background-color: ghostwhite;
-    padding: 3px 30px;
-    margin-left: 0;
-    border: thin solid cornflowerblue;
-    border-width: thin 0;
-    font-size: 1.5rem;
-    line-height: 2em;
-
-    // margin: 0 5px 5px
-    & select {
-        display: inline-block;
-        height: 27px;
+    margin: 0 0.3rem;
+    & > div {
+        padding: 6px 25px 3px;
+        font-size: 1.5rem;
+        line-height: 2em;
+    }
+    & .dropdown, & select{
+         display: inline-block;
+    }
+    & label {
+        font-weight: normal;
     }
 }
 
@@ -21,7 +20,6 @@
 .item-card {
     height: 26em;
     padding: 6px 4px;
-    background-color: white;
 
     &:hover {
         z-index: 3;
@@ -74,6 +72,7 @@
 
 .ic-s {
     transition: all 0.3s;
+    background-color: white;
 
     &:hover {
         box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);

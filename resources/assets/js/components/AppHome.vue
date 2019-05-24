@@ -1,17 +1,15 @@
 <template>
     <div class="container-fluid" style="max-width: 80em">
         <div class="col-sm-3 col-md-2" style="padding:0px">
-            <div class="btn-primary fake-link">
-                <div style="padding: 9px 10px 6px">
+            <div class="list-group">
+                <a class="list-group-item active">
                     <i class="fa fa-list"></i>
                     {{lng.catalog}}
-                </div>
-                <ul class="ctg-frm" style="display: inherit">
-                    <div class="btn-default fake-link" v-for="(item, name) in catalog" @click="category(name, item.id)" :key="item.id">
-                        {{lng[name]?lng[name]:name}}
-                    </div>
-                    <div class="btn-default fake-link" v-for="i in dummyCategory" :key="i">&nbsp;</div>
-                </ul>
+                </a>
+                <router-link class="list-group-item" :to="{ name: 'products', params: { category: name }}" v-for="(item, name) in catalog" :key="item.id">
+                    {{lng[name]?lng[name]:name}}
+                </router-link>
+                <a class="list-group-item" v-for="i in dummyCategory" :key="i">&nbsp;</a>
             </div>
         </div>
         <div class="col-sm-9 col-md-10">
@@ -49,8 +47,8 @@
     </div>
 </template>
 <script>
-    var data = {
-        catalog: [],
+    var itemsCountMax = 7, data = {
+        catalog: {},
         items: [],
         dummyCategory: []
     };
@@ -62,16 +60,13 @@
         },
         mounted() {
             this.catalog = window.Laravel.catalog;
-            this.dummyCategory.length = 8;
             this.get_random_products();
         },
         methods: {
-            category(name, id) {
-                this.$router.push('products/'+name);
-            },
             get_random_products() {
                 axios.get('/prod_rnd').then((response) => {
                     this.items = response.data;
+                    this.dummyCategory.length = itemsCountMax - Object.keys(this.catalog).length;
                 });
             }
         }

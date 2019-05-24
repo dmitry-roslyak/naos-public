@@ -86,6 +86,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var self,
     _data = {
@@ -216,7 +218,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.itmc {\n  background-color: ghostwhite;\n  padding: 3px 30px;\n  margin-left: 0;\n  border: thin solid cornflowerblue;\n  border-width: thin 0;\n  font-size: 1.5rem;\n  line-height: 2em;\n}\n.itmc select {\n    display: inline-block;\n    height: 27px;\n}\n#sortby {\n  width: 180px;\n}\n.item-card {\n  height: 26em;\n  padding: 6px 4px;\n  background-color: white;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card:hover .item-spec {\n    -webkit-transform: scale(1);\n            transform: scale(1);\n    visibility: visible;\n}\n.item-spec {\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  -webkit-transform: scale(0);\n          transform: scale(0);\n  visibility: collapse;\n  -webkit-transform-origin: top;\n          transform-origin: top;\n  width: 100%;\n}\n.item-spec tr td:last-child {\n    width: 55%;\n    padding-left: 10px;\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.item-card > .action-frm {\n  right: 4px;\n}\n.item-card .image-wrapper {\n  position: relative;\n  margin: 3rem 2rem 0;\n  height: 19.5rem;\n}\n.item-card .image-wrapper > img {\n    max-height: 19.5rem;\n    visibility: hidden;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n", ""]);
+exports.push([module.i, "\n.itmc {\n  margin: 0 0.3rem;\n}\n.itmc > div {\n    padding: 6px 25px 3px;\n    font-size: 1.5rem;\n    line-height: 2em;\n}\n.itmc .dropdown, .itmc select {\n    display: inline-block;\n}\n.itmc label {\n    font-weight: normal;\n}\n#sortby {\n  width: 180px;\n}\n.item-card {\n  height: 26em;\n  padding: 6px 4px;\n}\n.item-card:hover {\n    z-index: 3;\n}\n.item-card:hover .item-spec {\n    -webkit-transform: scale(1);\n            transform: scale(1);\n    visibility: visible;\n}\n.item-spec {\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  -webkit-transform: scale(0);\n          transform: scale(0);\n  visibility: collapse;\n  -webkit-transform-origin: top;\n          transform-origin: top;\n  width: 100%;\n}\n.item-spec tr td:last-child {\n    width: 55%;\n    padding-left: 10px;\n    font-weight: bolder;\n}\n.item-spec tr:nth-child(even) {\n    background-color: whitesmoke;\n}\n.item-card > .action-frm {\n  right: 4px;\n}\n.item-card .image-wrapper {\n  position: relative;\n  margin: 3rem 2rem 0;\n  height: 19.5rem;\n}\n.item-card .image-wrapper > img {\n    max-height: 19.5rem;\n    visibility: hidden;\n}\n.item-card-name {\n  display: block;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.ic-s {\n  -webkit-transition: all 0.3s;\n  transition: all 0.3s;\n  background-color: white;\n}\n.ic-s:hover {\n    -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);\n}\n", ""]);
 
 // exports
 
@@ -243,17 +245,11 @@ var render = function() {
         "div",
         { staticClass: "col-sm-9 col-md-10", staticStyle: { padding: "0" } },
         [
-          _c("div", { staticClass: "row itmc" }, [
-            _vm._v(
-              "\n            " + _vm._s(_vm.lng.showed_items) + "\n            "
-            ),
-            _c(
-              "div",
-              {
-                staticClass: "dropdown",
-                staticStyle: { display: "inline-block" }
-              },
-              [
+          _c("div", { staticClass: "panel panel-default itmc" }, [
+            _c("div", { staticClass: "panel-body" }, [
+              _c("label", [_vm._v(_vm._s(_vm.lng.showed_items))]),
+              _vm._v(" "),
+              _c("div", { staticClass: "dropdown" }, [
                 _c(
                   "a",
                   {
@@ -265,9 +261,9 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                    " +
+                      "\n                        " +
                         _vm._s(_vm.items.length) +
-                        "\n                "
+                        "\n                    "
                     )
                   ]
                 ),
@@ -318,75 +314,74 @@ var render = function() {
                     )
                   ])
                 ])
-              ]
-            ),
-            _vm._v(
-              "\n            (" +
-                _vm._s(_vm.paginator.total) +
-                ")\n            "
-            ),
-            _c("div", { staticClass: "pull-right" }, [
+              ]),
               _vm._v(
-                "\n                " +
-                  _vm._s(_vm.lng.sortby) +
-                  "\n                "
+                "\n                (" +
+                  _vm._s(_vm.paginator.total) +
+                  ")\n                "
               ),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.ordby,
-                      expression: "ordby"
-                    }
-                  ],
-                  staticClass: "form-control input-sm",
-                  attrs: { id: "sortby" },
-                  on: {
-                    change: [
-                      function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.ordby = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      },
-                      function($event) {
-                        _vm.productsfetch()
+              _c("div", { staticClass: "pull-right" }, [
+                _c("label", { attrs: { for: "sortby" } }, [
+                  _vm._v(_vm._s(_vm.lng.sortby) + " ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.ordby,
+                        expression: "ordby"
                       }
-                    ]
-                  }
-                },
-                [
-                  _c("option", { attrs: { value: "bydef" } }, [
-                    _vm._v(_vm._s(_vm.lng.bydef))
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "asc_price" } }, [
-                    _vm._v(_vm._s(_vm.lng.asc_price))
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "desc_price" } }, [
-                    _vm._v(_vm._s(_vm.lng.desc_price))
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "byrating" } }, [
-                    _vm._v(_vm._s(_vm.lng.byrating))
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "bynewest" } }, [
-                    _vm._v(_vm._s(_vm.lng.bynewest))
-                  ])
-                ]
-              )
+                    ],
+                    staticClass: "form-control input-sm",
+                    attrs: { id: "sortby" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.ordby = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.productsfetch()
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "bydef" } }, [
+                      _vm._v(_vm._s(_vm.lng.bydef))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "asc_price" } }, [
+                      _vm._v(_vm._s(_vm.lng.asc_price))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "desc_price" } }, [
+                      _vm._v(_vm._s(_vm.lng.desc_price))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "byrating" } }, [
+                      _vm._v(_vm._s(_vm.lng.byrating))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "bynewest" } }, [
+                      _vm._v(_vm._s(_vm.lng.bynewest))
+                    ])
+                  ]
+                )
+              ])
             ])
           ]),
           _vm._v(" "),

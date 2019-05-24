@@ -2,30 +2,32 @@
     <div class="container-fluid">
         <app-products-filters class="col-sm-3 col-md-2" style="padding: 0"></app-products-filters>
         <div class="col-sm-9 col-md-10" style="padding:0">
-            <div class="row itmc">
-                {{lng.showed_items}}
-                <div class="dropdown" style="display: inline-block;">
-                    <a class="dropdown-toggle fake-link" data-toggle="dropdown" aria-haspopup="true">
-                        {{items.length}}
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="fake-link" @click="paginator.take = 20">20</a></li>
-                        <li><a class="fake-link" @click="paginator.take = 30">30</a></li>
-                        <li><a class="fake-link" @click="paginator.take = 40">40</a></li>
-                    </ul>
+            <div class="panel panel-default itmc">
+                <div class="panel-body">
+                    <label>{{lng.showed_items}}</label>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle fake-link" data-toggle="dropdown" aria-haspopup="true">
+                            {{items.length}}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="fake-link" @click="paginator.take = 20">20</a></li>
+                            <li><a class="fake-link" @click="paginator.take = 30">30</a></li>
+                            <li><a class="fake-link" @click="paginator.take = 40">40</a></li>
+                        </ul>
+                    </div>
+                    ({{paginator.total}})
+                    <div class="pull-right">
+                        <label for="sortby">{{lng.sortby}}&nbsp;</label>
+                        <select v-model="ordby" class="form-control input-sm" id="sortby" @change="productsfetch()"> 
+                            <option value="bydef">{{lng.bydef}}</option>
+                            <option value="asc_price">{{lng.asc_price}}</option>
+                            <option value="desc_price">{{lng.desc_price}}</option>
+                            <option value="byrating">{{lng.byrating}}</option>
+                            <option value="bynewest">{{lng.bynewest}}</option>
+                        </select>
+                    </div>
                 </div>
-                ({{paginator.total}})
-                <div class="pull-right">
-                    {{lng.sortby}}
-                    <select v-model="ordby" class="form-control input-sm" id="sortby" @change="productsfetch()"> 
-                        <option value="bydef">{{lng.bydef}}</option>
-                        <option value="asc_price">{{lng.asc_price}}</option>
-                        <option value="desc_price">{{lng.desc_price}}</option>
-                        <option value="byrating">{{lng.byrating}}</option>
-                        <option value="bynewest">{{lng.bynewest}}</option>
-                    </select>
-                </div>
-            </div> 
+            </div>
             <div v-for="(item,i) in items" class="col-sm-6 col-md-4 col-lg-3 item-card" :key="item.id">
                 <div class="item-note soon" v-if="item.isArriveSoon">{{lng.soon}}</div>
                 <div class="item-note new" v-else-if="item.isNew">{{lng.new}}</div>

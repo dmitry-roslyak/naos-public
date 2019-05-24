@@ -1,15 +1,13 @@
 <template>
     <div class="container-fluid" >
-        <div class="btn-primary fake-link" tabindex="0" @blur="catalog_btn_toggle(0)" @focus="catalog_btn_toggle(1)" type="button" id="dropdownMenu1" aria-haspopup="true">
-            <div style="padding: 9px 10px 6px">
+        <div class="list-group">
+            <a class="list-group-item active">
                 <i class="fa fa-list"></i>
                 {{lng.catalog}}
-            </div>
-            <ul class="ctg-frm" aria-labelledby="dropdownMenu1">
-                <div class="btn-default fake-link" v-for="(item, name) in catalog" @click="get_filters(name, item.id)" :key="item.id">
-                    {{lng[name]?lng[name]:name}}
-                </div>
-            </ul>
+            </a>
+            <a class="list-group-item fake-link" @click="get_filters(name, item.id)" v-for="(item, name) in catalog" :key="item.id">
+                {{lng[name]?lng[name]:name}}
+            </a>
         </div>
         <div style="font-weight:bold;padding: 1rem">
             <i class="fa fa-filter"></i>
@@ -89,9 +87,6 @@
                 $(el.getElementsByClassName('fa-angle-up')[0]).toggle();
                 $(el.getElementsByClassName('fa-angle-down')[0]).toggle();
             }, 300, { 'trailing': false }),
-            catalog_btn_toggle(i){
-                i?$(".ctg-frm").slideDown():$(".ctg-frm").slideUp();
-            },
             flt_reset(){
                 var checkList = document.getElementsByClassName('checkbox');
                 for (var i = 0; i < checkList.length; i++) {

@@ -86,7 +86,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"0f68d435c43033125314","1":"d1a3013e178459620a8f","2":"88d3d77f429093a599da","3":"eff41b1fc4af91a2fe25","4":"1e9e0559a56fdbd4cdf1","5":"010502ae5d2f0f744c69","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"46054dd0a91c27c959f8"}[chunkId] + "";
+/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"ebf16bd88d6c23fc3a8f","1":"d6e4b0c0159c8d4f50c9","2":"88d3d77f429093a599da","3":"eff41b1fc4af91a2fe25","4":"1e9e0559a56fdbd4cdf1","5":"010502ae5d2f0f744c69","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"46054dd0a91c27c959f8"}[chunkId] + "";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -6318,11 +6318,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
-var _data = {
-    catalog: [],
+var itemsCountMax = 7,
+    _data = {
+    catalog: {},
     items: [],
     dummyCategory: []
 };
@@ -6344,19 +6343,16 @@ var _data = {
     },
     mounted: function mounted() {
         this.catalog = window.Laravel.catalog;
-        this.dummyCategory.length = 8;
         this.get_random_products();
     },
 
     methods: {
-        category: function category(name, id) {
-            this.$router.push('products/' + name);
-        },
         get_random_products: function get_random_products() {
             var _this2 = this;
 
             axios.get('/prod_rnd').then(function (response) {
                 _this2.items = response.data;
+                _this2.dummyCategory.length = itemsCountMax - Object.keys(_this2.catalog).length;
             });
         }
     }
@@ -51866,53 +51862,47 @@ var render = function() {
         "div",
         { staticClass: "col-sm-3 col-md-2", staticStyle: { padding: "0px" } },
         [
-          _c("div", { staticClass: "btn-primary fake-link" }, [
-            _c("div", { staticStyle: { padding: "9px 10px 6px" } }, [
-              _c("i", { staticClass: "fa fa-list" }),
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.lng.catalog) +
-                  "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "ul",
-              { staticClass: "ctg-frm", staticStyle: { display: "inherit" } },
-              [
-                _vm._l(_vm.catalog, function(item, name) {
-                  return _c(
-                    "div",
-                    {
-                      key: item.id,
-                      staticClass: "btn-default fake-link",
-                      on: {
-                        click: function($event) {
-                          _vm.category(name, item.id)
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
-                          "\n                "
-                      )
-                    ]
-                  )
-                }),
-                _vm._v(" "),
-                _vm._l(_vm.dummyCategory, function(i) {
-                  return _c(
-                    "div",
-                    { key: i, staticClass: "btn-default fake-link" },
-                    [_vm._v(" ")]
-                  )
-                })
-              ],
-              2
-            )
-          ])
+          _c(
+            "div",
+            { staticClass: "list-group" },
+            [
+              _c("a", { staticClass: "list-group-item active" }, [
+                _c("i", { staticClass: "fa fa-list" }),
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.lng.catalog) +
+                    "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.catalog, function(item, name) {
+                return _c(
+                  "router-link",
+                  {
+                    key: item.id,
+                    staticClass: "list-group-item",
+                    attrs: {
+                      to: { name: "products", params: { category: name } }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
+                        "\n            "
+                    )
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.dummyCategory, function(i) {
+                return _c("a", { key: i, staticClass: "list-group-item" }, [
+                  _vm._v(" ")
+                ])
+              })
+            ],
+            2
+          )
         ]
       ),
       _vm._v(" "),
@@ -68451,7 +68441,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('AppUserInfo', function (r
 });
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     // mode: 'history',
-    routes: [{ path: '/404', component: App404 }, { path: '*', redirect: '/404' }, { path: '/', component: home }, { path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:category/:ids', component: compare, props: true }, { path: '/cart/:ids?', component: cart, props: true }, { path: '/account', component: account }]
+    routes: [{ path: '/404', component: App404 }, { path: '*', redirect: '/404' }, { path: '/', component: home }, { name: 'products', path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:category/:ids', component: compare, props: true }, { path: '/cart/:ids?', component: cart, props: true }, { path: '/account', component: account }]
 }));
 
 /***/ }),

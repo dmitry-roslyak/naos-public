@@ -55,8 +55,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 var range = __webpack_require__("./resources/assets/js/components/VRange.vue");
 // import range from './VRange.vue'
@@ -104,9 +102,6 @@ var _data = {
             $(el.getElementsByClassName('fa-angle-up')[0]).toggle();
             $(el.getElementsByClassName('fa-angle-down')[0]).toggle();
         }, 300, { 'trailing': false }),
-        catalog_btn_toggle: function catalog_btn_toggle(i) {
-            i ? $(".ctg-frm").slideDown() : $(".ctg-frm").slideUp();
-        },
         flt_reset: function flt_reset() {
             var checkList = document.getElementsByClassName('checkbox');
             for (var i = 0; i < checkList.length; i++) {
@@ -287,58 +282,36 @@ var render = function() {
     [
       _c(
         "div",
-        {
-          staticClass: "btn-primary fake-link",
-          attrs: {
-            tabindex: "0",
-            type: "button",
-            id: "dropdownMenu1",
-            "aria-haspopup": "true"
-          },
-          on: {
-            blur: function($event) {
-              _vm.catalog_btn_toggle(0)
-            },
-            focus: function($event) {
-              _vm.catalog_btn_toggle(1)
-            }
-          }
-        },
+        { staticClass: "list-group" },
         [
-          _c("div", { staticStyle: { padding: "9px 10px 6px" } }, [
+          _c("a", { staticClass: "list-group-item active" }, [
             _c("i", { staticClass: "fa fa-list" }),
             _vm._v("\n            " + _vm._s(_vm.lng.catalog) + "\n        ")
           ]),
           _vm._v(" "),
-          _c(
-            "ul",
-            {
-              staticClass: "ctg-frm",
-              attrs: { "aria-labelledby": "dropdownMenu1" }
-            },
-            _vm._l(_vm.catalog, function(item, name) {
-              return _c(
-                "div",
-                {
-                  key: item.id,
-                  staticClass: "btn-default fake-link",
-                  on: {
-                    click: function($event) {
-                      _vm.get_filters(name, item.id)
-                    }
+          _vm._l(_vm.catalog, function(item, name) {
+            return _c(
+              "a",
+              {
+                key: item.id,
+                staticClass: "list-group-item fake-link",
+                on: {
+                  click: function($event) {
+                    _vm.get_filters(name, item.id)
                   }
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
-                      "\n            "
-                  )
-                ]
-              )
-            })
-          )
-        ]
+                }
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.lng[name] ? _vm.lng[name] : name) +
+                    "\n        "
+                )
+              ]
+            )
+          })
+        ],
+        2
       ),
       _vm._v(" "),
       _c("div", { staticStyle: { "font-weight": "bold", padding: "1rem" } }, [
