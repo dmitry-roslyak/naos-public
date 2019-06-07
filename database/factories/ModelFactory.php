@@ -30,13 +30,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 $factory->define(App\Product::class, function (Faker\Generator $faker) {
+    $rating = $faker->randomFloat(2,0,5);
     return [
         'name' => $faker->name,
         'category_id'=> 1,
         'discount_id'=> $faker->numberBetween(0,1),
         'img_src'=>'404.png',//$faker->imageUrl(640, 480,'technics'),
         'description'=> $faker->text(600),
-        'rating' => $faker->randomFloat(2,0,5),
+        'rating' => $rating < 1 ? 0 : $rating,
         'vote_count' => $faker->randomDigit,
         'available' => $faker->randomDigit,
         'is_bestseller' => $faker->boolean,
