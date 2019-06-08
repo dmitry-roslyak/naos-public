@@ -10,8 +10,6 @@
     <title>{{ config('app.name') }}</title>
     <link rel="manifest" href="/manifest.json">
     {!! \App\Http\Traits\Utility::markup($id) !!}
-    <!-- <script type="application/ld+json">
-    </script> -->
 </head>
 <body style="margin: 0;height: fit-content;overflow: hidden;">
     <iframe src="/#/detail/{{$id}}" frameborder="0" style="min-height:100%;width:100%"></iframe>

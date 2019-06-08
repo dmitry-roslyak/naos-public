@@ -49,13 +49,21 @@ trait Utility
         $url = url('/') . '/#/detail/' . $product['id'];
         $image = url('/') . '/file/' . $product['img_src'];
         $app_id = '1358482950908486';
-        echo "
+        $markup = "
             <meta property='og:url' content='{$url}' /> 
+            <meta property='og:type' content='product' />
             <meta property='og:description' content='{$product['description']}' />
             <meta property='og:title' content='{$product['name']}' />
             <meta property='og:image' content='{$image}' />
             <meta property='fb:app_id' content='{$app_id}' />
         ";
+        $currencies = \App\Currency::where('date',  \App\Currency::orderBy('date', 'desc')->first()->value('date'))->get();
+        foreach ($currencies as $key => $currency) {
+            $price = $currency['rate'] * $product['price'];
+            $markup = $markup."<meta property='product:price:amount' content='{$price}'/>";
+            $markup = $markup."<meta property='product:price:currency' content='{$currency['name']}'/>";
+        }
+        echo $markup;
     }
     public static function ld_json(\App\Product $product)
     {
