@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 Route::get('/', function (Request $data) {
     return view('vue');
 });
+
+Route::get('/detail/{id}', function (Request $request) {
+    return view('detail', ['id' => $request['id']]);
+});
 Route::get('/lang/{lng}', 'UserController@lang');
 
 Route::group(['middleware' => 'admin'], function() {

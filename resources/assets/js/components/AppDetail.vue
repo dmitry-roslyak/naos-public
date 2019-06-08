@@ -12,6 +12,10 @@
                         <span class="hidden-xs">{{lng.to_wishlist}}</span>
                         <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
                     </a>
+                    <a class="action-item fake-link">&nbsp;
+                        <a :href="location.origin+this.$route.path" @click="fbshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></a>
+                        <i class="fa fa-share-alt heart-state" data-check="0" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
             <div id="carousel2" class="carousel slide carousel-background-color" data-ride="carousel">
@@ -110,6 +114,10 @@
         },
         destroyed(){ if(timerId) clearInterval(timerId);},
         methods: {
+            fbshare(){
+                window.open('https://www.facebook.com/dialog/share?'+
+                "app_id=1358482950908486&display=popup&href="+location.origin+this.$route.path);
+            },
             clientWidth(){ this.showGraph = document.documentElement.clientWidth > 620 },
             addToCart(){
                 this.item.isInCart = !this.$store.state.cart[this.item.id];
