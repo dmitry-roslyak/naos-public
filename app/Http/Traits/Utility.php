@@ -46,15 +46,17 @@ trait Utility
     }
     public static function OpenGraph(\App\Product $product)
     {
-        $url = url('/') . '/#/detail/' . $product['id'];
+        $url = url('/') . "/?id={$product['id']}&/#/detail/{$product['id']}";
         $image = url('/') . '/file/' . $product['img_src'];
+        $availability = $product['available'] > 1 ? "instock" : "oos";
         $app_id = '1358482950908486';
         $markup = "
-            <meta property='og:url' content='{$url}' /> 
             <meta property='og:type' content='product' />
-            <meta property='og:description' content='{$product['description']}' />
             <meta property='og:title' content='{$product['name']}' />
+            <meta property='og:url' content='{$url}' /> 
             <meta property='og:image' content='{$image}' />
+            <meta property='og:description' content='{$product['description']}' />
+            <meta property='og:availability' content='{$availability}' />
             <meta property='fb:app_id' content='{$app_id}' />
         ";
         $currencies = \App\Currency::where('date',  \App\Currency::orderBy('date', 'desc')->first()->value('date'))->get();
@@ -85,7 +87,7 @@ trait Utility
                 ],
                 "offers" => [
                     "@type" => "Offer",
-                    "url" => url('/') . '/#/detail/' . $product['id'],
+                    "url" => url('/') . "/?id={$product['id']}&/#/detail/{$product['id']}",
                     "priceCurrency" => \App\Http\Traits\Utility::locale()['currency'],
                     "price" => $product['price'],
                     "priceValidUntil" => date_modify(new \DateTime(), '+1 day')->format('Y-m-d'),
@@ -97,11 +99,5 @@ trait Utility
                     ]
                 ]
             ]) . '</script>';
-    }
-    public static function markup($id)
-    {
-        $product = \App\Product::with('specs', 'discount', 'user_rating')->where('id', $id)->first();
-        Utility::OpenGraph($product);
-        Utility::ld_json($product);
     }
 }

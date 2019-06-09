@@ -13,7 +13,8 @@
                         <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
                     </a>
                     <a class="action-item fake-link">&nbsp;
-                        <a :href="location.origin+this.$route.path" @click="fbshare" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></a>
+                        <a :href="'https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href='+href" 
+                            target="_blank" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></a>
                         <i class="fa fa-share-alt heart-state" data-check="0" aria-hidden="true"></i>
                     </a>
                 </div>
@@ -87,12 +88,21 @@
         showGraph: true
     };
     export default {
+        // beforeRouteLeave (to, from, next) {
+        //     location.search = '';
+        //     next();
+        // },
         props: ['id'],
         data: function() { return data },
         watch: {
             'id': 'itemById',
         },
         computed: {
+            href() { 
+                //  return location.href = location.origin + '/?id=' + this.id + '&/#' + this.$route.path;
+                // return location.origin + '/?id=' + this.id + '/#' + this.$route.path;
+                return location.href;
+            },
             currency() { return this.$store.state.currency },
             lng(){ return this.$root.lng },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
@@ -114,10 +124,6 @@
         },
         destroyed(){ if(timerId) clearInterval(timerId);},
         methods: {
-            fbshare(){
-                window.open('https://www.facebook.com/dialog/share?'+
-                "app_id=1358482950908486&display=popup&href="+location.origin+this.$route.path);
-            },
             clientWidth(){ this.showGraph = document.documentElement.clientWidth > 620 },
             addToCart(){
                 this.item.isInCart = !this.$store.state.cart[this.item.id];

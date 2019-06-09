@@ -12,12 +12,16 @@
 */
 use Illuminate\Http\Request;
 
-Route::get('/', function (Request $data) {
+Route::get('/', function (Request $request) {
+    $id = session()->get( 'id' );
+    $a = $request['id'];
     return view('vue');
-});
+})->name('home');
 
 Route::get('/detail/{id}', function (Request $request) {
-    return view('detail', ['id' => $request['id']]);
+    return redirect('/')->with(['id' => $request['id']]);
+    // return redirect()->route('home', ['id1' => $request['id']]);
+    // return view('detail', ['id' => $request['id']]);
 });
 Route::get('/lang/{lng}', 'UserController@lang');
 
