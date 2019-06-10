@@ -59,7 +59,12 @@ trait Utility
             <meta property='og:availability' content='{$availability}' />
             <meta property='fb:app_id' content='{$app_id}' />
         ";
-        $currencies = \App\Currency::where('date',  \App\Currency::orderBy('date', 'desc')->first()->value('date'))->get();
+        
+        $date = \App\Currency::orderBy('date', 'desc')->first('date');
+        if(empty($date)) return;
+        $date = $date['date'];
+        $currencies = \App\Currency::where('date', $date)->get();
+
         foreach ($currencies as $key => $currency) {
             $price = $currency['rate'] * $product['price'];
             $markup = $markup."<meta property='product:price:amount' content='{$price}'/>";
@@ -90,7 +95,7 @@ trait Utility
                 "offers" => [
                     "@type" => "Offer",
                     "url" => $url,
-                    "priceCurrency" => \App\Http\Traits\Utility::locale()['currency'],
+                    "priceCurrency" => "USD",
                     "price" => $product['price'],
                     "priceValidUntil" => date_modify(new \DateTime(), '+1 day')->format('Y-m-d'),
                     "itemCondition" => "https://schema.org/NewCondition",
