@@ -8,9 +8,9 @@
     <table>
         @foreach ($products as $item)
         <tr class="product">
-            <td class="img-cell"><img src="{{ $item['img_src'] }}"></td>
+            <td class="img-cell"><img src="{{ url('/').$item['img_src'] }}"></td>
             <td style="position:relative">
-                <a href="{{ env('APP_URL').'#/detail/'.$item['id'] }}" >
+                <a href="{{ url('/').'/detail/'.$item['id'] }}" >
                     {{ $item['name'] }}
                 </a>
                 <div class="status-bar">
@@ -23,7 +23,7 @@
                     @endif
                 </div>
                 <div class="price-bar"> 
-                    @if ($item['old_price'])<s>{{$item['old_price']}}</s>@endif<a href="{{ env('APP_URL').'#/cart/['.$item['id'].']' }}">
+                    @if ($item['old_price'])<s>{{$item['old_price']}}</s>@endif<a href="{{ url('/').'/cart/['.$item['id'].']' }}">
                     {{ $item['price'] }}
                         @if ($currency == 'RUB')
                             Руб.
@@ -39,18 +39,18 @@
         @endforeach
     </table>
     <div class="buy-btn"> 
-        <a href=
-            "{{ env('APP_URL') }}<?php 
-            $tmp =[];
-            foreach($products as $val)
-            {
-                array_push($tmp,$val['id']);
-            }
-            echo '/#/cart/'.json_encode( $tmp );?>" >
+        <a href="{{ url('/') }}<?php 
+                $tmp =[];
+                foreach($products as $val)
+                {
+                    array_push($tmp,$val['id']);
+                }
+                echo '/cart/'.json_encode( $tmp );
+            ?>" >
             @lang('mail.buyNow') !
         </a>
     </div> 
     <h4 style="background-color:cornflowerblue;padding:12px 0;width:100%;text-align:center">
-        <a href="{{ env('APP_URL') }}" style="color:white;">@lang('mail.onlineStore') NAOS</a>
+        <a href="{{ url('/') }}" style="color:white;">@lang('mail.onlineStore') NAOS</a>
     </h4>
 </div>

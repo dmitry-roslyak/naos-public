@@ -170,7 +170,7 @@ class UserController extends Controller
             else return response(null,401);
     }
     public function mail(Request $data) {
-        $states = [127,63,31,15,7,3,1]; //is User subscribed to receive email updates
+        $states = [255, 127,63,31,15,7,3,1]; //is User subscribed to receive email updates
         $users = User::with('wishes')->whereIn('bstate', $states)->get();
 
         foreach ($users as $key => $user) {
@@ -190,7 +190,7 @@ class UserController extends Controller
                     'name' => $wish->prod->name,
                     'old_price' => $wish->price * $currency->rate,
                     'price' => $wish->prod->price * $currency->rate,
-                    'img_src' => env("APP_URL")."/file/".$wish->prod->img_src
+                    'img_src' => "/file/".$wish->prod->img_src
                 ]);
                 // $wish->price = $wish->prod->price;
                 // $wish->save();
