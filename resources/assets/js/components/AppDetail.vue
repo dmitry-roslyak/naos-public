@@ -11,11 +11,11 @@
                     <a class="action-item fake-link" @click="to_wish()">
                         <span class="hidden-xs">{{lng.to_wishlist}}</span>
                         <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true"></i>
-                    </a>
-                    <a class="action-item fake-link">&nbsp;
-                        <a :href="'https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href='+href" 
-                            target="_blank" class="fake-link">{{lng.share}}&nbsp;<i class="fa fa-facebook-official"></i></a>
-                        <i class="fa fa-share-alt heart-state" data-check="0" aria-hidden="true"></i>
+                    </a>&nbsp;
+                    <a class="action-item fake-link"
+                        :href="'https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href='+href" target="_blank">
+                        <span class="hidden-xs">{{lng.share}}</span>
+                        <i class="fa fa-facebook-square"></i>
                     </a>
                 </div>
             </div>

@@ -97,10 +97,6 @@ var self,
     showGraph: true
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
-    // beforeRouteLeave (to, from, next) {
-    //     location.search = '';
-    //     next();
-    // },
     props: ['id'],
     data: function data() {
         return _data;
@@ -110,8 +106,6 @@ var self,
     },
     computed: {
         href: function href() {
-            //  return location.href = location.origin + '/?id=' + this.id + '&/#' + this.$route.path;
-            // return location.origin + '/?id=' + this.id + '/#' + this.$route.path;
             return location.href;
         },
         currency: function currency() {
@@ -296,31 +290,26 @@ var render = function() {
                   })
                 ]
               ),
-              _vm._v(" "),
-              _c("a", { staticClass: "action-item fake-link" }, [
-                _vm._v(" \n                    "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "fake-link",
-                    attrs: {
-                      href:
-                        "https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href=" +
-                        _vm.href,
-                      target: "_blank"
-                    }
-                  },
-                  [
-                    _vm._v(_vm._s(_vm.lng.share) + " "),
-                    _c("i", { staticClass: "fa fa-facebook-official" })
-                  ]
-                ),
-                _vm._v(" "),
-                _c("i", {
-                  staticClass: "fa fa-share-alt heart-state",
-                  attrs: { "data-check": "0", "aria-hidden": "true" }
-                })
-              ])
+              _vm._v(" \n                "),
+              _c(
+                "a",
+                {
+                  staticClass: "action-item fake-link",
+                  attrs: {
+                    href:
+                      "https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href=" +
+                      _vm.href,
+                    target: "_blank"
+                  }
+                },
+                [
+                  _c("span", { staticClass: "hidden-xs" }, [
+                    _vm._v(_vm._s(_vm.lng.share))
+                  ]),
+                  _vm._v(" "),
+                  _c("i", { staticClass: "fa fa-facebook-square" })
+                ]
+              )
             ])
           ]),
           _vm._v(" "),
