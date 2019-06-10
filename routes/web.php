@@ -12,17 +12,6 @@
 */
 use Illuminate\Http\Request;
 
-Route::get('/', function (Request $request) {
-    $id = session()->get( 'id' );
-    $a = $request['id'];
-    return view('vue');
-})->name('home');
-
-Route::get('/detail/{id}', function (Request $request) {
-    return redirect('/')->with(['id' => $request['id']]);
-    // return redirect()->route('home', ['id1' => $request['id']]);
-    // return view('detail', ['id' => $request['id']]);
-});
 Route::get('/lang/{lng}', 'UserController@lang');
 
 Route::group(['middleware' => 'admin'], function() {
@@ -67,3 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('/set_currency', 'UserController@currency');
 
 Auth::routes();
+
+Route::get('/{vue?}', function() {
+    return view('vue');
+})->where('vue', '.*');

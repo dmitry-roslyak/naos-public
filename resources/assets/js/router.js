@@ -43,7 +43,7 @@ Vue.component('AppUserInfo', function (resolve) {
     require(['./components/AppUserInfo.vue'], resolve)
 });
 export default new VueRouter({
-    // mode: 'history',
+    mode: 'history',
     routes: [
         { path: '/404', component: App404 },
         { path: '*', redirect: '/404' },

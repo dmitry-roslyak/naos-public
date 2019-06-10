@@ -181,7 +181,7 @@ var self,
             });
         },
         itemById: function itemById() {
-            axios.get('prod_by_id?id=' + self.id).then(function (response) {
+            axios.get('/prod_by_id?id=' + self.id).then(function (response) {
                 response.data.isWish = !!response.data.wish;
                 response.data.is_compare = false;
                 response.data.isInCart = !!self.$store.state.cart[response.data.id];

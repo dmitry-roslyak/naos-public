@@ -132,7 +132,7 @@
                     this.paginator.page = 1;
                 }
                 var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
-                axios.get('prod_filter', {
+                axios.get('/prod_filter', {
                     params: {
                         ctg_id: window.Laravel.catalog[this.category].id,
                         skip: this.paginator.skip,

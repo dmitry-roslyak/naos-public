@@ -86,7 +86,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"ebf16bd88d6c23fc3a8f","1":"75da4e3e48dc941c7ec5","2":"53caef88210b6414986f","3":"eff41b1fc4af91a2fe25","4":"1e9e0559a56fdbd4cdf1","5":"010502ae5d2f0f744c69","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"46054dd0a91c27c959f8"}[chunkId] + "";
+/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"ebf16bd88d6c23fc3a8f","1":"d7880c01ed4cdf49b432","2":"d24952b810876653d7a3","3":"eff41b1fc4af91a2fe25","4":"c57318ec8ae397e72930","5":"010502ae5d2f0f744c69","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"46054dd0a91c27c959f8"}[chunkId] + "";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -68440,7 +68440,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('AppUserInfo', function (r
     __webpack_require__.e/* require */(6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__("./resources/assets/js/components/AppUserInfo.vue")]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 });
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-    // mode: 'history',
+    mode: 'history',
     routes: [{ path: '/404', component: App404 }, { path: '*', redirect: '/404' }, { path: '/', component: home }, { name: 'products', path: '/products/:category', component: products, props: true }, { name: 'detail', path: '/detail/:id', component: detail, props: true }, { path: '/compare/:category/:ids', component: compare, props: true }, { path: '/cart/:ids?', component: cart, props: true }, { path: '/account', component: account }]
 }));
 

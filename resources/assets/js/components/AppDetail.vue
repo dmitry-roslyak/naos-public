@@ -88,21 +88,13 @@
         showGraph: true
     };
     export default {
-        // beforeRouteLeave (to, from, next) {
-        //     location.search = '';
-        //     next();
-        // },
         props: ['id'],
         data: function() { return data },
         watch: {
             'id': 'itemById',
         },
         computed: {
-            href() { 
-                //  return location.href = location.origin + '/?id=' + this.id + '&/#' + this.$route.path;
-                // return location.origin + '/?id=' + this.id + '/#' + this.$route.path;
-                return location.href;
-            },
+            href() { return location.href },
             currency() { return this.$store.state.currency },
             lng(){ return this.$root.lng },
             itemPriceResult(){ return (item) => this.$root.itemPriceResult(item) }
@@ -151,7 +143,7 @@
                 });
             },
             itemById(){
-                axios.get('prod_by_id?id='+self.id).then(function (response) {
+                axios.get('/prod_by_id?id='+self.id).then(function (response) {
                     response.data.isWish = !!response.data.wish;
                     response.data.is_compare = false;
                     response.data.isInCart = !!self.$store.state.cart[response.data.id];

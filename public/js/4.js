@@ -126,7 +126,7 @@ var formatter = new Intl.DateTimeFormat([], {
             });
         },
         leave_comment: function leave_comment() {
-            axios.post('leave_comment', {
+            axios.post('/leave_comment', {
                 message: self.message,
                 pid: this.productId
             });

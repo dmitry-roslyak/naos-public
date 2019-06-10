@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex, nofollow, noarchive"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }}</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <link href="{{mix('/css/app.css')}}" rel="stylesheet">
     <script>
         window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
@@ -45,13 +45,13 @@
                             <a class="dropdown-toggle fake-link"
                                 data-toggle="dropdown" aria-haspopup="true">
                                 <i class="fa fa-globe"></i>
-                                <img style="max-height:1.8em;margin-top:-0.5em" :src="`images/${lng.lang_name_ISO.toLowerCase()}.png`">
+                                <img style="max-height:1.8em;margin-top:-0.5em" :src="`/images/${lng.lang_name_ISO.toLowerCase()}.png`">
                                 <span style="vertical-align:middle;text-transform: uppercase;">&nbsp;@{{lng.ISO_code}}&nbsp;</span><span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li v-for="(lng,ISO_code) in langs">
                                     <a class="fake-link" @click="get_locale(ISO_code)">
-                                        <img :src="'images/'+ISO_code+'.png'"> &nbsp;&nbsp;@{{lng.text}}
+                                        <img :src="'/images/'+ISO_code+'.png'"> &nbsp;&nbsp;@{{lng.text}}
                                     </a>
                                 </li>
                             </ul>
