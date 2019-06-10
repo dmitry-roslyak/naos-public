@@ -354,7 +354,7 @@ var render = function() {
                             [
                               _c("img", {
                                 staticStyle: { "max-height": "4em" },
-                                attrs: { src: "file/" + temp.img_src },
+                                attrs: { src: "/file/" + temp.img_src },
                                 on: {
                                   error: function($event) {
                                     _vm.img404($event.target)

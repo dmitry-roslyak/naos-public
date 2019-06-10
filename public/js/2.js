@@ -339,7 +339,7 @@ var render = function() {
                   _c("div", { staticClass: "item active image-wrapper" }, [
                     _c("img", {
                       attrs: {
-                        src: _vm.item.img_src && "file/" + _vm.item.img_src
+                        src: _vm.item.img_src && "/file/" + _vm.item.img_src
                       }
                     }),
                     _vm._v(" "),

@@ -467,7 +467,7 @@ var render = function() {
                 _c("div", { staticClass: "thumbnail ic-s" }, [
                   _c("div", { staticClass: "image-wrapper" }, [
                     _c("img", {
-                      attrs: { src: "file/" + item.img_src },
+                      attrs: { src: "/file/" + item.img_src },
                       on: {
                         load: function($event) {
                           _vm.imgReady($event.target)

@@ -25,7 +25,7 @@
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <div class="item active image-wrapper">
-                        <img :src="item.img_src && 'file/'+item.img_src">
+                        <img :src="item.img_src && '/file/'+item.img_src">
                         <div class="tb-offer" v-if="+offerTime > 0">
                             <span>{{lng.discount +' -'+item.discount.discount+'%'}}</span>
                             <span class="hidden-xs">{{

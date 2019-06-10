@@ -11,7 +11,7 @@
                     <tbody>
                         <tr v-for="item in search_result" :key="item.id">
                             <td class="search-img-cell">
-                                <img v-bind:src="'file/'+item.img_src">
+                                <img v-bind:src="'/file/'+item.img_src">
                             </td>
                             <td>
                                 <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>

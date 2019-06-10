@@ -28,7 +28,7 @@
                             </a>
                         </div>
                         <div class="thumbnail" style="margin:0;border: 0;">
-                            <img v-bind:src="'file/'+temp.img_src" @error="img404($event.target)" style="max-height: 4em">
+                            <img v-bind:src="'/file/'+temp.img_src" @error="img404($event.target)" style="max-height: 4em">
                         </div>
                         <router-link class="t-name" :to="{ name: 'detail', params: { id: temp.id }}">{{temp.name}}</router-link>
                         <star-rating :rating="+temp.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>

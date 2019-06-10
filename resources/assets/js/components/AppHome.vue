@@ -23,7 +23,7 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                     <div v-for="(item,i) in items" :class="{'item image-wrapper': true, 'active': !i}" :key="item.id">
-                        <img :src="'file/'+item.img_src" alt="...">
+                        <img :src="'/file/'+item.img_src" alt="...">
                         <div class="carousel-caption carousel-content">
                             <h3>
                                 <router-link :to="{ name: 'detail', params: { id: item.id }}">

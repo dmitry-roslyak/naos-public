@@ -86,7 +86,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"ebf16bd88d6c23fc3a8f","1":"d7880c01ed4cdf49b432","2":"f28fa109b1601d8968d1","3":"eff41b1fc4af91a2fe25","4":"c57318ec8ae397e72930","5":"010502ae5d2f0f744c69","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"46054dd0a91c27c959f8"}[chunkId] + "";
+/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js?id=" + {"0":"ebf16bd88d6c23fc3a8f","1":"ce4daf044addb7b908df","2":"048451161f4162c85918","3":"e2908fbd44e63ef6a177","4":"c57318ec8ae397e72930","5":"3373e6ffd8dc5a724a3c","6":"c24f6c346094418b6833","7":"3857b2cfd58eabb1e504","8":"46054dd0a91c27c959f8"}[chunkId] + "";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -51938,7 +51938,7 @@ var render = function() {
                   },
                   [
                     _c("img", {
-                      attrs: { src: "file/" + item.img_src, alt: "..." }
+                      attrs: { src: "/file/" + item.img_src, alt: "..." }
                     }),
                     _vm._v(" "),
                     _c(
@@ -52290,7 +52290,7 @@ var render = function() {
               _vm._l(_vm.search_result, function(item) {
                 return _c("tr", { key: item.id }, [
                   _c("td", { staticClass: "search-img-cell" }, [
-                    _c("img", { attrs: { src: "file/" + item.img_src } })
+                    _c("img", { attrs: { src: "/file/" + item.img_src } })
                   ]),
                   _vm._v(" "),
                   _c(
@@ -68037,7 +68037,7 @@ var app = new Vue({
             return (item.discount ? this.$store.state.currency * item.price - this.$store.state.currency * item.price / 100 * item.discount.discount : this.$store.state.currency * item.price).toFixed(1) + " " + this.lng.currency;
         },
         get_locale: function get_locale(lng) {
-            axios.get('lang/' + lng).then(function (response) {
+            axios.get('/lang/' + lng).then(function (response) {
                 response.data[0].currency = response.data[0][response.data[1].name];
                 app.lng = window.Laravel.lng = response.data[0];
                 app.$store.commit('set_currency', response.data[1].rate);

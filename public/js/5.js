@@ -251,7 +251,7 @@ var render = function() {
             _vm._l(_vm.products, function(item, i) {
               return _c("tr", { key: item.id }, [
                 _c("td", [
-                  _c("img", { attrs: { src: "file/" + item.img_src } })
+                  _c("img", { attrs: { src: "/file/" + item.img_src } })
                 ]),
                 _vm._v(" "),
                 _c(
