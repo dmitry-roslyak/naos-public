@@ -16,11 +16,9 @@ class Markup
      */
     public function handle($request, Closure $next)
     {
-        $id = $request->session()->pull('id');
-        if(!empty($id)) {
-        // if(!empty($request['id'])) {
+        if($request->is('detail/*')) {
+            preg_match('/[0-9]+/',$request->path(), $id);
             $product = \App\Product::with('specs', 'discount', 'user_rating')->where('id', $id)->first();
-            // $product = \App\Product::with('specs', 'discount', 'user_rating')->where('id', $request['id'])->first();
             Utility::OpenGraph($product);
             Utility::ld_json($product);
         }

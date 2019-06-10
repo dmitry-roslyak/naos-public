@@ -46,7 +46,7 @@ trait Utility
     }
     public static function OpenGraph(\App\Product $product)
     {
-        $url = url('/') . "/?id={$product['id']}&/#/detail/{$product['id']}";
+        $url = url()->current();
         $image = url('/') . '/file/' . $product['img_src'];
         $availability = $product['available'] > 1 ? "instock" : "oos";
         $app_id = '1358482950908486';
@@ -69,12 +69,14 @@ trait Utility
     }
     public static function ld_json(\App\Product $product)
     {
+        $url = url()->current();
+        $image = url('/') . '/file/' . $product['img_src'];
         echo '<script type="application/ld+json">' .
             json_encode([
                 "@context" => "https://schema.org/",
                 "@type" => "Product",
                 "name" => $product['name'],
-                "image" => url('/') . '/file/' . $product['img_src'],
+                "image" => $image,
                 "description" => $product['description'],
                 "brand" => [
                     "@type" => "Thing",
@@ -87,7 +89,7 @@ trait Utility
                 ],
                 "offers" => [
                     "@type" => "Offer",
-                    "url" => url('/') . "/?id={$product['id']}&/#/detail/{$product['id']}",
+                    "url" => $url,
                     "priceCurrency" => \App\Http\Traits\Utility::locale()['currency'],
                     "price" => $product['price'],
                     "priceValidUntil" => date_modify(new \DateTime(), '+1 day')->format('Y-m-d'),
