@@ -45,13 +45,16 @@ Vue.component('AppUserInfo', function (resolve) {
 export default new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/404', component: App404 },
-        { path: '*', redirect: '/404' },
         { path: '/', component: home },
-        { name: 'products', path: '/products/:category', component: products, props: true  },
+        { name: 'products', path: '/products/:category', component: products, props: true },
         { name: 'detail', path: '/detail/:id', component: detail, props: true },
         { path: '/compare/:category/:ids', component: compare, props: true },
         { path: '/cart/:ids?', component: cart, props: true },
-        { path: '/account', component: account }
+        { path: '/account', component: account },
+        { path: '/login' }, //route for back-end view
+        { path: '/register' }, //route for back-end views 
+        { path: '/password*' }, //route for back-end view 
+        { path: '/404', component: App404 },
+        { path: '*', redirect: '/404' },
     ]
 });
