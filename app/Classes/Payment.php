@@ -39,9 +39,17 @@ class Payment
 			"retrievalReferenceNumber"=> $retrievalReferenceNumber
 		] );
 	
+		$VisaAPIClientConfig = ["VDP" => [
+			"cert" =>"cert.pem",
+			"key" =>"key.pem",
+			"userId"=> env('VISA_USER_ID'),
+			"password"=>env('VISA_PASSWORD'),
+			"visaUrl"=>"https://sandbox.api.visa.com/"
+		]];
+
 		$baseUrl = "visadirect/";
 		$resourcePath = "fundstransfer/v1/pullfundstransactions";
-		$visaAPIClient = new Visa;
+		$visaAPIClient = new Visa($VisaAPIClientConfig);
 		$statusCode = $visaAPIClient->doMutualAuthCall( 'post', $baseUrl.$resourcePath, 'Push Funds Transaction Test', $fundsTransferRequest);
         
         return [
