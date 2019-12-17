@@ -35,16 +35,33 @@ class DashboardController extends Controller
 
         return ['token' => $token];
     }
+    public function secretFileUpload(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            "file" => 'required|max:1024'
+        ]);
+        
+        if ($validator->fails()) {
+            return response($validator->errors(), 400);
+        }
+
+        $path ="../secret/visa";
+
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        return json_decode(file_put_contents($path."/".$request->file("file")->getClientOriginalName(), $request->file('file')->get()));
+    }
     public function imgUpload(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'image' => 'required|mimes:jpeg,jpg,png,gif|max:8096'
+            'file' => 'required|mimes:jpeg,jpg,png,gif|max:8096'
         ]);
         if ($validator->fails()) {
             return response($validator->errors(), 400);
         }
         $ext = 'png';
-        $img = Image1::make($request->file('image'));
+        $img = Image1::make($request->file('file'));
         $img->resize(1024, 1024, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();

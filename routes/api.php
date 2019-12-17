@@ -17,3 +17,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware('auth:api')->post('/image_upload', 'DashboardController@imgUpload');
+Route::middleware('auth:api')->post('/visa_secret_upload', 'DashboardController@secretFileUpload');
