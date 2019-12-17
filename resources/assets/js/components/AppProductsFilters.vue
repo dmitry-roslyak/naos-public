@@ -49,8 +49,7 @@
     </div>
 </template>
 <script>
-    const range = require('./VRange.vue')
-    // import range from './VRange.vue'
+    import range from 'vrange'
     var data = {
         catalog: [],
         filters: [],
