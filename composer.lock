@@ -3404,17 +3404,11 @@
         },
         {
             "name": "visa/visa",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/formulaone.forever/visa.git",
                 "reference": "master"
-            },
-            "dist": {
-                "type": "path",
-                "url": "D:/visa",
-                "reference": "master",
-                "shasum": null
             },
             "require": {
                 "php": ">=5.3.0"
