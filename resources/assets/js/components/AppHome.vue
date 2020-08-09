@@ -6,7 +6,7 @@
                     <i class="fa fa-list"></i>
                     {{lng.catalog}}
                 </a>
-                <router-link class="list-group-item" :to="{ name: 'products', params: { category: name }}" v-for="(item, name) in catalog" :key="item.id">
+                <router-link class="list-group-item" :to="{ name: 'AppProducts', params: { category: name }}" v-for="(item, name) in catalog" :key="item.id">
                     {{lng[name]?lng[name]:name}}
                 </router-link>
                 <a class="list-group-item" v-for="i in dummyCategory" :key="i">&nbsp;</a>
@@ -26,7 +26,7 @@
                         <img :src="'/file/'+item.img_src" alt="...">
                         <div class="carousel-caption carousel-content">
                             <h3>
-                                <router-link :to="{ name: 'detail', params: { id: item.id }}">
+                                <router-link :to="{ name: 'AppDetail', params: { id: item.id }}">
                                     {{item.name}}
                                 </router-link>
                             </h3>

@@ -107,5 +107,3 @@
         }
     }
 </script>
-
-<style lang="scss" src="../../sass/AppProductsFilters.scss"></style>

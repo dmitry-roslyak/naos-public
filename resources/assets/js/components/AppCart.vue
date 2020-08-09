@@ -16,7 +16,7 @@
                     </tr>
                     <tr v-for="(item, i) in products" :key="item.id">
                         <td><img v-bind:src="'/file/'+item.img_src"></td>
-                        <td><router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link></td>
+                        <td><router-link :to="{ name: 'AppDetail', params: { id: item.id }}">{{item.name}}</router-link></td>
                         <td><input class="form-control" v-model="item.count" @input="reCount(item.id, i)" type="number"></td>
                         <td style="white-space: nowrap;">{{itemPriceResult(item)}}</td>
                         <div class="action-frm">
@@ -97,6 +97,9 @@
         }, data.validate);
 
     export default {
+        components: {
+            'AppUserInfo': () => import(/* webpackChunkName: "js/AppUserInfo-vue" */"./AppUserInfo.vue")
+        },
         props: ['ids'],
         data: function () { return data },
         computed: {
@@ -166,5 +169,3 @@
         }
     }
 </script>
-
-<style lang="scss" src="../../sass/AppCart.scss"></style>

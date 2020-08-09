@@ -14,7 +14,7 @@
                                 <img v-bind:src="'/file/'+item.img_src">
                             </td>
                             <td>
-                                <router-link :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
+                                <router-link :to="{ name: 'AppDetail', params: { id: item.id }}">{{item.name}}</router-link>
                                 <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
                             </td>
                             <td><nobr>{{itemPriceResult(item)}}</nobr></td>

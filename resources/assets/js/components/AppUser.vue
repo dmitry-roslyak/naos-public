@@ -56,6 +56,9 @@
 
 <script>
     export default {
+        components: {
+            'AppUserInfo': () => import(/* webpackChunkName: "js/AppUserInfo-vue" */"./AppUserInfo")
+        },
         computed: {
             lng(){ return this.$root.lng },
         },

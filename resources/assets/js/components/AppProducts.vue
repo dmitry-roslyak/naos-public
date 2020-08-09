@@ -48,7 +48,7 @@
                         <img :src="'/file/'+item.img_src" @load="imgReady($event.target)" @error="img404($event.target)">
                     </div>
                     <div class="caption">
-                        <router-link class="item-card-name" :to="{ name: 'detail', params: { id: item.id }}">{{item.name}}</router-link>
+                        <router-link class="item-card-name" :to="{ name: 'AppDetail', params: { id: item.id }}">{{item.name}}</router-link>
                         <div class="col-xs-12" style="padding: 3px 0">
                             <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true" style="display:inline-block"></star-rating>
                             <div class="product-state pull-right">
@@ -82,6 +82,7 @@
     </div>
 </template>
 <script>
+    import AppProductsFilters from './AppProductsFilters.vue'
     var self, data = {
         ordby: 'bydef',
         items: [],
@@ -97,6 +98,10 @@
         },
     };
     export default {
+        components: {
+            AppProductsFilters,
+            'VPagination': () => import(/* webpackChunkName: "js/VPagination-vue" */"./VPagination.vue")
+        },
         props: ['category'],
         data: function () {return data;},
         watch: {
@@ -190,5 +195,3 @@
         }
     }
 </script>
-
-<style lang="scss" src="../../sass/AppProducts.scss"></style>

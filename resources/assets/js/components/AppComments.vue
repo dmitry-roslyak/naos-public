@@ -52,6 +52,9 @@
         minute: "numeric"
     });
     export default {
+        components: {
+            'VPagination': () => import(/* webpackChunkName: "js/VPagination-vue" */"./VPagination.vue")
+        },
         props: ['productId'],
         data: function() {return data},
         watch: {

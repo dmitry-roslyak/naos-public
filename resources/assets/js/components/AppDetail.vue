@@ -81,6 +81,7 @@
     </div>
 </template>
 <script>
+    import AppDetailCharts from "./AppDetailCharts.vue";
     var self, timerId, data = {
         show_specs: true,
         item: {},
@@ -88,6 +89,10 @@
         showGraph: true
     };
     export default {
+        components: {
+            'AppComments': () => import(/* webpackChunkName: "js/AppComments-vue" */"./AppComments.vue"),
+            AppDetailCharts
+        },
         props: ['id'],
         data: function() { return data },
         watch: {
@@ -172,5 +177,3 @@
         }
     }
 </script>
-
-<style lang="scss" src="../../sass/AppDetail.scss"></style>
