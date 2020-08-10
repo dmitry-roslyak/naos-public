@@ -3,7 +3,6 @@ import router from "./router";
 import store from "./store";
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import 'chart.js';
 
 if(__NODE_ENV === 'production'){
     firebase.initializeApp({

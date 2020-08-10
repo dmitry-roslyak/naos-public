@@ -1,7 +1,6 @@
 // Fonts
 // @import url('https://fonts.googleapis.com/css?family=Raleway');
-// @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
-@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
 @import "node_modules/font-awesome/scss/font-awesome.scss";
 
 // Bootstrap
@@ -338,36 +337,6 @@ td > .fa-times {
 
 .carousel-indicators {
   bottom: (-8px) !important;
-}
-
-#site_loading {
-  text-align: center;
-}
-
-#site_loading > .fa-cog {
-  font-size: 10rem;
-}
-
-#site_loading > h4 span {
-  animation: opacity_anm 0.6s infinite alternate;
-}
-
-#site_loading > h4 span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-#site_loading > h4 span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes opacity_anm {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
 }
 
 .copyright {

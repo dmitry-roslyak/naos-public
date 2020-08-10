@@ -66,12 +66,16 @@
         },
         created() {
             self = this;
-            window.webSocketPromise.then(webSocket => {
-                webSocket.send(JSON.stringify({
-                    "event": "pusher:subscribe",
-                    "data": {
-                        "channel": 'chat-product' + this.productId
-                }}));
+            if(__NODE_ENV === 'production'){
+                const webSocket = new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
+                webSocket.onerror = (event) => console.warn(event);
+                webSocket.onopen = () => {
+                    webSocket.send(JSON.stringify({
+                        "event": "pusher:subscribe",
+                        "data": {
+                            "channel": 'chat-product' + this.productId
+                    }}));
+                }
                 webSocket.onmessage = function (event) {
                     var res = JSON.parse(event.data);
                     if(res.event=='new-message'){
@@ -81,9 +85,8 @@
                         self.comments.unshift(comment);
                     }
                 }
-            }).catch((event)=> {
-                console.error(event);
-            });
+            } else console.warn("WebSocket disabled in development mode")
+            
             this.show_comments();
         },
         methods: {

@@ -81,6 +81,7 @@
 </template>
 
 <script>
+    import Validator from "../validate"
     var self,
         data = {
             products: [],

@@ -36,42 +36,6 @@ window.axios.defaults.headers.common = {
 // window.Echo = new Echo({
 //     broadcaster: 'redis'
 // });
-// Enable pusher logging - don't include this in production
-// Pusher.logToConsole = true;
-
-// var pusher = new Pusher('69e878ea5991b6099fb6', {
-//   cluster: 'eu',
-//   encrypted: true
-// });
-
-// var channel = pusher.subscribe('my-channel');
-// channel.bind('my-event', function(data) {
-//   alert(data.message);
-// });
-window.Validator = require('./validate.js').default;
-
-var webSocketPromise, developmentModeMsg = "WebSocket disabled in development mode";
-
-if(__NODE_ENV === 'production'){
-
-    webSocketPromise = new Promise((resolve, reject) => {
-        const webSocket = new WebSocket("wss://ws-eu.pusher.com:443/app/69e878ea5991b6099fb6?protocol=7&client=js&version=4.1.0&flash=false");
-        webSocket.onopen = () => resolve(webSocket);
-        webSocket.onerror = (event) => reject(event);
-    });
-
-} else {
-    webSocketPromise = new Promise((resolve, reject) => reject(developmentModeMsg))
-}
-
-webSocketPromise.catch(function (e) {
-    if(developmentModeMsg == e) {
-        console.warn(developmentModeMsg)
-        return;
-    }
-    console.error(e)
-});
-window.webSocketPromise = webSocketPromise;
 
 window.debounce = function (func, timeout) {
     var id;

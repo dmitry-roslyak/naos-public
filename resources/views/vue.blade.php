@@ -20,7 +20,7 @@
                     </td>
                     <td>
                         <a href="https://webpack.js.org/" target="_blank">
-                            <img src="https://webpack.js.org/d19378a95ebe6b15d5ddea281138dcf4.svg">
+                            <img src="https://webpack.js.org/assets/icon-square-big.svg">
                         </a>
                     </td>
                     <td>

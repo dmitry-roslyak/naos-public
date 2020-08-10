@@ -46,6 +46,8 @@ var options1 = {
 
     }
 };
+import 'chart.js';
+
 var chart_self, data = {
     ready: false
 };

@@ -26,6 +26,7 @@
 </template>
 
 <script>
+    import Validator from "../validate"
     var self,
         data = {
             edit: true,

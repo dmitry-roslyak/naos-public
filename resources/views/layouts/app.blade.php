@@ -13,17 +13,10 @@
     <script>
         window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
         window.Laravel.lng.currency = window.Laravel.lng[window.Laravel.currency.name];
-        window.onload = function(){
-            site_loading.style='display:none';
-        };
     </script>
 </head>
 <body>
     <div id='app'>
-        <div id="site_loading" class="overlay-view">
-            <i class="fa fa-cog fa-spin"></i>  
-            <h4>@lang('app.loading')<span>.</span><span>.</span><span>.</span></h4>
-        </div>
         <nav class="navbar navbar-default navbar-static-top" >
             <div class="container">
                 <div class="navbar-header naos hidden-md hidden-lg" style="display:inline-block">
