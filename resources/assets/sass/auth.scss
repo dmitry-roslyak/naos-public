@@ -1,0 +1,30 @@
+//webpack production: /css/auth.css    3.6 KiB
+//chunked auth.css, currently unreasonable
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+@import "bootstrap-social";
+
+.divider-or {
+  margin: 18px auto 8px;
+  position: relative;
+  text-align: center;
+
+  &::after {
+    right: 0;
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::before,
+  &::after {
+    position: absolute;
+    display: inline-block;
+    width: 43%;
+    top: 0.5em;
+    border-top: thin solid #333;
+    text-align: initial;
+    content: " ";
+  }
+}

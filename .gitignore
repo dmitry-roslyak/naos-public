@@ -16,3 +16,4 @@ yarn-error.log
 *.env
 auth.json
 *.js.map
+*.css.map

@@ -18,6 +18,7 @@ const routes = [
   { name: "AppCart", path: "/cart/:ids?", props: true },
   { name: "AppUser", path: "/account" },
   { path: "/login" }, //route for back-end view
+  { path: "/logout" }, //route for back-end view
   { path: "/register" }, //route for back-end views
   { path: "/password*" }, //route for back-end view
   { path: "/404", component: App404 },

@@ -1,20 +1,6 @@
-/* eslint-disable no-undef */
 import "./bootstrap";
 import router from "./router";
 import store from "./store";
-import firebase from "firebase/app";
-import "firebase/auth";
-
-if (__NODE_ENV === "production") {
-  firebase.initializeApp({
-    apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
-    authDomain: "dev-naos.firebaseapp.com",
-    databaseURL: "https://dev-naos.firebaseio.com",
-    projectId: "dev-naos",
-    storageBucket: "dev-naos.appspot.com",
-    messagingSenderId: "515353712594",
-  });
-}
 
 var data = {
   lng: null,
@@ -56,57 +42,6 @@ const app = new Vue({
         })
         .catch(function(error) {
           console.log(error);
-        });
-    },
-    googleIn() {
-      this.logIn(new firebase.auth.GoogleAuthProvider());
-    },
-    facebookLogIn() {
-      this.logIn(new firebase.auth.FacebookAuthProvider());
-    },
-    auth(jwt) {
-      axios
-        .post("/auth", {
-          input: jwt,
-        })
-        .then(function(response) {
-          // app.user = response.data;
-          // this.$router.push('/');
-          location.replace("/");
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    logIn(provider) {
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(function(result) {
-          result.user.getIdToken().then((jwt) => app.auth(jwt));
-        })
-        .catch(function(error) {
-          console.log(error);
-          //different api error
-          // var errorCode = error.code;
-          // var errorMessage = error.message;
-          // var email = error.email;
-          // var credential = error.credential;
-        });
-    },
-    logout() {
-      axios.post("/logout").then(function(response) {
-        app.user = null;
-      });
-      firebase
-        .auth()
-        .signOut()
-        .then(function() {
-          // Sign-out successful.
-        })
-        .catch(function(error) {
-          console.log(error);
-          // An error happened.
         });
     },
   },
