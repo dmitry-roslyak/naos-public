@@ -1,11 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-Vue.use(VueRouter);
-
 import AppHeader from "./components/AppHeader.vue";
 import App404 from "./components/App404.vue";
 import starRating from "vue-star-rating/src/star-rating.vue";
+
+Vue.use(VueRouter);
 
 Vue.component("AppHeader", AppHeader);
 Vue.component("star-rating", starRating);

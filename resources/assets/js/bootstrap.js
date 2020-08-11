@@ -6,11 +6,11 @@
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery = require("jquery");
 
-require('bootstrap-sass');
+require("bootstrap-sass");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -18,11 +18,11 @@ window.Vue = require('vue');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+window.axios = require("axios");
 
 window.axios.defaults.headers.common = {
-    'X-CSRF-TOKEN': document.getElementsByName('csrf-token')[0].content,
-    'X-Requested-With': 'XMLHttpRequest'
+  "X-CSRF-TOKEN": document.getElementsByName("csrf-token")[0].content,
+  "X-Requested-With": "XMLHttpRequest",
 };
 
 /**
@@ -37,25 +37,25 @@ window.axios.defaults.headers.common = {
 //     broadcaster: 'redis'
 // });
 
-window.debounce = function (func, timeout) {
-    var id;
-    return function () {
-        f = func.bind(this, ...arguments)
-        
-        if(id) clearTimeout(id);
+window.debounce = function(func, timeout) {
+  var id, f;
+  return function() {
+    f = func.bind(this, ...arguments);
 
-        id = setTimeout(f, timeout);
-    }
-}
+    if (id) clearTimeout(id);
 
-window.throttle = function (func, timeout) {
-    var id;
-    return function () {
-        if(!id){ 
-            func.apply(this, arguments);
-            id = setTimeout(function () {
-                id = null;
-            }, timeout);
-        }
+    id = setTimeout(f, timeout);
+  };
+};
+
+window.throttle = function(func, timeout) {
+  var id;
+  return function() {
+    if (!id) {
+      func.apply(this, arguments);
+      id = setTimeout(function() {
+        id = null;
+      }, timeout);
     }
-}
+  };
+};

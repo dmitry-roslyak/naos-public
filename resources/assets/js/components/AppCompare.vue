@@ -1,126 +1,138 @@
 <template>
-    <div class="container-fluid compare">
-        <!-- <div>
+  <div class="container-fluid compare">
+    <!-- <div>
             <canvas id="cmprGraph"></canvas>
-        </div> -->
-        <div v-show="!list.length" style="text-align: center;padding: 12em;">
-            <router-link :to="'/products/'+category" style="display:block;margin-top:10px">{{lng.compareAddMore}}</router-link>
-        </div>
-        <table class="table" v-if="list.length>0" style="margin-top: 1rem;"> 
-            <tbody style="white-space: nowrap;">
-                <tr style="display:inline-block">
-                    <td style="padding: 25px;width: 12em;height: 12rem;text-align:center;border: inherit">
-                        <button class="btn btn-primary btn-sm" style="width: 100%;" @click="diffType?diffType=0:diffType=1">{{diffType == 1 ? '%' : lng.value}}</button>
-                        <router-link :to="'/products/'+category" style="display:block;margin-top:10px">{{lng.compareAddMore}}</router-link>
-                    </td>
-                    <td class="td_name" v-for="specs in list[0].specs" :key="specs.name" @mouseover="reGraph(specs.name);show_graph=true" @mouseleave="show_graph=false" style="width: 12em;float:left;clear:both">
-                        <!-- <i class="fa fa-bar-chart"  aria-hidden="true"></i> -->
-                        {{lng[specs.name]?lng[specs.name]:specs.name}}
-                        {{specs.name == "price" ? lng.currency : ""}}
-                    </td>
-                </tr>
-                <tr class="table-item t-name" @mouseover="cmpr(i)" v-for="(temp,i) in list" :key="i">
-                    <td style="float:left;clear:both;width:100%;height: 12rem;position:relative">
-                        <div class="action-frm" style="top:0">
-                            <a class="action-item fake-link" @click="removeItem(i)">
-                                <span class="hidden-xs">{{lng.remove}}</span>
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                        <div class="thumbnail" style="margin:0;border: 0;">
-                            <img v-bind:src="'/file/'+temp.img_src" @error="img404($event.target)" style="max-height: 4em">
-                        </div>
-                        <router-link class="t-name" :to="{ name: 'AppDetail', params: { id: temp.id }}">{{temp.name}}</router-link>
-                        <star-rating :rating="+temp.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
-                    </td>
-                    <td v-for="specs in temp.specs" :key="specs.name" style="float:left;clear:both;width:100%;overflow: hidden;text-overflow: ellipsis;">{{specs.value}}
-                        <span v-show="+specs.diff" :style="specs.diff < 0 ? 'color:red' : 'color:green'">
-                            {{(specs.diff > 0 ? '(+' : '(') + specs.diff  + (diffType == 0 ? '%) ' : ') ')}}
-                        </span>{{specs.val_type}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    </div>-->
+    <div v-show="!list.length" style="text-align: center;padding: 12em;">
+      <router-link :to="'/products/' + category" style="display:block;margin-top:10px">{{
+        lng.compareAddMore
+      }}</router-link>
     </div>
+    <table v-if="list.length > 0" class="table" style="margin-top: 1rem;">
+      <tbody style="white-space: nowrap;">
+        <tr style="display:inline-block">
+          <td style="padding: 25px;width: 12em;height: 12rem;text-align:center;border: inherit">
+            <button
+              class="btn btn-primary btn-sm"
+              style="width: 100%;"
+              @click="diffType ? (diffType = 0) : (diffType = 1)"
+            >
+              {{ diffType == 1 ? "%" : lng.value }}
+            </button>
+            <router-link :to="'/products/' + category" style="display:block;margin-top:10px">{{
+              lng.compareAddMore
+            }}</router-link>
+          </td>
+          <td
+            v-for="specs in list[0].specs"
+            :key="specs.name"
+            class="td_name"
+            style="width: 12em;float:left;clear:both"
+          >
+            <!-- <i class="fa fa-bar-chart"  aria-hidden="true"/> -->
+            {{ lng[specs.name] ? lng[specs.name] : specs.name }}
+            {{ specs.name == "price" ? lng.currency : "" }}
+          </td>
+        </tr>
+        <tr v-for="(product, i) in list" :key="i" class="table-item t-name" @mouseenter="cmpr(i)">
+          <td style="float:left;clear:both;width:100%;height: 12rem;position:relative">
+            <div class="action-frm" style="top:0">
+              <a class="action-item fake-link" @click="removeItem(i)">
+                <span class="hidden-xs">{{ lng.remove }}</span>
+                <i class="fa fa-trash" aria-hidden="true" />
+              </a>
+            </div>
+            <div class="thumbnail" style="margin:0;border: 0;">
+              <img :src="'/file/' + product.img_src" style="max-height: 4em" @error="img404($event.target)" />
+            </div>
+            <router-link class="t-name" :to="{ name: 'AppDetail', params: { id: product.id } }">{{
+              product.name
+            }}</router-link>
+            <star-rating :rating="+product.rating" :star-size="16" :show-rating="false" :read-only="true" />
+          </td>
+          <td
+            v-for="specs in product.specs"
+            :key="specs.name"
+            style="float:left;clear:both;width:100%;overflow: hidden;text-overflow: ellipsis;"
+          >
+            {{ specs.value }}
+            <span v-show="+specs.diff" :style="specs.diff < 0 ? 'color:red' : 'color:green'">{{
+              (specs.diff > 0 ? "(+" : "(") + specs.diff + (diffType == 0 ? "%) " : ") ")
+            }}</span>
+            {{ specs.val_type }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 <script>
-    var data ={
-        list:[],
-        show_graph:false,
-        diffType:0,
+export default {
+  props: {
+    ids: {
+      type: String, //JSON Array
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+  },
+  data: function() {
+    return {
+      list: [],
+      diffType: 0,
     };
-    var selfChart, chartData = {
-        labels: [],
-        datasets: [{
-            data: [],
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255,99,132,1)'
-        }]
-    };
-    export default {
-        props: ['ids', 'category'],
-        data: function() { return data },
-        watch: {
-            '$route.params.ids': 'get_prodsby_ids'
-        },
-        computed: {
-            lng(){ return this.$root.lng },
-        },
-        mounted(){
-            this.get_prodsby_ids();
-            // selfChart = new Chart(document.getElementById('cmprGraph'), {
-            //     type: 'polarArea',
-            //     data: chartData,
-            //     options: {}//{ legend: { display: true} }
-            // });
-            // this.$forceUpdate();
-        },
-        methods: {
-            removeItem(i){
-                this.$store.commit('compare', this.list[i]);
-                this.list.splice(i,1)
-            },
-            img404(e){
-                e.src = "/images/404.png";
-            },
-            cmpr(x){
-                for (var k = 0; k < this.list.length; k++) {
-                    for (var j = 0; j < this.list[k].specs.length; j++){
-                        for (var i = 0; i < this.list.length; i++){
-                            if(i!=x && this.list[k].specs[j].isComparable == 1) {
-                                this.list[i].specs[j].diff = (this.diffType == 0 ? 
-                                    Math.round(this.list[i].specs[j].value/this.list[x].specs[j].value*100)-100 :
-                                    this.list[i].specs[j].value-this.list[x].specs[j].value).toFixed(1);
-                            } else this.list[i].specs[j].diff = 0;
-                        }  
-                    }
-                }
-                this.$forceUpdate();
-            },
-            reGraph(val) {
-                return;
-                for (var i = 0; i < this.list.length; i++) {
-                    for (var j = 0; j < this.list[i].specs.length; j++){
-                        if(this.list[i].specs[j].name == val)
-                            chartData.datasets[0].data[i] = this.list[i].specs[j].value;
-                    }
-                } 
-                chartData.datasets[0].label = val;
-                selfChart.update();
-            },
-            get_prodsby_ids(){
-                axios.get('/prodsby_ids', {params:{ids:JSON.parse(this.ids)}}).then((response) => {
-                    this.list = response.data;
-                    for (var i = 0; i < this.list.length; i++) {
-                        this.list[i].specs.unshift({
-                            name: 'price',
-                            value: this.$root.itemPriceResult(this.list[i]).split(" ")[0],
-                            isComparable: true
-                        })
-                        chartData.labels.push(this.list[i].name); 
-                    }
-                });
-            }
-        }
-    }
+  },
+  computed: {
+    lng() {
+      return this.$root.lng;
+    },
+  },
+  watch: {
+    "$route.params.ids": "get_prodsby_ids",
+  },
+  created() {
+    this.get_prodsby_ids();
+    // selfChart = new Chart(document.getElementById('cmprGraph'), {
+    //     type: 'polarArea',
+    //     data: chartData,
+    //     options: {}//{ legend: { display: true} }
+    // });
+    // this.$forceUpdate();
+  },
+  methods: {
+    removeItem(i) {
+      this.$store.commit("compare", this.list[i]);
+      this.list.splice(i, 1);
+    },
+    img404(e) {
+      e.src = "/images/404.png";
+    },
+    cmpr(x) {
+      this.list.forEach((product, i) => {
+        product.specs.forEach((spec, j) => {
+          if (spec.isComparable && i !== x) {
+            if (this.diffType === 0) {
+              spec.diff = (Math.round((spec.value / this.list[x].specs[j].value) * 100) - 100).toFixed(1);
+            } else spec.diff = (spec.value - this.list[x].specs[j].value).toFixed(1);
+          } else spec.diff = 0;
+        });
+      });
+      this.$forceUpdate();
+    },
+    get_prodsby_ids() {
+      axios.get("/prodsby_ids", { params: { ids: JSON.parse(this.ids) } }).then((response) => {
+        this.list = response.data.forEach((product) => {
+          product.specs.unshift({
+            name: "price",
+            value: this.$root.itemPriceResult(product).split(" ")[0],
+            isComparable: true,
+          });
+        });
+        this.list = response.data;
+      });
+    },
+  },
+};
 </script>
