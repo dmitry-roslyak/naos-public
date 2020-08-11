@@ -63,7 +63,7 @@
                                     </router-link>
                                 </li>
                                 <li>
-                                    <a @click="logout()">
+                                    <a href="/logout">
                                         <i class="fa fa-sign-out"></i>&nbsp;&nbsp;@{{lng.logout}}
                                     </a>
                                 </li>
@@ -76,5 +76,6 @@
         @yield('content')
     </div>
     <script src="{{mix('/js/app.js')}}"></script>
+    @include('layouts.footer')
 </body>
 </html>

@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('/set_currency', 'UserController@currency');
 
 Auth::routes();
+Route::view('/logout', 'auth.logout');
 
 Route::get('/{vue?}', function() {
     return view('vue');

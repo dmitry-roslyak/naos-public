@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
 <div class="container">
@@ -7,10 +7,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
-                    <button @click="facebookLogIn()" class="btn btn-block btn-social btn-facebook">
+                    <button onclick="facebookLogIn()" class="btn btn-block btn-social btn-facebook">
                              <span class="fa fa-facebook"></span> Login with Facebook
                     </button>
-                    <button @click="googleIn()" class="btn btn-block btn-social btn-google">
+                    <button onclick="googleIn()" class="btn btn-block btn-social btn-google">
                             <span class="fa fa-google"></span> Login with Google
                     </button>
                     <div class="divider-or">OR</div>
