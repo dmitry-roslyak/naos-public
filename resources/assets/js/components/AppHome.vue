@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" style="max-width: 80em;">
+  <div class="container">
     <div class="col-sm-3 col-md-2" style="padding: 0px;">
       <div class="list-group">
         <a class="list-group-item active">
@@ -11,7 +11,9 @@
           :key="item.id"
           :to="{ name: 'AppProducts', params: { category: name } }"
           class="list-group-item"
-        >{{ lng[name] ? lng[name] : name }}</router-link>
+        >
+          {{ lng[name] ? lng[name] : name }}
+        </router-link>
         <a v-for="i in dummyCategory" :key="i" class="list-group-item">&nbsp;</a>
       </div>
     </div>
@@ -29,19 +31,13 @@
         </ol>
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
-          <div
-            v-for="(item, i) in items"
-            :key="item.id"
-            :class="{ 'item image-wrapper': true, active: !i }"
-          >
+          <div v-for="(item, i) in items" :key="item.id" :class="{ 'item image-wrapper': true, active: !i }">
             <img :src="'/file/' + item.img_src" :alt="item.name" />
             <div class="carousel-caption carousel-content">
               <h3>
                 <router-link :to="{ name: 'AppDetail', params: { id: item.id } }">{{ item.name }}</router-link>
               </h3>
-              <span
-                style="font-style: italic; text-shadow: 0 0 1rem black;"
-              >{{ itemPriceResult(item) }}</span>
+              <span style="font-style: italic; text-shadow: 0 0 1rem black;">{{ itemPriceResult(item) }}</span>
             </div>
           </div>
         </div>
@@ -58,14 +54,14 @@
   </div>
 </template>
 <script>
-var itemsCountMax = 7;
+var itemsCountMax = 8;
 var data = {
   catalog: {},
   items: [],
   dummyCategory: [],
 };
 export default {
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {

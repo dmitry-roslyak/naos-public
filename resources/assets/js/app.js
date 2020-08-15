@@ -4,22 +4,19 @@ import store from "./store";
 
 var data = {
   lng: null,
-  langs: null,
-  user: null,
 };
-const app = new Vue({
+// eslint-disable-next-line no-new
+new Vue({
   el: "#app",
   router,
   store,
   data: function() {
     return data;
   },
-  created() {
-    this.langs = window.Laravel.langsAvailable;
-    this.lng = window.Laravel.lng;
-    this.$store.commit("set_currency", window.Laravel.currency.rate);
-    if (window.Laravel.user) this.user = window.Laravel.user.name;
-  },
+  // created() {
+  //   this.$store.commit("set_currency", window.Laravel.currency.rate);
+  //   if (window.Laravel.user) this.user = window.Laravel.user.name;
+  // },
   methods: {
     itemPriceResult(item) {
       return (
@@ -31,18 +28,6 @@ const app = new Vue({
         " " +
         this.lng.currency
       );
-    },
-    get_locale(lng) {
-      axios
-        .get("/lang/" + lng)
-        .then(function(response) {
-          response.data[0].currency = response.data[0][response.data[1].name];
-          app.lng = window.Laravel.lng = response.data[0];
-          app.$store.commit("set_currency", response.data[1].rate);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
   },
 });

@@ -1,109 +1,110 @@
-.dr-btn {
-    position: relative;
-    width: 6.3em;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px 0 4px;
-    box-shadow: 0 0 0.3em;
-    background-color: white;
-    &:hover, &:focus {
-        color: whitesmoke;
-        background-color: cornflowerblue;
-    }
-    &:focus .compare-drop {
-        opacity: 1;
-        transform: scale(1);
-    }
-    &:focus .compare-drop::after {
-        border-width: 10px;
-    }
+.navbar {
+  border: none;
+  border-radius: 0;
+  background-color: #2e2e38;
+  border-color: #2e2e38;
 }
-.dr-btn + .dr-btn {
-    margin-right: 6px;
+
+.navbar > .container,
+.navbar > .container-fluid {
+  padding: 4px 25px 6px;
 }
-.badge-offset {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    color: royalblue;
-    background-color: white;
+
+.navbar .navbar-brand {
+  font-weight: 200;
+  font-size: 3.8rem;
+  color: deepskyblue !important;
+  background-color: #00bfff1c;
+  box-shadow: 0 -3rem 15rem 0px;
 }
-.naos {
-    font-weight: 300;
-    font-size: 3em;
-    color: cornflowerblue;
-    text-shadow:  0 0 8px rgba(82, 168, 236, .6);
-    &:hover, &:focus {
-        color: cornflowerblue;
-    }
+
+.navbar-nav .fa {
+  color: deepskyblue;
 }
-.vflip {
-    position: relative;
-    display: inline-block;
-    transform: rotate(180deg);
-    top: -1px;
+
+.navbar-nav > li {
+  background-color: #2e2e38;
 }
-.search {
-    padding: 14px 0;
-    & > input:focus + table, &:hover > table{
-        transform: scale(1);
-        opacity: 1;
-    }
+.navbar-nav li > a {
+  color: aliceblue;
 }
-.search > table {
-    position: absolute;
-    transition: all 0.3s;
-    transform: scale(0);
-    transform-origin: top;
-    width: 100%;
-    top: 5.5rem;
-    box-shadow: 0 0 0.5em #909090;
-    background-color: white;
-    opacity: 0;
-    /* border-radius: 0.3em; */
-    z-index: 3;
+.navbar-nav li > a > i:first-child,
+.navbar-nav li > a > img {
+  padding-right: 5px;
 }
-.search tr:hover {
-    background-color: whitesmoke;
-    /* border-radius: 0.3em; */
+.navbar-nav .input-group.search li > a:hover,
+.navbar-nav li > a:hover,
+.navbar-nav li > a:focus {
+  outline: none;
+  /* color: deepskyblue; */
+  color: deeppink;
+  border-radius: 0.5rem;
+  background-color: inherit;
+  box-shadow: inset 0 0 0.5rem;
 }
-.search-img-cell {
-    padding: 4px;
-    text-align: center;
-    & > img {
-        height: 5rem;
-    }
+
+.navbar-nav .dropdown.open > a {
+  background-color: inherit !important;
 }
-.compare-drop {
-    position: absolute;
-    transition: all 0.3s;
-    background-color: #ffffff;
-    right: 0;
-    color: black;
-    margin: 15px 0px;
-    border-radius: 0.3em;
-    box-shadow: 0 1px 0.3em cornflowerblue;
-    z-index: 5;
-    border-top: thin solid cornflowerblue;
-    white-space: nowrap;
-    text-align: left;
-    opacity: 0;
-    transform-origin: top right;
-    transform: scale(0);
+.navbar-nav ul {
+  background-color: inherit;
+  box-shadow: 0 6px 12px rgb(0 0 0 / 51%);
 }
-.compare-drop > div {
-    border-radius: 0.3em;
-    padding: 5px 10px;
+
+.input-group.search {
+  max-width: 32rem;
+  padding: 10px 15px;
+  background-color: inherit;
 }
-.compare-drop > div:hover {
-    background-color: #f5f5f5;
-    color: cornflowerblue;
+.input-group.search > * {
+  border: 0 solid deepskyblue;
+  background-color: inherit;
 }
-.compare-drop::after {
-    content: "";
-    top: -21px;
-    position: absolute;
-    right: 15px;
-    border: 0 solid transparent;
-    border-bottom-color: cornflowerblue;
+.input-group.search > input {
+  color: aliceblue;
+  font-size: inherit;
+  border-bottom-width: 1px;
+}
+.input-group.search > input:focus {
+  border-radius: 0.5rem !important;
+  box-shadow: inset 0 0 0.5rem deepskyblue;
+}
+
+#compare:hover > ul,
+#compare:focus > ul,
+.search:hover > ul,
+.search > input:focus + ul {
+  transform: scale(1);
+  opacity: 1;
+}
+#compare > ul,
+.search > ul {
+  position: absolute;
+  transition: all 0.3s;
+  transform: scale(0);
+  transform-origin: top;
+  width: 100%;
+  padding: 0;
+  opacity: 0;
+}
+
+.navbar-nav li > a > .badge {
+  position: absolute;
+  font-size: 10px;
+  top: 3px;
+  left: 0;
+  color: inherit;
+  background-color: transparent;
+}
+
+.search-img-wrapper {
+  float: left;
+  margin-right: 10px;
+  width: 6.7rem;
+  height: 6.7rem;
+  text-align: center;
+}
+.search-img-wrapper > img {
+  max-width: 6.7rem;
+  max-height: 6.7rem;
 }

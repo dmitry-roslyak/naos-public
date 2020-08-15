@@ -1,6 +1,6 @@
 // Fonts
 // @import url('https://fonts.googleapis.com/css?family=Raleway');
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300%3B400&display=swap");
 @import "node_modules/font-awesome/scss/font-awesome.scss";
 
 // Bootstrap
@@ -22,13 +22,17 @@
 @import "AppUserInfo";
 // @import "VPagination";
 
-// @import "AppHeader.scss";
 // @import "AppUserInfo.scss";
 // <style lang="scss" src="../../sass/AppProducts.scss"></style>
 
 @import "bootstrap-social";
 
 $right-note-color: cornflowerblue;
+
+html {
+  position: relative;
+  min-height: 100%;
+}
 
 body {
   padding-bottom: 225px;
@@ -303,9 +307,9 @@ td > .fa-times {
   left: 0;
 }
 .carousel .image-wrapper {
-  height: 34.8rem !important;
+  height: 39rem !important;
   & > img {
-    max-height: 34.8rem !important;
+    max-height: 39rem !important;
     padding: 2.5rem;
   }
 }

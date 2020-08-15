@@ -1,81 +1,152 @@
 <template>
-  <div class="container-fluid">
-    <router-link to="/" class="hidden-xs hidden-sm col-md-2 naos">
-      <span>
-        N
-        <span class="vflip">V</span>OS
-      </span>
-    </router-link>
-    <div class="col-sm-8 col-md-7">
-      <div class="input-group search">
-        <input
-          type="search"
-          class="form-control"
-          :placeholder="lng.search"
-          autofocus
-          @focus="search_result || toSearch()"
-          @input="toSearch()"
-        />
-        <table>
-          <tbody>
-            <tr v-for="item in search_result" :key="item.id">
-              <td class="search-img-cell">
-                <img :src="'/file/' + item.img_src" />
-              </td>
-              <td>
-                <router-link :to="{ name: 'AppDetail', params: { id: item.id } }">{{ item.name }}</router-link>
-                <star-rating
-                  :rating="+item.rating"
-                  :star-size="16"
-                  :show-rating="false"
-                  :read-only="true"
-                />
-              </td>
-              <td>
-                <nobr>{{ itemPriceResult(item) }}</nobr>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button" @click="toSearch()">
-            <i class="fa fa-search" />
-          </button>
-        </span>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-header">
+        <router-link to="/" class="navbar-brand">NAOS</router-link>
+        <button
+          type="button"
+          class="navbar-toggle collapsed"
+          data-toggle="collapse"
+          data-target="#app-navbar-collapse"
+        >
+          <span class="sr-only">Toggle Navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div id="app-navbar-collapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+              <i class="fa fa-globe"></i>
+              <!-- <img
+                  style="max-height: 19px;vertical-align: top;"
+                  :src="`/images/${lng.lang_name_ISO.toLowerCase()}.png`"
+              />-->
+              <span>{{ lng.lang_name }}</span>
+              <!-- <span class="caret"></span> -->
+            </a>
+            <ul class="dropdown-menu">
+              <li v-for="(lng2, ISO_code) in langs" :key="lng2.text">
+                <a href="#" @click.prevent="get_locale(ISO_code)">
+                  <img :src="'/images/' + ISO_code + '.png'" loading="lazy" />
+                  {{ lng2.text }}
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div class="input-group input-group-sm search">
+              <span class="input-group-addon">
+                <i class="fa fa-search" />
+              </span>
+              <input
+                type="search"
+                class="form-control"
+                :placeholder="lng.search"
+                @focus="search_result || toSearch()"
+                @input="toSearch()"
+              />
+              <ul class="dropdown-menu" style="display: initial">
+                <li v-for="item in search_result" :key="item.id">
+                  <router-link :to="{ name: 'AppDetail', params: { id: item.id } }">
+                    <div class="search-img-wrapper">
+                      <img :src="'/file/' + item.img_src" />
+                    </div>
+                    <div>
+                      {{ item.name }}
+                      <!-- :border-width="0" -->
+                      <star-rating
+                        :rating="+item.rating"
+                        :star-size="16"
+                        :show-rating="false"
+                        :inactive-color="'black'"
+                        :active-color="'deepskyblue'"
+                        :glow="2"
+                        :glow-color="'deepskyblue'"
+                        :read-only="true"
+                      />
+                    </div>
+                    <nobr>{{ itemPriceResult(item) }}</nobr>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <router-link to="/cart">
+              <i class="fa fa-shopping-cart" aria-hidden="true" />
+              <span>{{ lng.cart }}</span>
+              <span class="badge">{{ this.$store.getters.cartItemsCount }}</span>
+            </router-link>
+          </li>
+          <li>
+            <a
+              id="compare"
+              href="#"
+              @click.prevent="$store.state.compare.length == 1 && toCompare(0)"
+            >
+              <i class="fa fa-balance-scale" aria-hidden="true" />
+              <span>{{ lng.compare }}</span>
+              <span class="badge">{{ this.$store.getters.compareItemsCount }}</span>
+              <ul
+                v-show="this.$store.state.compare.length > 1"
+                class="dropdown-menu"
+                style="display: initial"
+              >
+                <li v-for="(item, key) in compare" :key="key">
+                  <a
+                    href="#"
+                    @click.prevent="toCompare(key)"
+                  >{{ lng[item.category] + ": " + item.array.length }}</a>
+                </li>
+              </ul>
+            </a>
+          </li>
+          <li v-if="!user">
+            <a href="/login">{{ lng.login }}</a>
+          </li>
+          <li v-if="!user">
+            <a href="/register">{{ lng.register }}</a>
+          </li>
+          <li v-if="user" class="dropdown">
+            <a
+              href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+              role="button"
+              aria-expanded="false"
+              style="width: 16rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+            >
+              {{ user }}
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <router-link to="/account">
+                  <i class="fa fa-user"></i>
+                  &nbsp;&nbsp;{{ lng.myprofile }}
+                </router-link>
+              </li>
+              <li>
+                <a href="/logout">
+                  <i class="fa fa-sign-out"></i>
+                  &nbsp;&nbsp;{{ lng.logout }}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-4 col-md-3">
-      <router-link to="/cart" class="dr-btn fake-link pull-right">
-        <i class="fa fa-shopping-cart" aria-hidden="true" />
-        <div>
-          <nobr>{{ lng.cart }}</nobr>
-        </div>
-        <span class="badge badge-offset">{{ this.$store.getters.cartItemsCount }}</span>
-      </router-link>
-      <a
-        id="compare"
-        href="#"
-        class="dr-btn pull-right"
-        @click.prevent="$store.state.compare.length == 1 && toCompare(0)"
-      >
-        <i class="fa fa-balance-scale" aria-hidden="true" />
-        <div>
-          <nobr>{{ lng.compare }}</nobr>
-        </div>
-        <span class="badge badge-offset">{{ this.$store.getters.compareItemsCount }}</span>
-        <div v-show="this.$store.state.compare.length > 1" class="compare-drop">
-          <div
-            v-for="(item, key) in compare"
-            :key="key"
-            @click="toCompare(key)"
-          >{{ lng[item.category] + ": " + item.array.length }}</div>
-        </div>
-      </a>
-    </div>
-  </div>
+  </nav>
 </template>
 <script>
 var data = {
+  lng: null,
+  user: null,
+  langs: null,
   search_result: null,
 };
 export default {
@@ -83,9 +154,6 @@ export default {
     return data;
   },
   computed: {
-    lng() {
-      return this.$root.lng;
-    },
     compare() {
       return this.$store.state.compare;
     },
@@ -93,7 +161,17 @@ export default {
       return (item) => this.$root.itemPriceResult(item);
     },
   },
+  watch: {
+    lng: function () {
+      this.$root.lng = this.lng;
+    },
+  },
   created() {
+    this.langs = window.Laravel.langsAvailable;
+    this.lng = window.Laravel.lng;
+    this.$store.commit("set_currency", window.Laravel.currency.rate);
+    if (window.Laravel.user) this.user = window.Laravel.user.name;
+
     this.$store.commit("loadFromLocalStorage", "compare");
     this.$store.commit("loadFromLocalStorage", "cart");
     this.$router.afterEach((to, from, next) => {
@@ -119,6 +197,18 @@ export default {
             this.search_result = response.data;
           });
     }, 400),
+    get_locale(lng) {
+      axios
+        .get("/lang/" + lng)
+        .then((response) => {
+          response.data[0].currency = response.data[0][response.data[1].name];
+          this.lng = window.Laravel.lng = response.data[0];
+          this.$store.commit("set_currency", response.data[1].rate);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
