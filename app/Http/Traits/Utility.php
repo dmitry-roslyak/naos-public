@@ -4,7 +4,7 @@ namespace App\Http\Traits;
 
 trait Utility
 {
-    public static function locale()
+    public static function locale($str = null)
     {
         $lang = 'en';
         $i18n = [
@@ -12,15 +12,10 @@ trait Utility
             'uk' => 'UAH',
             'ru' => 'RUB'
         ];
-
-        if (!empty($_COOKIE['lang'])) $str = $_COOKIE['lang'];
+        if(!empty($str)) {}
+        else if (!empty($_COOKIE['lang'])) $str = $_COOKIE['lang'];
         else if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $str =  $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-        } else {
-            return [
-                'language' => $lang,
-                'currency' => $i18n[$lang]
-            ];
         }
 
         $l = -1;

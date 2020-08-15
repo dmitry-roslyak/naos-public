@@ -52,7 +52,7 @@ class UserController extends Controller
             $user->language = $data->lng;
             $user->save();
         } else {
-            $user = Utility::locale([ 0 => $data->lng ]);
+            $user = Utility::locale($data->lng);
             \Cookie::queue('lang', $user['language'], 86400 * 60);
         }
         return [
