@@ -4,30 +4,37 @@ namespace App\Http\Traits;
 
 trait Utility
 {
-    public static function locale(array $array = [])
+    public static function locale()
     {
-        if (!empty($array)) { } else if (!empty($_COOKIE['lang'])) $array[0] = $_COOKIE['lang'];
+        $lang = 'en';
+        $i18n = [
+            'en' => 'USD',
+            'uk' => 'UAH',
+            'ru' => 'RUB'
+        ];
+
+        if (!empty($_COOKIE['lang'])) $str = $_COOKIE['lang'];
         else if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $array = explode(',', str_replace(";", ',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+            $str =  $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        } else {
+            return [
+                'language' => $lang,
+                'currency' => $i18n[$lang]
+            ];
         }
 
-        $lang = 'en';
-        $currency = 'USD';
-
-        for ($index = 0; $index < count($array); $index++) {
-            if ($array[$index] == 'ru' || $array[$index] == 'ru-RU') {
-                $lang = 'ru';
-                $currency = 'RUB';
-                break;
-            } else if ($array[$index] == 'uk') {
-                $lang = 'uk';
-                $currency = 'UAH';
-                break;
+        $l = -1;
+        foreach ($i18n as $key => $value) {
+            $index = strpos($str, $key);
+            if($index !== false && ($l === -1 || $index < $l)){
+                $l = $index;
+                $lang = $key;
             }
         }
+        
         return [
             'language' => $lang,
-            'currency' => $currency
+            'currency' => $i18n[$lang]
         ];
     }
     public static function data_fetch()
