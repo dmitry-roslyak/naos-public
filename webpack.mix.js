@@ -16,6 +16,8 @@ mix.js("resources/assets/js/auth.js", "public/js");
 
 mix.version();
 
+mix.browserSync(process.env.BROWSER_SYNC_ADDR);
+
 mix.webpackConfig((webpack) => {
   return {
     plugins: [
