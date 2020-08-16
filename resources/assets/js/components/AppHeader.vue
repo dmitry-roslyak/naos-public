@@ -10,22 +10,24 @@
           data-target="#app-navbar-collapse"
         >
           <span class="sr-only">Toggle Navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+          <span class="icon-bar" />
+          <span class="icon-bar" />
+          <span class="icon-bar" />
         </button>
       </div>
       <div id="app-navbar-collapse" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
-              <i class="fa fa-globe"></i>
-              <!-- <img
-                  style="max-height: 19px;vertical-align: top;"
-                  :src="`/images/${lng.lang_name_ISO.toLowerCase()}.png`"
-              />-->
-              <span>{{ lng.lang_name }}</span>
-              <!-- <span class="caret"></span> -->
+            <a
+              href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              role="button"
+            >
+              <i class="fa fa-globe" />
+              {{ lng.lang_name }}
             </a>
             <ul class="dropdown-menu">
               <li v-for="(lng2, ISO_code) in langs" :key="lng2.text">
@@ -56,7 +58,6 @@
                     </div>
                     <div>
                       {{ item.name }}
-                      <!-- :border-width="0" -->
                       <star-rating
                         :rating="+item.rating"
                         :star-size="16"
@@ -85,6 +86,7 @@
             <a
               id="compare"
               href="#"
+              role="button"
               @click.prevent="$store.state.compare.length == 1 && toCompare(0)"
             >
               <i class="fa fa-balance-scale" aria-hidden="true" />
@@ -117,22 +119,21 @@
               data-toggle="dropdown"
               role="button"
               aria-expanded="false"
-              style="width: 16rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
             >
+              <i class="fa fa-user" />
               {{ user }}
-              <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu">
               <li>
                 <router-link to="/account">
-                  <i class="fa fa-user"></i>
-                  &nbsp;&nbsp;{{ lng.myprofile }}
+                  <i class="fa fa-address-card" />
+                  {{ lng.myprofile }}
                 </router-link>
               </li>
               <li>
                 <a href="/logout">
-                  <i class="fa fa-sign-out"></i>
-                  &nbsp;&nbsp;{{ lng.logout }}
+                  <i class="fa fa-sign-out" />
+                  {{ lng.logout }}
                 </a>
               </li>
             </ul>
