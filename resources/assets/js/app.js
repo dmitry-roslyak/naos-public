@@ -2,22 +2,25 @@ import "./bootstrap";
 import router from "./router";
 import store from "./store";
 
-var data = {
-  lng: null,
-};
 // eslint-disable-next-line no-new
 new Vue({
   el: "#app",
   router,
   store,
   data: function() {
-    return data;
+    return {
+      lng: null,
+    };
   },
-  // created() {
-  //   this.$store.commit("set_currency", window.Laravel.currency.rate);
-  //   if (window.Laravel.user) this.user = window.Laravel.user.name;
-  // },
+  created() {
+    this.appLocaleSet(window.Laravel);
+  },
   methods: {
+    appLocaleSet(locale) {
+      locale.lng.currency = locale.lng[locale.currency.name];
+      this.lng = locale.lng;
+      this.$store.commit("set_currency", locale.currency.rate);
+    },
     itemPriceResult(item) {
       return (
         (item.discount

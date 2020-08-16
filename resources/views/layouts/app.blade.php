@@ -10,10 +10,7 @@
     <title>{{ config('app.name') }}</title>
     <link rel="manifest" href="/manifest.json">
     <link href="{{mix('/css/app.css')}}" rel="stylesheet">
-    <script>
-        window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};
-        window.Laravel.lng.currency = window.Laravel.lng[window.Laravel.currency.name];
-    </script>
+    <script>window.Laravel = {!! json_encode(\App\Http\Traits\Utility::data_fetch()) !!};</script>
 </head>
 <body>
     @yield('content')

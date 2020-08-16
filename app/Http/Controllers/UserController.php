@@ -56,10 +56,10 @@ class UserController extends Controller
             \Cookie::queue('lang', $user['language'], 86400 * 60);
         }
         return [
-            \App\Lang::where('lng', $user['language'])->get(['name','text'])->mapWithKeys(function ($item) {
+            'lng' => \App\Lang::where('lng', $user['language'])->get(['name','text'])->mapWithKeys(function ($item) {
                 return [$item['name'] => $item['text']];
             }), 
-            Currency::where('name', $user['currency'])->orderBy('date','desc')->first()
+            'currency' => Currency::where('name', $user['currency'])->orderBy('date','desc')->first()
         ];
     }
     public function update(Request $data)

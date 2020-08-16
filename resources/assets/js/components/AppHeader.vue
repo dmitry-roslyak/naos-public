@@ -3,12 +3,7 @@
     <div class="container">
       <div class="navbar-header">
         <router-link to="/" class="navbar-brand">NAOS</router-link>
-        <button
-          type="button"
-          class="navbar-toggle collapsed"
-          data-toggle="collapse"
-          data-target="#app-navbar-collapse"
-        >
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
           <span class="sr-only">Toggle Navigation</span>
           <span class="icon-bar" />
           <span class="icon-bar" />
@@ -83,25 +78,13 @@
             </router-link>
           </li>
           <li>
-            <a
-              id="compare"
-              href="#"
-              role="button"
-              @click.prevent="$store.state.compare.length == 1 && toCompare(0)"
-            >
+            <a id="compare" href="#" role="button" @click.prevent="$store.state.compare.length == 1 && toCompare(0)">
               <i class="fa fa-balance-scale" aria-hidden="true" />
               <span>{{ lng.compare }}</span>
               <span class="badge">{{ this.$store.getters.compareItemsCount }}</span>
-              <ul
-                v-show="this.$store.state.compare.length > 1"
-                class="dropdown-menu"
-                style="display: initial"
-              >
+              <ul v-show="this.$store.state.compare.length > 1" class="dropdown-menu" style="display: initial">
                 <li v-for="(item, key) in compare" :key="key">
-                  <a
-                    href="#"
-                    @click.prevent="toCompare(key)"
-                  >{{ lng[item.category] + ": " + item.array.length }}</a>
+                  <a href="#" @click.prevent="toCompare(key)">{{ lng[item.category] + ": " + item.array.length }}</a>
                 </li>
               </ul>
             </a>
@@ -113,13 +96,7 @@
             <a href="/register">{{ lng.register }}</a>
           </li>
           <li v-if="user" class="dropdown">
-            <a
-              href="#"
-              class="dropdown-toggle"
-              data-toggle="dropdown"
-              role="button"
-              aria-expanded="false"
-            >
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
               <i class="fa fa-user" />
               {{ user }}
             </a>
@@ -145,16 +122,18 @@
 </template>
 <script>
 var data = {
-  lng: null,
   user: null,
   langs: null,
   search_result: null,
 };
 export default {
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {
+    lng() {
+      return this.$root.lng;
+    },
     compare() {
       return this.$store.state.compare;
     },
@@ -162,15 +141,8 @@ export default {
       return (item) => this.$root.itemPriceResult(item);
     },
   },
-  watch: {
-    lng: function () {
-      this.$root.lng = this.lng;
-    },
-  },
   created() {
     this.langs = window.Laravel.langsAvailable;
-    this.lng = window.Laravel.lng;
-    this.$store.commit("set_currency", window.Laravel.currency.rate);
     if (window.Laravel.user) this.user = window.Laravel.user.name;
 
     this.$store.commit("loadFromLocalStorage", "compare");
@@ -186,7 +158,7 @@ export default {
         `/compare/${this.$store.state.compare[i].category}/${JSON.stringify(this.$store.state.compare[i].array)}`
       );
     },
-    toSearch: debounce(function () {
+    toSearch: debounce(function() {
       var text = document.querySelector(".search > input").value;
       this.search_result = null;
       text.length &&
@@ -201,11 +173,7 @@ export default {
     get_locale(lng) {
       axios
         .get("/lang/" + lng)
-        .then((response) => {
-          response.data[0].currency = response.data[0][response.data[1].name];
-          this.lng = window.Laravel.lng = response.data[0];
-          this.$store.commit("set_currency", response.data[1].rate);
-        })
+        .then((response) => this.$root.appLocaleSet(response.data))
         .catch((error) => {
           console.log(error);
         });
