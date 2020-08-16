@@ -1,36 +1,30 @@
 <template>
   <div class="container-fluid">
-    <i class="fa fa-id-card" /> &nbsp;
-    <label>{{lng.personal_info}}</label>&nbsp;
+    <i class="fa fa-id-card" />
+    <label>{{ lng.personal_info }}</label>
     <a v-if="!guest" class="fake-link" @click="upd_usr_info()">
       <i class="fa fa-edit" />
-      &nbsp;{{edit?lng.confirm:lng.edit}}
+      {{ edit ? lng.confirm : lng.edit }}
     </a>
     <div class="container-fluid">
       <table class="table user-info-table">
         <tbody>
           <tr>
-            <td>{{lng.fname+', '+lng.lname}}</td>
+            <td>{{ lng.fname + ", " + lng.lname }}</td>
             <td v-if="edit">
               <input id="name" v-model="userInfo.name" v-validate class="form-control myinput1" />
             </td>
-            <td v-else>{{userInfo.name}}</td>
+            <td v-else>{{ userInfo.name }}</td>
             <td>
               <i :class="validate.name ? 'fa fa-check-circle' : 'fa fa-times'" />
             </td>
           </tr>
           <tr>
-            <td>{{lng.tel_number}}</td>
+            <td>{{ lng.tel_number }}</td>
             <td v-if="edit">
-              <input
-                id="tel"
-                v-model="userInfo.tel"
-                v-validate
-                class="form-control myinput1"
-                maxlength="11"
-              />
+              <input id="tel" v-model="userInfo.tel" v-validate class="form-control myinput1" maxlength="11" />
             </td>
-            <td v-else>{{userInfo.tel}}</td>
+            <td v-else>{{ userInfo.tel }}</td>
             <td>
               <i :class="validate.tel ? 'fa fa-check-circle' : 'fa fa-times'" />
             </td>
@@ -59,7 +53,7 @@ var validator = new Validator(
 );
 
 export default {
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {

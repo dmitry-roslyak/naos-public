@@ -4,13 +4,9 @@
     <div class="col-sm-9 col-md-10" style="padding:0">
       <div class="panel panel-default itmc">
         <div class="panel-body">
-          <label>{{lng.showed_items}}</label>
+          <label>{{ lng.showed_items }}</label>
           <div class="dropdown">
-            <a
-              class="dropdown-toggle fake-link"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-            >{{items.length}}</a>
+            <a class="dropdown-toggle fake-link" data-toggle="dropdown" aria-haspopup="true">{{ items.length }}</a>
             <ul class="dropdown-menu">
               <li>
                 <a class="fake-link" @click="paginator.take = 20">20</a>
@@ -23,96 +19,68 @@
               </li>
             </ul>
           </div>
-          ({{paginator.total}})
+          ({{ paginator.total }})
           <div class="pull-right">
-            <label for="sortby">{{lng.sortby}}&nbsp;</label>
-            <select
-              id="sortby"
-              v-model="ordby"
-              class="form-control input-sm"
-              @change="productsfetch()"
-            >
-              <option value="bydef">{{lng.bydef}}</option>
-              <option value="asc_price">{{lng.asc_price}}</option>
-              <option value="desc_price">{{lng.desc_price}}</option>
-              <option value="byrating">{{lng.byrating}}</option>
-              <option value="bynewest">{{lng.bynewest}}</option>
+            <label for="sortby">{{ lng.sortby }}&nbsp;</label>
+            <select id="sortby" v-model="ordby" class="form-control input-sm" @change="productsfetch()">
+              <option value="bydef">{{ lng.bydef }}</option>
+              <option value="asc_price">{{ lng.asc_price }}</option>
+              <option value="desc_price">{{ lng.desc_price }}</option>
+              <option value="byrating">{{ lng.byrating }}</option>
+              <option value="bynewest">{{ lng.bynewest }}</option>
             </select>
           </div>
         </div>
       </div>
-      <div v-for="(item,i) in items" :key="item.id" class="col-sm-6 col-md-4 col-lg-3 item-card">
-        <div v-if="item.isArriveSoon" class="item-note soon">{{lng.soon}}</div>
-        <div v-else-if="item.isNew" class="item-note new">{{lng.new}}</div>
-        <div v-else-if="item.discount" class="item-note offer">{{lng.offer}}</div>
-        <div v-else-if="item.is_bestseller==1" class="item-note hot">{{lng.hot}}</div>
-        <div class="action-frm">
-          <a class="action-item fake-link" @click="to_compare(i)">
-            <span class="hidden-xs">{{lng.to_compare}}</span>
-            <i
-              class="fa fa-balance-scale compare-state anm-bounce-scale"
-              :data-check="item.is_compare"
-              aria-hidden="true"
-            ></i>
-          </a>&nbsp;
-          <a class="action-item fake-link" @click="to_wish(i)">
-            <span class="hidden-xs">{{lng.to_wishlist}}</span>
-            <i
-              class="fa fa-heart heart-state anm-bounce-scale"
-              :data-check="item.isWish"
-              aria-hidden="true"
-            />
-          </a>
-        </div>
-        <div class="thumbnail ic-s">
+      <div v-for="(item, i) in items" :key="item.id" class="col-sm-6 col-md-4 col-lg-3 item-card">
+        <div>
           <div class="image-wrapper">
-            <img
-              :src="'/file/'+item.img_src"
-              @load="imgReady($event.target)"
-              @error="img404($event.target)"
-            />
+            <img :src="'/file/' + item.img_src" @load="imgReady($event.target)" @error="img404($event.target)" />
+          </div>
+          <div v-if="item.isArriveSoon" class="item-note soon">{{ lng.soon }}</div>
+          <div v-else-if="item.isNew" class="item-note new">{{ lng.new }}</div>
+          <div v-else-if="item.discount" class="item-note offer">{{ lng.offer }}</div>
+          <div v-else-if="item.is_bestseller == 1" class="item-note hot">{{ lng.hot }}</div>
+          <div class="action-frm">
+            <a class="action-item fake-link" @click="to_compare(i)">
+              <span class="hidden-xs">{{ lng.to_compare }}</span>
+              <i
+                class="fa fa-balance-scale compare-state anm-bounce-scale"
+                :data-check="item.is_compare"
+                aria-hidden="true"
+              />
+            </a>
+            <a class="action-item fake-link" @click="to_wish(i)">
+              <span class="hidden-xs">{{ lng.to_wishlist }}</span>
+              <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true" />
+            </a>
           </div>
           <div class="caption">
-            <router-link
-              class="item-card-name"
-              :to="{ name: 'AppDetail', params: { id: item.id }}"
-            >{{item.name}}</router-link>
-            <div class="col-xs-12" style="padding: 3px 0">
-              <star-rating
-                :rating="+item.rating"
-                :star-size="16"
-                :show-rating="false"
-                :read-only="true"
-                style="display:inline-block"
-              ></star-rating>
-              <div class="product-state pull-right">
-                <s v-if="item.discount&&item.available">{{(currency * item.price).toFixed(1)}}</s>
-                <span v-if="!item.available">{{lng.not_in_stock}}</span>
-                <span v-else>{{itemPriceResult(item)}}</span>
-              </div>
+            <router-link class="item-card-name" :to="{ name: 'AppDetail', params: { id: item.id } }">{{
+              item.name
+            }}</router-link>
+            <star-rating :rating="+item.rating" :star-size="16" :show-rating="false" :read-only="true"></star-rating>
+            <div class="product-state pull-right">
+              <s v-if="item.discount && item.available">{{ (currency * item.price).toFixed(1) }}</s>
+              <span v-if="!item.available">{{ lng.not_in_stock }}</span>
+              <span v-else>{{ itemPriceResult(item) }}</span>
             </div>
-            <div class="col-xs-12" style="padding: 0 0 8px">
-              <div class="btn-group pull-right" role="group" aria-label="...">
-                <button
-                  type="button"
-                  class="btn btn-default action-item"
-                  @click="addToCart(i, item.id)"
-                >
-                  <span>{{lng.addto_cart}}</span>
-                  <i
-                    class="fa fa-cart-plus btn-in-cart-i anm-bounce-scale"
-                    :data-check="item.isInCart"
-                    aria-hidden="true"
-                  ></i>&nbsp;&nbsp;
-                </button>
-                <button type="button" class="btn btn-primary" @click="buy(item.id)">{{lng.buy}}</button>
-              </div>
+            <div class="btn-group pull-right">
+              <button type="button" class="btn btn-default action-item" @click="addToCart(i, item.id)">
+                <span>{{ lng.addto_cart }}</span>
+                <i
+                  class="fa fa-cart-plus btn-in-cart-i anm-bounce-scale"
+                  :data-check="item.isInCart"
+                  aria-hidden="true"
+                />
+              </button>
+              <button type="button" class="btn btn-primary" @click="buy(item.id)">{{ lng.buy }}</button>
             </div>
             <table class="item-spec">
               <tbody>
                 <tr v-for="(specs, j) in item.specs" :key="j">
-                  <td>{{lng[specs.name]?lng[specs.name]:specs.name}}</td>
-                  <td>{{specs.value}}&nbsp;{{specs.val_type}}</td>
+                  <td>{{ lng[specs.name] ? lng[specs.name] : specs.name }}</td>
+                  <td>{{ specs.value }}&nbsp;{{ specs.val_type }}</td>
                 </tr>
               </tbody>
             </table>
@@ -151,7 +119,7 @@ export default {
       required: true,
     },
   },
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {
@@ -168,10 +136,10 @@ export default {
   watch: {
     "$store.state.flt_ids": "productsfetch",
     "paginator.take": "productsfetch",
-    "paginator.skip": function () {
+    "paginator.skip": function() {
       this.productsfetch("withSkip");
     },
-    "price.range": function (array) {
+    "price.range": function(array) {
       array.length === 2 && this.productsfetch();
     },
   },
@@ -184,7 +152,7 @@ export default {
       e.style.visibility = "initial";
       e.style.padding = "4em";
     },
-    productsfetch: debounce(function (arg) {
+    productsfetch: debounce(function(arg) {
       if (arg !== "withSkip") {
         this.paginator.skip = 0;
         this.paginator.page = 1;

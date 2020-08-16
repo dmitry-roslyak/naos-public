@@ -1,80 +1,91 @@
 .itmc {
-    margin: 0 0.3rem;
-    & > div {
-        padding: 6px 25px 3px;
-        font-size: 1.5rem;
-        line-height: 2em;
-    }
-    & .dropdown, & select{
-         display: inline-block;
-    }
-    & label {
-        font-weight: normal;
-    }
+  margin: 0 0.3rem;
+  & > div {
+    padding: 6px 25px 3px;
+    font-size: 1.5rem;
+    line-height: 2em;
+  }
+  & .dropdown,
+  & select {
+    display: inline-block;
+  }
+  & label {
+    font-weight: normal;
+  }
 }
 
 #sortby {
-    width: 180px;
+  width: 180px;
 }
 
 .item-card {
-    height: 26em;
-    padding: 6px 4px;
+  height: 26em;
+  padding: 6px 4px;
 
-    &:hover {
-        z-index: 3;
-    }
+  &:hover {
+    z-index: 3;
+  }
 
-    &:hover .item-spec {
-        transform: scale(1);
-        visibility: visible;
-    }
+  &:hover .item-spec {
+    transform: scale(1);
+    visibility: visible;
+  }
+}
+
+.item-card > div {
+  position: relative;
+  border: 0.8px solid gainsboro;
+  background-color: #f5f8fa;
+
+  &:hover {
+    box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+  }
+}
+.item-card .image-wrapper {
+  position: relative;
+  margin: 2rem 2rem 0;
+  height: 19.5rem;
+  & > img {
+    max-height: 19.5rem;
+    visibility: hidden;
+  }
+}
+
+.item-card .caption {
+  padding: 10px;
+}
+.item-card .caption > * {
+  margin-top: 8px;
+}
+.item-card .caption > .vue-star-rating {
+  display: inline-block;
 }
 
 .item-spec {
-    transition: all 0.2s;
-    transform: scale(0);
-    visibility: collapse;
-    transform-origin: top;
-    width: 100%;
+  transition: transform 0.2s;
+  transform: scale(0);
+  visibility: collapse;
+  transform-origin: top;
+  width: 100%;
 
-    & tr td:last-child {
-        width: 55%;
-        padding-left: 10px;
-        font-weight: bolder;
-    }
+  & tr td:last-child {
+    width: 55%;
+    padding-left: 10px;
+    font-weight: bolder;
+  }
 
-    & tr:nth-child(even) {
-        background-color: whitesmoke;
-    }
+  & tr:nth-child(odd) {
+    background-color: #ededed;
+  }
 }
-
-.item-card>.action-frm {
-    right: 4px;
-}
-
-.item-card .image-wrapper {
-    position: relative;
-    margin: 3rem 2rem 0;
-    height: 19.5rem;
-    & > img {
-        max-height: 19.5rem;
-        visibility: hidden;
-    }
+.item-spec:before {
+  content: "";
+  display: inline-block;
 }
 
 .item-card-name {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.ic-s {
-    transition: all 0.3s;
-    background-color: white !important;
-
-    &:hover {
-        box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
-    }
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

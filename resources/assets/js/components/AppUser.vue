@@ -1,27 +1,17 @@
 <template>
-  <div class="container-fluid" style="max-width: 80em">
+  <div class="container">
     <div class="container-fluid">
       <div class="dropdown">
-        <i class="fa fa-money"></i>
-        <label>&nbsp;{{lng.currency_type}} :&nbsp;&nbsp;</label>
-        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
-          <span style="vertical-align:middle;">&nbsp;{{lng.currency}}&nbsp;</span>
-          <span class="caret"></span>
+        <i class="fa fa-money" />
+        <label>{{ lng.currency_type }}:</label>
+        <a class="dropdown-toggle fake-link" data-toggle="dropdown" aria-haspopup="true">
+          {{ lng.currency }}
+          <span class="caret" />
         </a>
         <ul class="dropdown-menu">
-          <li>
-            <a class="fake-link" @click="get_currency('UAH')">
-              <span>&nbsp;&nbsp;{{lng.UAH}}</span>
-            </a>
-          </li>
-          <li>
-            <a class="fake-link" @click="get_currency('RUB')">
-              <span>&nbsp;&nbsp;{{lng.RUB}}</span>
-            </a>
-          </li>
-          <li>
-            <a class="fake-link" @click="get_currency('USD')">
-              <span>&nbsp;&nbsp;{{lng.USD}}</span>
+          <li v-for="currencyName in currencies" :key="currencyName">
+            <a href="#" @click.prevent="fetchCurrency(currencyName)">
+              {{ lng[currencyName] }}
             </a>
           </li>
         </ul>
@@ -31,7 +21,7 @@
     <app-user-info></app-user-info>
     <!-- <hr>
         <div class="row">
-            <span class="glyphicon glyphicon-lock"></span>
+            <span class="glyphicon glyphicon-lock" />
             <a @click="pass_reset?pass_reset=false:pass_reset=true">{{pass_reset?"Отмена":"Изменить пароль"}}</a>
             <div v-if="pass_reset">
                 <span>Старый пароль</span>
@@ -45,21 +35,21 @@
     </div>-->
     <hr style="margin:8px 0" />
     <div class="container-fluid">
-      <i class="fa fa-envelope"></i>
-      <label>{{lng.email_me}} :</label>
+      <i class="fa fa-envelope" />
+      <label>{{ lng.email_me }} :</label>
       <div class="container-fluid">
         <div class="checkbox disabled">
           <label>
             <!--<input v-bind:checked="" type="checkbox">-->
             <input type="checkbox" disabled />
-            {{lng.email_me_offers}}
+            {{ lng.email_me_offers }}
           </label>
         </div>
         <div class="checkbox">
           <label>
             <!--<input v-bind:checked="" type="checkbox">-->
             <input type="checkbox" disabled />
-            {{lng.email_me_wishlist}}
+            {{ lng.email_me_wishlist }}
           </label>
         </div>
       </div>
@@ -72,13 +62,16 @@ export default {
   components: {
     AppUserInfo: () => import(/* webpackChunkName: "js/AppUserInfo-vue" */ "./AppUserInfo"),
   },
+  data() {
+    return { currencies: ["UAH", "USD"] };
+  },
   computed: {
     lng() {
       return this.$root.lng;
     },
   },
   methods: {
-    get_currency(val) {
+    fetchCurrency(val) {
       axios.get("/set_currency?val=" + val).then((response) => {
         this.lng.currency = this.lng[response.data.name];
         this.$store.commit("set_currency", response.data.rate);

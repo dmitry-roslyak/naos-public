@@ -1,41 +1,36 @@
 <template>
   <div class="container-fluid">
     <div id="order-done" style="display:none" class="overlay-view">
-      <h4>{{lng.order_done}} !</h4>
+      <h4>{{ lng.order_done }} !</h4>
     </div>
     <hr />
     <div class="col-md-7 col-sm-12 cart-products">
       <div class="cart-caption">
-        {{lng.cart}}
-        <div class="pull-right">{{lng.total_sum +': '+total+' '+ lng.currency}}</div>
+        {{ lng.cart }}
+        <div class="pull-right">{{ lng.total_sum + ": " + total + " " + lng.currency }}</div>
       </div>
       <table class="table">
         <tbody>
           <tr>
             <th />
-            <th>{{lng.product}}</th>
-            <th>{{lng.count}}</th>
-            <th>{{lng.price}}</th>
+            <th>{{ lng.product }}</th>
+            <th>{{ lng.count }}</th>
+            <th>{{ lng.price }}</th>
           </tr>
           <tr v-for="(item, i) in products" :key="item.id">
             <td>
-              <img :src="'/file/'+item.img_src" />
+              <img :src="'/file/' + item.img_src" />
             </td>
             <td>
-              <router-link :to="{ name: 'AppDetail', params: { id: item.id }}">{{item.name}}</router-link>
+              <router-link :to="{ name: 'AppDetail', params: { id: item.id } }">{{ item.name }}</router-link>
             </td>
             <td>
-              <input
-                v-model="item.count"
-                class="form-control"
-                type="number"
-                @input="reCount(item.id, i)"
-              />
+              <input v-model="item.count" class="form-control" type="number" @input="reCount(item.id, i)" />
             </td>
-            <td style="white-space: nowrap;">{{itemPriceResult(item)}}</td>
+            <td style="white-space: nowrap;">{{ itemPriceResult(item) }}</td>
             <div class="action-frm">
               <a class="action-item fake-link" @click="removeFromCart(item.id)">
-                <span class="hidden-xs">{{lng.remove}}</span>
+                <span class="hidden-xs">{{ lng.remove }}</span>
                 <i class="fa fa-trash" aria-hidden="true" />
               </a>
             </div>
@@ -46,31 +41,31 @@
     <div class="col-sm-12 col-md-5">
       <app-user-info ref="userInfo" style="padding:0"></app-user-info>
       <hr />
-      <label>{{lng.payment_type}}&nbsp;</label>
+      <label>{{ lng.payment_type }}&nbsp;</label>
       <div class="col-xs-12">
         <div class="radio">
           <i class="fa fa-money" />
           <label>
             <input v-model="payment" type="radio" value="cash" />
-            {{lng.cash}}
+            {{ lng.cash }}
           </label>
         </div>
         <div class="radio">
           <i class="fa fa-credit-card" />
           <label>
             <input v-model="payment" type="radio" value="pay_card" />
-            {{lng.paycard}}
+            {{ lng.paycard }}
           </label>
         </div>
       </div>
       <hr />
-      <div v-if="payment=='pay_card'">
-        <label>{{lng.paycard_info}}&nbsp;</label>
+      <div v-if="payment == 'pay_card'">
+        <label>{{ lng.paycard_info }}&nbsp;</label>
         <i class="fa fa-cc-visa" />
         <table class="table">
           <tbody>
             <tr>
-              <td>{{lng.paycard_number}}</td>
+              <td>{{ lng.paycard_number }}</td>
               <td>
                 <input
                   id="number"
@@ -78,7 +73,10 @@
                   v-validate
                   class="form-control myinput1"
                   maxlength="19"
-                  @keyup.13="card.number = '4005520000011126'; next_input($event.target, 'month')"
+                  @keyup.13="
+                    card.number = '4005520000011126';
+                    next_input($event.target, 'month');
+                  "
                 />
               </td>
               <td>
@@ -110,9 +108,7 @@
                 </div>
               </td>
               <td>
-                <i
-                  :class="validate['month'] && validate['year'] ? 'fa fa-check-circle' : 'fa fa-times'"
-                />
+                <i :class="validate['month'] && validate['year'] ? 'fa fa-check-circle' : 'fa fa-times'" />
               </td>
             </tr>
             <tr>
@@ -134,7 +130,7 @@
           </tbody>
         </table>
       </div>
-      <button class="btn btn-primary" @click="to_order">{{lng.confirm_order}}</button>
+      <button class="btn btn-primary" @click="to_order">{{ lng.confirm_order }}</button>
     </div>
     <hr />
   </div>
@@ -167,19 +163,17 @@ export default {
   props: {
     ids: {
       type: String,
-      default: function () {
-        return "[]";
-      },
+      default: "",
     },
   },
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {
     lng() {
       return this.$root.lng;
     },
-    total: function () {
+    total: function() {
       var res = 0;
       for (var i = 0; i < this.products.length; i++) {
         res += this.products[i].price * this.$store.state.currency * this.products[i].count;
