@@ -14,6 +14,34 @@
         {{ lng[name] ? lng[name] : name }}
       </a>
     </div>
+
+    <div class="flt-grp" style="padding: 1rem">
+      <label>{{ lng.showed_items }}</label>
+      <div class="dropdown" style="padding-left: 10px;">
+        <a class="dropdown-toggle fake-link" data-toggle="dropdown" aria-haspopup="true">{{ display_items }}</a>
+        {{ total_items }}
+        <ul class="dropdown-menu">
+          <li>
+            <a class="fake-link" @click="$emit('take', 20)">20</a>
+          </li>
+          <li>
+            <a class="fake-link" @click="$emit('take', 30)">30</a>
+          </li>
+          <li>
+            <a class="fake-link" @click="$emit('take', 40)">40</a>
+          </li>
+        </ul>
+      </div>
+      <label for="sortby">{{ lng.sortby }}&nbsp;</label>
+      <select id="sortby" class="form-control input-sm" @change="$emit('ordby', $event.target.value)">
+        <option value="bydef">{{ lng.bydef }}</option>
+        <option value="asc_price">{{ lng.asc_price }}</option>
+        <option value="desc_price">{{ lng.desc_price }}</option>
+        <option value="byrating">{{ lng.byrating }}</option>
+        <option value="bynewest">{{ lng.bynewest }}</option>
+      </select>
+    </div>
+
     <div style="font-weight:bold;padding: 1rem">
       <i class="fa fa-filter" />
       {{ lng.filters }}
@@ -23,7 +51,7 @@
       </span>
     </div>
 
-    <div class="thumbnail flt-grp">
+    <div class="flt-grp">
       <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
         {{ lng.price }}
         <i class="fa fa-angle-up font1 pull-right" style="display:none" aria-hidden="true" />
@@ -43,7 +71,7 @@
         <range ref="range" v-model="vRangeSlidersPosition" style="margin-top:8px" @change="rangeReset()" />
       </div>
     </div>
-    <div v-for="(filter, i1) in filters" :key="filter.id" class="thumbnail flt-grp">
+    <div v-for="(filter, i1) in filters" :key="filter.id" class="flt-grp">
       <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
         <!-- <span :title="filter.desc"><i class="fa fa-info-circle"></i></span> -->
         {{ lng[filter.name] ? lng[filter.name] : filter.name }}
@@ -73,6 +101,18 @@ var data = {
 export default {
   components: {
     range,
+  },
+  props: {
+    // eslint-disable-next-line vue/prop-name-casing
+    total_items: {
+      type: Number,
+      default: 0,
+    },
+    // eslint-disable-next-line vue/prop-name-casing
+    display_items: {
+      type: Number,
+      default: 0,
+    },
   },
   data: function() {
     return data;

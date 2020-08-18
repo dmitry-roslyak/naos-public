@@ -1,37 +1,17 @@
 <template>
   <div class="container-fluid">
-    <app-products-filters class="col-sm-3 col-md-2" style="padding: 0" />
-    <div class="col-sm-9 col-md-10" style="padding:0">
-      <div class="panel panel-default itmc">
-        <div class="panel-body">
-          <label>{{ lng.showed_items }}</label>
-          <div class="dropdown">
-            <a class="dropdown-toggle fake-link" data-toggle="dropdown" aria-haspopup="true">{{ items.length }}</a>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="fake-link" @click="paginator.take = 20">20</a>
-              </li>
-              <li>
-                <a class="fake-link" @click="paginator.take = 30">30</a>
-              </li>
-              <li>
-                <a class="fake-link" @click="paginator.take = 40">40</a>
-              </li>
-            </ul>
-          </div>
-          ({{ paginator.total }})
-          <div class="pull-right">
-            <label for="sortby">{{ lng.sortby }}&nbsp;</label>
-            <select id="sortby" v-model="ordby" class="form-control input-sm" @change="productsfetch()">
-              <option value="bydef">{{ lng.bydef }}</option>
-              <option value="asc_price">{{ lng.asc_price }}</option>
-              <option value="desc_price">{{ lng.desc_price }}</option>
-              <option value="byrating">{{ lng.byrating }}</option>
-              <option value="bynewest">{{ lng.bynewest }}</option>
-            </select>
-          </div>
-        </div>
-      </div>
+    <app-products-filters
+      class="col-sm-3 col-md-2"
+      style="padding: 0;"
+      :display_items="items.length"
+      :total_items="paginator.total"
+      @take="paginator.take = $event"
+      @ordby="
+        ordby = $event;
+        productsfetch();
+      "
+    />
+    <div class="col-sm-9 col-md-10" style="padding: 0;">
       <div v-for="(item, i) in items" :key="item.id" class="col-sm-6 col-md-4 col-lg-3 item-card">
         <div>
           <div class="image-wrapper">

@@ -1,34 +1,9 @@
-.itmc {
-  margin: 0 0.3rem;
-  & > div {
-    padding: 6px 25px 3px;
-    font-size: 1.5rem;
-    line-height: 2em;
-  }
-  & .dropdown,
-  & select {
-    display: inline-block;
-  }
-  & label {
-    font-weight: normal;
-  }
-}
-
-#sortby {
-  width: 180px;
-}
-
 .item-card {
   height: 26em;
-  padding: 6px 4px;
+  padding: 0 6px;
 
   &:hover {
     z-index: 3;
-  }
-
-  &:hover .item-spec {
-    transform: scale(1);
-    visibility: visible;
   }
 }
 
@@ -39,6 +14,10 @@
 
   &:hover {
     box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+  }
+  &:hover .item-spec {
+    transform: scale(1);
+    visibility: visible;
   }
 }
 .item-card .image-wrapper {
