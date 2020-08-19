@@ -191,7 +191,7 @@ export default {
       console.log(error);
     }
     var requestIDs = parsed || Object.keys(this.$store.state.cart);
-    if (requestIDs.length) this.get_prodsby_ids(requestIDs);
+    if (requestIDs.length) this.productsFetch(requestIDs);
   },
   methods: {
     reCount(id, i) {
@@ -206,13 +206,12 @@ export default {
       });
       this.$store.commit("cart", { id: id, toRemove: true });
     },
-    get_prodsby_ids(ids) {
-      this.products.length = 0;
-      axios.get("/products_with_discount_by_ids", { params: { ids: ids } }).then((response) => {
+    productsFetch(ids) {
+      axios.get("/products", { params: { ids: ids } }).then((response) => {
         response.data.forEach((element, i) => {
           element.count = this.$store.state.cart[element.id] || 1;
-          this.products.push(element);
         });
+        this.products = response.data;
       });
     },
     next_input(target, next) {

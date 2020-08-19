@@ -5,18 +5,12 @@
         <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <span>{{ lng.hist_graph }}&nbsp;</span>
         <div class="btn-group" role="group" aria-label="...">
-          <button
-            id="graph_btn1"
-            type="button"
-            class="btn btn-default btn-sm"
-            @click="show_hist(1)"
-          >{{ lng.price_hist }}</button>
-          <button
-            id="graph_btn2"
-            type="button"
-            class="btn btn-default btn-sm"
-            @click="show_hist(2)"
-          >{{ lng.sales_hist }}</button>
+          <button id="graph_btn1" type="button" class="btn btn-default btn-sm" @click="productHistoryFetch(1)">
+            {{ lng.price_hist }}
+          </button>
+          <button id="graph_btn2" type="button" class="btn btn-default btn-sm" @click="productHistoryFetch(2)">
+            {{ lng.sales_hist }}
+          </button>
         </div>
       </div>
       <div class="panel-body" style="padding:4px">
@@ -73,7 +67,7 @@ export default {
       required: true,
     },
   },
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {
@@ -82,8 +76,8 @@ export default {
     },
   },
   watch: {
-    productId: function () {
-      this.show_hist(1);
+    productId: function() {
+      this.productHistoryFetch(1);
     },
   },
   mounted() {
@@ -92,11 +86,11 @@ export default {
       data: chart_data,
       options: options1,
     });
-    this.show_hist(1);
+    this.productHistoryFetch(1);
   },
   methods: {
-    show_hist(t) {
-      axios.get("/prod_history", { params: { id: this.productId } }).then(function (response) {
+    productHistoryFetch(t) {
+      axios.get("/product/history", { params: { id: this.productId } }).then(function(response) {
         var i = 0;
         var l = response.data.length;
         var l2 = chart_data.datasets[0].data.length;

@@ -1,37 +1,37 @@
 <template>
   <div class="container-fluid">
-    <h4 style="padding-left:8px">{{lng.comments+" "+paginator.total}}</h4>
+    <h4 style="padding-left:8px">{{ lng.comments + " " + paginator.total }}</h4>
     <button class="btn btn-primary btn-add-comment" @click="stt($event.currentTarget)">
       <i class="fa fa-angle-up pull-right" style="display:none" aria-hidden="true" />
       <i class="fa fa-angle-down pull-right" aria-hidden="true" />
       <i class="fa fa-comment-o" aria-hidden="true" />
-      &nbsp;{{lng.to_comment}}
+      &nbsp;{{ lng.to_comment }}
     </button>
     <div id="leaveMsg" class="thumbnail">
       <div class="caption">
         <div class="form-group">
-          <label>{{lng.comment}}</label>
+          <label>{{ lng.comment }}</label>
           <textarea v-model="message" class="form-control" rows="3" />
         </div>
-        <button
-          class="btn btn-default"
-          style="width:100%"
-          @click="leave_comment()"
-        >{{lng.to_comment}}</button>
+        <button class="btn btn-default" style="width:100%" @click="leave_comment()">{{ lng.to_comment }}</button>
       </div>
     </div>
-    <div v-for="(comment,i) in comments" :key="comment.id" class="panel panel-default">
+    <div v-for="(comment, i) in comments" :key="comment.id" class="panel panel-default">
       <div class="panel-body" style="position:relative">
-        <span class="text-primary">{{comment.user.name}}</span>
-        <span style="top: 15px;right: 15px;position: absolute;">{{comment.created_at}}</span>
-        <div style="margin: 10px 0">{{comment.message}}</div>
-        <div class="like-tab fake-link" @click="comment_like(i,$event.target)">
+        <span class="text-primary">{{ comment.user.name }}</span>
+        <span style="top: 15px;right: 15px;position: absolute;">{{ comment.created_at }}</span>
+        <div style="margin: 10px 0">{{ comment.message }}</div>
+        <div class="like-tab fake-link" @click="comment_like(i, $event.target)">
+          <i :class="comment.vote && comment.vote.action == 'like' ? 'fa fa-thumbs-up like' : 'fa fa-thumbs-o-up like'">
+            {{ comment.like }}
+          </i>
           <i
-            :class="comment.vote && comment.vote.action == 'like' ? 'fa fa-thumbs-up like' : 'fa fa-thumbs-o-up like'"
-          >{{comment.like}}</i>
-          <i
-            :class="comment.vote && comment.vote.action == 'dislike' ? 'fa fa-thumbs-up dislike' : 'fa fa-thumbs-o-up dislike'"
-          >{{comment.dislike}}</i>
+            :class="
+              comment.vote && comment.vote.action == 'dislike' ? 'fa fa-thumbs-up dislike' : 'fa fa-thumbs-o-up dislike'
+            "
+          >
+            {{ comment.dislike }}
+          </i>
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@ export default {
       required: true,
     },
   },
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {
@@ -126,10 +126,10 @@ export default {
           this.comments[i].created_at = formatter.format(new Date(this.comments[i].created_at + "Z"));
           this.$forceUpdate();
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     show_comments() {
-      axios.get("/all_comments?id=" + this.productId + "&skip=" + this.paginator.skip).then((response) => {
+      axios.get("/comments?product_id=" + this.productId + "&skip=" + this.paginator.skip).then((response) => {
         this.paginator.total = response.data[0];
         this.comments = response.data[1];
         for (var i = 0; i < this.comments.length; i++) {

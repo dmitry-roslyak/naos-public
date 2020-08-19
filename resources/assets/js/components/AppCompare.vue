@@ -90,10 +90,10 @@ export default {
     },
   },
   watch: {
-    "$route.params.ids": "get_prodsby_ids",
+    "$route.params.ids": "productsFetch",
   },
   created() {
-    this.get_prodsby_ids();
+    this.productsFetch();
     // selfChart = new Chart(document.getElementById('cmprGraph'), {
     //     type: 'polarArea',
     //     data: chartData,
@@ -121,8 +121,8 @@ export default {
       });
       this.$forceUpdate();
     },
-    get_prodsby_ids() {
-      axios.get("/prodsby_ids", { params: { ids: JSON.parse(this.ids) } }).then((response) => {
+    productsFetch() {
+      axios.get("/products", { params: { ids: JSON.parse(this.ids) } }).then((response) => {
         this.list = response.data.forEach((product) => {
           product.specs.unshift({
             name: "price",

@@ -30,17 +30,13 @@ class ProductController extends Controller
         }
         return $query->where('id', $data->id)->get()->first();
     }
-    public function show_many(Request $data)
+    public function productsByIds(Request $data)
     {
         return Product::with('discount','specs')->whereIn('id', $data->ids)->get();
     }
-    public function withDiscountShowByIds(Request $data)
-    {
-        return Product::with('discount')->whereIn('id', $data->ids)->get();
-    }
     public function search(Request $data)
     {
-        return Product::with('ctg','discount')->where('name', 'ilike', '%'.$data->search . '%')
+        return Product::with('ctg','discount')->where('name', 'ilike', '%' . $data->name . '%')
             ->skip(0)->take(5)->orderBy('category_id','desc')->get();
     }
     public function history(Request $data) {

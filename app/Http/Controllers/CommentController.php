@@ -19,7 +19,7 @@ class CommentController extends Controller
     public function show(Request $data)
     {
         $user_id = Auth::id();
-        $query = Comment::with('user')->where('product_id',$data->id);
+        $query = Comment::with('user')->where('product_id',$data->product_id);
         if($user_id)
         {
             $query->with(['vote' => function ($query) use ($user_id) {

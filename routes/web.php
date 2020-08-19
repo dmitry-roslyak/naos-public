@@ -12,36 +12,19 @@
 */
 use Illuminate\Http\Request;
 
-Route::get('/lang/{lng}', 'UserController@lang');
+Route::get('/products', 'ProductController@productsByIds');
+Route::get('/products/random', 'ProductController@rnd');
+Route::get('/products/filter', 'ProductController@filterBy');
+Route::get('/products/search/{name}', 'ProductController@search');
+Route::get('/product', 'ProductController@show_one');
+Route::get('/product/history', 'ProductController@history');
 
-Route::group(['middleware' => 'admin'], function() {
-    Route::get('/token', 'DashboardController@tokenRefresh');
-    
-    Route::post('/upload', 'DashboardController@productCreate');
-    Route::get('/t1', 'DashboardController@tg');
-    Route::get('/discount_list', function () {
-        return App\Discount::get();
-    });
-    Route::get('/mail_user_test', 'UserController@mail');
-});
-
-Route::post('/search', 'ProductController@search');
-Route::get('/prod_filter', 'ProductController@filterBy');
-Route::get('/prod_by_id', 'ProductController@show_one');
-Route::get('/prodsby_ids', 'ProductController@show_many');
-Route::get('/products_with_discount_by_ids', 'ProductController@withDiscountShowByIds');
-Route::get('/prod_history', 'ProductController@history');
-Route::get('/prod_rnd', 'ProductController@rnd');
-
-Route::get('/all_comments', 'CommentController@show');
+Route::get('/comments', 'CommentController@show');
 Route::post('/order', 'OrderController@store');
 Route::post('/auth', 'UserController@auth');
 
-Route::get('/ctg_spec', function (Request $data) {
-    return App\Product::with('specs')->where('category_id', $data->id)->get()->first();
-});
-Route::get('/get_filters', function (Request $data) {
-     return App\Filter::with('values')->where('category_id', $data->id)->get();
+Route::get('/filters', function (Request $data) {
+     return App\Filter::with('values')->where('category_id', $data->category_id)->get();
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -53,7 +36,20 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/update_user_info', 'UserController@update');
     Route::post('/user_comments_like', 'UserController@likes');
 });
+
+Route::get('/lang/{lng}', 'UserController@lang');
 Route::get('/set_currency', 'UserController@currency');
+
+Route::group(['middleware' => 'admin'], function() {
+    Route::get('/token', 'DashboardController@tokenRefresh');
+    
+    Route::post('/upload', 'DashboardController@productCreate');
+    Route::get('/t1', 'DashboardController@tg');
+    Route::get('/discount_list', function () {
+        return App\Discount::get();
+    });
+    Route::get('/mail_user_test', 'UserController@mail');
+});
 
 Auth::routes();
 Route::view('/logout', 'auth.logout');

@@ -5,27 +5,23 @@
       <div class="action-frm-wrapper">
         <div class="action-frm">
           <a class="action-item fake-link" @click="to_compare()">
-            <span class="hidden-xs">{{lng.to_compare}}</span>
+            <span class="hidden-xs">{{ lng.to_compare }}</span>
             <i
               class="fa fa-balance-scale compare-state anm-bounce-scale"
               :data-check="item.is_compare"
               aria-hidden="true"
-            ></i>
-          </a>&nbsp;
+            /> </a
+          >&nbsp;
           <a class="action-item fake-link" @click="to_wish()">
-            <span class="hidden-xs">{{lng.to_wishlist}}</span>
-            <i
-              class="fa fa-heart heart-state anm-bounce-scale"
-              :data-check="item.isWish"
-              aria-hidden="true"
-            ></i>
-          </a>&nbsp;
+            <span class="hidden-xs">{{ lng.to_wishlist }}</span>
+            <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true" /> </a
+          >&nbsp;
           <a
             class="action-item fake-link"
-            :href="'https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href='+href"
+            :href="'https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href=' + href"
             target="_blank"
           >
-            <span class="hidden-xs">{{lng.share}}</span>
+            <span class="hidden-xs">{{ lng.share }}</span>
             <i class="fa fa-facebook-square"></i>
           </a>
         </div>
@@ -36,17 +32,17 @@
         </ol>
         <div class="carousel-inner" role="listbox">
           <div class="item active image-wrapper">
-            <img :src="item.img_src && '/file/'+item.img_src" />
+            <img :src="item.img_src && '/file/' + item.img_src" />
             <div v-if="+offerTime > 0" class="tb-offer">
-              <span>{{lng.discount +' -'+item.discount.discount+'%'}}</span>
-              <span class="hidden-xs">{{offer}}</span>
+              <span>{{ lng.discount + " -" + item.discount.discount + "%" }}</span>
+              <span class="hidden-xs">{{ offer }}</span>
             </div>
           </div>
         </div>
         <div class="col-xs-9" style="position: absolute;bottom: 0;">
           <div class="product-state">
-            <s v-if="item.discount&&item.available">{{(currency * item.price).toFixed(1)}}</s>
-            <span>{{itemPriceResult(item)}}</span>
+            <s v-if="item.discount && item.available">{{ (currency * item.price).toFixed(1) }}</s>
+            <span>{{ itemPriceResult(item) }}</span>
           </div>
           <star-rating
             :rating="item.user_rating ? item.user_rating.rating : +item.rating"
@@ -55,40 +51,40 @@
             :active-color="item.user_rating ? 'orangered' : '#ffd055'"
             @rating-selected="product_rate($event)"
           ></star-rating>
-          {{item.vote_count}}
+          {{ item.vote_count }}
         </div>
         <div class="app-detail-btn-group">
           <div v-if="item.available > 0" class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-default action-item" @click="addToCart()">
-              <span>{{lng.addto_cart}}</span>
+              <span>{{ lng.addto_cart }}</span>
               <i
                 class="fa fa-cart-plus btn-in-cart-i anm-bounce-scale"
                 :data-check="item.isInCart"
                 aria-hidden="true"
-              ></i>&nbsp;&nbsp;
+              />&nbsp;&nbsp;
             </button>
-            <button type="button" class="btn btn-primary" @click="buy()">{{lng.buy}}</button>
+            <button type="button" class="btn btn-primary" @click="buy()">{{ lng.buy }}</button>
           </div>
-          <button v-else type="button" class="btn btn-primary disabled">{{lng.not_in_stock}}</button>
+          <button v-else type="button" class="btn btn-primary disabled">{{ lng.not_in_stock }}</button>
         </div>
       </div>
       <ul class="nav nav-tabs">
-        <li role="presentation" :class="{ active: show_specs}" @click="show_specs=true">
-          <a>{{lng.specs}}</a>
+        <li role="presentation" :class="{ active: show_specs }" @click="show_specs = true">
+          <a>{{ lng.specs }}</a>
         </li>
-        <li role="presentation" :class="{ active: !show_specs}" @click="show_specs=false">
-          <a>{{lng.descr}}</a>
+        <li role="presentation" :class="{ active: !show_specs }" @click="show_specs = false">
+          <a>{{ lng.descr }}</a>
         </li>
       </ul>
-      <table v-if="show_specs&&item" class="table border1">
+      <table v-if="show_specs && item" class="table border1">
         <tbody>
-          <tr v-for="(specs,i) in item.specs" :key="i">
-            <td>{{lng[specs.name]?lng[specs.name]:specs.name}}</td>
-            <td>{{specs.value}}&nbsp;{{specs.val_type}}</td>
+          <tr v-for="(specs, i) in item.specs" :key="i">
+            <td>{{ lng[specs.name] ? lng[specs.name] : specs.name }}</td>
+            <td>{{ specs.value }}&nbsp;{{ specs.val_type }}</td>
           </tr>
         </tbody>
       </table>
-      <div v-else class="border1">{{item.description}}</div>
+      <div v-else class="border1">{{ item.description }}</div>
       <app-detail-charts v-if="showGraph" :product-id="id"></app-detail-charts>
     </div>
     <app-comments class="col-md-5" :product-id="id"></app-comments>
@@ -115,7 +111,7 @@ export default {
       required: true,
     },
   },
-  data: function () {
+  data: function() {
     return data;
   },
   computed: {
@@ -152,10 +148,10 @@ export default {
     },
   },
   watch: {
-    id: "itemById",
+    id: "productFetch",
   },
   created() {
-    this.itemById();
+    this.productFetch();
     this.clientWidth();
     window.onresize = () => {
       this.clientWidth();
@@ -206,8 +202,8 @@ export default {
           this.item.isWish = !this.item.isWish;
         });
     },
-    itemById() {
-      axios.get("/prod_by_id?id=" + this.id).then((response) => {
+    productFetch() {
+      axios.get("/product?id=" + this.id).then((response) => {
         response.data.isWish = !!response.data.wish;
         response.data.is_compare = false;
         response.data.isInCart = !!this.$store.state.cart[response.data.id];

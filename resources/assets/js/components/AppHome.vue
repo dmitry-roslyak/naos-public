@@ -74,11 +74,11 @@ export default {
   },
   mounted() {
     this.catalog = window.Laravel.catalog;
-    this.get_random_products();
+    this.productsRandomFetch();
   },
   methods: {
-    get_random_products() {
-      axios.get("/prod_rnd").then((response) => {
+    productsRandomFetch() {
+      axios.get("/products/random").then((response) => {
         this.items = response.data;
         this.dummyCategory.length = itemsCountMax - Object.keys(this.catalog).length;
       });

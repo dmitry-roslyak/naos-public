@@ -9,7 +9,7 @@
         v-for="(item, name) in catalog"
         :key="item.id"
         class="list-group-item fake-link"
-        @click="get_filters(name, item.id)"
+        @click="filtersFetch(name, item.id)"
       >
         {{ lng[name] ? lng[name] : name }}
       </a>
@@ -129,7 +129,7 @@ export default {
     this.catalog = window.Laravel.catalog;
     this.price = this.$parent.price;
     if (window.Laravel.catalog[this.$parent.category]) {
-      this.get_filters(this.$parent.category, window.Laravel.catalog[this.$parent.category].id);
+      this.filtersFetch(this.$parent.category, window.Laravel.catalog[this.$parent.category].id);
     }
   },
   methods: {
@@ -162,9 +162,9 @@ export default {
       this.price.range = [null, null];
       this.$store.commit("filterReset");
     },
-    get_filters(name, id) {
+    filtersFetch(name, id) {
       this.$router.push("/products/" + name);
-      axios.get("/get_filters?id=" + id).then((response) => {
+      axios.get("/filters?category_id=" + id).then((response) => {
         this.filters = response.data;
       });
       this.flt_reset();

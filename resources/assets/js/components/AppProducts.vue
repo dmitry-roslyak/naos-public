@@ -8,7 +8,7 @@
       @take="paginator.take = $event"
       @ordby="
         ordby = $event;
-        productsfetch();
+        productsFilterFetch();
       "
     />
     <div class="col-sm-9 col-md-10" style="padding: 0;">
@@ -114,13 +114,13 @@ export default {
     },
   },
   watch: {
-    "$store.state.flt_ids": "productsfetch",
-    "paginator.take": "productsfetch",
+    "$store.state.flt_ids": "productsFilterFetch",
+    "paginator.take": "productsFilterFetch",
     "paginator.skip": function() {
-      this.productsfetch("withSkip");
+      this.productsFilterFetch("withSkip");
     },
     "price.range": function(array) {
-      array.length === 2 && this.productsfetch();
+      array.length === 2 && this.productsFilterFetch();
     },
   },
   methods: {
@@ -132,14 +132,14 @@ export default {
       e.style.visibility = "initial";
       e.style.padding = "4em";
     },
-    productsfetch: debounce(function(arg) {
+    productsFilterFetch: debounce(function(arg) {
       if (arg !== "withSkip") {
         this.paginator.skip = 0;
         this.paginator.page = 1;
       }
       var price = [this.price.range[0] / this.currency, this.price.range[1] / this.currency];
       axios
-        .get("/prod_filter", {
+        .get("/products/filter", {
           params: {
             ctg_id: window.Laravel.catalog[this.category].id,
             skip: this.paginator.skip,

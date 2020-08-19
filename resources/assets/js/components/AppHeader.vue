@@ -42,8 +42,8 @@
                 type="search"
                 class="form-control"
                 :placeholder="lng.search"
-                @focus="search_result || toSearch()"
-                @input="toSearch()"
+                @focus="search_result || productsSearchFetch()"
+                @input="productsSearchFetch()"
               />
               <ul class="dropdown-menu" style="display: initial">
                 <li v-for="item in search_result" :key="item.id">
@@ -158,17 +158,13 @@ export default {
         `/compare/${this.$store.state.compare[i].category}/${JSON.stringify(this.$store.state.compare[i].array)}`
       );
     },
-    toSearch: debounce(function() {
+    productsSearchFetch: debounce(function() {
       var text = document.querySelector(".search > input").value;
       this.search_result = null;
       text.length &&
-        axios
-          .post("/search", {
-            search: text,
-          })
-          .then((response) => {
-            this.search_result = response.data;
-          });
+        axios.get("/products/search/" + text).then((response) => {
+          this.search_result = response.data;
+        });
     }, 400),
     get_locale(lng) {
       axios
