@@ -1,19 +1,20 @@
 <template>
   <div class="container-fluid">
     <h4 style="padding-left:8px">{{ lng.comments + " " + paginator.total }}</h4>
-    <button class="btn btn-primary btn-add-comment" @click="stt($event.currentTarget)">
-      <i class="fa fa-angle-up pull-right" style="display:none" aria-hidden="true" />
+    <button class="btn btn-primary btn-add-comment" @click="collapseToggle($event.currentTarget)">
       <i class="fa fa-angle-down pull-right" aria-hidden="true" />
       <i class="fa fa-comment-o" aria-hidden="true" />
       &nbsp;{{ lng.to_comment }}
     </button>
-    <div id="leaveMsg" class="thumbnail">
-      <div class="caption">
-        <div class="form-group">
-          <label>{{ lng.comment }}</label>
-          <textarea v-model="message" class="form-control" rows="3" />
+    <div id="leaveMsg" class="collapse">
+      <div class="thumbnail">
+        <div class="caption">
+          <div class="form-group">
+            <label>{{ lng.comment }}</label>
+            <textarea v-model="message" class="form-control" rows="3" />
+          </div>
+          <button class="btn btn-default" style="width:100%" @click="leave_comment()">{{ lng.to_comment }}</button>
         </div>
-        <button class="btn btn-default" style="width:100%" @click="leave_comment()">{{ lng.to_comment }}</button>
       </div>
     </div>
     <div v-for="(comment, i) in comments" :key="comment.id" class="panel panel-default">
@@ -108,10 +109,9 @@ export default {
     this.show_comments();
   },
   methods: {
-    stt(el) {
-      $("#leaveMsg").slideToggle();
-      $(el.getElementsByClassName("fa-angle-up")[0]).toggle();
-      $(el.getElementsByClassName("fa-angle-down")[0]).toggle();
+    collapseToggle(el) {
+      $("#leaveMsg").collapse("toggle");
+      el.getElementsByClassName("fa-angle-down")[0].classList.toggle("transform-rotate");
     },
     comment_like(i, el) {
       axios
@@ -149,8 +149,6 @@ export default {
 <style>
 #leaveMsg {
   background-color: white;
-  display: none;
-  margin-top: -24px;
 }
 .btn-add-comment {
   width: 100%;

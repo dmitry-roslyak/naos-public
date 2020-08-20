@@ -10,12 +10,12 @@
               class="fa fa-balance-scale compare-state anm-bounce-scale"
               :data-check="item.is_compare"
               aria-hidden="true"
-            /> </a
-          >&nbsp;
+            />
+          </a>
           <a class="action-item fake-link" @click="to_wish()">
             <span class="hidden-xs">{{ lng.to_wishlist }}</span>
-            <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true" /> </a
-          >&nbsp;
+            <i class="fa fa-heart heart-state anm-bounce-scale" :data-check="item.isWish" aria-hidden="true" />
+          </a>
           <a
             class="action-item fake-link"
             :href="'https://www.facebook.com/dialog/share?app_id=1358482950908486&display=popup&href=' + href"

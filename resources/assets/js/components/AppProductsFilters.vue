@@ -45,19 +45,18 @@
     <div style="font-weight:bold;padding: 1rem">
       <i class="fa fa-filter" />
       {{ lng.filters }}
-      <span v-show="showClear" class="flt-btn fake-link" style="float:right;padding: 0;" @click="flt_reset()">
+      <span v-show="showClear" class="flt-btn fake-link pull-right" @click="flt_reset()">
         {{ lng.filtersReset }}
         <i class="fa fa-times" />
       </span>
     </div>
 
     <div class="flt-grp">
-      <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
+      <div class="flt-btn fake-link" @click="collapseToggle($event.currentTarget)">
         {{ lng.price }}
-        <i class="fa fa-angle-up font1 pull-right" style="display:none" aria-hidden="true" />
-        <i class="fa fa-angle-down font1 pull-right" aria-hidden="true" />
+        <i class="fa fa-angle-down pull-right" aria-hidden="true" />
       </div>
-      <div class="flip">
+      <div class="collapse">
         {{ lng.from }}
         <div class="input-group">
           <input v-model.number="price.range[0]" type="number" class="form-control myinput1" />
@@ -72,13 +71,12 @@
       </div>
     </div>
     <div v-for="(filter, i1) in filters" :key="filter.id" class="flt-grp">
-      <div class="flt-btn fake-link" @click="expand($event.currentTarget)">
+      <div class="flt-btn fake-link" @click="collapseToggle($event.currentTarget)">
         <!-- <span :title="filter.desc"><i class="fa fa-info-circle"></i></span> -->
         {{ lng[filter.name] ? lng[filter.name] : filter.name }}
-        <i class="fa fa-angle-down pull-right" style="display:none" aria-hidden="true"></i>
-        <i class="fa fa-angle-up pull-right" aria-hidden="true"></i>
+        <i class="fa fa-angle-down pull-right" aria-hidden="true" />
       </div>
-      <div class="flip">
+      <div class="collapse">
         <div v-for="(value, i2) in filter.values" :key="value.id" class="checkbox">
           <label>
             <input type="checkbox" :data-id="value.id" :data-i1="i1" :data-i2="i2" @click="toFilter($event)" />
@@ -145,15 +143,10 @@ export default {
         (priceTo * this.$store.state.currency).toFixed(1),
       ];
     },
-    expand: throttle(
-      function(el) {
-        $(el.parentElement.getElementsByClassName("flip")[0]).slideToggle();
-        $(el.getElementsByClassName("fa-angle-up")[0]).toggle();
-        $(el.getElementsByClassName("fa-angle-down")[0]).toggle();
-      },
-      300,
-      { trailing: false }
-    ),
+    collapseToggle(el) {
+      $(el.parentElement.lastElementChild).collapse("toggle");
+      el.lastElementChild.classList.toggle("transform-rotate");
+    },
     flt_reset() {
       var checkList = document.getElementsByClassName("checkbox");
       for (var i = 0; i < checkList.length; i++) {

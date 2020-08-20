@@ -47,15 +47,3 @@ window.debounce = function(func, timeout) {
     id = setTimeout(f, timeout);
   };
 };
-
-window.throttle = function(func, timeout) {
-  var id;
-  return function() {
-    if (!id) {
-      func.apply(this, arguments);
-      id = setTimeout(function() {
-        id = null;
-      }, timeout);
-    }
-  };
-};

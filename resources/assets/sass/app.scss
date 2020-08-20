@@ -72,7 +72,6 @@ td > .fa-times {
   border-bottom-right-radius: 0.8em;
   font-style: italic;
   color: #fff;
-  text-align: center;
 
   &.soon {
     box-shadow: 0.05em 0.05em 0.6em #8f00b3;
@@ -114,7 +113,6 @@ td > .fa-times {
   display: inline-block;
   width: 0;
   white-space: nowrap;
-  text-align: center;
   transform: scale(0);
   transform-origin: right;
   visibility: collapse;
@@ -122,7 +120,7 @@ td > .fa-times {
 
 .action-item:hover > span {
   width: 8rem;
-  margin-left: 0;
+  padding-right: 3px;
   transform: scale(1);
   visibility: visible;
 }
@@ -233,34 +231,8 @@ td > .fa-times {
   transform: translateY(320px);
 }
 
-.fa-angle-up,
-.fa-angle-down[style=""] {
-  animation: rotate0 0.35s;
-}
-
-.fa-angle-up,
-.fa-angle-down[style="display:none"] {
-  animation: rotate90 0.35s;
-}
-
-@keyframes rotate90 {
-  0% {
-    transform: rotateZ(180deg);
-  }
-
-  100% {
-    transform: rotateZ(0deg);
-  }
-}
-
-@keyframes rotate0 {
-  0% {
-    transform: rotateZ(180deg);
-  }
-
-  100% {
-    transform: rotateZ(0);
-  }
+.transform-rotate {
+  transform: rotateZ(180deg);
 }
 
 @keyframes bounce0 {
