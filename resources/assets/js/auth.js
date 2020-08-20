@@ -1,19 +1,23 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import axios from "axios";
 
 class Auth {
+  static get headers() {
+    return new Headers({
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": document.getElementsByName("csrf-token")[0].content,
+    });
+  }
+
   static initialize() {
-    if (__NODE_ENV === "production") {
-      firebase.initializeApp({
-        apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
-        authDomain: "dev-naos.firebaseapp.com",
-        databaseURL: "https://dev-naos.firebaseio.com",
-        projectId: "dev-naos",
-        storageBucket: "dev-naos.appspot.com",
-        messagingSenderId: "515353712594",
-      });
-    }
+    firebase.initializeApp({
+      apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
+      authDomain: "dev-naos.firebaseapp.com",
+      databaseURL: "https://dev-naos.firebaseio.com",
+      projectId: "dev-naos",
+      storageBucket: "dev-naos.appspot.com",
+      messagingSenderId: "515353712594",
+    });
 
     if (window.location.pathname.includes("logout")) {
       Auth.logout();
@@ -32,11 +36,15 @@ class Auth {
   }
 
   static fetch(jwt) {
-    axios
-      .post("/auth", {
-        input: jwt,
+    fetch("/auth", {
+      method: "post",
+      headers: Auth.headers,
+      body: JSON.stringify({ input: jwt }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("invalid token");
+        location.replace("/");
       })
-      .then(() => location.replace("/"))
       .catch((error) => console.log(error));
   }
 
@@ -59,7 +67,7 @@ class Auth {
 
   static logout() {
     const logout = [
-      axios.post("/logout").catch((error) => console.log(error)),
+      fetch("/logout", { method: "post", headers: Auth.headers }).catch((error) => console.log(error)),
       firebase
         .auth()
         .signOut()
@@ -69,4 +77,6 @@ class Auth {
   }
 }
 
-Auth.initialize();
+if (__NODE_ENV === "production") {
+  Auth.initialize();
+}
