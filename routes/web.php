@@ -20,12 +20,11 @@ Route::get('/product', 'ProductController@show_one');
 Route::get('/product/history', 'ProductController@history');
 
 Route::get('/comments', 'CommentController@show');
-Route::post('/order', 'OrderController@store');
-Route::post('/auth', 'UserController@auth');
 
 Route::get('/filters', function (Request $data) {
-     return App\Filter::with('values')->where('category_id', $data->category_id)->get();
+    return App\Filter::with('values')->where('category_id', $data->category_id)->get();
 });
+Route::post('/order', 'OrderController@store');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/leave_comment', 'CommentController@store');
@@ -51,6 +50,7 @@ Route::group(['middleware' => 'admin'], function() {
     Route::get('/mail_user_test', 'UserController@mail');
 });
 
+Route::get('/auth', 'UserController@auth');
 Auth::routes();
 Route::view('/logout', 'auth.logout');
 

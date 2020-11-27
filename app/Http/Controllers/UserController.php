@@ -126,48 +126,54 @@ class UserController extends Controller
         //     ['user_id' => $user_id, 'product_id' => $request->id, 'rating' => $request->rating]
         // );
     }
-    public function auth(Request $data)
+    public function auth(Request $request)
     {
-            // $jwk_set = JWKFactory::createFromX5U('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com');
-            // $loader = new Loader();
-            // $jws = $loader->loadAndVerifySignatureUsingKeySet(
-            //     $jwt_token,
-            //     $jwk_set,
-            //     ['RS256'],
-            //     $null
-            // );
-            $jwt_token = $data->input;
-            if(!$jwt_token) return response(null,401);
+        if(!empty($request->header('Authorization')) && preg_match('/Bearer\s(\S+)/', $request->header('Authorization'), $matches)) {
+            $token = $matches[1];
+        } else return response(null, 401);
 
-            $certs = json_decode(file_get_contents ('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'));
-            $kid = json_decode(JWT::urlsafeB64Decode(explode('.',$jwt_token)[0]))->kid;
+        try {
+            $header_payload_signature_array = explode('.', $token);
+            $header = json_decode(JWT::urlsafeB64Decode($header_payload_signature_array[0]));
+            $payload = json_decode(JWT::urlsafeB64Decode($header_payload_signature_array[1]));
+        
+            if(empty($payload->email)) throw new \Exception('Email claim mismatch');
+            $email = $payload->email;
+            if($payload->aud != env('JWT_AUD')) throw new \Exception('Audience (aud) claim mismatch');
+        }
+        catch (\Exception $e) {
+            return response($e->getMessage(), 401);
+        }
+        
+        $user = User::where('email', $email)->first();
+
+        try {
+            $certs = json_decode(file_get_contents('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'));            
             
             foreach ($certs as $key => $cert) {
-                if($key==$kid) break;
+                if($key==$header->kid) break;
             }
+
             $pub_key = openssl_pkey_get_public($cert); 
             $keyData = openssl_pkey_get_details($pub_key); 
-            
-            $decoded = JWT::decode($jwt_token, $keyData['key'], array('RS256'));
+            $decoded = JWT::decode($token, $keyData['key'], array('RS256'));
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 401);
+        }
 
-            if($decoded->aud!='dev-naos') response(null,400);
-            $email = $decoded->email;
-            $user = User::where('email',$email)->first();
+        if(!$user && !empty($decoded->name))
+        {
+            $locale = Utility::locale();
             
-            if(!$user)
-            {
-                $locale = Utility::locale();
-                
-                $user = new User;
-                $user->name = $decoded->name;
-                $user->currency = $locale['currency'];
-                $user->language = $locale['language'];
-                $user->email = $email;
-                $user->password = Uuid::uuid4();
-                $user->save();
-            }
-            if(Auth::loginUsingId($user->id, true)) return response(null,200);
-            else return response(null,401);
+            $user = new User;
+            $user->name = $decoded->name;
+            $user->currency = $locale['currency'];
+            $user->language = $locale['language'];
+            $user->email = $email;
+            $user->password = Uuid::uuid4();
+            $user->save();
+        }
+        if(!Auth::loginUsingId($user->id, true)) return response(null, 401);
     }
     public function mail(Request $data) {
         $states = [255, 127,63,31,15,7,3,1]; //is User subscribed to receive email updates

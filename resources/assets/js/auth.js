@@ -2,21 +2,15 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 class Auth {
-  static get headers() {
-    return new Headers({
-      "Content-Type": "application/json",
-      "X-CSRF-TOKEN": document.getElementsByName("csrf-token")[0].content,
-    });
-  }
-
   static initialize() {
     firebase.initializeApp({
-      apiKey: "AIzaSyDS8NA7CFPEAqO0-bvoLIpeRfpWNnUvRAA",
-      authDomain: "dev-naos.firebaseapp.com",
-      databaseURL: "https://dev-naos.firebaseio.com",
-      projectId: "dev-naos",
-      storageBucket: "dev-naos.appspot.com",
-      messagingSenderId: "515353712594",
+      apiKey: "AIzaSyB48itgCIjbWqAGmM5dbUXY-IuHnnDkWW4",
+      authDomain: "naos-c6e11.firebaseapp.com",
+      databaseURL: "https://naos-c6e11.firebaseio.com",
+      projectId: "naos-c6e11",
+      storageBucket: "naos-c6e11.appspot.com",
+      messagingSenderId: "400801183019",
+      appId: "1:400801183019:web:aaf0052d87e017ae4d816e",
     });
 
     if (window.location.pathname.includes("logout")) {
@@ -37,9 +31,10 @@ class Auth {
 
   static fetch(jwt) {
     fetch("/auth", {
-      method: "post",
-      headers: Auth.headers,
-      body: JSON.stringify({ input: jwt }),
+      headers: new Headers({
+        "X-CSRF-TOKEN": document.getElementsByName("csrf-token")[0].content,
+        Authorization: "Bearer " + jwt,
+      }),
     })
       .then((res) => {
         if (!res.ok) throw new Error("invalid token");
@@ -67,7 +62,12 @@ class Auth {
 
   static logout() {
     const logout = [
-      fetch("/logout", { method: "post", headers: Auth.headers }).catch((error) => console.log(error)),
+      fetch("/logout", {
+        method: "post",
+        headers: new Headers({
+          "X-CSRF-TOKEN": document.getElementsByName("csrf-token")[0].content,
+        }),
+      }).catch((error) => console.log(error)),
       firebase
         .auth()
         .signOut()
